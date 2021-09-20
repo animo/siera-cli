@@ -10,6 +10,10 @@ fn main() {
     // Get all the supplied flags and values
     let matches = App::from_yaml(yaml).get_matches();
 
-    // Load the configuration file
-    let _config = matches.value_of("config").unwrap_or("default.conf");
+    // Matches the `test` subcommand
+    if let Some(matches) = matches.subcommand_matches("start") {
+        let config = matches.value_of("config").unwrap_or("default.conf");
+
+        assert_eq!(config, "default.conf");
+    }
 }
