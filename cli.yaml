@@ -1,0 +1,24 @@
+name: aries-data-generator-toolkit
+version: "0.1"
+author: Animo Solutions
+about: A toolkit to interact with an Aries instance for quick data manipulation
+args:
+  - config:
+      short: c
+      long: config
+      value_name: FILE
+      help: Sets a custom config file
+      takes_value: true
+sucommands: 
+  - test:
+      about: testing the cli
+      version: "0.1"
+      author: Animo Solutions
+      args:
+        - config:
+            short: c
+            long: config
+            value_name: FILE
+            help: Sets a custom config file
+            takes_value: true
+
