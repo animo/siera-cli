@@ -1,6 +1,10 @@
+//! A toolkit to interact with Aries instances for data manipulation
+
 #[macro_use]
 extern crate clap;
 use clap::App;
+mod parse;
+mod typing;
 
 /// Initializes the application
 fn main() {
@@ -11,9 +15,14 @@ fn main() {
     let matches = App::from_yaml(yaml).get_matches();
 
     // Matches the `test` subcommand
-    if let Some(matches) = matches.subcommand_matches("start") {
-        let config = matches.value_of("config").unwrap_or("default.conf");
+    if let Some(matches) = matches.subcommand_matches("run") {
+        // Path of the config file
+        let config = matches.value_of("config").unwrap_or("default.json");
 
-        assert_eq!(config, "default.conf");
+        // JSON object containing the config
+        let json: typing::Config = parse::parse_json_from_path(config);
+
+        // test print
+        println!("{}", json.name);
     }
 }

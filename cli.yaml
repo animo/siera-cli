@@ -3,12 +3,14 @@ name: Aries Data Generator Toolkit
 version: "0.1"
 author: Animo Solutions
 about: A toolkit to interact with an Aries instance for quick data manipulation
+
+# Application settings
 settings:
     - ArgRequiredElseHelp
 
 # Subcommands
 subcommands: 
-  - start:
+  - run:
       about: initialize
       version: "0.1"
       args:
