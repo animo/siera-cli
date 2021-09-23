@@ -7,5 +7,5 @@ Made by Animo Solutions
 ## start
 
 ```bash
-cargo build && ./target/debug/adg <COMMAND>
+cargo run <COMMAND>
 ```
