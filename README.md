@@ -13,3 +13,7 @@ cargo run <COMMAND>
 
 cargo run run
 ```
+
+## Info
+
+The binary that is build via `cargo build` is called: 'inu'. The code name for this project.
