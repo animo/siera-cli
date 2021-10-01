@@ -1,13 +1,20 @@
 //! A toolkit to interact with Aries instances for data manipulation
+//! run `adg run` to run the example script
 
 #[macro_use]
 extern crate clap;
 use clap::App;
+
+mod agent;
+mod cli;
+mod error;
 mod parse;
 mod typing;
+mod util;
 
 /// Initializes the application
-fn main() {
+#[tokio::main]
+async fn main() {
     // Load the yaml file containing the cli setup
     let yaml = load_yaml!("../cli.yaml");
 
@@ -22,7 +29,6 @@ fn main() {
         // JSON object containing the config
         let json: typing::Config = parse::parse_json_from_path(config);
 
-        // test print
-        println!("{}", json.name);
+        cli::run(json).await;
     }
 }

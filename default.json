@@ -1,3 +1,4 @@
 {
-  "name": "World!"
+  "agent_endpoint": "https://faber.agent.animo.id",
+  "framework": "ACA-Py"
 }

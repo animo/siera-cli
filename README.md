@@ -8,4 +8,8 @@ Made by Animo Solutions
 
 ```bash
 cargo run <COMMAND>
+
+# For example, for testing
+
+cargo run run
 ```
