@@ -1,13 +1,17 @@
-use crate::{agent, error, typing, utils::qr};
+use crate::{
+    agent, error, typing,
+    utils::{logger::Log, qr},
+};
 use std::{thread, time::Duration};
 
 // Cli runner entrypoint
 pub async fn run(json: typing::Config) {
     let agent_endpoint = &json.agent_endpoint;
-    // Check if the provided agent url is valid
+
+    // Create agent
     let agent = agent::Agent::new(agent_endpoint);
 
-    // Checks if the provided agent is valid
+    // Checks if the provided agent endpoint is valid
     if let Err(_) = agent.check_endpoint().await {
         error::throw(error::Error::InvalidEndpoint)
     }
@@ -37,24 +41,19 @@ async fn run_without_connection(agent: agent::Agent, json: typing::Config) {
         None => error::throw(error::Error::InvalidInvitationConfiguration),
     };
 
-    let invitation = agent.create_invitation_url(invitation_config).await;
+    let invitation = agent.create_invitation(invitation_config).await;
 
-    println!("{:?}", invitation);
     qr::print_invitation_and_qr_for_invitation(&invitation);
 
     let result = loop {
-        println!("Lets start!");
         let result = agent
             .get_connection_by_id(invitation.connection_id.clone())
             .await;
-        print!("{}", result.state);
         if result.state == "active" {
-            print!("Wooghoo!");
             break result;
         } else {
             thread::sleep(Duration::from_secs(5))
         }
     };
-
-    println!("{:?}", result);
+    Log::log(&result.state)
 }

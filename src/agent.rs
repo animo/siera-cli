@@ -41,7 +41,7 @@ impl Agent {
     // Create a new agent
     pub fn new(endpoint: &String) -> Agent {
         Agent {
-            url: endpoint.to_string(),
+            url: endpoint.to_owned(),
         }
     }
 
@@ -80,7 +80,7 @@ impl Agent {
         }
     }
     // Create invitation URL
-    pub async fn create_invitation_url(
+    pub async fn create_invitation(
         &self,
         config: typing::InvitiationOptions,
     ) -> typing::Invitation {

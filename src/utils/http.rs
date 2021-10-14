@@ -25,7 +25,6 @@ pub async fn call_post_endpoint(
                 .filter(|param| param.1.is_some())
                 .map(|param| (param.0, param.1.unwrap()))
                 .collect::<Vec<(&str, String)>>();
-            println!("{:?}", qw);
             client.query(&qw).send().await
         }
         None => client.send().await,

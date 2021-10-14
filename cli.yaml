@@ -25,7 +25,15 @@ subcommands:
       about: mediator
       version: "0.1.0"
       args:
-        - invitation:
-            short: ci
+        # A config file with all the data
+        - config:
+            short: c
+            long: config
+            value_name: FILE
+            help: Sets a custom config file
+            takes_value: true
+        # Wether to create a mediator invitation
+        - create-invitation:
+            short: i
             long: create-invitation
             help: create a proper mediation invitation
