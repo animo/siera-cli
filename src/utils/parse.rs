@@ -1,4 +1,4 @@
-use super::{error, typing};
+use crate::{error, typing};
 use std::fs;
 
 // Parses a json file from a relative path

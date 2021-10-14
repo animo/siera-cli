@@ -1,6 +1,6 @@
 # General information
 name: Aries Data Generator Toolkit
-version: "0.1"
+version: "0.1.0"
 author: Animo Solutions
 about: A toolkit to interact with an Aries instance for quick data manipulation
 
@@ -12,7 +12,7 @@ settings:
 subcommands: 
   - run:
       about: initialize
-      version: "0.1"
+      version: "0.1.0"
       args:
         # A config file with all the data
         - config:
@@ -21,4 +21,11 @@ subcommands:
             value_name: FILE
             help: Sets a custom config file
             takes_value: true
-
+  - mediator:
+      about: mediator
+      version: "0.1.0"
+      args:
+        - invitation:
+            short: ci
+            long: create-invitation
+            help: create a proper mediation invitation

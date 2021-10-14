@@ -1,4 +1,3 @@
-use super::{error, typing};
 use reqwest::{Client, Url};
 
 // Handle calling of any endpoint with get
@@ -16,7 +15,7 @@ pub async fn call_get_endpoint(
 // Handle calling of any endpoint with post
 pub async fn call_post_endpoint(
     url: Url,
-    query: Option<Vec<(&str, Option<&str>)>>,
+    query: Option<Vec<(&str, Option<String>)>>,
 ) -> Result<reqwest::Response, reqwest::Error> {
     let client = Client::new().post(url);
     match query {
@@ -25,19 +24,10 @@ pub async fn call_post_endpoint(
                 .into_iter()
                 .filter(|param| param.1.is_some())
                 .map(|param| (param.0, param.1.unwrap()))
-                .collect::<Vec<(&str, &str)>>();
+                .collect::<Vec<(&str, String)>>();
+            println!("{:?}", qw);
             client.query(&qw).send().await
         }
         None => client.send().await,
-    }
-}
-
-// Parse `Invitation to a `qr_code`
-pub fn print_invitation_and_qr_for_invitation(invitation: typing::Invitation) {
-    // Can use unwrap here because the url is supplied by the endpoint
-    let url = reqwest::Url::parse(&invitation.invitation_url.to_string()).unwrap();
-
-    if let Err(_) = qr2term::print_qr(&url.as_ref()) {
-        error::throw(error::Error::CannotCreateQrCode)
     }
 }

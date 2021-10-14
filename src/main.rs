@@ -6,11 +6,11 @@ extern crate clap;
 use clap::App;
 
 mod agent;
-mod cli;
 mod error;
-mod parse;
+mod mediator;
+mod run;
 mod typing;
-mod util;
+mod utils;
 
 /// Initializes the application
 #[tokio::main]
@@ -22,13 +22,18 @@ async fn main() {
     let matches = App::from_yaml(yaml).get_matches();
 
     // Matches the `test` subcommand
-    if let Some(matches) = matches.subcommand_matches("run") {
+    if let Some(matches_run) = matches.subcommand_matches("run") {
         // Path of the config file
-        let config = matches.value_of("config").unwrap_or("default.json");
+        let config = matches_run.value_of("config").unwrap_or("default.json");
 
         // JSON object containing the config
-        let json: typing::Config = parse::parse_json_from_path(config);
+        let json: typing::Config = utils::parse::parse_json_from_path(config);
 
-        cli::run(json).await;
+        run::cli::run(json).await;
+    }
+
+    if let Some(matches_mediator) = matches.subcommand_matches("mediator") {
+        let should_create_invitation = matches.is_present("create-invitation");
+        println!("{}", should_create_invitation);
     }
 }

@@ -1,4 +1,4 @@
-use super::{error, error::Error, typing, typing::Result, util};
+use super::{error, error::Error, typing, typing::Result, utils::http};
 use reqwest::Url;
 
 // All the available endpoints
@@ -60,7 +60,7 @@ impl Agent {
 
     // Get All connections
     pub async fn get_connections(&self) -> typing::Connections {
-        match util::call_get_endpoint(Endpoint::connections(&self), None).await {
+        match http::call_get_endpoint(Endpoint::connections(&self), None).await {
             Ok(res) => match res.json().await {
                 Ok(parsed) => parsed,
                 Err(_) => error::throw(Error::ServerResponseParseError),
@@ -71,7 +71,7 @@ impl Agent {
 
     // Get connection by id
     pub async fn get_connection_by_id(&self, id: String) -> typing::Connection {
-        match util::call_get_endpoint(Endpoint::get_connection_by_id(&self, id), None).await {
+        match http::call_get_endpoint(Endpoint::get_connection_by_id(&self, id), None).await {
             Ok(res) => match res.json().await {
                 Ok(parsed) => parsed,
                 Err(_) => error::throw(error::Error::ServerResponseParseError),
@@ -82,16 +82,15 @@ impl Agent {
     // Create invitation URL
     pub async fn create_invitation_url(
         &self,
-        alias: Option<&str>,
-        multi_use: Option<&str>,
-        auto_accept: Option<&str>,
+        config: typing::InvitiationOptions,
     ) -> typing::Invitation {
         let query = vec![
-            ("alias", alias),
-            ("multi_use", multi_use),
-            ("auto_accept", auto_accept),
+            ("alias", config.alias),
+            ("multi_use", config.multi_use),
+            ("auto_accept", config.auto_accept),
         ];
-        match util::call_post_endpoint(Endpoint::create_invitation(&self), Some(query)).await {
+
+        match http::call_post_endpoint(Endpoint::create_invitation(&self), Some(query)).await {
             Ok(res) => match res.json().await {
                 Ok(parsed) => parsed,
                 Err(_) => error::throw(error::Error::ServerResponseParseError),

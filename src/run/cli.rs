@@ -1,4 +1,5 @@
-use super::{agent, error, typing, util};
+use crate::{agent, error, typing, utils::qr};
+use std::{thread, time::Duration};
 
 // Cli runner entrypoint
 pub async fn run(json: typing::Config) {
@@ -30,8 +31,30 @@ async fn run_with_connection(agent: agent::Agent, json: typing::Config) {
 
 // Running when no connection is added to the config
 async fn run_without_connection(agent: agent::Agent, json: typing::Config) {
-    let invitation = agent
-        .create_invitation_url(Some("Karel"), Some("true"), Some("true"))
-        .await;
-    util::print_invitation_and_qr_for_invitation(invitation);
+    // Assert that invitation object exists in the config
+    let invitation_config = match json.invitation_options {
+        Some(inv) => inv,
+        None => error::throw(error::Error::InvalidInvitationConfiguration),
+    };
+
+    let invitation = agent.create_invitation_url(invitation_config).await;
+
+    println!("{:?}", invitation);
+    qr::print_invitation_and_qr_for_invitation(&invitation);
+
+    let result = loop {
+        println!("Lets start!");
+        let result = agent
+            .get_connection_by_id(invitation.connection_id.clone())
+            .await;
+        print!("{}", result.state);
+        if result.state == "active" {
+            print!("Wooghoo!");
+            break result;
+        } else {
+            thread::sleep(Duration::from_secs(5))
+        }
+    };
+
+    println!("{:?}", result);
 }

@@ -9,7 +9,15 @@ pub struct Config {
     pub agent_endpoint: String,
     pub framework: String,
     pub connection_id: Option<String>,
+    pub invitation_options: Option<InvitiationOptions>,
     pub actions: Option<ConfigActions>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct InvitiationOptions {
+    pub alias: Option<String>,
+    pub auto_accept: Option<String>,
+    pub multi_use: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]

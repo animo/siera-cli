@@ -1,4 +1,9 @@
 {
-  "agent_endpoint": "https://faber.agent.animo.id",
-  "framework": "ACA-Py"
+  "agent_endpoint": "http://agent.community.animo.id:8000",
+  "framework": "ACA-Py",
+  "invitation_options": {
+    "alias": "default_alias",
+    "auto_accept": "true",
+    "multi_use": "true"
+  }
 }
