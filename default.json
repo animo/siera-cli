@@ -1,6 +1,5 @@
 {
   "agent_endpoint": "http://agent.community.animo.id:8000",
-  "mediator_endpoint": "http://mediator.community.animo.id:9000",
   "framework": "ACA-Py",
   "invitation_options": {
     "alias": "default_alias",

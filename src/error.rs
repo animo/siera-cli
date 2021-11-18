@@ -12,7 +12,6 @@ pub enum Error {
     CannotCreateInvitation,
     CannotCreateQrCode,
     InvalidInvitationConfiguration,
-    NoMediatorUrl,
 }
 
 // Error handler (Should not panic but print a custom error and exit)
@@ -43,7 +42,5 @@ pub fn throw(error: Error) -> ! {
         Error::InvalidInvitationConfiguration => {
             Log::error("Connection invitation config is invalid")
         }
-        // No mediator url provided while create mediator subcommand is called
-        Error::NoMediatorUrl => Log::error("No mediator url provided"),
     }
 }

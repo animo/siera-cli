@@ -21,8 +21,12 @@ subcommands:
             value_name: FILE
             help: Sets a custom config file
             takes_value: true
-  - mediator:
-      about: mediator
+        - no-qr:
+            short: n
+            long: no-qr
+            help: Will not display qr code
+  - agent:
+      about: agent 
       version: "0.1.0"
       args:
         # A config file with all the data
@@ -32,8 +36,8 @@ subcommands:
             value_name: FILE
             help: Sets a custom config file
             takes_value: true
-        # Wether to create a mediator invitation
+        # Wether to create an agent invitation
         - create-invitation:
             short: i
-            long: create-invitation
+            long: invite
             help: create a proper mediation invitation

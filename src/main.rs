@@ -6,9 +6,8 @@ extern crate clap;
 use clap::App;
 
 mod agent;
+mod cli;
 mod error;
-mod mediator;
-mod run;
 mod typing;
 mod utils;
 
@@ -29,22 +28,20 @@ async fn main() {
         // JSON object containing the config
         let json: typing::Config = utils::parse::parse_json_from_path(config);
 
-        run::cli::run(json).await;
+        cli::workflow::run(json).await;
     }
 
-    // Matches the `mediator` subcommand
-    if let Some(matches_mediator) = matches.subcommand_matches("mediator") {
-        let should_create_invitation = matches_mediator.is_present("create-invitation");
+    // Matches the `agent` subcommand
+    if let Some(matches_agent) = matches.subcommand_matches("agent") {
+        let should_create_invitation = matches_agent.is_present("create-invitation");
 
         if should_create_invitation {
-            let config = matches_mediator
-                .value_of("config")
-                .unwrap_or("default.json");
+            let config = matches_agent.value_of("config").unwrap_or("default.json");
 
             // JSON object containing the config
             let json: typing::Config = utils::parse::parse_json_from_path(config);
 
-            mediator::cli::run(json).await;
+            cli::agent::run(json).await;
         }
     }
 }

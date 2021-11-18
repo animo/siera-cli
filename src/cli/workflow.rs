@@ -44,6 +44,7 @@ async fn run_without_connection(agent: agent::Agent, json: typing::Config) {
     let invitation = agent.create_invitation(invitation_config).await;
 
     qr::print_invitation_and_qr_for_invitation(&invitation);
+    Log::log(&invitation.invitation_url);
 
     let result = loop {
         let result = agent
