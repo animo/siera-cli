@@ -3,6 +3,14 @@ use serde::{Deserialize, Serialize};
 
 pub type Result<T> = std::result::Result<T, Error>;
 
+pub struct InviteConfiguration<'a> {
+    pub auto_accept: bool,
+    pub multi_use: bool,
+    pub alias: Option<&'a str>,
+    pub qr: bool,
+    pub toolbox: bool,
+}
+
 #[derive(Serialize, Deserialize)]
 // type of the configuration file
 pub struct Config {
@@ -61,7 +69,7 @@ pub struct Invitation {
     pub invitation: MetaInvitation,
     #[serde(rename = "invitation_url")]
     pub invitation_url: String,
-    pub alias: String,
+    pub alias: Option<String>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]

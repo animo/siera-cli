@@ -13,14 +13,14 @@ impl Endpoint {
             .join("connections")
             .unwrap()
     }
-    fn get_connection_by_id(agent: &Agent, id: String) -> Url {
-        reqwest::Url::parse(&agent.url)
-            .unwrap()
-            .join("connections/")
-            .unwrap()
-            .join(&id.to_string())
-            .unwrap()
-    }
+    //fn get_connection_by_id(agent: &Agent, id: String) -> Url {
+    //reqwest::Url::parse(&agent.url)
+    //.unwrap()
+    //.join("connections/")
+    //.unwrap()
+    //.join(&id.to_string())
+    //.unwrap()
+    //}
     fn create_invitation(agent: &Agent) -> Url {
         reqwest::Url::parse(&agent.url)
             .unwrap()
@@ -32,6 +32,7 @@ impl Endpoint {
 }
 
 // Structure of an Agent instance
+#[derive(Debug)]
 pub struct Agent {
     url: String,
 }
@@ -39,7 +40,7 @@ pub struct Agent {
 // Implementation for the Agent structure
 impl Agent {
     // Create a new agent
-    pub fn new(endpoint: &String) -> Agent {
+    pub fn new(endpoint: &str) -> Agent {
         Agent {
             url: endpoint.to_owned(),
         }
@@ -59,38 +60,51 @@ impl Agent {
     }
 
     // Get All connections
-    pub async fn get_connections(&self) -> typing::Connections {
-        match http::call_get_endpoint(Endpoint::connections(&self), None).await {
-            Ok(res) => match res.json().await {
-                Ok(parsed) => parsed,
-                Err(_) => error::throw(Error::ServerResponseParseError),
-            },
-            Err(_) => error::throw(Error::ConnectionsUnretrieveable),
-        }
-    }
+    //pub async fn get_connections(&self) -> typing::Connections {
+    //match http::call_get_endpoint(Endpoint::connections(&self), None).await {
+    //Ok(res) => match res.json().await {
+    //Ok(parsed) => parsed,
+    //Err(_) => error::throw(Error::ServerResponseParseError),
+    //},
+    //Err(_) => error::throw(Error::ConnectionsUnretrieveable),
+    //}
+    //}
 
     // Get connection by id
-    pub async fn get_connection_by_id(&self, id: String) -> typing::Connection {
-        match http::call_get_endpoint(Endpoint::get_connection_by_id(&self, id), None).await {
-            Ok(res) => match res.json().await {
-                Ok(parsed) => parsed,
-                Err(_) => error::throw(error::Error::ServerResponseParseError),
-            },
-            Err(_) => error::throw(Error::ConnectionDoesNotExist),
-        }
-    }
+    //pub async fn get_connection_by_id(&self, id: String) -> typing::Connection {
+    //match http::call_get_endpoint(Endpoint::get_connection_by_id(&self, id), None).await {
+    //Ok(res) => match res.json().await {
+    //Ok(parsed) => parsed,
+    //Err(_) => error::throw(error::Error::ServerResponseParseError),
+    //},
+    //Err(_) => error::throw(Error::ConnectionDoesNotExist),
+    //}
+    //}
     // Create invitation URL
     pub async fn create_invitation(
         &self,
-        config: typing::InvitiationOptions,
+        config: &typing::InviteConfiguration<'_>,
     ) -> typing::Invitation {
-        let query = vec![
-            ("alias", config.alias),
-            ("multi_use", config.multi_use),
-            ("auto_accept", config.auto_accept),
-        ];
+        let mut query: Vec<(&str, String)> = vec![];
 
-        match http::call_post_endpoint(Endpoint::create_invitation(&self), Some(query)).await {
+        if config.toolbox {
+            query.push(("multi_use", false.to_string()));
+            query.push(("auto_accept", true.to_string()));
+            query.push(("alias", String::from("toolbox")));
+        } else {
+            let multi_use = ("multi_use", config.multi_use.to_string());
+            let auto_accept = ("auto_accept", config.auto_accept.to_string());
+
+            query.push(multi_use);
+            query.push(auto_accept);
+
+            match config.alias {
+                Some(alias) => query.push(("alias", alias.to_string())),
+                _ => (),
+            };
+        }
+
+        match http::call_post_endpoint(Endpoint::create_invitation(&self), query).await {
             Ok(res) => match res.json().await {
                 Ok(parsed) => parsed,
                 Err(_) => error::throw(error::Error::ServerResponseParseError),

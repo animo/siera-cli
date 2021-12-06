@@ -10,28 +10,37 @@ settings:
 
 # Main command flags
 args:
-  - endpoint:
-    short: e
-    long: endpoint
-    value_name: endpoint
-    help: cloudagent endpoint
-    takes_value: true
+    - endpoint:
+        help: Required url of the cloudagent
+        short: e
+        long: endpoint
+        takes_value: true
+        required: true
 
 # Subcommands
 subcommands: 
-  - agent:
-      about: agent 
+  - invite:
+      about: invitations subcommand
       version: "0.1.0"
       args:
-        # A config file with all the data
-        - config:
-            short: c
-            long: config
-            value_name: FILE
-            help: Sets a custom config file
-            takes_value: true
-        # Wether to create an agent invitation
-        - create-invitation:
-            short: i
-            long: invite
-            help: create a proper mediation invitation
+          - auto-accept:
+              help: Wether the invitation should be auto-accepted
+              short: a
+              long: auto-accept
+          - multi-use:
+              help: Wether the invitation should be multi-use
+              short: m
+              long: multi-use
+          - toolbox:
+              help: Wether it should create a default toolbox invitation
+              short: t
+              long: toolbox
+          - qr:
+              help: Wether it should display a qr code
+              short: q
+              long: qr
+          - alias:
+              help: Alias for the connection
+              short: l
+              long: alias
+              takes_value: true
