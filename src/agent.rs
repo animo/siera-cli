@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use super::{error, error::Error, typing, typing::Result, utils::http};
 use reqwest::Url;
 
@@ -86,11 +88,20 @@ impl Agent {
         config: &typing::InviteConfiguration<'_>,
     ) -> typing::Invitation {
         let mut query: Vec<(&str, String)> = vec![];
+        let mut body = None;
 
         if config.toolbox {
             query.push(("multi_use", false.to_string()));
             query.push(("auto_accept", true.to_string()));
             query.push(("alias", String::from("toolbox")));
+
+            let mut a = HashMap::new();
+            let mut b = HashMap::new();
+
+            b.insert("group", "admin");
+            a.insert("metadata", b);
+
+            body = Some(a);
         } else {
             let multi_use = ("multi_use", config.multi_use.to_string());
             let auto_accept = ("auto_accept", config.auto_accept.to_string());
@@ -104,10 +115,11 @@ impl Agent {
             };
         }
 
-        match http::call_post_endpoint(Endpoint::create_invitation(&self), query).await {
+        match http::call_post_endpoint(Endpoint::create_invitation(&self), query, body).await {
             Ok(res) => match res.json().await {
                 Ok(parsed) => parsed,
-                Err(_) => error::throw(error::Error::ServerResponseParseError),
+                //Err(_) => error::throw(error::Error::ServerResponseParseError),
+                Err(e) => panic!("{:?}", e),
             },
             Err(_) => error::throw(error::Error::CannotCreateInvitation),
         }
