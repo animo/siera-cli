@@ -8,23 +8,17 @@ about: A toolkit to interact with an Aries instance for quick data manipulation
 settings:
     - ArgRequiredElseHelp
 
+# Main command flags
+args:
+  - endpoint:
+    short: e
+    long: endpoint
+    value_name: endpoint
+    help: cloudagent endpoint
+    takes_value: true
+
 # Subcommands
 subcommands: 
-  - run:
-      about: initialize
-      version: "0.1.0"
-      args:
-        # A config file with all the data
-        - config:
-            short: c
-            long: config
-            value_name: FILE
-            help: Sets a custom config file
-            takes_value: true
-        - no-qr:
-            short: n
-            long: no-qr
-            help: Will not display qr code
   - agent:
       about: agent 
       version: "0.1.0"

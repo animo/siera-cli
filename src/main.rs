@@ -20,17 +20,6 @@ async fn main() {
     // Get all the supplied flags and values
     let matches = App::from_yaml(yaml).get_matches();
 
-    // Matches the `run` subcommand
-    if let Some(matches_run) = matches.subcommand_matches("run") {
-        // Path of the config file
-        let config = matches_run.value_of("config").unwrap_or("default.json");
-
-        // JSON object containing the config
-        let json: typing::Config = utils::parse::parse_json_from_path(config);
-
-        cli::workflow::run(json).await;
-    }
-
     // Matches the `agent` subcommand
     if let Some(matches_agent) = matches.subcommand_matches("agent") {
         let should_create_invitation = matches_agent.is_present("create-invitation");
