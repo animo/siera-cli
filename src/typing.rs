@@ -12,7 +12,6 @@ pub struct InviteConfiguration<'a> {
 }
 
 #[derive(Serialize, Deserialize)]
-// type of the configuration file
 pub struct Config {
     pub agent_endpoint: String,
     pub framework: String,

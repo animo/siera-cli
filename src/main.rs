@@ -3,6 +3,9 @@
 
 #[macro_use]
 extern crate clap;
+
+use crate::agent::agent::HttpAgentExtended;
+use crate::agent::http_agent::HttpAgent;
 use clap::App;
 
 mod agent;
@@ -20,9 +23,9 @@ async fn main() {
     // Get all the supplied flags and values
     let matches = App::from_yaml(yaml).get_matches();
 
-    // TODO: check if it is a valid URL and if not, do not create the agent
+    // create an httpAgent when you supply an endpoint
     let agent = match matches.value_of("endpoint") {
-        Some(endpoint) => agent::Agent::new(endpoint),
+        Some(endpoint) => HttpAgent::new(endpoint),
         None => error::throw(error::Error::InvalidEndpoint),
     };
 
