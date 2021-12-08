@@ -8,7 +8,6 @@ pub enum Error {
     CannotCreateInvitation,
     ConnectionsUnretrieveable,
     ConnectionDoesNotExist,
-    CannotCreateQrCode,
 }
 
 // Error handler (Should not panic but print a custom error and exit)
@@ -26,7 +25,5 @@ pub fn throw(error: Error) -> ! {
         Error::ConnectionsUnretrieveable => Log::error("Connection is unretrieveable"),
         // Could not create an invitation
         Error::CannotCreateInvitation => Log::error("Could not create an invitation"),
-        // Could not create a qr code for the invitation
-        Error::CannotCreateQrCode => Log::error("Could not create a qrcode for the invitation"),
     }
 }

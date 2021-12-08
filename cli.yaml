@@ -24,7 +24,7 @@ subcommands:
       version: "0.1.0"
       args:
           - auto-accept:
-              help: Wether the invitation should be auto-accepted
+              help: Whether the invitation should be auto-accepted
               short: a
               long: auto-accept
           - multi-use:

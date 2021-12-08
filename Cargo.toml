@@ -1,10 +1,10 @@
 [package]
-name = "aries-data-generator-toolkit"
+name = "aries-cloudagent-controller-ferris"
 version = "0.1.0"
 edition = "2018"
 
 [[bin]]
-name = "adg"
+name = "accf"
 path = "src/main.rs"
 
 [dependencies]

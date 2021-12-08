@@ -52,7 +52,7 @@ impl HttpAgentExtended for HttpAgent {
     async fn check_endpoint(&self) -> typing::Result<bool> {
         match reqwest::get(Endpoint::connections(&self)).await {
             Ok(res) => {
-                if res.status() == 404 {
+                if res.status().is_success() {
                     return Err(error::Error::InvalidUrl);
                 }
                 Ok(true)
@@ -119,8 +119,7 @@ impl Agent for HttpAgent {
         match http::post(Endpoint::create_invitation(&self), query, body).await {
             Ok(res) => match res.json().await {
                 Ok(parsed) => parsed,
-                //Err(_) => error::throw(error::Error::ServerResponseParseError),
-                Err(e) => panic!("{:?}", e),
+                Err(_) => error::throw(error::Error::ServerResponseParseError),
             },
             Err(_) => error::throw(error::Error::CannotCreateInvitation),
         }
