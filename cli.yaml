@@ -28,15 +28,15 @@ subcommands:
               short: a
               long: auto-accept
           - multi-use:
-              help: Wether the invitation should be multi-use
+              help: Whether the invitation should be multi-use
               short: m
               long: multi-use
           - toolbox:
-              help: Wether it should create a default toolbox invitation
+              help: Whether it should create a default toolbox invitation
               short: t
               long: toolbox
           - qr:
-              help: Wether it should display a qr code
+              help: Whether it should display a qr code
               short: q
               long: qr
           - alias:
