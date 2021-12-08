@@ -1,6 +1,6 @@
-# Aries Data Generator Toolkit
+# Aries Cloudagent Controller Ferris
 
-A tool to interact with Aries instances for quick data manipulation.
+A tool that allows you, via Ferris, to interact with an Aries Cloudagent.
 
 Made by Animo Solutions
 
@@ -11,30 +11,26 @@ cargo run <COMMAND>
 
 # For example, for testing
 
-cargo run run
+cargo run -e=XXX invite --qr
 ```
 
 ## Info
 
-The binary that is build via `cargo build` is called: 'inu'. The code name for this project.
+The binary that is build via `cargo build` is called: 'accf'.
 
 ## usage
 
-the repository has a default json configured
-
 ```bash
 
-git clone https://github.com/animo/aries-data-generator-toolkit.github
+git clone https://github.com/animo/aries-data-generator-toolkit
 
 cd aries-data-generator-toolkit
 
 cargo install --path .
 
-# Now the binary, named `inu` is installed in your path
+# Now the binary, named `accf` is installed in your path
 
-inu agent -i -c <PATH_TO_JSON>
+accf --help
 
-# with default json (called from within the repository)
-
-inu agent -i
+accf invite --help
 ```
