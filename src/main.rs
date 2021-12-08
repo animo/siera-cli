@@ -1,5 +1,5 @@
-//! A toolkit to interact with Aries instances for data manipulation
-//! run `adg run` to run the example script
+//! An Aries Cloudagent Controller to interact with Aries instances for data manipulation
+//! run `accf -e=XXX invite` to run the example script
 
 #[macro_use]
 extern crate clap;

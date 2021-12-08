@@ -1,8 +1,8 @@
 # General information
-name: Aries Data Generator Toolkit
+name: Aries Cloudagent Controller Ferris
 version: "0.1.0"
 author: Animo Solutions
-about: A toolkit to interact with an Aries instance for quick data manipulation
+about: An Aries Cloudagent Controller to interact with an Aries instance for quick data manipulation
 
 # Application settings
 settings:
