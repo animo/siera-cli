@@ -12,32 +12,13 @@ pub struct InviteConfiguration<'a> {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Config {
-    pub agent_endpoint: String,
-    pub framework: String,
-    pub connection_id: Option<String>,
-    pub invitation_options: Option<InvitiationOptions>,
-    pub actions: Option<ConfigActions>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct InvitiationOptions {
+pub struct InvitationOptions {
     pub alias: Option<String>,
     pub auto_accept: Option<String>,
     pub multi_use: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct ConfigActions {
-    pub offer_credential: Option<ConfigOfferCredential>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct ConfigOfferCredential {
-    pub credential_definition_id: String,
-}
-
-#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Connections {
     pub results: Vec<Connection>,
 }
@@ -61,12 +42,9 @@ pub struct Connection {
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct Invitation {
-    #[serde(rename = "connection_id")]
     pub connection_id: String,
     pub invitation: MetaInvitation,
-    #[serde(rename = "invitation_url")]
     pub invitation_url: String,
     pub alias: Option<String>,
 }
