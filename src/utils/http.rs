@@ -20,6 +20,10 @@ pub async fn post(
     query: Vec<(&str, String)>,
     body: Option<HashMap<&str, HashMap<&str, &str>>>,
 ) -> Result<reqwest::Response, reqwest::Error> {
-    let client = Client::new().post(url);
-    client.query(&query).json(&body).send().await
+    let client = Client::new().post(url).query(&query);
+
+    match body {
+        Some(b) => client.json(&b).send().await,
+        None => client.send().await,
+    }
 }
