@@ -7,11 +7,11 @@ Made by Animo Solutions
 ## start
 
 ```bash
-cargo run <COMMAND>
+cargo run -- <COMMAND>
 
 # For example, for testing
 
-cargo run -e=XXX invite --qr
+cargo run -- -e=XXX invite --qr
 ```
 
 ## Info
