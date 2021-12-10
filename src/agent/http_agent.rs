@@ -1,6 +1,6 @@
 use crate::agent::agent::{Agent, HttpAgentExtended};
 use crate::error;
-use crate::typing;
+use crate::typing::{self, Connection, Connections, Feature};
 use crate::utils::http;
 use async_trait::async_trait;
 use reqwest::Url;
@@ -39,6 +39,12 @@ impl Endpoint {
             .join("create-invitation")
             .expect(&format!("Could not join on create-invitation").to_string())
     }
+    fn discover_features(agent: &HttpAgent) -> Url {
+        reqwest::Url::parse(&agent.url)
+            .expect(&format!("Could not join on {}", agent.url).to_string())
+            .join("features")
+            .expect(&format!("Could not join on features").to_string())
+    }
 }
 
 #[async_trait]
@@ -49,12 +55,13 @@ impl HttpAgentExtended for HttpAgent {
         }
     }
 
-    async fn check_endpoint(&self) -> typing::Result<bool> {
+    async fn check_endpoint(&self) -> typing::Result<()> {
         match reqwest::get(Endpoint::connections(&self)).await {
             Ok(res) => {
                 if res.status().is_success() {
-                    return Ok(true);
+                    return Ok(());
                 }
+
                 Err(error::Error::InvalidUrl)
             }
             Err(_) => Err(error::Error::InvalidUrl),
@@ -64,24 +71,12 @@ impl HttpAgentExtended for HttpAgent {
 
 #[async_trait]
 impl Agent for HttpAgent {
-    async fn get_connections(&self) -> typing::Connections {
-        match http::get(Endpoint::connections(&self), None).await {
-            Ok(res) => match res.json().await {
-                Ok(parsed) => parsed,
-                Err(_) => error::throw(error::Error::ServerResponseParseError),
-            },
-            Err(_) => error::throw(error::Error::ConnectionsUnretrieveable),
-        }
+    async fn get_connections(&self) -> Connections {
+        http::get::<Connections>(Endpoint::connections(&self), None).await
     }
 
     async fn get_connection_by_id(&self, id: String) -> typing::Connection {
-        match http::get(Endpoint::get_connection_by_id(&self, id), None).await {
-            Ok(res) => match res.json().await {
-                Ok(parsed) => parsed,
-                Err(_) => error::throw(error::Error::ServerResponseParseError),
-            },
-            Err(_) => error::throw(error::Error::ConnectionDoesNotExist),
-        }
+        http::get::<Connection>(Endpoint::get_connection_by_id(&self, id), None).await
     }
 
     async fn create_invitation(
@@ -115,18 +110,10 @@ impl Agent for HttpAgent {
                 .and_then(|alias| Some(query.push(("alias", alias.to_string()))));
         }
 
-        // TODO: the post call should already check the status and try to parse it.
-        match http::post(Endpoint::create_invitation(&self), query, body).await {
-            Ok(res) => {
-                if res.status().is_success() {
-                    return match res.json().await {
-                        Ok(parsed) => parsed,
-                        Err(_) => error::throw(error::Error::ServerResponseParseError),
-                    };
-                }
-                panic!("{:?}", res);
-            }
-            Err(_) => error::throw(error::Error::CannotCreateInvitation),
-        }
+        http::post(Endpoint::create_invitation(&self), query, body).await
+    }
+
+    async fn discover_features(&self) -> Feature {
+        http::get::<Feature>(Endpoint::discover_features(&self), None).await
     }
 }

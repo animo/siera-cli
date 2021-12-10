@@ -44,3 +44,6 @@ subcommands:
               short: l
               long: alias
               takes_value: true
+  - features:
+      about: discover features subcommand
+      version: "0.1.0"

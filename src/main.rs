@@ -34,7 +34,12 @@ async fn main() {
         Ok(_) => true,
     };
 
-    // Matches the `agent` subcommand
+    // Matches the `feature` subcommand
+    if let Some(_) = matches.subcommand_matches("features") {
+        cli::feature::run(&agent).await
+    }
+
+    // Matches the `invite` subcommand
     if let Some(matches_agent) = matches.subcommand_matches("invite") {
         let auto_accept = matches_agent.is_present("auto-accept");
         let multi_use = matches_agent.is_present("multi-use");
@@ -51,6 +56,6 @@ async fn main() {
         };
 
         // create agent and convert config
-        cli::invite::run(agent, config).await
+        cli::invite::run(&agent, config).await
     }
 }

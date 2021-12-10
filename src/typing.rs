@@ -1,5 +1,6 @@
 use super::error::Error;
 use serde::{Deserialize, Serialize};
+use serde_json::{Map, Value};
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -59,4 +60,9 @@ pub struct MetaInvitation {
     pub service_endpoint: String,
     pub recipient_keys: Vec<String>,
     pub label: String,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Feature {
+    pub results: Map<String, Value>,
 }
