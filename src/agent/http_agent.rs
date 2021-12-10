@@ -57,7 +57,7 @@ impl HttpAgentExtended for HttpAgent {
                 }
                 Err(error::Error::InvalidUrl)
             }
-            Err(_) => Err(error::Error::InvalidUrl),
+            Err(_) => Err(error::Error::InvalidEndpoint),
         }
     }
 }

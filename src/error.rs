@@ -2,6 +2,7 @@ use crate::utils::logger::Log;
 
 // Error types
 pub enum Error {
+    NoSuppliedEndpoint,
     InvalidEndpoint,
     InvalidUrl,
     ServerResponseParseError,
@@ -13,7 +14,9 @@ pub enum Error {
 // Error handler (Should not panic but print a custom error and exit)
 pub fn throw(error: Error) -> ! {
     match error {
-        // The endpoint in the configuration file is invalid
+        // The endpoint is not supplied
+        Error::NoSuppliedEndpoint => Log::error("No Endpoint Supplied"),
+        // The endpoint is invalid (from config of from OPTION)
         Error::InvalidEndpoint => Log::error("Invalid Endpoint"),
         // The url created from the base + endpoint is invalid
         Error::InvalidUrl => Log::error("Invalid Url"),

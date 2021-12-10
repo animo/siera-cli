@@ -32,11 +32,9 @@ async fn main() {
         Some(endpoint) => HttpAgent::new(endpoint),
         None => match endpoint_from_config {
             Some(e) => HttpAgent::new(e.as_str()),
-            None => panic!("NOOOOO"),
+            None => error::throw(error::Error::NoSuppliedEndpoint),
         },
     };
-
-    println!("{:?}", agent);
 
     match agent.check_endpoint().await {
         Err(e) => error::throw(e),
