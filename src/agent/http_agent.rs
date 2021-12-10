@@ -53,9 +53,9 @@ impl HttpAgentExtended for HttpAgent {
         match reqwest::get(Endpoint::connections(&self)).await {
             Ok(res) => {
                 if res.status().is_success() {
-                    return Err(error::Error::InvalidUrl);
+                    return Ok(true);
                 }
-                Ok(true)
+                Err(error::Error::InvalidUrl)
             }
             Err(_) => Err(error::Error::InvalidUrl),
         }
@@ -110,17 +110,22 @@ impl Agent for HttpAgent {
             query.push(multi_use);
             query.push(auto_accept);
 
-            match config.alias {
-                Some(alias) => query.push(("alias", alias.to_string())),
-                _ => (),
-            };
+            config
+                .alias
+                .and_then(|alias| Some(query.push(("alias", alias.to_string()))));
         }
 
+        // TODO: the post call should already check the status and try to parse it.
         match http::post(Endpoint::create_invitation(&self), query, body).await {
-            Ok(res) => match res.json().await {
-                Ok(parsed) => parsed,
-                Err(_) => error::throw(error::Error::ServerResponseParseError),
-            },
+            Ok(res) => {
+                if res.status().is_success() {
+                    return match res.json().await {
+                        Ok(parsed) => parsed,
+                        Err(_) => error::throw(error::Error::ServerResponseParseError),
+                    };
+                }
+                panic!("{:?}", res);
+            }
             Err(_) => error::throw(error::Error::CannotCreateInvitation),
         }
     }
