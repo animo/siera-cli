@@ -1,8 +1,5 @@
-use super::error::Error;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
-
-pub type Result<T> = std::result::Result<T, Error>;
 
 pub struct InviteConfiguration<'a> {
     pub auto_accept: bool,

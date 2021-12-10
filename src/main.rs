@@ -6,6 +6,7 @@ extern crate clap;
 
 use crate::agent::agent::HttpAgentExtended;
 use crate::agent::http_agent::HttpAgent;
+use crate::error::{throw, Error};
 use clap::App;
 
 mod agent;
@@ -26,13 +27,10 @@ async fn main() {
     // create an httpAgent when you supply an endpoint
     let agent = match matches.value_of("endpoint") {
         Some(endpoint) => HttpAgent::new(endpoint),
-        None => error::throw(error::Error::InvalidEndpoint),
+        None => throw(Error::InvalidEndpoint),
     };
 
-    match agent.check_endpoint().await {
-        Err(e) => error::throw(e),
-        Ok(_) => true,
-    };
+    agent.check_endpoint().await;
 
     // Matches the `feature` subcommand
     if let Some(_) = matches.subcommand_matches("features") {

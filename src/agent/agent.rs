@@ -1,4 +1,4 @@
-use crate::typing::{Connection, Connections, Feature, Invitation, InviteConfiguration, Result};
+use crate::typing::{Connection, Connections, Feature, Invitation, InviteConfiguration};
 use async_trait::async_trait;
 
 #[async_trait]
@@ -12,5 +12,5 @@ pub trait Agent {
 #[async_trait]
 pub trait HttpAgentExtended: Agent {
     fn new(endpoint: &str) -> Self;
-    async fn check_endpoint(&self) -> Result<()>;
+    async fn check_endpoint(&self) -> ();
 }

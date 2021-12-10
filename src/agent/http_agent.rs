@@ -1,5 +1,4 @@
 use crate::agent::agent::{Agent, HttpAgentExtended};
-use crate::error;
 use crate::typing::{self, Connection, Connections, Feature};
 use crate::utils::http;
 use async_trait::async_trait;
@@ -55,17 +54,9 @@ impl HttpAgentExtended for HttpAgent {
         }
     }
 
-    async fn check_endpoint(&self) -> typing::Result<()> {
-        match reqwest::get(Endpoint::connections(&self)).await {
-            Ok(res) => {
-                if res.status().is_success() {
-                    return Ok(());
-                }
-
-                Err(error::Error::InvalidUrl)
-            }
-            Err(_) => Err(error::Error::InvalidUrl),
-        }
+    async fn check_endpoint(&self) -> () {
+        http::get::<Connections>(Endpoint::connections(&self), None).await;
+        ()
     }
 }
 
