@@ -23,11 +23,20 @@ async fn main() {
     // Get all the supplied flags and values
     let matches = App::from_yaml(yaml).get_matches();
 
+    // Takes a path, but prepends the home directory... kinda sketchy
+    let endpoint_from_config =
+        utils::config::get_value("/.config/accf/ex.ini", "Default", "endpoint");
+
     // create an httpAgent when you supply an endpoint
     let agent = match matches.value_of("endpoint") {
         Some(endpoint) => HttpAgent::new(endpoint),
-        None => error::throw(error::Error::InvalidEndpoint),
+        None => match endpoint_from_config {
+            Some(e) => HttpAgent::new(e.as_str()),
+            None => panic!("NOOOOO"),
+        },
     };
+
+    println!("{:?}", agent);
 
     match agent.check_endpoint().await {
         Err(e) => error::throw(e),

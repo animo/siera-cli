@@ -15,7 +15,6 @@ args:
         short: e
         long: endpoint
         takes_value: true
-        required: true
 
 # Subcommands
 subcommands: 
