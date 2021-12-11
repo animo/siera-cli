@@ -1,10 +1,9 @@
-use crate::agent::agent::Agent;
-use crate::typing;
+use crate::agent::agents::Agent;
+use crate::typing::InvitationConfig;
 use crate::utils::logger::Log;
 use crate::utils::qr;
-use crate::HttpAgent;
 
-pub async fn run(agent: &HttpAgent, config: typing::InviteConfiguration<'_>) {
+pub async fn run(agent: &dyn Agent, config: InvitationConfig<'_>) {
     let invitation = agent.create_invitation(&config).await;
 
     if config.qr {

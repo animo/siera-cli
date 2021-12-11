@@ -1,9 +1,5 @@
-# General information
 name: Aries Cloudagent Controller Ferris
-version: "0.1.0"
-author: Animo Solutions
-about: An Aries Cloudagent Controller to interact with an Aries instance for quick data manipulation
-
+  
 # Application settings
 settings:
     - ArgRequiredElseHelp
@@ -42,6 +38,20 @@ subcommands:
           - alias:
               help: Alias for the connection
               short: l
+              long: alias
+              takes_value: true
+  - connections:
+      about: connections subcommand
+      version: "0.1.0"
+      args:
+          - id:
+              help: connection id
+              short: i
+              long: id
+              takes_value: true
+          - alias:
+              help: filter on alias
+              short: a
               long: alias
               takes_value: true
   - features:

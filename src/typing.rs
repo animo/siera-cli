@@ -1,12 +1,17 @@
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
-pub struct InviteConfiguration<'a> {
+pub struct InvitationConfig<'a> {
     pub auto_accept: bool,
     pub multi_use: bool,
     pub alias: Option<&'a str>,
     pub qr: bool,
     pub toolbox: bool,
+}
+
+pub struct ConnectionsConfig<'a> {
+    pub alias: Option<&'a str>,
+    pub id: Option<&'a str>,
 }
 
 #[derive(Serialize, Deserialize)]

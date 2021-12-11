@@ -1,2 +1,2 @@
-pub mod agent;
+pub mod agents;
 pub mod http_agent;

@@ -1,13 +1,21 @@
 //! An Aries Cloudagent Controller to interact with Aries instances for data manipulation
 //! run `accf -e=XXX invite` to run the example script
 
+#![warn(
+    clippy::all,
+    clippy::restriction,
+    clippy::nursery,
+    clippy::cargo
+)]
+
 #[macro_use]
 extern crate clap;
 
-use crate::agent::agent::HttpAgentExtended;
+use crate::agent::agents::HttpAgentExtended;
 use crate::agent::http_agent::HttpAgent;
 use crate::error::{throw, Error};
 use clap::App;
+use typing::{ConnectionsConfig, InvitationConfig};
 
 mod agent;
 mod cli;
@@ -22,7 +30,11 @@ async fn main() {
     let yaml = load_yaml!("../cli.yaml");
 
     // Get all the supplied flags and values
-    let matches = App::from_yaml(yaml).get_matches();
+    let matches = App::from_yaml(yaml)
+        .version(env!("CARGO_PKG_VERSION"))
+        .author(env!("CARGO_PKG_AUTHORS"))
+        .about(env!("CARGO_PKG_DESCRIPTION"))
+        .get_matches();
 
     // create an httpAgent when you supply an endpoint
     let agent = match matches.value_of("endpoint") {
@@ -33,19 +45,29 @@ async fn main() {
     agent.check_endpoint().await;
 
     // Matches the `feature` subcommand
-    if let Some(_) = matches.subcommand_matches("features") {
-        cli::feature::run(&agent).await
+    if matches.subcommand_matches("features").is_some() {
+        cli::features::run(&agent).await
+    }
+
+    // Matches the `connections` subcommand
+    if let Some(matches_connections) = matches.subcommand_matches("connections") {
+        let id = matches_connections.value_of("id");
+        let alias = matches_connections.value_of("alias");
+
+        let config = ConnectionsConfig { id, alias };
+
+        cli::connections::run(&agent, config).await
     }
 
     // Matches the `invite` subcommand
-    if let Some(matches_agent) = matches.subcommand_matches("invite") {
-        let auto_accept = matches_agent.is_present("auto-accept");
-        let multi_use = matches_agent.is_present("multi-use");
-        let alias = matches_agent.value_of("alias");
-        let qr = matches_agent.is_present("qr");
-        let toolbox = matches_agent.is_present("toolbox");
+    if let Some(matches_invite) = matches.subcommand_matches("invite") {
+        let auto_accept = matches_invite.is_present("auto-accept");
+        let multi_use = matches_invite.is_present("multi-use");
+        let alias = matches_invite.value_of("alias");
+        let qr = matches_invite.is_present("qr");
+        let toolbox = matches_invite.is_present("toolbox");
 
-        let config = typing::InviteConfiguration {
+        let config = InvitationConfig {
             auto_accept,
             multi_use,
             alias,
