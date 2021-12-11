@@ -3,6 +3,7 @@ use crate::typing::ConnectionsConfig;
 use crate::utils::logger::Log;
 use serde::Serialize;
 
+/// CLI runner for the `connections` subcommand
 pub async fn run(agent: &dyn Agent, config: ConnectionsConfig<'_>) {
     match config.id {
         Some(i) => {

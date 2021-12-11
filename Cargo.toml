@@ -5,6 +5,9 @@ authors = ["Animo Solutions"]
 description = "A simple Aries Cloudagent Controller"
 homepage = "animo.id"
 edition = "2018"
+repository = "https://github.com/animo/aries-datagenerator-toolkit"
+keywords = ["aries", "cloudagent", "controller", "cli-tool"]
+categories = ["aries", "cloudagent", "controller", "cli-tool"]
 
 [[bin]]
 name = "accf"

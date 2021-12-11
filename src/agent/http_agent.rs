@@ -5,44 +5,49 @@ use async_trait::async_trait;
 use reqwest::Url;
 use serde_json::json;
 
+/// HTTP cloudagent
 #[derive(Debug, Clone)]
 pub struct HttpAgent {
+    /// base url of the cloudagent
     url: String,
 }
 
-// All the available endpoints
+/// All the available endpoints
 struct Endpoint;
 
-// Default value for every endpoint
-// TODO: Not the most efficient mehtod (creates a new instance for every function call)
+/// Default value for every endpoint
 impl Endpoint {
+    /// base + connections
     fn connections(url: &str) -> Url {
         reqwest::Url::parse(url)
-            .expect(&format!("Could not join on {}", url))
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
             .join("connections")
-            .expect(&format!("Could not join on connections"))
+            .unwrap_or_else(|_| panic!("Could not join on connections"))
     }
+    /// base + connections + :id
     fn get_connection_by_id(url: &str, id: &str) -> Url {
         reqwest::Url::parse(url)
-            .expect(&format!("Could not join on {}", url))
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
             .join("connections/")
-            .expect(&format!("Could not join on connections/"))
+            .unwrap_or_else(|_| panic!("Could not join on connections"))
             .join(id)
-            .expect(&format!("Could not join on {}", id))
+            .unwrap_or_else(|_| panic!("Could not join on {}", id))
     }
+    /// base + connections + create-invitation
     fn create_invitation(url: &str) -> Url {
         reqwest::Url::parse(url)
-            .expect(&format!("Could not join on {}", url))
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
             .join("connections/")
-            .expect(&format!("Could not join on connections/"))
+            .unwrap_or_else(|_| panic!("Could not join on connections"))
             .join("create-invitation")
-            .expect(&format!("Could not join on create-invitation"))
+            .unwrap_or_else(|_| panic!("Could not join on create-invitation"))
     }
+    /// base + features
     fn discover_features(url: &str) -> Url {
         reqwest::Url::parse(url)
-            .expect(&format!("Could not join on {}", url))
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
             .join("features")
-            .expect(&format!("Could not join on features"))
+            .unwrap_or_else(|_| panic!("Could not join on features"))
     }
 }
 
@@ -54,6 +59,7 @@ impl HttpAgentExtended for HttpAgent {
         }
     }
 
+    /// Check if the endpoint is valid
     async fn check_endpoint(&self) -> () {
         http::get::<Connections>(Endpoint::connections(&self.url), None).await;
     }
@@ -61,6 +67,7 @@ impl HttpAgentExtended for HttpAgent {
 
 #[async_trait]
 impl Agent for HttpAgent {
+    /// Gets all the connections
     async fn get_connections(&self, filter: Option<&str>) -> Connections {
         let mut query: Vec<(&str, String)> = vec![];
 
@@ -71,10 +78,12 @@ impl Agent for HttpAgent {
         http::get::<Connections>(Endpoint::connections(&self.url), Some(query)).await
     }
 
+    /// Get a connection by id
     async fn get_connection_by_id(&self, id: &str) -> typing::Connection {
         http::get::<Connection>(Endpoint::get_connection_by_id(&self.url, id), None).await
     }
 
+    /// Prints an invitation, as url or qr, in stdout
     async fn create_invitation(&self, config: &typing::InvitationConfig<'_>) -> typing::Invitation {
         let mut query: Vec<(&str, String)> = vec![];
         let mut body = None;
@@ -104,6 +113,7 @@ impl Agent for HttpAgent {
         http::post(Endpoint::create_invitation(&self.url), query, body).await
     }
 
+    /// Requests all the features from the cloudagent
     async fn discover_features(&self) -> Feature {
         http::get::<Feature>(Endpoint::discover_features(&self.url), None).await
     }

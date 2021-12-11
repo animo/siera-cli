@@ -4,7 +4,7 @@ use serde_json::Value;
 
 use crate::error::{throw, Error};
 
-// Handle calling of any endpoint with get
+/// Handle calling of any endpoint with get
 pub async fn get<T: DeserializeOwned>(url: Url, query: Option<Vec<(&str, String)>>) -> T {
     let client = match query {
         Some(q) => Client::new().get(url).query(&q),
@@ -27,7 +27,7 @@ pub async fn get<T: DeserializeOwned>(url: Url, query: Option<Vec<(&str, String)
     }
 }
 
-// Handle calling of any endpoint with post
+/// Handle calling of any endpoint with post
 pub async fn post<T: DeserializeOwned>(
     url: Url,
     query: Vec<(&str, String)>,

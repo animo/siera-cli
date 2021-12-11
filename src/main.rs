@@ -1,12 +1,8 @@
 //! An Aries Cloudagent Controller to interact with Aries instances for data manipulation
 //! run `accf -e=XXX invite` to run the example script
 
-#![warn(
-    clippy::all,
-    clippy::restriction,
-    clippy::nursery,
-    clippy::cargo
-)]
+#![allow(clippy::enum_variant_names)]
+#![warn(missing_docs, clippy::missing_docs_in_private_items)]
 
 #[macro_use]
 extern crate clap;
@@ -17,10 +13,19 @@ use crate::error::{throw, Error};
 use clap::App;
 use typing::{ConnectionsConfig, InvitationConfig};
 
+/// agent
 mod agent;
+
+/// cli
 mod cli;
+
+/// error
 mod error;
+
+/// typing
 mod typing;
+
+/// utils
 mod utils;
 
 /// Initializes the application
