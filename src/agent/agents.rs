@@ -1,4 +1,6 @@
-use crate::typing::{Connection, Connections, Feature, Invitation, InvitationConfig};
+use crate::typing::{
+    Connection, Connections, Features, Invitation, InvitationConfig, MessageConfig,
+};
 use async_trait::async_trait;
 
 /// base cloudagent functionality
@@ -14,7 +16,10 @@ pub trait Agent {
     async fn create_invitation(&self, config: &InvitationConfig<'_>) -> Invitation;
 
     /// Requests all the features from the cloudagent
-    async fn discover_features(&self) -> Feature;
+    async fn discover_features(&self) -> Features;
+
+    /// Send a basic message to another agent
+    async fn send_message(&self, config: &MessageConfig<'_>) -> ();
 }
 
 /// HTTP specific cloudagent functionality

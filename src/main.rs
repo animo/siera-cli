@@ -11,7 +11,7 @@ use crate::agent::agents::HttpAgentExtended;
 use crate::agent::http_agent::HttpAgent;
 use crate::error::{throw, Error};
 use clap::App;
-use typing::{ConnectionsConfig, InvitationConfig};
+use typing::{ConnectionsConfig, InvitationConfig, MessageConfig};
 
 /// agent
 mod agent;
@@ -52,6 +52,17 @@ async fn main() {
     // Matches the `feature` subcommand
     if matches.subcommand_matches("features").is_some() {
         cli::features::run(&agent).await
+    }
+
+    // Matches the `message` subcommand
+    if let Some(matches_connections) = matches.subcommand_matches("message") {
+        // We can use unwrap here because these values are required by the cli
+        let id = matches_connections.value_of("id").unwrap();
+        let message = matches_connections.value_of("message").unwrap();
+
+        let config = MessageConfig { id, message };
+
+        cli::message::run(&agent, config).await
     }
 
     // Matches the `connections` subcommand

@@ -1,8 +1,11 @@
-/// connections subcommand
+/// Connections subcommand
 pub mod connections;
 
-/// features subcommand
+/// Features subcommand
 pub mod features;
 
-/// invite subcommand
+/// Invite subcommand
 pub mod invite;
+
+/// Basic message subcommand
+pub mod message;

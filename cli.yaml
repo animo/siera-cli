@@ -57,3 +57,19 @@ subcommands:
   - features:
       about: discover features subcommand
       version: "0.1.0"
+  - message:
+      about: basic message subcommand
+      version: "0.1.0"
+      args:
+        - id:
+            help: connection id
+            short: i
+            long: id
+            takes_value: true
+            required: true
+        - message:
+            help: message to send to the connection 
+            short: m
+            long: message
+            takes_value: true
+            required: true

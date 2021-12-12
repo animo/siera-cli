@@ -30,15 +30,17 @@ pub async fn get<T: DeserializeOwned>(url: Url, query: Option<Vec<(&str, String)
 /// Handle calling of any endpoint with post
 pub async fn post<T: DeserializeOwned>(
     url: Url,
-    query: Vec<(&str, String)>,
+    query: Option<Vec<(&str, String)>>,
     body: Option<Value>,
 ) -> T {
     let client = Client::new().post(url).query(&query);
 
-    let response = match body {
-        Some(b) => client.json(&b).send().await,
-        None => client.send().await,
+    let client = match body {
+        Some(b) => client.json(&b),
+        None => client,
     };
+
+    let response = client.send().await;
 
     match response {
         Ok(res) => {

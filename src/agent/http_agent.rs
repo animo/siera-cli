@@ -1,5 +1,7 @@
 use crate::agent::agents::{Agent, HttpAgentExtended};
-use crate::typing::{self, Connection, Connections, Feature};
+use crate::typing::{
+    Connection, Connections, Features, Invitation, InvitationConfig, MessageConfig,
+};
 use crate::utils::http;
 use async_trait::async_trait;
 use reqwest::Url;
@@ -49,6 +51,17 @@ impl Endpoint {
             .join("features")
             .unwrap_or_else(|_| panic!("Could not join on features"))
     }
+    /// base + connections + :id + send-message
+    fn basic_message(url: &str, id: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
+            .join("connections/")
+            .unwrap_or_else(|_| panic!("Could not join on connections"))
+            .join(&format!("{}/", id))
+            .unwrap_or_else(|_| panic!("Could not join on {}", id))
+            .join("send-message")
+            .unwrap_or_else(|_| panic!("Could not join on send-message"))
+    }
 }
 
 #[async_trait]
@@ -79,12 +92,12 @@ impl Agent for HttpAgent {
     }
 
     /// Get a connection by id
-    async fn get_connection_by_id(&self, id: &str) -> typing::Connection {
+    async fn get_connection_by_id(&self, id: &str) -> Connection {
         http::get::<Connection>(Endpoint::get_connection_by_id(&self.url, id), None).await
     }
 
     /// Prints an invitation, as url or qr, in stdout
-    async fn create_invitation(&self, config: &typing::InvitationConfig<'_>) -> typing::Invitation {
+    async fn create_invitation(&self, config: &InvitationConfig<'_>) -> Invitation {
         let mut query: Vec<(&str, String)> = vec![];
         let mut body = None;
 
@@ -110,11 +123,25 @@ impl Agent for HttpAgent {
             }
         }
 
-        http::post(Endpoint::create_invitation(&self.url), query, body).await
+        http::post(Endpoint::create_invitation(&self.url), Some(query), body).await
     }
 
     /// Requests all the features from the cloudagent
-    async fn discover_features(&self) -> Feature {
-        http::get::<Feature>(Endpoint::discover_features(&self.url), None).await
+    async fn discover_features(&self) -> Features {
+        http::get::<Features>(Endpoint::discover_features(&self.url), None).await
+    }
+
+    /// Send a basic message to another agent
+    async fn send_message(&self, config: &MessageConfig<'_>) -> () {
+        let body = json!({
+            "content": config.message,
+        });
+
+        http::post::<serde_json::Value>(
+            Endpoint::basic_message(&self.url, config.id),
+            None,
+            Some(body),
+        )
+        .await;
     }
 }

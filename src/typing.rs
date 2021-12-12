@@ -28,6 +28,15 @@ pub struct ConnectionsConfig<'a> {
     pub id: Option<&'a str>,
 }
 
+/// Type of the message configuration as received by the cli
+pub struct MessageConfig<'a> {
+    /// id to send the message to
+    pub id: &'a str,
+
+    /// The message to send
+    pub message: &'a str,
+}
+
 /// Type of the received connections list
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Connections {
@@ -99,7 +108,7 @@ pub struct Invitation {
 
 /// Type of the received features from `discover-features`
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Feature {
+pub struct Features {
     /// List of all the features the cloudagent supports
     pub results: Map<String, Value>,
 }
