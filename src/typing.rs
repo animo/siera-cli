@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
 /// Type of the invitation configuration as received by the cli
-pub struct InvitationConfig<'a> {
+pub struct InvitationConfig {
     /// Whether the invitation should auto accept
     pub auto_accept: bool,
 
@@ -10,7 +10,7 @@ pub struct InvitationConfig<'a> {
     pub multi_use: bool,
 
     /// Alias for the connection that will be created with that invitation
-    pub alias: Option<&'a str>,
+    pub alias: Option<String>,
 
     /// Whether it will print a qr code instead of a url
     pub qr: bool,
@@ -20,21 +20,34 @@ pub struct InvitationConfig<'a> {
 }
 
 /// Type of the connections configuration as received by the cli
-pub struct ConnectionsConfig<'a> {
+pub struct ConnectionsConfig {
     /// Filter connections by this alias
-    pub alias: Option<&'a str>,
+    pub alias: Option<String>,
 
     /// Get a connection by this id
-    pub id: Option<&'a str>,
+    pub connection_id: Option<String>,
 }
 
 /// Type of the message configuration as received by the cli
-pub struct MessageConfig<'a> {
-    /// id to send the message to
-    pub id: &'a str,
+pub struct MessageConfig {
+    /// connection id to send the message to
+    pub connection_id: String,
 
     /// The message to send
-    pub message: &'a str,
+    pub message: String,
+}
+
+/// Type of the issue credential configuration as received by the cli
+#[derive(Debug, Serialize)]
+pub struct IssueCredentialConfig {
+    /// The connection to send the credential to
+    pub connection_id: String,
+
+    /// The credential definition used for the credential
+    pub credential_definition_id: String,
+
+    /// The attributes for the credential
+    pub attributes: Vec<Value>,
 }
 
 /// Type of the received connections list

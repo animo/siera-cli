@@ -47,7 +47,7 @@ subcommands:
           - id:
               help: connection id
               short: i
-              long: id
+              long: connection-id
               takes_value: true
           - alias:
               help: filter on alias
@@ -61,15 +61,45 @@ subcommands:
       about: basic message subcommand
       version: "0.1.0"
       args:
-        - id:
-            help: connection id
-            short: i
-            long: id
-            takes_value: true
-            required: true
-        - message:
-            help: message to send to the connection 
-            short: m
-            long: message
-            takes_value: true
-            required: true
+          - connection-id:
+              help: connection id
+              short: i
+              long: connection-id
+              takes_value: true
+              required: true
+          - message:
+              help: message to send to the connection 
+              short: m
+              long: message
+              takes_value: true
+              required: true
+  - issue-credential:
+      about: issue credentials subcommand
+      version: "0.1.0"
+      args:
+          - connection-id:
+              help: connection id
+              short: i
+              long: connection-id
+              required: true
+              takes_value: true
+          - credential-definition-id:
+              help: credential definition id
+              short: d
+              long: cred-def-id
+              required: true
+              takes_value: true
+          - key:
+              help: key
+              short: k
+              long: key
+              required: true
+              takes_value: true
+              multiple: true
+          - value:
+              help: value
+              short: v
+              long: value
+              required: true
+              takes_value: true
+              multiple: true

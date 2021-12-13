@@ -1,8 +1,10 @@
 use crate::agent::agents::{Agent, HttpAgentExtended};
 use crate::typing::{
-    Connection, Connections, Features, Invitation, InvitationConfig, MessageConfig,
+    Connection, Connections, Features, Invitation, InvitationConfig, IssueCredentialConfig,
+    MessageConfig,
 };
 use crate::utils::http;
+use crate::utils::logger::Log;
 use async_trait::async_trait;
 use reqwest::Url;
 use serde_json::json;
@@ -62,14 +64,21 @@ impl Endpoint {
             .join("send-message")
             .unwrap_or_else(|_| panic!("Could not join on send-message"))
     }
+    /// base + issue-credential + send-offer
+    fn credential_offer(url: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
+            .join("issue-credential")
+            .unwrap_or_else(|_| panic!("Could not join on issue-credential"))
+            .join("send-offer")
+            .unwrap_or_else(|_| panic!("Could not join on send-offer"))
+    }
 }
 
 #[async_trait]
 impl HttpAgentExtended for HttpAgent {
-    fn new(endpoint: &str) -> Self {
-        HttpAgent {
-            url: endpoint.to_owned(),
-        }
+    fn new(endpoint: String) -> Self {
+        HttpAgent { url: endpoint }
     }
 
     /// Check if the endpoint is valid
@@ -81,23 +90,23 @@ impl HttpAgentExtended for HttpAgent {
 #[async_trait]
 impl Agent for HttpAgent {
     /// Gets all the connections
-    async fn get_connections(&self, filter: Option<&str>) -> Connections {
+    async fn get_connections(&self, filter: Option<String>) -> Connections {
         let mut query: Vec<(&str, String)> = vec![];
 
         if let Some(alias) = filter {
-            query.push(("alias", alias.to_string()));
+            query.push(("alias", alias));
         }
 
         http::get::<Connections>(Endpoint::connections(&self.url), Some(query)).await
     }
 
     /// Get a connection by id
-    async fn get_connection_by_id(&self, id: &str) -> Connection {
-        http::get::<Connection>(Endpoint::get_connection_by_id(&self.url, id), None).await
+    async fn get_connection_by_id(&self, id: String) -> Connection {
+        http::get::<Connection>(Endpoint::get_connection_by_id(&self.url, &id), None).await
     }
 
     /// Prints an invitation, as url or qr, in stdout
-    async fn create_invitation(&self, config: &InvitationConfig<'_>) -> Invitation {
+    async fn create_invitation(&self, config: &InvitationConfig) -> Invitation {
         let mut query: Vec<(&str, String)> = vec![];
         let mut body = None;
 
@@ -118,7 +127,7 @@ impl Agent for HttpAgent {
             query.push(multi_use);
             query.push(auto_accept);
 
-            if let Some(alias) = config.alias {
+            if let Some(alias) = &config.alias {
                 query.push(("alias", alias.to_string()));
             }
         }
@@ -132,16 +141,32 @@ impl Agent for HttpAgent {
     }
 
     /// Send a basic message to another agent
-    async fn send_message(&self, config: &MessageConfig<'_>) -> () {
+    async fn send_message(&self, config: &MessageConfig) -> () {
         let body = json!({
             "content": config.message,
         });
 
         http::post::<serde_json::Value>(
-            Endpoint::basic_message(&self.url, config.id),
+            Endpoint::basic_message(&self.url, &config.connection_id),
             None,
             Some(body),
         )
         .await;
+    }
+
+    async fn offer_credential(&self, config: &IssueCredentialConfig) -> () {
+        let body = json!({
+          "connection_id": config.connection_id,
+          "cred_def_id": config.credential_definition_id,
+          "credential_preview": {
+            "@type": "issue-credential/1.0/credential-preview",
+            "attributes": config.attributes
+          }
+        });
+
+        Log::log_pretty(config);
+
+        http::post::<serde_json::Value>(Endpoint::credential_offer(&self.url), None, Some(body))
+            .await;
     }
 }
