@@ -1,32 +1,22 @@
 use crate::utils::logger::Log;
 
-// Error types
+/// Error types
 pub enum Error {
+    /// Did not supply any endpoint in either the config of the OPTION
     NoSuppliedEndpoint,
-    InvalidEndpoint,
-    InvalidUrl,
+
+    /// Response from the server could not be parsed
     ServerResponseParseError,
-    CannotCreateInvitation,
-    ConnectionsUnretrieveable,
-    ConnectionDoesNotExist,
+
+    /// Something went wrong on the server-side
+    InternalServerError,
 }
 
-// Error handler (Should not panic but print a custom error and exit)
+/// Error handler (Should not panic but print a custom error and exit)
 pub fn throw(error: Error) -> ! {
     match error {
-        // The endpoint is not supplied
         Error::NoSuppliedEndpoint => Log::error("No Endpoint Supplied"),
-        // The endpoint is invalid (from config of from OPTION)
-        Error::InvalidEndpoint => Log::error("Invalid Endpoint"),
-        // The url created from the base + endpoint is invalid
-        Error::InvalidUrl => Log::error("Invalid Url"),
-        // Could not parse the response from the server
         Error::ServerResponseParseError => Log::error("Unable to parse response from server"),
-        // The connection does not exist on the agent
-        Error::ConnectionDoesNotExist => Log::error("Connection does not exist"),
-        // The connection list is unretrieveable (Could this even happen?)
-        Error::ConnectionsUnretrieveable => Log::error("Connection is unretrieveable"),
-        // Could not create an invitation
-        Error::CannotCreateInvitation => Log::error("Could not create an invitation"),
+        Error::InternalServerError => Log::error("Internal Server Error"),
     }
 }

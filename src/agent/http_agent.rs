@@ -1,93 +1,112 @@
-use crate::agent::agent::{Agent, HttpAgentExtended};
-use crate::error;
-use crate::typing;
+use crate::agent::agents::{Agent, HttpAgentExtended};
+use crate::typing::{
+    Connection, Connections, Features, Invitation, InvitationConfig, IssueCredentialConfig,
+    MessageConfig,
+};
 use crate::utils::http;
+use crate::utils::logger::Log;
 use async_trait::async_trait;
 use reqwest::Url;
-use std::collections::HashMap;
+use serde_json::json;
 
+/// HTTP cloudagent
 #[derive(Debug, Clone)]
 pub struct HttpAgent {
+    /// base url of the cloudagent
     url: String,
 }
 
-// All the available endpoints
+/// All the available endpoints
 struct Endpoint;
 
-// Default value for every endpoint
-// TODO: Not the most efficient mehtod (creates a new instance for every function call)
+/// Default value for every endpoint
 impl Endpoint {
-    fn connections(agent: &HttpAgent) -> Url {
-        reqwest::Url::parse(&agent.url)
-            .expect(&format!("Could not join on {}", agent.url).to_string())
+    /// base + connections
+    fn connections(url: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
             .join("connections")
-            .expect(&format!("Could not join on connections").to_string())
+            .unwrap_or_else(|_| panic!("Could not join on connections"))
     }
-    fn get_connection_by_id(agent: &HttpAgent, id: String) -> Url {
-        reqwest::Url::parse(&agent.url)
-            .expect(&format!("Could not join on {}", agent.url).to_string())
+    /// base + connections + :id
+    fn get_connection_by_id(url: &str, id: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
             .join("connections/")
-            .expect(&format!("Could not join on connections/").to_string())
-            .join(&id.to_string())
-            .expect(&format!("Could not join on {}", id).to_string())
+            .unwrap_or_else(|_| panic!("Could not join on connections"))
+            .join(id)
+            .unwrap_or_else(|_| panic!("Could not join on {}", id))
     }
-    fn create_invitation(agent: &HttpAgent) -> Url {
-        reqwest::Url::parse(&agent.url)
-            .expect(&format!("Could not join on {}", agent.url).to_string())
+    /// base + connections + create-invitation
+    fn create_invitation(url: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
             .join("connections/")
-            .expect(&format!("Could not join on connections/").to_string())
+            .unwrap_or_else(|_| panic!("Could not join on connections"))
             .join("create-invitation")
-            .expect(&format!("Could not join on create-invitation").to_string())
+            .unwrap_or_else(|_| panic!("Could not join on create-invitation"))
+    }
+    /// base + features
+    fn discover_features(url: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
+            .join("features")
+            .unwrap_or_else(|_| panic!("Could not join on features"))
+    }
+    /// base + connections + :id + send-message
+    fn basic_message(url: &str, id: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
+            .join("connections/")
+            .unwrap_or_else(|_| panic!("Could not join on connections"))
+            .join(&format!("{}/", id))
+            .unwrap_or_else(|_| panic!("Could not join on {}", id))
+            .join("send-message")
+            .unwrap_or_else(|_| panic!("Could not join on send-message"))
+    }
+    /// base + issue-credential + send-offer
+    fn credential_offer(url: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
+            .join("issue-credential")
+            .unwrap_or_else(|_| panic!("Could not join on issue-credential"))
+            .join("send-offer")
+            .unwrap_or_else(|_| panic!("Could not join on send-offer"))
     }
 }
 
 #[async_trait]
 impl HttpAgentExtended for HttpAgent {
-    fn new(endpoint: &str) -> Self {
-        HttpAgent {
-            url: endpoint.to_owned(),
-        }
+    fn new(endpoint: String) -> Self {
+        HttpAgent { url: endpoint }
     }
 
-    async fn check_endpoint(&self) -> typing::Result<bool> {
-        match reqwest::get(Endpoint::connections(&self)).await {
-            Ok(res) => {
-                if res.status().is_success() {
-                    return Ok(true);
-                }
-                Err(error::Error::InvalidUrl)
-            }
-            Err(_) => Err(error::Error::InvalidEndpoint),
-        }
+    /// Check if the endpoint is valid
+    async fn check_endpoint(&self) -> () {
+        http::get::<Connections>(Endpoint::connections(&self.url), None).await;
     }
 }
 
 #[async_trait]
 impl Agent for HttpAgent {
-    async fn get_connections(&self) -> typing::Connections {
-        match http::get(Endpoint::connections(&self), None).await {
-            Ok(res) => match res.json().await {
-                Ok(parsed) => parsed,
-                Err(_) => error::throw(error::Error::ServerResponseParseError),
-            },
-            Err(_) => error::throw(error::Error::ConnectionsUnretrieveable),
+    /// Gets all the connections
+    async fn get_connections(&self, filter: Option<String>) -> Connections {
+        let mut query: Vec<(&str, String)> = vec![];
+
+        if let Some(alias) = filter {
+            query.push(("alias", alias));
         }
+
+        http::get::<Connections>(Endpoint::connections(&self.url), Some(query)).await
     }
 
-    async fn get_connection_by_id(&self, id: String) -> typing::Connection {
-        match http::get(Endpoint::get_connection_by_id(&self, id), None).await {
-            Ok(res) => match res.json().await {
-                Ok(parsed) => parsed,
-                Err(_) => error::throw(error::Error::ServerResponseParseError),
-            },
-            Err(_) => error::throw(error::Error::ConnectionDoesNotExist),
-        }
+    /// Get a connection by id
+    async fn get_connection_by_id(&self, id: String) -> Connection {
+        http::get::<Connection>(Endpoint::get_connection_by_id(&self.url, &id), None).await
     }
 
-    async fn create_invitation(
-        &self,
-        config: &typing::InviteConfiguration<'_>,
-    ) -> typing::Invitation {
+    /// Prints an invitation, as url or qr, in stdout
+    async fn create_invitation(&self, config: &InvitationConfig) -> Invitation {
         let mut query: Vec<(&str, String)> = vec![];
         let mut body = None;
 
@@ -96,37 +115,58 @@ impl Agent for HttpAgent {
             query.push(("auto_accept", true.to_string()));
             query.push(("alias", String::from("toolbox")));
 
-            let mut a = HashMap::new();
-            let mut b = HashMap::new();
-
-            b.insert("group", "admin");
-            a.insert("metadata", b);
-
-            body = Some(a);
-        } else {
-            let multi_use = ("multi_use", config.multi_use.to_string());
-            let auto_accept = ("auto_accept", config.auto_accept.to_string());
-
-            query.push(multi_use);
-            query.push(auto_accept);
-
-            config
-                .alias
-                .and_then(|alias| Some(query.push(("alias", alias.to_string()))));
-        }
-
-        // TODO: the post call should already check the status and try to parse it.
-        match http::post(Endpoint::create_invitation(&self), query, body).await {
-            Ok(res) => {
-                if res.status().is_success() {
-                    return match res.json().await {
-                        Ok(parsed) => parsed,
-                        Err(_) => error::throw(error::Error::ServerResponseParseError),
-                    };
+            body = Some(json!({
+                "metadata": {
+                    "group": "admin"
                 }
-                panic!("{:?}", res);
+            }));
+        } else {
+            if config.multi_use {
+                query.push(("multi_use", true.to_string()));
             }
-            Err(_) => error::throw(error::Error::CannotCreateInvitation),
+            if config.auto_accept {
+                query.push(("auto_accept", true.to_string()))
+            }
+            if let Some(alias) = &config.alias {
+                query.push(("alias", alias.to_string()));
+            }
         }
+
+        http::post(Endpoint::create_invitation(&self.url), Some(query), body).await
+    }
+
+    /// Requests all the features from the cloudagent
+    async fn discover_features(&self) -> Features {
+        http::get::<Features>(Endpoint::discover_features(&self.url), None).await
+    }
+
+    /// Send a basic message to another agent
+    async fn send_message(&self, config: &MessageConfig) -> () {
+        let body = json!({
+            "content": config.message,
+        });
+
+        http::post::<serde_json::Value>(
+            Endpoint::basic_message(&self.url, &config.connection_id),
+            None,
+            Some(body),
+        )
+        .await;
+    }
+
+    async fn offer_credential(&self, config: &IssueCredentialConfig) -> () {
+        let body = json!({
+          "connection_id": config.connection_id,
+          "cred_def_id": config.credential_definition_id,
+          "credential_preview": {
+            "@type": "issue-credential/1.0/credential-preview",
+            "attributes": config.attributes
+          }
+        });
+
+        Log::log_pretty(config);
+
+        http::post::<serde_json::Value>(Endpoint::credential_offer(&self.url), None, Some(body))
+            .await;
     }
 }

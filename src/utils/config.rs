@@ -1,7 +1,7 @@
 use ini::{Ini, Properties};
 use std::env;
 
-// Load a config file and ignore errors as we will just fall back on the option provided
+/// Load a config file and ignore errors as we will just fall back on the option provided
 fn load(path: &str) -> Option<Ini> {
     let cfg = Ini::load_from_file(path);
 
@@ -11,22 +11,17 @@ fn load(path: &str) -> Option<Ini> {
     }
 }
 
+/// Get a section in the config file
 fn get_section(key: &str, cfg: &Ini) -> Option<Properties> {
-    let section = cfg.section(Some(key));
-
-    match section {
-        Some(s) => Some(s.to_owned()),
-        None => None,
-    }
+    cfg.section(Some(key)).map(|s| s.to_owned())
 }
 
+/// Get a value by key in the section
 fn get_value_by_key(key: &str, prop: &Properties) -> Option<String> {
-    match prop.get(key) {
-        Some(v) => Some(String::from(v)),
-        None => None,
-    }
+    prop.get(key).map(String::from)
 }
 
+/// Get a value by path, section and key
 pub fn get_value(path: &str, section: &str, key: &str) -> Option<String> {
     let home = env::var("HOME");
 
