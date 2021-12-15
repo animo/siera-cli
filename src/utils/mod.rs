@@ -1,3 +1,6 @@
+/// Configugration module which is used for getting the config file
+pub mod config;
+
 /// Module that allows the `http_agent` to make `get` and `post` requests
 pub mod http;
 

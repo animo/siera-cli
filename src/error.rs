@@ -2,7 +2,10 @@ use crate::utils::logger::Log;
 
 /// Error types
 pub enum Error {
-    /// The provided endpoint is not a valid one for a cloudagent
+    /// Did not supply any endpoint in either the config of the OPTION
+    NoSuppliedEndpoint,
+    
+    /// Endpoint is incorrect
     InvalidEndpoint,
 
     /// Response from the server could not be parsed
@@ -15,6 +18,7 @@ pub enum Error {
 /// Error handler (Should not panic but print a custom error and exit)
 pub fn throw(error: Error) -> ! {
     match error {
+        Error::NoSuppliedEndpoint => Log::error("No Endpoint Supplied"),
         Error::InvalidEndpoint => Log::error("Invalid Endpoint"),
         Error::ServerResponseParseError => Log::error("Unable to parse response from server"),
         Error::InternalServerError => Log::error("Internal Server Error"),
