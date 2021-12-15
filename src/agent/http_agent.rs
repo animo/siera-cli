@@ -121,12 +121,12 @@ impl Agent for HttpAgent {
                 }
             }));
         } else {
-            let multi_use = ("multi_use", config.multi_use.to_string());
-            let auto_accept = ("auto_accept", config.auto_accept.to_string());
-
-            query.push(multi_use);
-            query.push(auto_accept);
-
+            if config.multi_use {
+                query.push(("multi_use", true.to_string()));
+            }
+            if config.auto_accept {
+                query.push(("auto_accept", true.to_string()))
+            }
             if let Some(alias) = &config.alias {
                 query.push(("alias", alias.to_string()));
             }

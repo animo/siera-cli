@@ -20,10 +20,10 @@ pub trait Agent {
     async fn discover_features(&self) -> Features;
 
     /// Send a basic message to another agent
-    async fn send_message(&self, config: &MessageConfig) -> ();
+    async fn send_message(&self, config: &MessageConfig);
 
     /// Offer a credential to another agent
-    async fn offer_credential(&self, config: &IssueCredentialConfig) -> ();
+    async fn offer_credential(&self, config: &IssueCredentialConfig);
 }
 
 /// HTTP specific cloudagent functionality

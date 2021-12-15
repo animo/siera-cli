@@ -1,33 +1,20 @@
-use reqwest::{Client, Url};
+use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 
 use crate::error::{throw, Error};
 
-/// Handle calling of any endpoint with get
+/// Builds a get request and calls the sender
 pub async fn get<T: DeserializeOwned>(url: Url, query: Option<Vec<(&str, String)>>) -> T {
     let client = match query {
         Some(q) => Client::new().get(url).query(&q),
         None => Client::new().get(url),
     };
 
-    let response = client.send().await;
-
-    match response {
-        Ok(res) => {
-            if res.status().is_success() {
-                return match res.json().await {
-                    Ok(parsed) => parsed,
-                    Err(_) => throw(Error::ServerResponseParseError),
-                };
-            }
-            throw(Error::InternalServerError)
-        }
-        Err(_) => throw(Error::InternalServerError),
-    }
+    send::<T>(client).await
 }
 
-/// Handle calling of any endpoint with post
+/// Builds a post request and calls the sender
 pub async fn post<T: DeserializeOwned>(
     url: Url,
     query: Option<Vec<(&str, String)>>,
@@ -40,6 +27,11 @@ pub async fn post<T: DeserializeOwned>(
         None => client,
     };
 
+    send::<T>(client).await
+}
+
+/// Sends any request
+async fn send<T: DeserializeOwned>(client: RequestBuilder) -> T {
     let response = client.send().await;
 
     match response {
