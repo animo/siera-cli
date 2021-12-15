@@ -4,9 +4,6 @@ use crate::utils::logger::Log;
 pub enum Error {
     /// Did not supply any endpoint in either the config of the OPTION
     NoSuppliedEndpoint,
-    
-    /// Endpoint is incorrect
-    InvalidEndpoint,
 
     /// Response from the server could not be parsed
     ServerResponseParseError,
@@ -19,7 +16,6 @@ pub enum Error {
 pub fn throw(error: Error) -> ! {
     match error {
         Error::NoSuppliedEndpoint => Log::error("No Endpoint Supplied"),
-        Error::InvalidEndpoint => Log::error("Invalid Endpoint"),
         Error::ServerResponseParseError => Log::error("Unable to parse response from server"),
         Error::InternalServerError => Log::error("Internal Server Error"),
     }
