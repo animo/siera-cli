@@ -15,3 +15,9 @@ pub mod message;
 
 /// Issue credential V1 subcommand
 pub mod issue_credential;
+
+/// Schema subcommand
+pub mod schema;
+
+/// Credential definition
+pub mod credential_definition;

@@ -1,6 +1,24 @@
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
+/// Type of the schema configuration as received by the cli
+pub struct SchemaConfig {
+    /// Name of the schema
+    pub name: String,
+
+    /// Attributes that have to go inside the schema
+    pub attributes: Vec<String>,
+}
+
+/// Type of the credential definition configuration as received by the cli
+pub struct CredentialDefinitionConfig {
+    /// Id of the schema
+    pub schema_id: String,
+
+    /// Credential definition tag
+    pub tag: String,
+}
+
 /// Type of the invitation configuration as received by the cli
 pub struct InvitationConfig {
     /// Whether the invitation should auto accept
@@ -124,4 +142,35 @@ pub struct Invitation {
 pub struct Features {
     /// List of all the features the cloudagent supports
     pub results: Map<String, Value>,
+}
+
+/// Type for received schema object
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Schema {
+    /// received value
+    pub sent: SchemaSent,
+}
+
+/// Sub value of Schema
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct SchemaSent {
+    /// Schema metadata
+    pub schema: Value,
+
+    /// Id of the schema
+    pub schema_id: String,
+}
+
+/// Type for received credential definition object
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CredentialDefinition {
+    /// received value
+    pub sent: CredentialDefinitionSent,
+}
+
+/// Sub value of Credential Definition
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CredentialDefinitionSent {
+    /// credential definition id
+    pub credential_definition_id: String,
 }

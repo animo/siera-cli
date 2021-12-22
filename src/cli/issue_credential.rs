@@ -15,7 +15,7 @@ pub struct CredentialsModule;
 #[async_trait(?Send)]
 impl Module<IssueCredentialConfig> for CredentialsModule {
     async fn run(agent: &dyn Agent, config: IssueCredentialConfig) {
-        let credential = agent.offer_credential(&config).await;
+        let credential = agent.credential(&config).await;
 
         Log::log_pretty(credential);
     }

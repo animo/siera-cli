@@ -1,13 +1,13 @@
 use crate::agent::agents::{Agent, HttpAgentExtended};
 use crate::typing::{
-    Connection, Connections, Features, Invitation, InvitationConfig, IssueCredentialConfig,
-    MessageConfig,
+    Connection, Connections, CredentialDefinition, CredentialDefinitionConfig, Features,
+    Invitation, InvitationConfig, IssueCredentialConfig, MessageConfig, Schema, SchemaConfig,
 };
 use crate::utils::http;
 use crate::utils::logger::Log;
 use async_trait::async_trait;
 use reqwest::Url;
-use serde_json::json;
+use serde_json::{json, Value};
 
 /// HTTP cloudagent
 #[derive(Debug, Clone)]
@@ -72,6 +72,20 @@ impl Endpoint {
             .unwrap_or_else(|_| panic!("Could not join on issue-credential"))
             .join("send-offer")
             .unwrap_or_else(|_| panic!("Could not join on send-offer"))
+    }
+    /// base + schemas
+    fn schema(url: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
+            .join("schemas")
+            .unwrap_or_else(|_| panic!("Could not join on schemas"))
+    }
+    /// base + credential-definitions
+    fn credential_definition(url: &str) -> Url {
+        reqwest::Url::parse(url)
+            .unwrap_or_else(|_| panic!("Could not parse {}", url))
+            .join("credential-definitions")
+            .unwrap_or_else(|_| panic!("Could not join on credential-definitions"))
     }
 }
 
@@ -154,7 +168,7 @@ impl Agent for HttpAgent {
         .await;
     }
 
-    async fn offer_credential(&self, config: &IssueCredentialConfig) -> () {
+    async fn credential(&self, config: &IssueCredentialConfig) {
         let body = json!({
           "connection_id": config.connection_id,
           "cred_def_id": config.credential_definition_id,
@@ -166,7 +180,34 @@ impl Agent for HttpAgent {
 
         Log::log_pretty(config);
 
-        http::post::<serde_json::Value>(Endpoint::credential_offer(&self.url), None, Some(body))
-            .await;
+        http::post::<Value>(Endpoint::credential_offer(&self.url), None, Some(body)).await;
+    }
+
+    async fn schema(&self, config: &SchemaConfig) -> Schema {
+        let body = json!({
+          "attributes": config.attributes,
+          "schema_name": config.name,
+          "schema_version": "1.0"
+        });
+
+        http::post::<Schema>(Endpoint::schema(&self.url), None, Some(body)).await
+    }
+
+    async fn credential_definition(
+        &self,
+        config: &CredentialDefinitionConfig,
+    ) -> CredentialDefinition {
+        let body = json!({
+          "schema_id": config.schema_id,
+          "support_revocation": false,
+          "tag": config.tag
+        });
+
+        http::post::<CredentialDefinition>(
+            Endpoint::credential_definition(&self.url),
+            None,
+            Some(body),
+        )
+        .await
     }
 }
