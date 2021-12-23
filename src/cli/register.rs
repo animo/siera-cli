@@ -1,8 +1,10 @@
 use super::connections::ConnectionsModule;
+use super::credential_definition::CredentialDefinitionModule;
 use super::features::FeaturesModule;
 use super::invite::InvitationsModule;
 use super::issue_credential::CredentialsModule;
 use super::message::MessagesModule;
+use super::schema::SchemaModule;
 use crate::agent::agents::{Agent, HttpAgentExtended};
 use crate::agent::http_agent::HttpAgent;
 use crate::error::{throw, Error};
@@ -55,4 +57,6 @@ pub async fn register_cli() {
     CredentialsModule::register(&agent, &matches).await;
     MessagesModule::register(&agent, &matches).await;
     FeaturesModule::register(&agent, &matches).await;
+    SchemaModule::register(&agent, &matches).await;
+    CredentialDefinitionModule::register(&agent, &matches).await;
 }

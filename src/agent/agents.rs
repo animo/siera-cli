@@ -1,6 +1,6 @@
 use crate::typing::{
-    Connection, Connections, Features, Invitation, InvitationConfig, IssueCredentialConfig,
-    MessageConfig,
+    Connection, Connections, CredentialDefinition, CredentialDefinitionConfig, Features,
+    Invitation, InvitationConfig, IssueCredentialConfig, MessageConfig, Schema, SchemaConfig,
 };
 use async_trait::async_trait;
 
@@ -23,7 +23,16 @@ pub trait Agent {
     async fn send_message(&self, config: &MessageConfig);
 
     /// Offer a credential to another agent
-    async fn offer_credential(&self, config: &IssueCredentialConfig);
+    async fn credential(&self, config: &IssueCredentialConfig);
+
+    /// Create schema at a ledger
+    async fn schema(&self, config: &SchemaConfig) -> Schema;
+
+    /// Register a credential definition on the ledger
+    async fn credential_definition(
+        &self,
+        config: &CredentialDefinitionConfig,
+    ) -> CredentialDefinition;
 }
 
 /// HTTP specific cloudagent functionality

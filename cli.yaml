@@ -102,3 +102,40 @@ subcommands:
               required: true
               takes_value: true
               multiple: true
+  - schema:
+      about: schema subcommand
+      version: "0.1.0"
+      args:
+          - attribute:
+              help: attribute for the schema
+              short: a
+              long: attribute
+              takes_value: true
+              multiple: true
+              required: true
+          - name:
+              help: schema name
+              short: n
+              long: name
+              takes_value: true
+              required: true
+          - schema-version:
+              help: schema version
+              short: v
+              long: schema-version
+              takes_value: true
+  - credential-definition:
+      about: credential definition subcommand
+      version: "1.0.0"
+      args:
+          - schema-id:
+              help: schema id
+              short: i
+              long: schema-id
+              required: true
+              takes_value: true
+          - tag:
+              help: tag 
+              short: t
+              long: tag
+              takes_value: true
