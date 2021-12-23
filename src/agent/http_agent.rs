@@ -187,7 +187,7 @@ impl Agent for HttpAgent {
         let body = json!({
           "attributes": config.attributes,
           "schema_name": config.name,
-          "schema_version": "1.0"
+          "schema_version": config.version
         });
 
         http::post::<Schema>(Endpoint::schema(&self.url), None, Some(body)).await

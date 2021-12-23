@@ -6,6 +6,9 @@ pub struct SchemaConfig {
     /// Name of the schema
     pub name: String,
 
+    /// Schema version
+    pub version: String,
+
     /// Attributes that have to go inside the schema
     pub attributes: Vec<String>,
 }

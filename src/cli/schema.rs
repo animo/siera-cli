@@ -19,13 +19,21 @@ impl Module<SchemaConfig> for SchemaModule {
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {
         if let Some(matches_schema) = matches.subcommand_matches("schema") {
             let name = matches_schema.value_of("name").unwrap().to_string();
+            let version = matches_schema
+                .value_of("schema-version")
+                .unwrap_or("1.0")
+                .to_string();
             let attributes: Vec<String> = matches_schema
                 .values_of("attribute")
                 .unwrap()
                 .map(|x| x.to_string())
                 .collect();
 
-            let config = SchemaConfig { attributes, name };
+            let config = SchemaConfig {
+                name,
+                version,
+                attributes,
+            };
 
             SchemaModule::run(agent, config).await;
         }
