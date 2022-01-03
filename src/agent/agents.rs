@@ -39,7 +39,7 @@ pub trait Agent {
 #[async_trait]
 pub trait HttpAgentExtended {
     /// New http agent instance
-    fn new(endpoint: String) -> Self;
+    fn new(endpoint: String, api_key: Option<String>) -> Self;
 
     /// Check if the endpoint is valid
     async fn check_endpoint(&self) -> ();
