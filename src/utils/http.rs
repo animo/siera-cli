@@ -1,49 +1,71 @@
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
-
+use async_trait::async_trait;
+use crate::agent::http_agent::HttpAgent;
 use crate::error::{throw, Error};
 
-/// Builds a get request and calls the sender
-pub async fn get<T: DeserializeOwned>(url: Url, query: Option<Vec<(&str, String)>>) -> T {
-    let client = match query {
-        Some(q) => Client::new().get(url).query(&q),
-        None => Client::new().get(url),
-    };
-
-    send::<T>(client).await
+/// Interface providing HTTP call methods
+#[async_trait]
+pub trait HttpCalls {
+    /// GET method
+    async fn get<T: DeserializeOwned>(&self, url: Url, query: Option<Vec<(&str, String)>>) -> T;
+    /// POST method
+    async fn post<T: DeserializeOwned>(&self, url: Url, query: Option<Vec<(&str, String)>>, body: Option<Value>) -> T;
+    /// SEND - general method for GET and POST
+    async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> T;
 }
 
-/// Builds a post request and calls the sender
-pub async fn post<T: DeserializeOwned>(
-    url: Url,
-    query: Option<Vec<(&str, String)>>,
-    body: Option<Value>,
-) -> T {
-    let client = Client::new().post(url).query(&query);
+/// Call logic for http calls
+#[async_trait]
+impl HttpCalls for HttpAgent {
+    /// Builds a get request and calls the sender
+    async fn get<T: DeserializeOwned>(&self, url: Url, query: Option<Vec<(&str, String)>>) -> T {
+        let client = match query {
+            Some(q) => Client::new().get(url).query(&q),
+            None => Client::new().get(url),
+        };
+        
+        self.send::<T>(client).await
+    }
 
-    let client = match body {
-        Some(b) => client.json(&b),
-        None => client,
-    };
+    /// Builds a post request and calls the sender
+    async fn post<T: DeserializeOwned>(
+        &self,
+        url: Url,
+        query: Option<Vec<(&str, String)>>,
+        body: Option<Value>,
+    ) -> T {
+        let client = Client::new().post(url).query(&query);
 
-    send::<T>(client).await
-}
+        let client = match body {
+            Some(b) => client.json(&b),
+            None => client,
+        };
 
-/// Sends any request
-async fn send<T: DeserializeOwned>(client: RequestBuilder) -> T {
-    let response = client.send().await;
+        self.send::<T>(client).await
+    }
 
-    match response {
-        Ok(res) => {
-            if res.status().is_success() {
-                return match res.json().await {
-                    Ok(parsed) => parsed,
-                    Err(_) => throw(Error::ServerResponseParseError),
-                };
+    /// Sends any request
+    async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> T {
+        let client = match &self.api_key {
+            Some(a) => client.header("X-API-KEY", a),
+            None => client,
+        };
+
+        let response = client.send().await;
+
+        match response {
+            Ok(res) => {
+                if res.status().is_success() {
+                    return match res.json().await {
+                        Ok(parsed) => parsed,
+                        Err(_) => throw(Error::ServerResponseParseError),
+                    };
+                } 
+                throw(Error::InternalServerError)
             }
-            throw(Error::InternalServerError)
+            Err(_) => throw(Error::InternalServerError),
         }
-        Err(_) => throw(Error::InternalServerError),
     }
 }

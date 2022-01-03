@@ -11,6 +11,11 @@ args:
         short: e
         long: endpoint
         takes_value: true
+    - apikey:
+        help: The admin apikey
+        short: k
+        long: apikey
+        takes_value: true
 
 # Subcommands
 subcommands: 
