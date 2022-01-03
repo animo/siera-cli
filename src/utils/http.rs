@@ -62,6 +62,8 @@ impl HttpCalls for HttpAgent {
                         Ok(parsed) => parsed,
                         Err(_) => throw(Error::ServerResponseParseError),
                     };
+                } else if res.status().as_str() == "401" {
+                    throw(Error::AuthenticationFailed)
                 } 
                 throw(Error::InternalServerError)
             }

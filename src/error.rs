@@ -10,12 +10,16 @@ pub enum Error {
 
     /// Something went wrong on the server-side
     InternalServerError,
+
+    /// Could not authenticate
+    AuthenticationFailed
 }
 
 /// Error handler (Should not panic but print a custom error and exit)
 pub fn throw(error: Error) -> ! {
     match error {
         Error::NoSuppliedEndpoint => Log::error("No Endpoint Supplied"),
+        Error::AuthenticationFailed => Log::error("Authentication Failed"),
         Error::ServerResponseParseError => Log::error("Unable to parse response from server"),
         Error::InternalServerError => Log::error("Internal Server Error"),
     }
