@@ -1,6 +1,6 @@
-# Aries Cloudagent Controller Ferris
+# Aries CLI
 
-A tool that allows you, via Ferris, to interact with an Aries Cloudagent.
+A tool that allows you to interact with an Aries Cloudagent.
 
 Made by Animo Solutions
 
@@ -22,15 +22,15 @@ The binary that is build via `cargo build` is called: 'accf'.
 
 ```bash
 
-git clone https://github.com/animo/aries-data-generator-toolkit
+git clone https://github.com/animo/aries-cli
 
-cd aries-data-generator-toolkit
+cd aries-cli
 
 cargo install --path .
 
-# Now the binary, named `accf` is installed in your path
+# Now the binary, named `acl` is installed in your path
 
-accf --help
+acl --help
 
-accf invite --help
+acl invite --help
 ```

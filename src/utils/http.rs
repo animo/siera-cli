@@ -1,9 +1,9 @@
+use crate::agent::http_agent::HttpAgent;
+use crate::error::{throw, Error};
+use async_trait::async_trait;
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
-use async_trait::async_trait;
-use crate::agent::http_agent::HttpAgent;
-use crate::error::{throw, Error};
 
 /// Interface providing HTTP call methods
 #[async_trait]
@@ -11,7 +11,12 @@ pub trait HttpCalls {
     /// GET method
     async fn get<T: DeserializeOwned>(&self, url: Url, query: Option<Vec<(&str, String)>>) -> T;
     /// POST method
-    async fn post<T: DeserializeOwned>(&self, url: Url, query: Option<Vec<(&str, String)>>, body: Option<Value>) -> T;
+    async fn post<T: DeserializeOwned>(
+        &self,
+        url: Url,
+        query: Option<Vec<(&str, String)>>,
+        body: Option<Value>,
+    ) -> T;
     /// SEND - general method for GET and POST
     async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> T;
 }
@@ -25,7 +30,7 @@ impl HttpCalls for HttpAgent {
             Some(q) => Client::new().get(url).query(&q),
             None => Client::new().get(url),
         };
-        
+
         self.send::<T>(client).await
     }
 
@@ -60,11 +65,14 @@ impl HttpCalls for HttpAgent {
                 if res.status().is_success() {
                     return match res.json().await {
                         Ok(parsed) => parsed,
-                        Err(_) => throw(Error::ServerResponseParseError),
+                        Err(e) => {
+                            println!("{:?}", e);
+                            throw(Error::ServerResponseParseError);
+                        }
                     };
                 } else if res.status().as_str() == "401" {
                     throw(Error::AuthenticationFailed)
-                } 
+                }
                 throw(Error::InternalServerError)
             }
             Err(_) => throw(Error::InternalServerError),

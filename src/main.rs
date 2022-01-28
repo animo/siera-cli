@@ -1,4 +1,4 @@
-//! An Aries Cloudagent Controller to interact with Aries instances for data manipulation
+//! An Aries Cloudagent Controller CLI to interact with Aries instances for data manipulation
 //! run `accf -e=XXX invite` to run the example script
 
 #![allow(clippy::enum_variant_names)]
