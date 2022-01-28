@@ -3,6 +3,15 @@ use crate::agent::agents::Agent;
 use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
+use serde::{Deserialize, Serialize};
+use serde_json::{Map, Value};
+
+/// Type of the received features from `discover-features`
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Features {
+    /// List of all the features the cloudagent supports
+    pub results: Map<String, Value>,
+}
 
 /// Features module for the agent
 pub struct FeaturesModule;

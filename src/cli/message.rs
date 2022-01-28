@@ -1,10 +1,18 @@
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::typing::MessageConfig;
 use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
 use colored::Colorize;
+
+/// Type of the message configuration as received by the cli
+pub struct MessageConfig {
+    /// connection id to send the message to
+    pub connection_id: String,
+
+    /// The message to send
+    pub message: String,
+}
 
 /// Messages module for the agent
 pub struct MessagesModule;

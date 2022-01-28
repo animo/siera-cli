@@ -19,9 +19,6 @@ mod cli;
 /// error
 mod error;
 
-/// typing
-mod typing;
-
 /// utils
 mod utils;
 

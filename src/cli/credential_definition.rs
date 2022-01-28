@@ -1,10 +1,32 @@
+use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::typing::CredentialDefinitionConfig;
 use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
+use serde::{Deserialize, Serialize};
 
-use super::register::Module;
+/// Type for received credential definition object
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CredentialDefinition {
+    /// received value
+    pub sent: CredentialDefinitionSent,
+}
+
+/// Sub value of Credential Definition
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CredentialDefinitionSent {
+    /// credential definition id
+    pub credential_definition_id: String,
+}
+
+/// Type of the credential definition configuration as received by the cli
+pub struct CredentialDefinitionConfig {
+    /// Id of the schema
+    pub schema_id: String,
+
+    /// Credential definition tag
+    pub tag: String,
+}
 
 /// Credential definition module for the agent
 pub struct CredentialDefinitionModule;

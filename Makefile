@@ -1,5 +1,5 @@
 clippy:
-	cargo clippy
+	cargo clippy --no-deps
 
 build:
 	cargo build

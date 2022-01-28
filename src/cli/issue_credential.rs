@@ -2,11 +2,24 @@ use std::iter::zip;
 
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::typing::IssueCredentialConfig;
 use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
-use serde_json::json;
+use serde::Serialize;
+use serde_json::{json, Value};
+
+/// Type of the issue credential configuration as received by the cli
+#[derive(Debug, Serialize)]
+pub struct IssueCredentialConfig {
+    /// The connection to send the credential to
+    pub connection_id: String,
+
+    /// The credential definition used for the credential
+    pub credential_definition_id: String,
+
+    /// The attributes for the credential
+    pub attributes: Vec<Value>,
+}
 
 /// Credentials module for the agent
 pub struct CredentialsModule;

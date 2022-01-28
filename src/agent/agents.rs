@@ -1,7 +1,14 @@
-use crate::typing::{
-    Connection, Connections, CredentialDefinition, CredentialDefinitionConfig, Features,
-    Invitation, InvitationConfig, IssueCredentialConfig, MessageConfig, Schema, SchemaConfig,
-};
+use crate::cli::connections::Connection;
+use crate::cli::connections::Connections;
+use crate::cli::credential_definition::CredentialDefinition;
+use crate::cli::credential_definition::CredentialDefinitionConfig;
+use crate::cli::features::Features;
+use crate::cli::invite::Invitation;
+use crate::cli::invite::InvitationConfig;
+use crate::cli::issue_credential::IssueCredentialConfig;
+use crate::cli::message::MessageConfig;
+use crate::cli::schema::Schema;
+use crate::cli::schema::SchemaConfig;
 use async_trait::async_trait;
 
 /// base cloudagent functionality

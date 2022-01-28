@@ -1,9 +1,39 @@
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::typing::SchemaConfig;
 use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+
+/// Type of the schema configuration as received by the cli
+pub struct SchemaConfig {
+    /// Name of the schema
+    pub name: String,
+
+    /// Schema version
+    pub version: String,
+
+    /// Attributes that have to go inside the schema
+    pub attributes: Vec<String>,
+}
+
+/// Type for received schema object
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Schema {
+    /// received value
+    pub sent: SchemaSent,
+}
+
+/// Sub value of Schema
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct SchemaSent {
+    /// Schema metadata
+    pub schema: Value,
+
+    /// Id of the schema
+    pub schema_id: String,
+}
 
 /// Schema module for the agent
 pub struct SchemaModule;

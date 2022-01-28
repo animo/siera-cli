@@ -1,10 +1,45 @@
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::typing::InvitationConfig;
 use crate::utils::logger::Log;
 use crate::utils::qr;
 use async_trait::async_trait;
 use clap::ArgMatches;
+use serde::{Deserialize, Serialize};
+use serde_json::{Map, Value};
+
+/// Type of the invitation configuration as received by the cli
+pub struct InvitationConfig {
+    /// Whether the invitation should auto accept
+    pub auto_accept: bool,
+
+    /// Whether the invitation should be multi use
+    pub multi_use: bool,
+
+    /// Alias for the connection that will be created with that invitation
+    pub alias: Option<String>,
+
+    /// Whether it will print a qr code instead of a url
+    pub qr: bool,
+
+    /// Whether it should use a pre-configured toolbox configuration
+    pub toolbox: bool,
+}
+
+/// Type of the received invitation
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Invitation {
+    /// Connection id
+    pub connection_id: String,
+
+    /// Invitation object
+    pub invitation: Map<String, Value>,
+
+    /// Invitation url that can be used to accept it by another party
+    pub invitation_url: String,
+
+    /// Alias for the given invitation
+    pub alias: Option<String>,
+}
 
 /// Invitations module for the agent
 pub struct InvitationsModule;

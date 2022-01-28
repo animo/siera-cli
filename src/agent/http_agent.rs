@@ -1,8 +1,15 @@
 use crate::agent::agents::{Agent, HttpAgentExtended};
-use crate::typing::{
-    Connection, Connections, CredentialDefinition, CredentialDefinitionConfig, Features,
-    Invitation, InvitationConfig, IssueCredentialConfig, MessageConfig, Schema, SchemaConfig,
-};
+use crate::cli::connections::Connection;
+use crate::cli::connections::Connections;
+use crate::cli::credential_definition::CredentialDefinition;
+use crate::cli::credential_definition::CredentialDefinitionConfig;
+use crate::cli::features::Features;
+use crate::cli::invite::Invitation;
+use crate::cli::invite::InvitationConfig;
+use crate::cli::issue_credential::IssueCredentialConfig;
+use crate::cli::message::MessageConfig;
+use crate::cli::schema::Schema;
+use crate::cli::schema::SchemaConfig;
 use crate::utils::http::HttpCalls;
 use async_trait::async_trait;
 use reqwest::Url;
@@ -94,12 +101,16 @@ impl Endpoint {
 #[async_trait]
 impl HttpAgentExtended for HttpAgent {
     fn new(endpoint: String, api_key: Option<String>) -> Self {
-        HttpAgent { url: endpoint, api_key }
+        HttpAgent {
+            url: endpoint,
+            api_key,
+        }
     }
 
     /// Check if the endpoint is valid
     async fn check_endpoint(&self) -> () {
-        self.get::<Connections>(Endpoint::connections(&self.url), None).await;
+        self.get::<Connections>(Endpoint::connections(&self.url), None)
+            .await;
     }
 }
 
@@ -113,12 +124,14 @@ impl Agent for HttpAgent {
             query.push(("alias", alias));
         }
 
-        self.get::<Connections>(Endpoint::connections(&self.url), Some(query)).await
+        self.get::<Connections>(Endpoint::connections(&self.url), Some(query))
+            .await
     }
 
     /// Get a connection by id
     async fn get_connection_by_id(&self, id: String) -> Connection {
-        self.get::<Connection>(Endpoint::get_connection_by_id(&self.url, &id), None).await
+        self.get::<Connection>(Endpoint::get_connection_by_id(&self.url, &id), None)
+            .await
     }
 
     /// Prints an invitation, as url or qr, in stdout
@@ -148,12 +161,14 @@ impl Agent for HttpAgent {
             }
         }
 
-        self.post(Endpoint::create_invitation(&self.url), Some(query), body).await
+        self.post(Endpoint::create_invitation(&self.url), Some(query), body)
+            .await
     }
 
     /// Requests all the features from the cloudagent
     async fn discover_features(&self) -> Features {
-        self.get::<Features>(Endpoint::discover_features(&self.url), None).await
+        self.get::<Features>(Endpoint::discover_features(&self.url), None)
+            .await
     }
 
     /// Send a basic message to another agent
@@ -180,7 +195,8 @@ impl Agent for HttpAgent {
           }
         });
 
-        self.post::<Value>(Endpoint::credential_offer(&self.url), None, Some(body)).await;
+        self.post::<Value>(Endpoint::credential_offer(&self.url), None, Some(body))
+            .await;
     }
 
     async fn schema(&self, config: &SchemaConfig) -> Schema {
@@ -190,7 +206,8 @@ impl Agent for HttpAgent {
           "schema_version": config.version
         });
 
-       self.post::<Schema>(Endpoint::schema(&self.url), None, Some(body)).await
+        self.post::<Schema>(Endpoint::schema(&self.url), None, Some(body))
+            .await
     }
 
     async fn credential_definition(

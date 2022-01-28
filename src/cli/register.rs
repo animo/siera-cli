@@ -35,10 +35,10 @@ pub async fn register_cli() {
         .get_matches();
 
     // Takes a path, but prepends the home directory... kinda sketchy
-    let endpoint_from_config = config::get_value("/.config/accf/ex.ini", "Default", "endpoint");
+    let endpoint_from_config = config::get_value("/.config/acl/ex.ini", "Default", "endpoint");
 
     // Takes a path, but prepends the home directory... kinda sketchy
-    let api_key_from_config = config::get_value("/.config/accf/ex.ini", "Default", "api_key");
+    let api_key_from_config = config::get_value("/.config/acl/ex.ini", "Default", "api_key");
 
     // Get the endpoint when you supply an endpoint
     let endpoint = match matches.value_of("endpoint") {
@@ -53,12 +53,11 @@ pub async fn register_cli() {
     // Get the endpoint when you supply an endpoint
     let api_key = match matches.value_of("apikey") {
         Some(api_key) => Some(api_key.to_string()),
-        None => api_key_from_config
+        None => api_key_from_config,
     };
-    
     let agent = HttpAgent {
-        url: endpoint, 
-        api_key
+        url: endpoint,
+        api_key,
     };
 
     agent.check_endpoint().await;
