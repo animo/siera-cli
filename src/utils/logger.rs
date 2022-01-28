@@ -22,6 +22,7 @@ impl Log {
     }
 
     /// Log messages that broke the program
+    // TODO: accept things that can be printed, not only string refs
     pub fn error(string: &str) -> ! {
         eprintln!("{}: {}", "Error".red(), String::from(string));
         std::process::exit(1)

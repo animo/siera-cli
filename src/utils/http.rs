@@ -1,5 +1,6 @@
 use crate::agent::http_agent::HttpAgent;
-use crate::error::{throw, Error};
+use crate::error::{throw, throw_from_http, Error};
+use crate::utils::logger::Log;
 use async_trait::async_trait;
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
@@ -73,9 +74,9 @@ impl HttpCalls for HttpAgent {
                 } else if res.status().as_str() == "401" {
                     throw(Error::AuthenticationFailed)
                 }
-                throw(Error::InternalServerError)
+                Log::error(&res.text().await.unwrap());
             }
-            Err(_) => throw(Error::InternalServerError),
+            Err(e) => throw_from_http(e),
         }
     }
 }
