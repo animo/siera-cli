@@ -39,19 +39,13 @@ impl Endpoint {
     }
     /// base + connections + :id
     fn get_connection_by_id(url: &str, id: &str) -> Url {
-        reqwest::Url::parse(url)
-            .unwrap_or_else(|_| panic!("Could not parse {}", url))
-            .join("connections/")
-            .unwrap_or_else(|_| panic!("Could not join on connections"))
+        Endpoint::connections(url)
             .join(id)
             .unwrap_or_else(|_| panic!("Could not join on {}", id))
     }
     /// base + connections + create-invitation
     fn create_invitation(url: &str) -> Url {
-        reqwest::Url::parse(url)
-            .unwrap_or_else(|_| panic!("Could not parse {}", url))
-            .join("connections/")
-            .unwrap_or_else(|_| panic!("Could not join on connections"))
+        Endpoint::connections(url)
             .join("create-invitation")
             .unwrap_or_else(|_| panic!("Could not join on create-invitation"))
     }
@@ -64,11 +58,8 @@ impl Endpoint {
     }
     /// base + connections + :id + send-message
     fn basic_message(url: &str, id: &str) -> Url {
-        reqwest::Url::parse(url)
-            .unwrap_or_else(|_| panic!("Could not parse {}", url))
-            .join("connections/")
-            .unwrap_or_else(|_| panic!("Could not join on connections"))
-            .join(&format!("{}/", id))
+        Endpoint::connections(url)
+            .join(id)
             .unwrap_or_else(|_| panic!("Could not join on {}", id))
             .join("send-message")
             .unwrap_or_else(|_| panic!("Could not join on send-message"))
