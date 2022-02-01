@@ -19,14 +19,14 @@ pub struct SchemaConfig {
 }
 
 /// Type for received schema object
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Schema {
     /// received value
     pub sent: SchemaSent,
 }
 
 /// Sub value of Schema
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct SchemaSent {
     /// Schema metadata
     pub schema: Value,

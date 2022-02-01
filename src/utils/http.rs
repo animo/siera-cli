@@ -64,7 +64,7 @@ impl HttpCalls for HttpAgent {
         match response {
             Ok(res) => {
                 if res.status().is_success() {
-                    return match res.json().await {
+                    return match res.json::<T>().await {
                         Ok(parsed) => parsed,
                         Err(e) => {
                             println!("{:?}", e);

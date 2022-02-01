@@ -21,9 +21,7 @@ pub struct FeaturesModule;
 impl Module<()> for FeaturesModule {
     async fn run(agent: &dyn Agent, _: ()) {
         let features = agent.discover_features().await;
-        for (_, item) in features.results.iter().enumerate() {
-            Log::log(item.0);
-        }
+        Log::log_list(features.results.values().map(|x| x.to_string()).collect());
     }
 
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {

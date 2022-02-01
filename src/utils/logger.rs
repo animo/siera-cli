@@ -21,6 +21,10 @@ impl Log {
         println!("{}", String::from(string));
     }
 
+    pub fn log_list(list: Vec<String>) {
+        list.iter().for_each(|i| Log::log(i));
+    }
+
     /// Log messages that broke the program
     // TODO: accept things that can be printed, not only string refs
     pub fn error(string: &str) -> ! {

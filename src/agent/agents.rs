@@ -2,6 +2,7 @@ use crate::cli::connections::Connection;
 use crate::cli::connections::Connections;
 use crate::cli::credential_definition::CredentialDefinition;
 use crate::cli::credential_definition::CredentialDefinitionConfig;
+use crate::cli::credential_definition::CredentialDefinitions;
 use crate::cli::features::Features;
 use crate::cli::invite::Invitation;
 use crate::cli::invite::InvitationConfig;
@@ -40,6 +41,9 @@ pub trait Agent {
         &self,
         config: &CredentialDefinitionConfig,
     ) -> CredentialDefinition;
+
+    /// Get all registered credential definitions
+    async fn credential_definitions(&self) -> CredentialDefinitions;
 }
 
 /// HTTP specific cloudagent functionality

@@ -137,7 +137,6 @@ subcommands:
               help: schema id
               short: i
               long: schema-id
-              required: true
               takes_value: true
           - tag:
               help: tag 

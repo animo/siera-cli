@@ -9,10 +9,10 @@ pub enum Error {
     ServerResponseParseError,
 
     /// Someting went wrong while sending the request
-    UnknownServerError,
+    //UnknownServerError,
 
     /// Something went wrong on the server-side
-    InternalServerError,
+    //InternalServerError,
 
     /// Could not authenticate
     AuthenticationFailed,
@@ -24,10 +24,10 @@ pub fn throw(error: Error) -> ! {
         Error::NoSuppliedEndpoint => Log::error("No Endpoint Supplied"),
         Error::AuthenticationFailed => Log::error("Authentication Failed"),
         Error::ServerResponseParseError => Log::error("Unable to parse response from server"),
-        Error::UnknownServerError => {
-            Log::error("Something went wrong while trying to reach the agent")
-        }
-        Error::InternalServerError => Log::error("Internal Server Error"),
+        //Error::UnknownServerError => {
+        //Log::error("Something went wrong while trying to reach the agent")
+        //}
+        //Error::InternalServerError => Log::error("Internal Server Error"),
     }
 }
 

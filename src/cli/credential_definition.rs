@@ -5,6 +5,13 @@ use async_trait::async_trait;
 use clap::ArgMatches;
 use serde::{Deserialize, Serialize};
 
+/// Type of the received connections list
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct CredentialDefinitions {
+    /// List of the current connections
+    pub credential_definition_ids: Vec<String>,
+}
+
 /// Type for received credential definition object
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CredentialDefinition {
@@ -22,7 +29,7 @@ pub struct CredentialDefinitionSent {
 /// Type of the credential definition configuration as received by the cli
 pub struct CredentialDefinitionConfig {
     /// Id of the schema
-    pub schema_id: String,
+    pub schema_id: Option<String>,
 
     /// Credential definition tag
     pub tag: String,
@@ -35,8 +42,16 @@ pub struct CredentialDefinitionModule;
 #[async_trait(?Send)]
 impl Module<CredentialDefinitionConfig> for CredentialDefinitionModule {
     async fn run(agent: &dyn Agent, config: CredentialDefinitionConfig) {
-        let credential_definition = agent.credential_definition(&config).await;
-        Log::log(&credential_definition.sent.credential_definition_id);
+        match config.schema_id {
+            Some(_) => {
+                let credential_definition = agent.credential_definition(&config).await;
+                Log::log(&credential_definition.sent.credential_definition_id);
+            }
+            None => {
+                let credential_definitions = agent.credential_definitions().await;
+                Log::log_list(credential_definitions.credential_definition_ids)
+            }
+        }
     }
 
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {
@@ -45,8 +60,7 @@ impl Module<CredentialDefinitionConfig> for CredentialDefinitionModule {
         {
             let schema_id = matches_credential_definition
                 .value_of("schema-id")
-                .unwrap()
-                .to_string();
+                .map(|x| x.to_string());
             let tag = matches_credential_definition
                 .value_of("tag")
                 .unwrap_or("default")

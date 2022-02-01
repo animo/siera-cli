@@ -1,8 +1,8 @@
 use crate::agent::agents::{Agent, HttpAgentExtended};
 use crate::cli::connections::Connection;
 use crate::cli::connections::Connections;
-use crate::cli::credential_definition::CredentialDefinition;
 use crate::cli::credential_definition::CredentialDefinitionConfig;
+use crate::cli::credential_definition::{CredentialDefinition, CredentialDefinitions};
 use crate::cli::features::Features;
 use crate::cli::invite::Invitation;
 use crate::cli::invite::InvitationConfig;
@@ -25,6 +25,14 @@ pub struct HttpAgent {
     pub api_key: Option<String>,
 }
 
+// TODO: remove access slashes
+//       macroify
+/// Creates an url from an array
+fn create_url(arr: Vec<&str>) -> Url {
+    let url = arr.join("/");
+    reqwest::Url::parse(&url).unwrap()
+}
+
 /// All the available endpoints
 struct Endpoint;
 
@@ -32,60 +40,39 @@ struct Endpoint;
 impl Endpoint {
     /// base + connections
     fn connections(url: &str) -> Url {
-        reqwest::Url::parse(url)
-            .unwrap_or_else(|_| panic!("Could not parse {}", url))
-            .join("connections")
-            .unwrap_or_else(|_| panic!("Could not join on connections"))
+        create_url(vec![url, "connections"])
     }
     /// base + connections + :id
     fn get_connection_by_id(url: &str, id: &str) -> Url {
-        Endpoint::connections(url)
-            .join(id)
-            .unwrap_or_else(|_| panic!("Could not join on {}", id))
+        create_url(vec![url, "connections", id])
     }
     /// base + connections + create-invitation
     fn create_invitation(url: &str) -> Url {
-        Endpoint::connections(url)
-            .join("create-invitation")
-            .unwrap_or_else(|_| panic!("Could not join on create-invitation"))
+        create_url(vec![url, "connections", "create-invitation"])
     }
     /// base + features
     fn discover_features(url: &str) -> Url {
-        reqwest::Url::parse(url)
-            .unwrap_or_else(|_| panic!("Could not parse {}", url))
-            .join("features")
-            .unwrap_or_else(|_| panic!("Could not join on features"))
+        create_url(vec![url, "features"])
     }
     /// base + connections + :id + send-message
     fn basic_message(url: &str, id: &str) -> Url {
-        Endpoint::connections(url)
-            .join(id)
-            .unwrap_or_else(|_| panic!("Could not join on {}", id))
-            .join("send-message")
-            .unwrap_or_else(|_| panic!("Could not join on send-message"))
+        create_url(vec![url, "connections", id, "send-message"])
     }
     /// base + issue-credential + send-offer
     fn credential_offer(url: &str) -> Url {
-        reqwest::Url::parse(url)
-            .unwrap_or_else(|_| panic!("Could not parse {}", url))
-            .join("issue-credential")
-            .unwrap_or_else(|_| panic!("Could not join on issue-credential"))
-            .join("send-offer")
-            .unwrap_or_else(|_| panic!("Could not join on send-offer"))
+        create_url(vec![url, "issue-credential", "send-offer"])
     }
     /// base + schemas
     fn schema(url: &str) -> Url {
-        reqwest::Url::parse(url)
-            .unwrap_or_else(|_| panic!("Could not parse {}", url))
-            .join("schemas")
-            .unwrap_or_else(|_| panic!("Could not join on schemas"))
+        create_url(vec![url, "schemas"])
     }
     /// base + credential-definitions
     fn credential_definition(url: &str) -> Url {
-        reqwest::Url::parse(url)
-            .unwrap_or_else(|_| panic!("Could not parse {}", url))
-            .join("credential-definitions")
-            .unwrap_or_else(|_| panic!("Could not join on credential-definitions"))
+        create_url(vec![url, "credential-definitions"])
+    }
+    /// base + credential-definitions
+    fn credential_definition_created(url: &str) -> Url {
+        create_url(vec![url, "credential-definitions", "created"])
     }
 }
 
@@ -217,5 +204,10 @@ impl Agent for HttpAgent {
             Some(body),
         )
         .await
+    }
+
+    async fn credential_definitions(&self) -> CredentialDefinitions {
+        self.get::<CredentialDefinitions>(Endpoint::credential_definition_created(&self.url), None)
+            .await
     }
 }
