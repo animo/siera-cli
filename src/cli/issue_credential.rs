@@ -1,12 +1,10 @@
-use std::iter::zip;
-
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
 use serde::Serialize;
 use serde_json::{json, Value};
+use std::iter::zip;
 
 /// Type of the issue credential configuration as received by the cli
 #[derive(Debug, Serialize)]
@@ -30,7 +28,7 @@ impl Module<IssueCredentialConfig> for CredentialsModule {
     async fn run(agent: &dyn Agent, config: IssueCredentialConfig) {
         let credential = agent.credential(&config).await;
 
-        Log::log_pretty(credential);
+        agent.logger().log_pretty(credential);
     }
 
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {

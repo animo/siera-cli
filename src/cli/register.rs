@@ -6,10 +6,12 @@ use super::issue_credential::CredentialsModule;
 use super::message::MessagesModule;
 use super::schema::SchemaModule;
 use crate::agent::agents::Agent;
+use crate::agent::agents::BaseAgent;
 use crate::agent::agents::HttpAgentExtended;
 use crate::agent::http_agent::HttpAgent;
 use crate::error::{throw, Error};
 use crate::utils::config;
+use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::{App, ArgMatches};
 
@@ -56,7 +58,19 @@ pub async fn register_cli() {
         Some(api_key) => Some(api_key.to_string()),
         None => api_key_from_config,
     };
+
+    // Wether the output of the command should be copied to the users buffer
+    let should_copy = matches.is_present("copy");
+    let logger = Log { should_copy };
+
+    // Base agent instance
+    let base_agent = BaseAgent { logger };
+
+    // TODO: this should be configurable to support more types of agents
+    // e.g. aca-py, afj, non-couldagents
+    // Http agent instance
     let agent = HttpAgent {
+        base_agent,
         url: endpoint,
         api_key,
     };

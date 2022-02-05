@@ -1,6 +1,5 @@
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
 use colored::Colorize;
@@ -23,7 +22,7 @@ impl Module<MessageConfig> for MessagesModule {
     async fn run(agent: &dyn Agent, config: MessageConfig) {
         agent.send_message(&config).await;
 
-        Log::log(&format!(
+        agent.logger().log(&format!(
             "Sent \"{}\" to {}!",
             config.message.bright_purple(),
             config.connection_id.cyan()

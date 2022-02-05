@@ -1,6 +1,5 @@
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
 use serde::{Deserialize, Serialize};
@@ -74,18 +73,11 @@ pub struct ConnectionsModule;
 #[async_trait(?Send)]
 impl Module<ConnectionsConfig> for ConnectionsModule {
     async fn run(agent: &dyn Agent, config: ConnectionsConfig) {
-        match config.connection_id {
-            Some(id) => {
-                let connection = agent.get_connection_by_id(id).await;
-
-                Log::log_pretty(connection);
-            }
-            None => {
-                let connections = agent.get_connections(config.alias).await.results;
-
-                Log::log_pretty(connections);
-            }
+        let output = match config.connection_id {
+            Some(id) => vec![agent.get_connection_by_id(id).await],
+            None => agent.get_connections(config.alias).await.results,
         };
+        agent.logger().log_pretty(output);
     }
 
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {
