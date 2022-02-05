@@ -29,7 +29,7 @@ impl Log {
     /// Generic CLI logger
     pub fn log(&self, string: impl AsRef<str>) {
         if !self.suppress_output {
-            println!("{}", string.as_ref());
+            print!("{}", string.as_ref());
         }
         if self.should_copy {
             self.copy_to_buffer(string);
