@@ -7,6 +7,9 @@ use serde::Serialize;
 pub struct Log {
     /// Wether it should copy the output to a buffer
     pub should_copy: bool,
+
+    /// Wether it should suppress the output to the ClI
+    pub suppress_output: bool,
 }
 
 impl Log {
@@ -25,8 +28,9 @@ impl Log {
 
     /// Generic CLI logger
     pub fn log(&self, string: impl AsRef<str>) {
-        println!("{}", string.as_ref());
-
+        if !self.suppress_output {
+            println!("{}", string.as_ref());
+        }
         if self.should_copy {
             self.copy_to_buffer(string);
         }
