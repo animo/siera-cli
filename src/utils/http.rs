@@ -54,7 +54,10 @@ impl HttpCalls for HttpAgent {
 
     /// Sends any request
     async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> T {
-        let logger = Log { should_copy: false };
+        let logger = Log {
+            should_copy: false,
+            suppress_output: false,
+        };
         let client = match &self.api_key {
             Some(a) => client.header("X-API-KEY", a),
             None => client,

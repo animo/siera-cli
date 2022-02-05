@@ -61,7 +61,15 @@ pub async fn register_cli() {
 
     // Wether the output of the command should be copied to the users buffer
     let should_copy = matches.is_present("copy");
-    let logger = Log { should_copy };
+
+    // Suppresses output the cli
+    let suppress_output = matches.is_present("suppress-output");
+
+    // Instantiate the agent logger
+    let logger = Log {
+        should_copy,
+        suppress_output,
+    };
 
     // Base agent instance
     let base_agent = BaseAgent { logger };

@@ -20,7 +20,11 @@ pub enum Error {
 
 /// Error handler for enum type
 pub fn throw(error: Error) -> ! {
-    let logger = Log { should_copy: false };
+    let logger = Log {
+        should_copy: false,
+        suppress_output: false,
+    };
+
     match error {
         Error::NoSuppliedEndpoint => logger.error("No Endpoint Supplied"),
         Error::AuthenticationFailed => logger.error("Authentication Failed"),
@@ -34,6 +38,9 @@ pub fn throw(error: Error) -> ! {
 
 /// Error handler for Error type
 pub fn throw_from_http(error: reqwest::Error) -> ! {
-    let logger = Log { should_copy: false };
+    let logger = Log {
+        should_copy: false,
+        suppress_output: false,
+    };
     logger.error(&error.to_string());
 }
