@@ -1,6 +1,5 @@
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::utils::logger::Log;
 use crate::utils::qr;
 use async_trait::async_trait;
 use clap::ArgMatches;
@@ -53,7 +52,7 @@ impl Module<InvitationConfig> for InvitationsModule {
         if config.qr {
             qr::print_qr_code(&invitation.invitation_url);
         } else {
-            Log::log(&invitation.invitation_url);
+            agent.logger().log(&invitation.invitation_url);
         }
     }
 

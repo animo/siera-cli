@@ -10,11 +10,22 @@ use crate::cli::issue_credential::IssueCredentialConfig;
 use crate::cli::message::MessageConfig;
 use crate::cli::schema::Schema;
 use crate::cli::schema::SchemaConfig;
+use crate::utils::logger::Log;
 use async_trait::async_trait;
 
-/// base cloudagent functionality
+/// Base agent structure
+#[derive(Clone, Debug)]
+pub struct BaseAgent {
+    /// Agent logger
+    pub logger: Log,
+}
+
+/// Base agent functionality
 #[async_trait]
 pub trait Agent {
+    /// returns the agent logger
+    fn logger(&self) -> Log;
+
     /// Gets all the connections
     async fn get_connections(&self, filter: Option<String>) -> Connections;
 
@@ -50,7 +61,7 @@ pub trait Agent {
 #[async_trait]
 pub trait HttpAgentExtended {
     /// New http agent instance
-    fn new(endpoint: String, api_key: Option<String>) -> Self;
+    fn new(base_agent: BaseAgent, endpoint: String, api_key: Option<String>) -> Self;
 
     /// Check if the endpoint is valid
     async fn check_endpoint(&self) -> ();

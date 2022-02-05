@@ -16,6 +16,10 @@ args:
         short: k
         long: apikey
         takes_value: true
+    - copy:
+        help: Copies any output to your OS buffer
+        short: c
+        long: copy
 
 # Subcommands
 subcommands: 

@@ -1,6 +1,5 @@
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
 use serde::{Deserialize, Serialize};
@@ -21,7 +20,7 @@ pub struct FeaturesModule;
 impl Module<()> for FeaturesModule {
     async fn run(agent: &dyn Agent, _: ()) {
         let features = agent.discover_features().await;
-        Log::log_list(features.results.values().map(|x| x.to_string()).collect());
+        agent.logger().log_list(features.results.keys().collect());
     }
 
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {

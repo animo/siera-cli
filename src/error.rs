@@ -20,10 +20,11 @@ pub enum Error {
 
 /// Error handler for enum type
 pub fn throw(error: Error) -> ! {
+    let logger = Log { should_copy: false };
     match error {
-        Error::NoSuppliedEndpoint => Log::error("No Endpoint Supplied"),
-        Error::AuthenticationFailed => Log::error("Authentication Failed"),
-        Error::ServerResponseParseError => Log::error("Unable to parse response from server"),
+        Error::NoSuppliedEndpoint => logger.error("No Endpoint Supplied"),
+        Error::AuthenticationFailed => logger.error("Authentication Failed"),
+        Error::ServerResponseParseError => logger.error("Unable to parse response from server"),
         //Error::UnknownServerError => {
         //Log::error("Something went wrong while trying to reach the agent")
         //}
@@ -33,5 +34,6 @@ pub fn throw(error: Error) -> ! {
 
 /// Error handler for Error type
 pub fn throw_from_http(error: reqwest::Error) -> ! {
-    Log::error(&error.to_string());
+    let logger = Log { should_copy: false };
+    logger.error(&error.to_string());
 }

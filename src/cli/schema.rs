@@ -1,9 +1,8 @@
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use serde_json::Value;
 
 /// Type of the schema configuration as received by the cli
@@ -43,7 +42,7 @@ pub struct SchemaModule;
 impl Module<SchemaConfig> for SchemaModule {
     async fn run(agent: &dyn Agent, config: SchemaConfig) {
         let schema = agent.schema(&config).await;
-        Log::log(&schema.sent.schema_id);
+        agent.logger().log(&schema.sent.schema_id);
     }
 
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {

@@ -54,6 +54,7 @@ impl HttpCalls for HttpAgent {
 
     /// Sends any request
     async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> T {
+        let logger = Log { should_copy: false };
         let client = match &self.api_key {
             Some(a) => client.header("X-API-KEY", a),
             None => client,
@@ -74,7 +75,7 @@ impl HttpCalls for HttpAgent {
                 } else if res.status().as_str() == "401" {
                     throw(Error::AuthenticationFailed)
                 }
-                Log::error(&res.text().await.unwrap());
+                logger.error(&res.text().await.unwrap());
             }
             Err(e) => throw_from_http(e),
         }

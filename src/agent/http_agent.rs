@@ -11,13 +11,19 @@ use crate::cli::message::MessageConfig;
 use crate::cli::schema::Schema;
 use crate::cli::schema::SchemaConfig;
 use crate::utils::http::HttpCalls;
+use crate::utils::logger::Log;
 use async_trait::async_trait;
 use reqwest::Url;
 use serde_json::{json, Value};
 
+use super::agents::BaseAgent;
+
 /// HTTP cloudagent
 #[derive(Debug, Clone)]
 pub struct HttpAgent {
+    /// Base agent for generic data
+    pub base_agent: BaseAgent,
+
     /// base url of the cloudagent
     pub url: String,
 
@@ -78,8 +84,9 @@ impl Endpoint {
 
 #[async_trait]
 impl HttpAgentExtended for HttpAgent {
-    fn new(endpoint: String, api_key: Option<String>) -> Self {
+    fn new(base_agent: BaseAgent, endpoint: String, api_key: Option<String>) -> Self {
         HttpAgent {
+            base_agent,
             url: endpoint,
             api_key,
         }
@@ -94,6 +101,11 @@ impl HttpAgentExtended for HttpAgent {
 
 #[async_trait]
 impl Agent for HttpAgent {
+    /// Function to log the output
+    fn logger(&self) -> Log {
+        self.base_agent.logger
+    }
+
     /// Gets all the connections
     async fn get_connections(&self, filter: Option<String>) -> Connections {
         let mut query: Vec<(&str, String)> = vec![];

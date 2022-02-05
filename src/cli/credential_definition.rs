@@ -1,6 +1,5 @@
 use super::register::Module;
 use crate::agent::agents::Agent;
-use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::ArgMatches;
 use serde::{Deserialize, Serialize};
@@ -42,16 +41,22 @@ pub struct CredentialDefinitionModule;
 #[async_trait(?Send)]
 impl Module<CredentialDefinitionConfig> for CredentialDefinitionModule {
     async fn run(agent: &dyn Agent, config: CredentialDefinitionConfig) {
-        match config.schema_id {
-            Some(_) => {
-                let credential_definition = agent.credential_definition(&config).await;
-                Log::log(&credential_definition.sent.credential_definition_id);
-            }
+        let output = match config.schema_id {
+            Some(_) => vec![
+                agent
+                    .credential_definition(&config)
+                    .await
+                    .sent
+                    .credential_definition_id,
+            ],
             None => {
-                let credential_definitions = agent.credential_definitions().await;
-                Log::log_list(credential_definitions.credential_definition_ids)
+                agent
+                    .credential_definitions()
+                    .await
+                    .credential_definition_ids
             }
-        }
+        };
+        agent.logger().log_pretty(output);
     }
 
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {
