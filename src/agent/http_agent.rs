@@ -1,6 +1,6 @@
 use crate::agent::agents::{Agent, HttpAgentExtended};
-use crate::cli::connections::Connection;
 use crate::cli::connections::Connections;
+use crate::cli::connections::{Connection, ConnectionsConfig};
 use crate::cli::credential_definition::CredentialDefinitionConfig;
 use crate::cli::credential_definition::{CredentialDefinition, CredentialDefinitions};
 use crate::cli::features::Features;
@@ -107,11 +107,31 @@ impl Agent for HttpAgent {
     }
 
     /// Gets all the connections
-    async fn get_connections(&self, filter: Option<String>) -> Connections {
+    async fn get_connections(&self, filter: ConnectionsConfig) -> Connections {
         let mut query: Vec<(&str, String)> = vec![];
 
-        if let Some(alias) = filter {
-            query.push(("alias", alias));
+        if let Some(alias) = filter.alias {
+            query.push(("alias", alias))
+        }
+
+        if let Some(invitation_key) = filter.invitation_key {
+            query.push(("invitation_key", invitation_key))
+        }
+
+        if let Some(my_did) = filter.my_did {
+            query.push(("my_did", my_did))
+        }
+
+        if let Some(their_did) = filter.their_did {
+            query.push(("their_did", their_did))
+        }
+
+        if let Some(their_role) = filter.their_role {
+            query.push(("their_role", their_role))
+        }
+
+        if let Some(state) = filter.state {
+            query.push(("state", state))
         }
 
         self.get::<Connections>(Endpoint::connections(&self.url), Some(query))

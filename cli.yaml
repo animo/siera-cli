@@ -56,15 +56,40 @@ subcommands:
       about: Connections subcommand
       version: "0.1.0"
       args:
-          - id:
-              help: Connection id
+          - connection-id:
+              help: Get a connection by id 
               short: i
               long: connection-id
               takes_value: true
           - alias:
-              help: Filter on alias
+              help: Filter based on the alias
               short: a
               long: alias
+              takes_value: true
+          - invitation-key:
+              help: Filter based on the invitation key
+              short: k
+              long: invitation-key
+              takes_value: true
+          - my-did:
+              help: Filter based on your did
+              short: m
+              long: my-did
+              takes_value: true
+          - their-did:
+              help: Filter based on their did
+              short: t
+              long: their-did
+              takes_value: true
+          - state:
+              help: Filter based on a state
+              short: s
+              long: state
+              takes_value: true
+          - their-role:
+              help: Filter based on their role
+              short: r
+              long: their-role
               takes_value: true
   - features:
       about: Discover features subcommand

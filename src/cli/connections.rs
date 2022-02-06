@@ -12,12 +12,29 @@ pub struct Connections {
 }
 
 /// Type of the connections configuration as received by the cli
+#[derive(Debug)]
 pub struct ConnectionsConfig {
-    /// Filter connections by this alias
+    /// Filter based on the alias
     pub alias: Option<String>,
 
     /// Get a connection by this id
     pub connection_id: Option<String>,
+
+    /// Filter based on the invitation key
+    pub invitation_key: Option<String>,
+
+    /// Filter based on your did
+    pub my_did: Option<String>,
+
+    /// Filter based on their did
+    pub their_did: Option<String>,
+
+    // TODO: enum
+    /// Filter based on the state
+    pub state: Option<String>,
+
+    /// Filter based on their role
+    pub their_role: Option<String>,
 }
 
 /// Type of a single received connection
@@ -73,26 +90,53 @@ pub struct ConnectionsModule;
 #[async_trait(?Send)]
 impl Module<ConnectionsConfig> for ConnectionsModule {
     async fn run(agent: &dyn Agent, config: ConnectionsConfig) {
-        let output = match config.connection_id {
-            Some(id) => vec![agent.get_connection_by_id(id).await],
-            None => agent.get_connections(config.alias).await.results,
+        let logger = agent.logger();
+        match config.connection_id {
+            Some(id) => {
+                let connection = agent.get_connection_by_id(id).await;
+                logger.log_pretty(connection);
+            }
+            None => {
+                let connections = agent.get_connections(config).await.results;
+                logger.log_list_pretty(connections);
+            }
         };
-        agent.logger().log_pretty(output);
     }
 
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {
         if let Some(matches_connections) = matches.subcommand_matches("connections") {
             let connection_id = matches_connections
                 .value_of("connection-id")
-                .map(|id| id.to_string());
+                .map(|x| x.to_string());
 
-            let alias = matches_connections
-                .value_of("alias")
-                .map(|alias| alias.to_string());
+            let alias = matches_connections.value_of("alias").map(|x| x.to_string());
+
+            let invitation_key = matches_connections
+                .value_of("invitation-key")
+                .map(|x| x.to_string());
+
+            let my_did = matches_connections
+                .value_of("my-did")
+                .map(|x| x.to_string());
+
+            let their_did = matches_connections
+                .value_of("their-did")
+                .map(|x| x.to_string());
+
+            let their_role = matches_connections
+                .value_of("their_role")
+                .map(|x| x.to_string());
+
+            let state = matches_connections.value_of("state").map(|x| x.to_string());
 
             let config = ConnectionsConfig {
                 connection_id,
                 alias,
+                invitation_key,
+                my_did,
+                their_did,
+                state,
+                their_role,
             };
 
             ConnectionsModule::run(agent, config).await;

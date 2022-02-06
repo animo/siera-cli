@@ -1,5 +1,6 @@
 use crate::cli::connections::Connection;
 use crate::cli::connections::Connections;
+use crate::cli::connections::ConnectionsConfig;
 use crate::cli::credential_definition::CredentialDefinition;
 use crate::cli::credential_definition::CredentialDefinitionConfig;
 use crate::cli::credential_definition::CredentialDefinitions;
@@ -27,7 +28,7 @@ pub trait Agent {
     fn logger(&self) -> Log;
 
     /// Gets all the connections
-    async fn get_connections(&self, filter: Option<String>) -> Connections;
+    async fn get_connections(&self, filter: ConnectionsConfig) -> Connections;
 
     /// Get a connection by id
     async fn get_connection_by_id(&self, id: String) -> Connection;
