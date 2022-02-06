@@ -29,7 +29,7 @@ impl Log {
     /// Generic CLI logger
     pub fn log(&self, string: impl AsRef<str>) {
         if !self.suppress_output {
-            print!("{}", string.as_ref());
+            println!("{}", string.as_ref());
         }
         if self.should_copy {
             self.copy_to_buffer(string);
@@ -39,6 +39,11 @@ impl Log {
     /// Logs a list via the generic CLI logger
     pub fn log_list(&self, list: Vec<impl AsRef<str>>) {
         list.iter().for_each(|x| self.log(x));
+    }
+
+    /// Logs a list to the CLI with every output being pretty-printed
+    pub fn log_list_pretty(&self, list: Vec<impl Serialize>) {
+        list.iter().for_each(|x| self.log_pretty(x));
     }
 
     /// Log messages that broke the program
