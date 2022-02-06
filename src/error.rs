@@ -6,15 +6,6 @@ pub enum Error {
     /// supplied path, or the ARG
     NoSuppliedEndpoint,
 
-    /// Response from the server could not be parsed
-    ServerResponseParseError,
-
-    /// Someting went wrong while sending the request
-    //UnknownServerError,
-
-    /// Something went wrong on the server-side
-    //InternalServerError,
-
     /// Could not authenticate
     AuthenticationFailed,
 
@@ -32,12 +23,7 @@ pub fn throw(error: Error) -> ! {
     match error {
         Error::NoSuppliedEndpoint => logger.error("No Endpoint Supplied"),
         Error::AuthenticationFailed => logger.error("Authentication Failed"),
-        Error::ServerResponseParseError => logger.error("Unable to parse response from server"),
         Error::InvalidConfigPath => logger.error("Supplied config path does not exist"),
-        //Error::UnknownServerError => {
-        //Log::error("Something went wrong while trying to reach the agent")
-        //}
-        //Error::InternalServerError => Log::error("Internal Server Error"),
     }
 }
 

@@ -17,6 +17,9 @@ pub struct IssueCredentialConfig {
 
     /// The attributes for the credential
     pub attributes: Vec<Value>,
+
+    /// Whether it should display the full output
+    pub full_output: bool,
 }
 
 /// Credentials module for the agent
@@ -26,9 +29,14 @@ pub struct CredentialsModule;
 #[async_trait(?Send)]
 impl Module<IssueCredentialConfig> for CredentialsModule {
     async fn run(agent: &dyn Agent, config: IssueCredentialConfig) {
+        let logger = agent.logger();
         let credential = agent.credential(&config).await;
 
-        agent.logger().log_pretty(credential);
+        logger.log("Credential has been offered!");
+
+        if config.full_output {
+            logger.log_pretty(credential);
+        }
     }
 
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>) {
@@ -36,6 +44,7 @@ impl Module<IssueCredentialConfig> for CredentialsModule {
             // We can use unwrap here because these values are required by the cli
             let keys: Vec<&str> = matches_connections.values_of("key").unwrap().collect();
             let values: Vec<&str> = matches_connections.values_of("value").unwrap().collect();
+            let full_output = matches_connections.is_present("full-output");
             let connection_id = matches_connections
                 .value_of("connection-id")
                 .unwrap()
@@ -51,6 +60,7 @@ impl Module<IssueCredentialConfig> for CredentialsModule {
             }
 
             let config = IssueCredentialConfig {
+                full_output,
                 connection_id,
                 credential_definition_id,
                 attributes,

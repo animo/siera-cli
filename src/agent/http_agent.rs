@@ -195,7 +195,7 @@ impl Agent for HttpAgent {
         .await;
     }
 
-    async fn credential(&self, config: &IssueCredentialConfig) {
+    async fn credential(&self, config: &IssueCredentialConfig) -> Value {
         let body = json!({
           "connection_id": config.connection_id,
           "cred_def_id": config.credential_definition_id,
@@ -206,7 +206,7 @@ impl Agent for HttpAgent {
         });
 
         self.post::<Value>(Endpoint::credential_offer(&self.url), None, Some(body))
-            .await;
+            .await
     }
 
     async fn schema(&self, config: &SchemaConfig) -> Schema {

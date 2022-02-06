@@ -71,7 +71,7 @@ pub async fn register_cli() {
         None => api_key_from_config,
     };
 
-    // Wether the output of the command should be copied to the users buffer
+    // Whether the output of the command should be copied to the users buffer
     let should_copy = matches.is_present("copy");
 
     // Suppresses output the cli
