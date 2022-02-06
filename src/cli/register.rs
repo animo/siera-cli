@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use super::connections::ConnectionsModule;
 use super::credential_definition::CredentialDefinitionModule;
 use super::features::FeaturesModule;
@@ -37,11 +39,21 @@ pub async fn register_cli() {
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .get_matches();
 
-    // Takes a path, but prepends the home directory... kinda sketchy
-    let endpoint_from_config = config::get_value("/.config/acl/ex.ini", "Default", "endpoint");
+    // TODO: use `path`
+    let mut default_path = std::env::var("HOME").unwrap();
+    default_path.push_str("/.config/acl/ex.ini");
+
+    let config_path = matches.value_of("config").unwrap_or(&default_path);
+
+    if !Path::new(config_path).exists() {
+        throw(Error::InvalidConfigPath);
+    }
 
     // Takes a path, but prepends the home directory... kinda sketchy
-    let api_key_from_config = config::get_value("/.config/acl/ex.ini", "Default", "api_key");
+    let endpoint_from_config = config::get_value(config_path, "Default", "endpoint");
+
+    // Takes a path, but prepends the home directory... kinda sketchy
+    let api_key_from_config = config::get_value(config_path, "Default", "api_key");
 
     // Get the endpoint when you supply an endpoint
     let endpoint = match matches.value_of("endpoint") {
