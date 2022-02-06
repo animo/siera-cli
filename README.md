@@ -16,7 +16,7 @@ cargo run -- -e=XXX invite --qr
 
 ## Info
 
-The binary that is build via `cargo build` is called: 'accf'.
+The binary that is build via `cargo build` is called: `acl`.
 
 ## usage
 
