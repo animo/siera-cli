@@ -130,7 +130,7 @@ subcommands:
       version: "0.1.0"
       args:
           - full-output:
-              help: Whether it should display the full credential outpu
+              help: Whether it should display the full credential output
               short: o
               long: full-output
           - connection-id:
