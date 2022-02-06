@@ -40,10 +40,12 @@ subcommands:
               help: Whether the invitation should be auto-accepted
               short: a
               long: auto-accept
+              conflicts_with: toolbox
           - multi-use:
               help: Whether the invitation should be multi-use
               short: m
               long: multi-use
+              conflicts_with: toolbox
           - toolbox:
               help: Whether it should create a default toolbox invitation
               short: t
@@ -52,11 +54,13 @@ subcommands:
               help: Whether it should display a qr code
               short: q
               long: qr
+              conflicts_with: toolbox
           - alias:
               help: Alias for the connection
               short: l
               long: alias
               takes_value: true
+              conflicts_with: toolbox
   - connections:
       about: Connections subcommand
       version: "0.1.0"
@@ -71,31 +75,37 @@ subcommands:
               short: a
               long: alias
               takes_value: true
+              conflicts_with: connection-id
           - invitation-key:
               help: Filter based on the invitation key
               short: k
               long: invitation-key
               takes_value: true
+              conflicts_with: connection-id
           - my-did:
               help: Filter based on your did
               short: m
               long: my-did
               takes_value: true
+              conflicts_with: connection-id
           - their-did:
               help: Filter based on their did
               short: t
               long: their-did
               takes_value: true
+              conflicts_with: connection-id
           - state:
               help: Filter based on a state
               short: s
               long: state
               takes_value: true
+              conflicts_with: connection-id
           - their-role:
               help: Filter based on their role
               short: r
               long: their-role
               takes_value: true
+              conflicts_with: connection-id
   - features:
       about: Discover features subcommand
       version: "0.1.0"
@@ -119,6 +129,10 @@ subcommands:
       about: Issue credentials subcommand
       version: "0.1.0"
       args:
+          - full-output:
+              help: Whether it should display the full credential outpu
+              short: o
+              long: full-output
           - connection-id:
               help: Connection id
               short: i
@@ -128,7 +142,7 @@ subcommands:
           - credential-definition-id:
               help: Credential definition id
               short: d
-              long: cred-def-id
+              long: credential-definition-id
               required: true
               takes_value: true
           - key:

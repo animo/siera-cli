@@ -1,4 +1,3 @@
 #!/usr/bin/env sh
 
-# Get the alias of the first connection and then get every connection with that alias
-acl connections | jq '.[0].alias' | xargs acl connections --alias
+acl issue-credential --full-output --connection-id $(acl connections | jq -r '.[0].connection_id') --credential-definition-id $(acl credential-definition | jq -r '.[0]') --key leeftijd --value 10 --key naam --value bob

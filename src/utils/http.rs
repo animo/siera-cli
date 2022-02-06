@@ -70,10 +70,7 @@ impl HttpCalls for HttpAgent {
                 if res.status().is_success() {
                     return match res.json::<T>().await {
                         Ok(parsed) => parsed,
-                        Err(e) => {
-                            println!("{:?}", e);
-                            throw(Error::ServerResponseParseError);
-                        }
+                        Err(e) => logger.error(format!("{:?}", e)),
                     };
                 } else if res.status().as_str() == "401" {
                     throw(Error::AuthenticationFailed)

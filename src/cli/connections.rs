@@ -98,7 +98,7 @@ impl Module<ConnectionsConfig> for ConnectionsModule {
             }
             None => {
                 let connections = agent.get_connections(config).await.results;
-                logger.log_list_pretty(connections);
+                logger.log_pretty(connections);
             }
         };
     }

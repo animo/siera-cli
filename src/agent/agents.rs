@@ -13,6 +13,7 @@ use crate::cli::schema::Schema;
 use crate::cli::schema::SchemaConfig;
 use crate::utils::logger::Log;
 use async_trait::async_trait;
+use serde_json::Value;
 
 /// Base agent structure
 #[derive(Clone, Debug)]
@@ -43,7 +44,7 @@ pub trait Agent {
     async fn send_message(&self, config: &MessageConfig);
 
     /// Offer a credential to another agent
-    async fn credential(&self, config: &IssueCredentialConfig);
+    async fn credential(&self, config: &IssueCredentialConfig) -> Value;
 
     /// Create schema at a ledger
     async fn schema(&self, config: &SchemaConfig) -> Schema;

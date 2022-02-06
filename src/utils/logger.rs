@@ -5,10 +5,10 @@ use serde::Serialize;
 /// Logger struct that allows us access to stdout and stderr
 #[derive(Clone, Copy, Debug)]
 pub struct Log {
-    /// Wether it should copy the output to a buffer
+    /// Whether it should copy the output to a buffer
     pub should_copy: bool,
 
-    /// Wether it should suppress the output to the ClI
+    /// Whether it should suppress the output to the ClI
     pub suppress_output: bool,
 }
 
@@ -39,11 +39,6 @@ impl Log {
     /// Logs a list via the generic CLI logger
     pub fn log_list(&self, list: Vec<impl AsRef<str>>) {
         list.iter().for_each(|x| self.log(x));
-    }
-
-    /// Logs a list to the CLI with every output being pretty-printed
-    pub fn log_list_pretty(&self, list: Vec<impl Serialize>) {
-        list.iter().for_each(|x| self.log_pretty(x));
     }
 
     /// Log messages that broke the program
