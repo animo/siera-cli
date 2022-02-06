@@ -24,6 +24,11 @@ args:
         help: Suppresses the output to the CLI
         short: s
         long: suppress-output
+    - config:
+        help: Config file for the CLI
+        short: o
+        long: config
+        takes_value: true
 
 # Subcommands
 subcommands: 
