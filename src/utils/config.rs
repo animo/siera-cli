@@ -2,12 +2,7 @@ use ini::{Ini, Properties};
 
 /// Load a config file and ignore errors as we will just fall back on the option provided
 fn load(path: &str) -> Option<Ini> {
-    let cfg = Ini::load_from_file(path);
-
-    match cfg {
-        Ok(c) => Some(c),
-        _ => None,
-    }
+    Ini::load_from_file(path).ok()
 }
 
 /// Get a section in the config file
