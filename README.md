@@ -63,6 +63,8 @@ cargo install --path .
 To see the complete functionality use the `--help` or `-h` flag.
 Each individual subcommand also has the `--help` flag, e.g. `acl features --help`.
 
+It is also important to note that you do not have to supply an endpoint with every call. You can create a file called at `$HOME/.config/acl/config.ini` and paste the `./example/example.ini` in there. This will allow you to set a default agent and api-key if the cloudagent requires this.
+
 ```
 acl --help
 
