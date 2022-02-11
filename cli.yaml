@@ -7,7 +7,7 @@ settings:
 # Main command flags
 args:
     - endpoint:
-        help: Required url of the cloudagent
+        help: Url of the cloudagent
         short: e
         long: endpoint
         takes_value: true

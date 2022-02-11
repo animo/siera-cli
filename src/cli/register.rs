@@ -41,18 +41,12 @@ pub async fn register_cli() {
 
     // TODO: use `path`
     let mut default_path = std::env::var("HOME").unwrap();
-    default_path.push_str("/.config/acl/config.ini");
+    default_path.push_str("/.config/aries-cli/config.ini");
 
     let config_path = matches.value_of("config").unwrap_or(&default_path);
 
-    if !Path::new(config_path).exists() {
-        throw(Error::InvalidConfigPath);
-    }
-
-    // Takes a path, but prepends the home directory... kinda sketchy
     let endpoint_from_config = config::get_value(config_path, "Default", "endpoint");
 
-    // Takes a path, but prepends the home directory... kinda sketchy
     let api_key_from_config = config::get_value(config_path, "Default", "api-key");
 
     // Get the endpoint when you supply an endpoint

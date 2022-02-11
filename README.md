@@ -61,19 +61,19 @@ cargo install --path .
 ## Usage
 
 To see the complete functionality use the `--help` or `-h` flag.
-Each individual subcommand also has the `--help` flag, e.g. `acl features --help`.
+Each individual subcommand also has the `--help` flag, e.g. `aries-cli features --help`.
 
-It is also important to note that you do not have to supply an endpoint with every call. You can create a file called at `$HOME/.config/acl/config.ini` and paste the `./example/example.ini` in there. This will allow you to set a default agent and api-key if the cloudagent requires this.
+It is also important to note that you do not have to supply an endpoint with every call. You can create a file called at `$HOME/.config/aries-cli/config.ini` and paste the `./example/example.ini` in there. This will allow you to set a default agent and api-key if the cloudagent requires this.
 
 ```
-acl --help
+aries-cli --help
 
 Aries CLI 0.1.0
 Animo Solutions
 A simple Aries Cloudagent Controller
 
 USAGE:
-    acl [FLAGS] [OPTIONS] [SUBCOMMAND]
+    aries-cli [FLAGS] [OPTIONS] [SUBCOMMAND]
 
 FLAGS:
     -c, --copy               Copies any output to your OS buffer
@@ -84,7 +84,7 @@ FLAGS:
 OPTIONS:
     -k, --apikey <apikey>        The admin apikey
     -o, --config <config>        Config file for the CLI
-    -e, --endpoint <endpoint>    Required url of the cloudagent
+    -e, --endpoint <endpoint>    Url of the cloudagent
 
 SUBCOMMANDS:
     connections              Connections subcommand
@@ -105,10 +105,10 @@ Here are some code examples for common use cases.
 ### Creating an invitation for the toolbox
 
 ```sh
-acl -c -s invite -t
+aries-cli -c -s invite -t
 ```
 
-The `-t` flag makes sure the invite has an alias as `Toolbox` and sets auto accept to `true`
+The `-t` flag makes sure the invite has an alias as `Toolbox`, sets auto accept to `true` and adds `{ "metadata": { "group": "admin" } }` to the body
 
 The `-c` flag copies the output to your clipboard so it can easily be pasted in the toolbox
 

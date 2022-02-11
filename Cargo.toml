@@ -12,7 +12,7 @@ categories = ["aries", "cloudagent", "controller", "cli-tool"]
 readme = "README.md"
 
 [[bin]]
-name = "acl"
+name = "aries-cli"
 path = "src/main.rs"
 
 [dependencies]
