@@ -8,7 +8,7 @@ homepage = "https://animo.id"
 edition = "2018"
 repository = "https://github.com/animo/aries-cli"
 keywords = ["aries", "cloudagent", "controller", "cli-tool"]
-categories = ["aries", "cloudagent", "controller", "cli-tool"]
+categories = ["cli"]
 readme = "README.md"
 
 [[bin]]
