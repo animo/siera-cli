@@ -4,7 +4,6 @@ use async_trait::async_trait;
 use clap::ArgMatches;
 use serde::Serialize;
 use serde_json::{json, Value};
-use std::iter::zip;
 
 /// Type of the issue credential configuration as received by the cli
 #[derive(Debug, Serialize)]
@@ -55,7 +54,11 @@ impl Module<IssueCredentialConfig> for CredentialsModule {
                 .to_string();
             let mut attributes = vec![];
 
-            for (key, value) in zip(keys, values) {
+            // Iterate over every key and get the matching value.
+            // iter::zip is an unstable feature and therefore we cannot use this.
+            for (i, _) in keys.iter().enumerate() {
+                let key = keys[i];
+                let value = values[i];
                 attributes.push(json!({"name": key, "value": value}));
             }
 

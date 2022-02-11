@@ -3,7 +3,6 @@
 
 #![allow(clippy::enum_variant_names)]
 #![warn(missing_docs, clippy::missing_docs_in_private_items)]
-#![feature(iter_zip)]
 
 #[macro_use]
 extern crate clap;
