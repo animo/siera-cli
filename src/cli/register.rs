@@ -1,5 +1,3 @@
-use std::path::Path;
-
 use super::connections::ConnectionsModule;
 use super::credential_definition::CredentialDefinitionModule;
 use super::features::FeaturesModule;

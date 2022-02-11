@@ -8,9 +8,6 @@ pub enum Error {
 
     /// Could not authenticate
     AuthenticationFailed,
-
-    /// Supplied config path is invalid
-    InvalidConfigPath,
 }
 
 /// Error handler for enum type
@@ -23,7 +20,6 @@ pub fn throw(error: Error) -> ! {
     match error {
         Error::NoSuppliedEndpoint => logger.error("No Endpoint Supplied"),
         Error::AuthenticationFailed => logger.error("Authentication Failed"),
-        Error::InvalidConfigPath => logger.error("Supplied config path does not exist"),
     }
 }
 
