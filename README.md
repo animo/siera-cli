@@ -38,6 +38,13 @@ echo "Coming soon!"
 
 ### Linux
 
+**Cargo**
+
+```sh
+cargo install aries-cli
+
+```
+
 **Git**
 
 ```sh
