@@ -49,7 +49,7 @@ impl Module<SchemaConfig> for SchemaModule {
         if let Some(matches_schema) = matches.subcommand_matches("schema") {
             let name = matches_schema.value_of("name").unwrap().to_string();
             let version = matches_schema
-                .value_of("schema-version")
+                .value_of("version")
                 .unwrap_or("1.0")
                 .to_string();
             let attributes: Vec<String> = matches_schema

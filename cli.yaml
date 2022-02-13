@@ -1,197 +1,197 @@
 name: Aries CLI
-  
+
 # Application settings
 settings:
-    - ArgRequiredElseHelp
+  - ArgRequiredElseHelp
 
 # Main command flags
 args:
-    - endpoint:
-        help: Url of the cloudagent
-        short: e
-        long: endpoint
-        takes_value: true
-    - apikey:
-        help: The admin apikey
-        short: k
-        long: apikey
-        takes_value: true
-    - copy:
-        help: Copies any output to your OS buffer
-        short: c
-        long: copy
-    - suppress-output:
-        help: Suppresses the output to the CLI
-        short: s
-        long: suppress-output
-    - config:
-        help: Config file for the CLI
-        short: o
-        long: config
-        takes_value: true
+  - endpoint:
+      help: Url of the cloudagent
+      short: e
+      long: endpoint
+      takes_value: true
+  - apikey:
+      help: The admin apikey
+      short: k
+      long: apikey
+      takes_value: true
+  - copy:
+      help: Copies any output to your OS buffer
+      short: c
+      long: copy
+  - suppress-output:
+      help: Suppresses the output to the CLI
+      short: s
+      long: suppress-output
+  - config:
+      help: Config file for the CLI
+      short: o
+      long: config
+      takes_value: true
 
 # Subcommands
-subcommands: 
+subcommands:
   - invite:
       about: Invitations subcommand
-      version: "0.1.0"
+      version: '0.1.0'
       args:
-          - auto-accept:
-              help: Whether the invitation should be auto-accepted
-              short: a
-              long: auto-accept
-              conflicts_with: toolbox
-          - multi-use:
-              help: Whether the invitation should be multi-use
-              short: m
-              long: multi-use
-              conflicts_with: toolbox
-          - toolbox:
-              help: Whether it should create a default toolbox invitation
-              short: t
-              long: toolbox
-          - qr:
-              help: Whether it should display a qr code
-              short: q
-              long: qr
-              conflicts_with: toolbox
-          - alias:
-              help: Alias for the connection
-              short: l
-              long: alias
-              takes_value: true
-              conflicts_with: toolbox
+        - auto-accept:
+            help: Whether the invitation should be auto-accepted
+            short: a
+            long: auto-accept
+            conflicts_with: toolbox
+        - multi-use:
+            help: Whether the invitation should be multi-use
+            short: m
+            long: multi-use
+            conflicts_with: toolbox
+        - toolbox:
+            help: Whether it should create a default toolbox invitation
+            short: t
+            long: toolbox
+        - qr:
+            help: Whether it should display a qr code
+            short: q
+            long: qr
+            conflicts_with: toolbox
+        - alias:
+            help: Alias for the connection
+            short: l
+            long: alias
+            takes_value: true
+            conflicts_with: toolbox
   - connections:
       about: Connections subcommand
-      version: "0.1.0"
+      version: '0.1.0'
       args:
-          - connection-id:
-              help: Get a connection by id 
-              short: i
-              long: connection-id
-              takes_value: true
-          - alias:
-              help: Filter based on the alias
-              short: a
-              long: alias
-              takes_value: true
-              conflicts_with: connection-id
-          - invitation-key:
-              help: Filter based on the invitation key
-              short: k
-              long: invitation-key
-              takes_value: true
-              conflicts_with: connection-id
-          - my-did:
-              help: Filter based on your did
-              short: m
-              long: my-did
-              takes_value: true
-              conflicts_with: connection-id
-          - their-did:
-              help: Filter based on their did
-              short: t
-              long: their-did
-              takes_value: true
-              conflicts_with: connection-id
-          - state:
-              help: Filter based on a state
-              short: s
-              long: state
-              takes_value: true
-              conflicts_with: connection-id
-          - their-role:
-              help: Filter based on their role
-              short: r
-              long: their-role
-              takes_value: true
-              conflicts_with: connection-id
+        - connection-id:
+            help: Get a connection by id
+            short: i
+            long: connection-id
+            takes_value: true
+        - alias:
+            help: Filter based on the alias
+            short: a
+            long: alias
+            takes_value: true
+            conflicts_with: connection-id
+        - invitation-key:
+            help: Filter based on the invitation key
+            short: k
+            long: invitation-key
+            takes_value: true
+            conflicts_with: connection-id
+        - my-did:
+            help: Filter based on your did
+            short: m
+            long: my-did
+            takes_value: true
+            conflicts_with: connection-id
+        - their-did:
+            help: Filter based on their did
+            short: t
+            long: their-did
+            takes_value: true
+            conflicts_with: connection-id
+        - state:
+            help: Filter based on a state
+            short: s
+            long: state
+            takes_value: true
+            conflicts_with: connection-id
+        - their-role:
+            help: Filter based on their role
+            short: r
+            long: their-role
+            takes_value: true
+            conflicts_with: connection-id
   - features:
       about: Discover features subcommand
-      version: "0.1.0"
+      version: '0.1.0'
   - message:
       about: Basic message subcommand
-      version: "0.1.0"
+      version: '0.1.0'
       args:
-          - connection-id:
-              help: Connection id
-              short: i
-              long: connection-id
-              takes_value: true
-              required: true
-          - message:
-              help: Message to send to the connection 
-              short: m
-              long: message
-              takes_value: true
-              required: true
+        - connection-id:
+            help: Connection id
+            short: i
+            long: connection-id
+            takes_value: true
+            required: true
+        - message:
+            help: Message to send to the connection
+            short: m
+            long: message
+            takes_value: true
+            required: true
   - issue-credential:
       about: Issue credentials subcommand
-      version: "0.1.0"
+      version: '0.1.0'
       args:
-          - full-output:
-              help: Whether it should display the full credential output
-              short: o
-              long: full-output
-          - connection-id:
-              help: Connection id
-              short: i
-              long: connection-id
-              required: true
-              takes_value: true
-          - credential-definition-id:
-              help: Credential definition id
-              short: d
-              long: credential-definition-id
-              required: true
-              takes_value: true
-          - key:
-              help: Key
-              short: k
-              long: key
-              required: true
-              takes_value: true
-              multiple: true
-          - value:
-              help: Value
-              short: v
-              long: value
-              required: true
-              takes_value: true
-              multiple: true
+        - full-output:
+            help: Whether it should display the full credential output
+            short: o
+            long: full-output
+        - connection-id:
+            help: Connection id
+            short: i
+            long: connection-id
+            required: true
+            takes_value: true
+        - credential-definition-id:
+            help: Credential definition id
+            short: d
+            long: credential-definition-id
+            required: true
+            takes_value: true
+        - key:
+            help: Key
+            short: k
+            long: key
+            required: true
+            takes_value: true
+            multiple: true
+        - value:
+            help: Value
+            short: v
+            long: value
+            required: true
+            takes_value: true
+            multiple: true
   - schema:
       about: Schema subcommand
-      version: "0.1.0"
+      version: '0.1.0'
       args:
-          - attribute:
-              help: Attribute for the schema
-              short: a
-              long: attribute
-              takes_value: true
-              multiple: true
-              required: true
-          - name:
-              help: Schema name
-              short: n
-              long: name
-              takes_value: true
-              required: true
-          - schema-version:
-              help: Schema version
-              short: v
-              long: schema-version
-              takes_value: true
+        - attribute:
+            help: Attribute for the schema
+            short: a
+            long: attribute
+            takes_value: true
+            multiple: true
+            required: true
+        - name:
+            help: Schema name
+            short: n
+            long: name
+            takes_value: true
+            required: true
+        - version:
+            help: Schema version
+            short: v
+            long: version
+            takes_value: true
   - credential-definition:
       about: Credential definition subcommand
-      version: "1.0.0"
+      version: '1.0.0'
       args:
-          - schema-id:
-              help: Schema id
-              short: i
-              long: schema-id
-              takes_value: true
-          - tag:
-              help: Tag 
-              short: t
-              long: tag
-              takes_value: true
+        - schema-id:
+            help: Schema id
+            short: i
+            long: schema-id
+            takes_value: true
+        - tag:
+            help: Tag
+            short: t
+            long: tag
+            takes_value: true

@@ -24,5 +24,5 @@ mod utils;
 /// Initializes the application
 #[tokio::main]
 async fn main() {
-          register_cli().await;
+    register_cli().await;
 }
