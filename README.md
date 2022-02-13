@@ -13,6 +13,8 @@ Support for [**aries-framework-javascript**](https://github.com/hyperledger/arie
 
 ## Installation
 
+Installig via `cargo` can be done when [rustup](https://www.rust-lang.org/tools/install) is installed.
+
 ### MacOS
 
 **Cargo**
