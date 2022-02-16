@@ -36,6 +36,7 @@ pub struct HttpAgent {
 /// Creates an url from an array
 fn create_url(arr: Vec<&str>) -> Url {
     let url = arr.join("/");
+    //TODO: error here that the url is invalid
     reqwest::Url::parse(&url).unwrap()
 }
 

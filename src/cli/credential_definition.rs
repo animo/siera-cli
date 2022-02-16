@@ -68,7 +68,7 @@ impl Module<CredentialDefinitionConfig> for CredentialDefinitionModule {
                 .map(|x| x.to_string());
             let tag = matches_credential_definition
                 .value_of("tag")
-                .unwrap_or("default")
+                .unwrap()
                 .to_string();
 
             let config = CredentialDefinitionConfig { schema_id, tag };

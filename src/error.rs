@@ -8,6 +8,12 @@ pub enum Error {
 
     /// Could not authenticate
     AuthenticationFailed,
+
+    /// Invalid configuration path
+    InvalidConfigurationPath,
+
+    /// Environment is invalid
+    InvalidEnvironment,
 }
 
 /// Error handler for enum type
@@ -18,8 +24,10 @@ pub fn throw(error: Error) -> ! {
     };
 
     match error {
-        Error::NoSuppliedEndpoint => logger.error("No Endpoint Supplied"),
+        Error::NoSuppliedEndpoint => logger.error("No endpoint is supplied. Check the `--endpoint` option of your configuration file for the `endpoint` key"),
         Error::AuthenticationFailed => logger.error("Authentication Failed"),
+        Error::InvalidConfigurationPath => logger.error("Invalid configuration path. If none is supplied it will fallback to '~/.config/aries-cli/config.ini`"),
+        Error::InvalidEnvironment => logger.error("Supplied Environment is invalid. If none is supplied it will fallback to `Default`"),
     }
 }
 

@@ -1,5 +1,7 @@
 use ini::{Ini, Properties};
 
+use crate::error::{throw, Error};
+
 /// Load a config file and ignore errors as we will just fall back on the option provided
 fn load(path: &str) -> Option<Ini> {
     Ini::load_from_file(path).ok()
@@ -21,11 +23,11 @@ pub fn get_value(path: &str, section: &str, key: &str) -> Option<String> {
 
     let sec = match cfg {
         Some(c) => get_section(section, &c),
-        None => None,
+        None => throw(Error::InvalidConfigurationPath),
     };
 
     match sec {
         Some(c) => get_value_by_key(key, &c),
-        None => None,
+        None => throw(Error::InvalidEnvironment),
     }
 }

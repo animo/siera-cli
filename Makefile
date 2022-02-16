@@ -12,3 +12,5 @@ docs:
 
 install: clippy build
 	cargo install --path .
+
+all: clippy install

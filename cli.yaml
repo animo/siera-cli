@@ -16,6 +16,12 @@ args:
       short: k
       long: apikey
       takes_value: true
+  - environment:
+      help: select an environment from the configuration file
+      short: v
+      long: environment
+      takes_value: true
+      default_value: Default
   - copy:
       help: Copies any output to your OS buffer
       short: c
@@ -181,6 +187,7 @@ subcommands:
             short: v
             long: version
             takes_value: true
+            default_value: '1.0'
   - credential-definition:
       about: Credential definition subcommand
       version: '1.0.0'
@@ -195,3 +202,4 @@ subcommands:
             short: t
             long: tag
             takes_value: true
+            default_value: default
