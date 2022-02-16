@@ -122,3 +122,7 @@ The `-t` flag makes sure the invite has an alias as `Toolbox`, sets auto accept 
 The `-c` flag copies the output to your clipboard so it can easily be pasted in the toolbox
 
 The `-s` flag suppresses the output to stdout
+
+## Extra documentation
+
+1. [Configuration](./docs/configuration.md)
