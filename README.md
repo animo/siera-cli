@@ -1,6 +1,6 @@
 # Aries CLI
 
-> Made by Animo Solutions
+> Powered by Animo Solutions
 
 ## Summary
 
@@ -14,6 +14,8 @@ Support for [**aries-framework-javascript**](https://github.com/hyperledger/arie
 ## Installation
 
 Installig via `cargo` can be done when [rustup](https://www.rust-lang.org/tools/install) is installed.
+
+The tool can be downloaded within a terminal and the correct package manager or via the release section located [here](https://github.com/animo/aries-cli/releases).
 
 ### MacOS
 
@@ -59,6 +61,13 @@ cargo install --path .
 
 > Has not been tested extensively
 
+**Cargo**
+
+```sh
+cargo install aries-cli
+
+```
+
 **Git**
 
 ```sh
@@ -67,45 +76,24 @@ cd aries-cli
 cargo install --path .
 ```
 
+## Configuration
+
+In order to easily use the aries-cli, you can setup a configuration that allows you to set some default values. the configuration can be initialised with the following command:
+
+```sh
+aries-cli init
+# or
+aries-cli config --initialise
+```
+
+This will create a file at `~/.config/aries-cli/config.ini` for \*NIX systems and `TODO` for Windows. It will set a default endpoint to `https://agent.community.animo.id`.
+
+See [here](#extra-documentation) for more information.
+
 ## Usage
 
 To see the complete functionality use the `--help` or `-h` flag.
 Each individual subcommand also has the `--help` flag, e.g. `aries-cli features --help`.
-
-It is also important to note that you do not have to supply an endpoint with every call. You can create a file called at `$HOME/.config/aries-cli/config.ini` and paste the `./example/example.ini` in there. This will allow you to set a default agent and api-key if the cloudagent requires this.
-
-```
-aries-cli --help
-
-Aries CLI 0.1.0
-Animo Solutions
-A simple Aries Cloudagent Controller
-
-USAGE:
-    aries-cli [FLAGS] [OPTIONS] [SUBCOMMAND]
-
-FLAGS:
-    -c, --copy               Copies any output to your OS buffer
-    -h, --help               Prints help information
-    -s, --suppress-output    Suppresses the output to the CLI
-    -V, --version            Prints version information
-
-OPTIONS:
-    -k, --apikey <apikey>        The admin apikey
-    -o, --config <config>        Config file for the CLI
-    -e, --endpoint <endpoint>    Url of the cloudagent
-
-SUBCOMMANDS:
-    connections              Connections subcommand
-    credential-definition    Credential definition subcommand
-    features                 Discover features subcommand
-    help                     Prints this message or the help of the given subcommand(s)
-    invite                   Invitations subcommand
-    issue-credential         Issue credentials subcommand
-    message                  Basic message subcommand
-    schema                   Schema subcommand
-
-```
 
 ## Examples
 

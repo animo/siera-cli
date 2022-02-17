@@ -70,7 +70,7 @@ pub async fn register_cli() {
     // TODO: Windows support
     // Get the OS specific location of the configuration file
     let home = env::var("HOME").unwrap();
-    let configuration_path = Path::new(&home).join(".config/aries-cli/config.ini");
+    let default_configuration_path = Path::new(&home).join(".config/aries-cli/config.ini");
 
     // Whether the output of the command should be copied to the users buffer
     let should_copy = matches.is_present("copy");
@@ -87,7 +87,7 @@ pub async fn register_cli() {
     // Base agent instance
     let base_agent = BaseAgent {
         logger,
-        configuration_path,
+        configuration_path: default_configuration_path.to_owned(),
     };
 
     // Register the modules that do not require the agent
@@ -96,20 +96,16 @@ pub async fn register_cli() {
     // Veriable that chooses the environment from the configuration file
     let environment = matches.value_of("environment").unwrap();
 
-    // TODO: proper non-unix like implementation
-    //       detect with cfg!(unix)
-    // Selects the default configuation file
-    let home = env::var("HOME").unwrap();
-    let default_path = Path::new(&home).join(".config/aries-cli/config.ini");
-
     let config_path = matches
         .value_of("config")
         .map(Path::new)
-        .unwrap_or(&default_path);
+        .unwrap_or(&default_configuration_path);
 
     let endpoint_from_config = config::get_value(config_path, environment, "endpoint");
 
     let api_key_from_config = config::get_value(config_path, environment, "api-key");
+
+    println!("{:?}", &endpoint_from_config);
 
     // Get the endpoint when you supply an endpoint
     let endpoint = match matches.value_of("endpoint") {
@@ -122,7 +118,7 @@ pub async fn register_cli() {
 
     // TODO: Check if this can be refactored
     // Get the endpoint when you supply an endpoint
-    let api_key = match matches.value_of("apikey") {
+    let api_key = match matches.value_of("api-key") {
         Some(api_key) => Some(api_key.to_string()),
         None => api_key_from_config,
     };
