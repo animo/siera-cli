@@ -55,13 +55,17 @@ pub async fn register_cli() {
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .get_matches();
 
+    // Veriable that chooses the environment from the configuration file
     let environment = matches.value_of("environment").unwrap();
 
+    // TODO: proper non-unix like implementation
+    // Selects the default configuation file
     let default_path = if cfg!(unix) {
         let home = env::var("HOME").unwrap();
         Path::new(&home).join(".config/aries-cli/config.ini")
     } else {
-        throw(Error::UnsupportedPlatform)
+        let home = env::var("HOME").unwrap();
+        Path::new(&home).join(".config/aries-cli/config.ini")
     };
 
     let config_path = matches
