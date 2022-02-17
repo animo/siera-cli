@@ -1,3 +1,4 @@
+use std::env;
 use std::path::Path;
 
 use super::connections::ConnectionsModule;
@@ -56,8 +57,12 @@ pub async fn register_cli() {
 
     let environment = matches.value_of("environment").unwrap();
 
-    let home = std::env::var("HOME").unwrap();
-    let default_path = Path::new(&home).join(".config/aries-cli/config.ini");
+    let default_path = if cfg!(unix) {
+        let home = env::var("HOME").unwrap();
+        Path::new(&home).join(".config/aries-cli/config.ini")
+    } else {
+        throw(Error::UnsupportedPlatform)
+    };
 
     let config_path = matches
         .value_of("config")
