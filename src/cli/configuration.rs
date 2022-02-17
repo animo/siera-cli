@@ -45,6 +45,13 @@ impl ModuleWithBaseAgent<ConfigurationConfig> for ConfigurationModule {
     }
 
     async fn register<'a>(agent: &BaseAgent, matches: &ArgMatches<'a>) {
+        if matches.subcommand_matches("init").is_some() {
+            let config = ConfigurationConfig {
+                action: ConfigurationAction::Create,
+                endpoint: Some(String::from("https://agent.community.animo.id")),
+            };
+            ConfigurationModule::run(agent, config).await;
+        }
         if let Some(matches_config) = matches.subcommand_matches("config") {
             if matches_config.is_present("initialise") {
                 let endpoint = matches_config.value_of("endpoint").unwrap();

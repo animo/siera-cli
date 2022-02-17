@@ -1,29 +1,29 @@
 [package]
-name = "aries-cli"
-license = "Apache-2.0"
-version = "0.1.1"
 authors = ["Animo Solutions"]
-description = "A simple Aries Cloudagent Controller"
-homepage = "https://animo.id"
-edition = "2021"
-repository = "https://github.com/animo/aries-cli"
-keywords = ["aries", "cloudagent", "controller", "cli-tool"]
 categories = ["cli"]
+description = "A simple Aries Cloudagent Controller"
+edition = "2021"
+homepage = "https://animo.id"
+keywords = ["aries", "cloudagent", "controller", "cli-tool"]
+license = "Apache-2.0"
+name = "aries-cli"
 readme = "README.md"
+repository = "https://github.com/animo/aries-cli"
+version = "0.1.1"
 
 [[bin]]
 name = "aries-cli"
 path = "src/main.rs"
 
 [dependencies]
-clap        = { version = "2.33.3" , features = ["yaml"] }
-serde       = { version = "1.0.130", features = ["derive"] }
-reqwest     = { version = "0.11"   , features = ["json"] }
-tokio       = { version = "1"      , features = ["full"] }
-serde_json  = "1.0.68"
-qr2term     = "0.2.2"
-colored     = "2.0.0"
-yaml-rust   = "0.4.5" 
 async-trait = "0.1.51"
-rust-ini    = "0.17.0"
-clipboard   = "0.5.0"
+clap = {version = "2.33.3", features = ["yaml"]}
+clipboard = "0.5.0"
+colored = "2.0.0"
+qr2term = "0.2.2"
+reqwest = {version = "0.11", features = ["json"]}
+rust-ini = "0.17.0"
+serde = {version = "1.0.130", features = ["derive"]}
+serde_json = "1.0.68"
+tokio = {version = "1", features = ["full"]}
+yaml-rust = "0.4.5"

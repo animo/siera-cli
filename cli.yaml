@@ -38,6 +38,9 @@ args:
 
 # Subcommands
 subcommands:
+  - init:
+      about: Initialise subcommand [alias to "config --create"]
+      version: '0.1.0'
   - config:
       about: Configuration subcommand
       version: '0.1.0'
