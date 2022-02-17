@@ -1,6 +1,4 @@
-use std::env;
-use std::path::Path;
-
+use super::configuration::ConfigurationModule;
 use super::connections::ConnectionsModule;
 use super::credential_definition::CredentialDefinitionModule;
 use super::features::FeaturesModule;
@@ -17,6 +15,8 @@ use crate::utils::config;
 use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::{App, ArgMatches};
+use std::env;
+use std::path::Path;
 
 /// Kinds of supported agents
 enum SupportedAgent {
@@ -29,9 +29,10 @@ enum SupportedAgent {
     AriesFrameworkJavaScriptRest,
 }
 
-/// trait that every submodule MUST implement
+/// Trait that every submodule MUST implement
 #[async_trait(?Send)]
 pub trait Module<T> {
+    // TODO: should this return an result so can generalize errors within the run command?
     /// Runner function that executes when the subcommand is called
     async fn run(agent: &dyn Agent, config: T);
 
@@ -39,9 +40,20 @@ pub trait Module<T> {
     async fn register<'a>(agent: &dyn Agent, matches: &ArgMatches<'a>);
 }
 
+/// Trait for submodules that do not need the extended agent configuration
+#[async_trait(?Send)]
+pub trait ModuleWithBaseAgent<T> {
+    // TODO: should this return an result so can generalize errors within the run command?
+    /// Runner function that executes when the subcommand is called
+    async fn run(agent: &BaseAgent, config: T);
+
+    /// Registering a submodule
+    async fn register<'a>(agent: &BaseAgent, matches: &ArgMatches<'a>);
+}
+
 /// Registers all the components of the cli
 pub async fn register_cli() {
-    // TODO: loading via yaml is deprecated. We should move this to a different file.
+    // TODO: loading via yaml is deprecated. We should move this to a file.
     // Load the yaml file containing the cli setup
     let yaml = load_yaml!("../../cli.yaml");
 
@@ -55,18 +67,40 @@ pub async fn register_cli() {
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .get_matches();
 
+    // TODO: Windows support
+    // Get the OS specific location of the configuration file
+    let home = env::var("HOME").unwrap();
+    let configuration_path = Path::new(&home).join(".config/aries-cli/config.ini");
+
+    // Whether the output of the command should be copied to the users buffer
+    let should_copy = matches.is_present("copy");
+
+    // Suppresses output the cli
+    let suppress_output = matches.is_present("suppress-output");
+
+    // Instantiate the agent logger
+    let logger = Log {
+        should_copy,
+        suppress_output,
+    };
+
+    // Base agent instance
+    let base_agent = BaseAgent {
+        logger,
+        configuration_path,
+    };
+
+    // Register the modules that do not require the agent
+    ConfigurationModule::register(&base_agent, &matches).await;
+
     // Veriable that chooses the environment from the configuration file
     let environment = matches.value_of("environment").unwrap();
 
     // TODO: proper non-unix like implementation
+    //       detect with cfg!(unix)
     // Selects the default configuation file
-    let default_path = if cfg!(unix) {
-        let home = env::var("HOME").unwrap();
-        Path::new(&home).join(".config/aries-cli/config.ini")
-    } else {
-        let home = env::var("HOME").unwrap();
-        Path::new(&home).join(".config/aries-cli/config.ini")
-    };
+    let home = env::var("HOME").unwrap();
+    let default_path = Path::new(&home).join(".config/aries-cli/config.ini");
 
     let config_path = matches
         .value_of("config")
@@ -93,21 +127,6 @@ pub async fn register_cli() {
         None => api_key_from_config,
     };
 
-    // Whether the output of the command should be copied to the users buffer
-    let should_copy = matches.is_present("copy");
-
-    // Suppresses output the cli
-    let suppress_output = matches.is_present("suppress-output");
-
-    // Instantiate the agent logger
-    let logger = Log {
-        should_copy,
-        suppress_output,
-    };
-
-    // Base agent instance
-    let base_agent = BaseAgent { logger };
-
     let agent = match agent_type {
         SupportedAgent::AriesCloudagentPyton => HttpAgent {
             base_agent,
@@ -121,7 +140,7 @@ pub async fn register_cli() {
 
     agent.check_endpoint().await;
 
-    // Registering the subcommands and their modules
+    // Registering the agent subcommands and their modules
     ConnectionsModule::register(&agent, &matches).await;
     InvitationsModule::register(&agent, &matches).await;
     CredentialsModule::register(&agent, &matches).await;

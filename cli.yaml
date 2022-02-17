@@ -38,6 +38,26 @@ args:
 
 # Subcommands
 subcommands:
+  - config:
+      about: Configuration subcommand
+      version: '0.1.0'
+      args:
+        - initialise:
+            help: Initialise a default configuration
+            short: i
+            long: initialise
+            conflicts_with: edit
+        - edit:
+            help: Edit the default configuration
+            short: e
+            long: edit
+            conflicts_with: intialise
+        - endpoint:
+            help: Custom endpoint for the Default cloudagent
+            short: p
+            long: endpoint
+            conflicts_with: edit
+            default_value: https://agent.community.animo.id
   - invite:
       about: Invitations subcommand
       version: '0.1.0'

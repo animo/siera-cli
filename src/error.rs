@@ -18,8 +18,11 @@ pub enum Error {
     /// Environment is invalid
     InvalidEndpoint,
 
-    /// Unsupported platform
-    UnsupportedPlatform,
+    /// Could not create the configuration file at the default location
+    UnableToCreateConfigurationFile,
+
+    /// Unable to read the default configuration file.
+    UnableToReadDefaultConfigurationFile,
 }
 
 /// Error handler for enum type
@@ -35,7 +38,8 @@ pub fn throw(error: Error) -> ! {
         Error::InvalidConfigurationPath => logger.error("Invalid configuration path. If none is supplied it will fallback to '~/.config/aries-cli/config.ini`"),
         Error::InvalidEnvironment => logger.error("Supplied Environment is invalid. If none is supplied it will fallback to `Default`"),
         Error::InvalidEndpoint => logger.error("Supplied endpoint is not a valid url. Please check if it is correct and includes a http(s):// prefix."),
-        Error::UnsupportedPlatform => logger.error("Detected platform is unsupported. Supported platforms are: [linux, macos]"),
+        Error::UnableToCreateConfigurationFile => logger.error("Could not initialise the configuration file at the default location."),
+        Error::UnableToReadDefaultConfigurationFile => logger.error("Unable to read the default configuration file. Did you forget to run `aries-cli config --initialise`?")
     }
 }
 

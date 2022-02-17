@@ -33,20 +33,24 @@ endpoint = https://cloudagent-3.example.com
 **example**
 
 ```sh
-aries-cli --config --environment ENVIRONMENT invite
+aries-cli --config ./project/cli/config.ini --environment ENVIRONMENT invite
 ```
 
 ## Default configuration file
 
-<!-- TODO: NOT YET IMPLEMENTED -->
-
-The default can be initialised with one of the two commands: `aries-cli init` and `aries-cli config --init`. These two commands create a default configuration file. On any \*NIX system it uses the following location: `~/.config/aries-cli/config.ini` and for Windows systems it uses `TODO` as the location.
+The default can be initialised with one of the two commands: `aries-cli init` and `aries-cli config --initialise`. These two commands create a default configuration file. On any \*NIX system it uses the following location: `~/.config/aries-cli/config.ini` and for Windows systems it uses `TODO` as the location.
 
 The configuration is initialised with the following structure:
 
 ```ini
 [Default]
 endpoint = https://agent.community.animo.id
+```
+
+If a custom default endpoint is required the `--endpoint=https://cloudagent.example.com` can be supplied. Like so:
+
+```sh
+aries-cli config -i -e=https://cloudagent.example.com
 ```
 
 Because it resides at the default location, supplying the `--config` is not required anymore. This will allow for the simplest api:

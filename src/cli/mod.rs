@@ -19,5 +19,8 @@ pub mod issue_credential;
 /// Schema subcommand
 pub mod schema;
 
-/// Credential definition
+/// Configuration subcommand
+pub mod configuration;
+
+/// Credential definition subcommand
 pub mod credential_definition;

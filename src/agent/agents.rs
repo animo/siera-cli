@@ -1,23 +1,22 @@
-use crate::cli::connections::Connection;
-use crate::cli::connections::Connections;
-use crate::cli::connections::ConnectionsConfig;
-use crate::cli::credential_definition::CredentialDefinition;
-use crate::cli::credential_definition::CredentialDefinitionConfig;
-use crate::cli::credential_definition::CredentialDefinitions;
+use crate::cli::connections::{Connection, Connections, ConnectionsConfig};
+use crate::cli::credential_definition::{
+    CredentialDefinition, CredentialDefinitionConfig, CredentialDefinitions,
+};
 use crate::cli::features::Features;
-use crate::cli::invite::Invitation;
-use crate::cli::invite::InvitationConfig;
+use crate::cli::invite::{Invitation, InvitationConfig};
 use crate::cli::issue_credential::IssueCredentialConfig;
 use crate::cli::message::MessageConfig;
-use crate::cli::schema::Schema;
-use crate::cli::schema::SchemaConfig;
+use crate::cli::schema::{Schema, SchemaConfig};
 use crate::utils::logger::Log;
 use async_trait::async_trait;
 use serde_json::Value;
+use std::path::PathBuf;
 
 /// Base agent structure
 #[derive(Clone, Debug)]
 pub struct BaseAgent {
+    /// Location of the default configuration file
+    pub configuration_path: PathBuf,
     /// Agent logger
     pub logger: Log,
 }
