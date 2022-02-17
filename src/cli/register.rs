@@ -56,7 +56,6 @@ pub async fn register_cli() {
 
     let environment = matches.value_of("environment").unwrap();
 
-    // TODO: use `path`
     let home = std::env::var("HOME").unwrap();
     let default_path = Path::new(&home).join(".config/aries-cli/config.ini");
 

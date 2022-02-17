@@ -10,6 +10,7 @@ use crate::cli::issue_credential::IssueCredentialConfig;
 use crate::cli::message::MessageConfig;
 use crate::cli::schema::Schema;
 use crate::cli::schema::SchemaConfig;
+use crate::error::{throw, Error};
 use crate::utils::http::HttpCalls;
 use crate::utils::logger::Log;
 use async_trait::async_trait;
@@ -36,8 +37,7 @@ pub struct HttpAgent {
 /// Creates an url from an array
 fn create_url(arr: Vec<&str>) -> Url {
     let url = arr.join("/");
-    //TODO: error here that the url is invalid
-    reqwest::Url::parse(&url).unwrap()
+    reqwest::Url::parse(&url).unwrap_or_else(|_| throw(Error::InvalidEndpoint))
 }
 
 /// All the available endpoints
