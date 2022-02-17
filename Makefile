@@ -1,3 +1,5 @@
+all: clippy install
+
 clippy:
 	cargo clippy --no-deps
 
@@ -12,5 +14,3 @@ docs:
 
 install: clippy build
 	cargo install --path .
-
-all: clippy install
