@@ -1,9 +1,11 @@
+use std::path::Path;
+
 use ini::{Ini, Properties};
 
 use crate::error::{throw, Error};
 
 /// Load a config file and ignore errors as we will just fall back on the option provided
-fn load(path: &str) -> Option<Ini> {
+fn load(path: &Path) -> Option<Ini> {
     Ini::load_from_file(path).ok()
 }
 
@@ -18,7 +20,7 @@ fn get_value_by_key(key: &str, prop: &Properties) -> Option<String> {
 }
 
 /// Get a value by path, section and key
-pub fn get_value(path: &str, section: &str, key: &str) -> Option<String> {
+pub fn get_value(path: &Path, section: &str, key: &str) -> Option<String> {
     let cfg = load(path);
 
     let sec = match cfg {

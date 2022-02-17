@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use super::connections::ConnectionsModule;
 use super::credential_definition::CredentialDefinitionModule;
 use super::features::FeaturesModule;
@@ -15,6 +17,17 @@ use crate::utils::logger::Log;
 use async_trait::async_trait;
 use clap::{App, ArgMatches};
 
+/// Kinds of supported agents
+enum SupportedAgent {
+    // TODO: which versions do we support
+    /// ACA-Py agent instance
+    AriesCloudagentPyton,
+
+    /// Rest wrapper agent around the standard AFJ agent
+    #[allow(dead_code)]
+    AriesFrameworkJavaScriptRest,
+}
+
 /// trait that every submodule MUST implement
 #[async_trait(?Send)]
 pub trait Module<T> {
@@ -27,8 +40,12 @@ pub trait Module<T> {
 
 /// Registers all the components of the cli
 pub async fn register_cli() {
+    // TODO: loading via yaml is deprecated. We should move this to a different file.
     // Load the yaml file containing the cli setup
     let yaml = load_yaml!("../../cli.yaml");
+
+    // TODO: Make this configurable from the cli when we support multiple agents
+    let agent_type: SupportedAgent = SupportedAgent::AriesCloudagentPyton;
 
     // Get all the supplied flags and values
     let matches = App::from_yaml(yaml)
@@ -40,10 +57,13 @@ pub async fn register_cli() {
     let environment = matches.value_of("environment").unwrap();
 
     // TODO: use `path`
-    let mut default_path = std::env::var("HOME").unwrap();
-    default_path.push_str("/.config/aries-cli/config.ini");
+    let home = std::env::var("HOME").unwrap();
+    let default_path = Path::new(&home).join(".config/aries-cli/config.ini");
 
-    let config_path = matches.value_of("config").unwrap_or(&default_path);
+    let config_path = matches
+        .value_of("config")
+        .map(Path::new)
+        .unwrap_or(&default_path);
 
     let endpoint_from_config = config::get_value(config_path, environment, "endpoint");
 
@@ -80,13 +100,15 @@ pub async fn register_cli() {
     // Base agent instance
     let base_agent = BaseAgent { logger };
 
-    // TODO: this should be configurable to support more types of agents
-    // e.g. aca-py, afj, non-couldagents
-    // Http agent instance
-    let agent = HttpAgent {
-        base_agent,
-        url: endpoint,
-        api_key,
+    let agent = match agent_type {
+        SupportedAgent::AriesCloudagentPyton => HttpAgent {
+            base_agent,
+            url: endpoint,
+            api_key,
+        },
+        SupportedAgent::AriesFrameworkJavaScriptRest => {
+            panic!("AFJ Rest agent is not yet supported")
+        }
     };
 
     agent.check_endpoint().await;
