@@ -4,7 +4,7 @@
 
 ## Summary
 
-The Aries-CLI started out as a small project to practise in Rust. It is now at a point where it can publicly be used and benefit everyone. The goal of this project was to make development easier. Think of things like filling your wallet with test credentials, creating quick invitations and sending basic messages. Many of the functionality is already supported. See [example](#example) for some useful starter commands.
+The Aries-CLI started out as a small project to practise in Rust. It is now at a point where it can publicly be used and benefit everyone. The goal of this project was to make development easier. Think of things like filling your wallet with test credentials, creating quick invitations and sending basic messages. Many of the functionality is already supported. See [example](#examples) for some useful starter commands.
 
 ## Support
 
