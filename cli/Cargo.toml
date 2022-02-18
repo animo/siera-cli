@@ -1,5 +1,7 @@
 [package]
 name = "cli"
+authors = ["Animo Solutions"]
+description = "A simple Aries Cloudagent Controller"
 version = "0.1.0"
 edition = "2021"
 
@@ -11,3 +13,4 @@ clipboard = "0.5.0"
 colored = "2.0.0"
 serde = {version = "1.0.130", features = ["derive"]}
 serde_json = "1.0.68"
+clap = { version = "3.1.0", features = ["derive"] }

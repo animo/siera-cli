@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 
 use crate::{
-    agent::{CloudAgent, CloudAgentExtended},
+    cloud_agent::{CloudAgent, CloudAgentExtended},
     modules::{connections::ConnectionModule, features::FeaturesModule},
 };
 
@@ -36,7 +36,7 @@ impl CloudAgentPython {
     ) -> Self {
         CloudAgentPython {
             cloud_agent: CloudAgent {
-                url: endpoint.as_ref().to_string(),
+                endpoint: endpoint.as_ref().to_string(),
                 api_key: api_key.map(|a| a.as_ref().to_string()),
             },
             version,

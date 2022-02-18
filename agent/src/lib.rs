@@ -1,4 +1,4 @@
-mod agent;
+mod cloud_agent;
 
 pub mod modules;
 
