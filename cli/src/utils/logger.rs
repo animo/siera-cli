@@ -42,7 +42,7 @@ impl Log {
     }
 
     /// Log messages that broke the program
-    pub fn error(&self, string: impl AsRed<str>) -> ! {
+    pub fn error(&self, string: impl AsRef<str>) -> ! {
         eprintln!("{}: {}", "Error".red(), string.as_ref());
         std::process::exit(1)
     }
