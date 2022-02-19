@@ -1,9 +1,6 @@
 use async_trait::async_trait;
 
-use crate::{
-    cloud_agent::{CloudAgent, CloudAgentExtended},
-    modules::{connections::ConnectionModule, features::FeaturesModule},
-};
+use crate::cloud_agent::{CloudAgent, CloudAgentExtended};
 
 /// ACA-Py supported versions
 #[derive(Debug)]
@@ -41,27 +38,5 @@ impl CloudAgentPython {
             },
             version,
         }
-    }
-}
-
-#[async_trait]
-impl ConnectionModule for CloudAgentPython {
-    async fn get_connections(&self) -> () {
-        todo!()
-    }
-
-    async fn get_connection_by_id(&self, _id: String) -> () {
-        todo!()
-    }
-
-    async fn create_invitation(&self, _config: String) -> () {
-        todo!()
-    }
-}
-
-#[async_trait]
-impl FeaturesModule for CloudAgentPython {
-    async fn discover_features(&self) -> () {
-        todo!()
     }
 }

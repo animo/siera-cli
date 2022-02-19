@@ -3,7 +3,7 @@ use colored::*;
 use serde::Serialize;
 
 /// Logger struct that allows us access to stdout and stderr
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct Log {
     /// Whether it should copy the output to a buffer
     pub should_copy: bool,
