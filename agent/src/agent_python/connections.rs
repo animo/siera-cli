@@ -21,6 +21,6 @@ impl ConnectionModule for CloudAgentPython {
         &self,
         _config: ConnectionCreateInvitationConfig,
     ) -> AgentResult<String> {
-        Err(Error::InvalidEndpoint)
+        Err(Error::AuthenticationFailed)
     }
 }

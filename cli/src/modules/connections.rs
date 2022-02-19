@@ -1,6 +1,8 @@
 use agent::modules::connections::{ConnectionCreateInvitationConfig, ConnectionModule};
 use clap::{Args, Subcommand};
 
+use crate::{error::get_error_string, utils::logger::Log};
+
 #[derive(Args)]
 pub struct ConnectionOptions {
     #[clap(subcommand)]
@@ -24,7 +26,11 @@ pub enum ConnectionSubcommands {
 }
 
 // TODO: Can we just send a dereferenced struct directly?
-pub async fn parse_connection_args(commands: &ConnectionSubcommands, agent: impl ConnectionModule) {
+pub async fn parse_connection_args(
+    commands: &ConnectionSubcommands,
+    agent: impl ConnectionModule,
+    logger: Log,
+) {
     match commands {
         ConnectionSubcommands::Invite {
             auto_accept,
@@ -42,7 +48,7 @@ pub async fn parse_connection_args(commands: &ConnectionSubcommands, agent: impl
             };
             match agent.create_invitation(config).await {
                 Ok(_) => println!("Success!"),
-                Err(e) => println!("{:?}", e),
+                Err(e) => logger.error(get_error_string(e)),
             }
         }
     }
