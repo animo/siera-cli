@@ -48,7 +48,7 @@ pub async fn parse_connection_args(
             };
             match agent.create_invitation(config).await {
                 Ok(invite_url) => logger.log(invite_url),
-                Err(e) => logger.error(format!("{:?}", e.to_string())),
+                Err(e) => logger.error(e.to_string()),
             }
         }
     }

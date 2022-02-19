@@ -47,6 +47,6 @@ async fn main() {
         Commands::Connections(options) => {
             parse_connection_args(&options.commands, agent, logger).await
         }
-        Commands::Features(_) => parse_features_args().await,
+        Commands::Features(_) => parse_features_args(agent, logger).await,
     }
 }
