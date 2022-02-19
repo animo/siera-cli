@@ -14,7 +14,7 @@ pub struct Log {
 
 impl Log {
     /// json formatted stdout logger
-    pub fn log_pretty(&self, obj: impl Serialize) {
+    pub fn _log_pretty(&self, obj: impl Serialize) {
         let buf = Vec::new();
         let formatter = serde_json::ser::PrettyFormatter::with_indent(b"  ");
         let mut ser = serde_json::Serializer::with_formatter(buf, formatter);
@@ -37,7 +37,7 @@ impl Log {
     }
 
     /// Logs a list via the generic CLI logger
-    pub fn log_list(&self, list: Vec<impl AsRef<str>>) {
+    pub fn _log_list(&self, list: Vec<impl AsRef<str>>) {
         list.iter().for_each(|x| self.log(x));
     }
 
@@ -49,7 +49,6 @@ impl Log {
 
     /// Copies a string to the buffer of your OS
     pub fn copy_to_buffer(&self, string: impl AsRef<str>) {
-        // no unwrap
         let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
         ctx.set_contents(string.as_ref().to_string()).unwrap();
     }

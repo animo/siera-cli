@@ -1,5 +1,7 @@
 use async_trait::async_trait;
 
+use crate::error::AgentResult;
+
 /// Cloudagent properties
 #[derive(Debug, Clone)]
 pub struct CloudAgent {
@@ -14,5 +16,5 @@ pub struct CloudAgent {
 #[async_trait]
 pub trait CloudAgentExtended {
     /// Check if the endpoint is valid
-    async fn check_endpoint(&self) -> ();
+    async fn check_endpoint(&self) -> AgentResult<()>;
 }

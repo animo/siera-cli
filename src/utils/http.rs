@@ -6,7 +6,7 @@ use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 
-/// Interface providing HTTP call methods
+/// Trait providing HTTP call methods
 #[async_trait]
 pub trait HttpCalls {
     /// GET method

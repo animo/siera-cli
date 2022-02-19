@@ -1,8 +1,15 @@
-use agent::error::Error;
+pub enum CliError {
+    InvalidConfigurationPath,
+    InvalidEnvironment,
+    NoEndpointSupplied,
+}
 
-pub fn get_error_string(error: Error) -> &'static str {
+pub fn get_cli_error_string(error: CliError) -> &'static str {
     match error {
-        Error::AuthenticationFailed => "Incorrect api key.",
-        Error::InvalidEndpoint => "Endpoint is invalid",
+        CliError::InvalidConfigurationPath => "Invalid configuration path",
+        CliError::InvalidEnvironment => "Invalid environment",
+        CliError::NoEndpointSupplied => {
+            "No endpoint supplied. Supply an endpoint either via `--endpoint` or via `--config`"
+        }
     }
 }

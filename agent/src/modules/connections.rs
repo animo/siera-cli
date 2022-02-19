@@ -1,4 +1,5 @@
 use async_trait::async_trait;
+use reqwest::Url;
 
 use crate::error::AgentResult;
 
@@ -15,6 +16,15 @@ pub trait ConnectionModule {
         &self,
         config: ConnectionCreateInvitationConfig,
     ) -> AgentResult<String>;
+}
+
+pub trait ConnectionEndpoints {
+    /// base + connections
+    fn endpoint_get_connections(&self) -> AgentResult<Url>;
+    /// base + connections + :id
+    fn endpoint_get_connection_by_id(&self, id: &str) -> AgentResult<Url>;
+    /// base + connections + create-invitation
+    fn endpoint_create_invitation(&self) -> AgentResult<Url>;
 }
 
 #[derive(Debug)]

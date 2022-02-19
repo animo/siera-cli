@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{Parser, Subcommand};
 
 use crate::modules::{connections::ConnectionOptions, features::FeaturesOptions};
@@ -14,6 +16,15 @@ pub struct Cli {
 
     #[clap(long, short)]
     pub copy: bool,
+
+    #[clap(long, short)]
+    pub suppress: bool,
+
+    #[clap(long, short = 'o')]
+    pub config: Option<PathBuf>,
+
+    #[clap(long, short = 'v', default_value = "Default")]
+    pub environment: String,
 
     #[clap(subcommand)]
     pub commands: Commands,

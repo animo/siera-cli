@@ -1,7 +1,7 @@
 use agent::modules::connections::{ConnectionCreateInvitationConfig, ConnectionModule};
 use clap::{Args, Subcommand};
 
-use crate::{error::get_error_string, utils::logger::Log};
+use crate::utils::logger::Log;
 
 #[derive(Args)]
 pub struct ConnectionOptions {
@@ -47,8 +47,8 @@ pub async fn parse_connection_args(
                 toolbox: *toolbox,
             };
             match agent.create_invitation(config).await {
-                Ok(_) => println!("Success!"),
-                Err(e) => logger.error(get_error_string(e)),
+                Ok(invite_url) => logger.log(invite_url),
+                Err(e) => logger.error(format!("{:?}", e.to_string())),
             }
         }
     }
