@@ -6,6 +6,7 @@ version = 3
 name = "agent"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "async-trait",
  "reqwest",
  "serde",
@@ -17,6 +18,12 @@ name = "ahash"
 version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "739f4a8db6605981345c5654f3a85b056ce52f37a39d34da03f25bf2151ea16e"
+
+[[package]]
+name = "anyhow"
+version = "1.0.54"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7a99269dff3bc004caa411f38845c20303f1e393ca2bd6581576fa3a7f59577d"
 
 [[package]]
 name = "async-trait"
@@ -129,6 +136,7 @@ name = "cli"
 version = "0.1.0"
 dependencies = [
  "agent",
+ "anyhow",
  "clap",
  "clipboard",
  "colored",

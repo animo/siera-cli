@@ -1,9 +1,9 @@
+use anyhow::Result;
 use async_trait::async_trait;
 use reqwest::Url;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Map, Value};
 
-use crate::error::AgentResult;
 use crate::modules::connections::{
     ConnectionCreateInvitationConfig, ConnectionEndpoints, ConnectionModule,
 };
@@ -29,18 +29,15 @@ pub struct Invitation {
 
 #[async_trait]
 impl ConnectionModule for CloudAgentPython {
-    async fn get_connections(&self) -> AgentResult<()> {
+    async fn get_connections(&self) -> Result<()> {
         todo!()
     }
 
-    async fn get_connection_by_id(&self, _id: String) -> AgentResult<()> {
+    async fn get_connection_by_id(&self, _id: String) -> Result<()> {
         todo!()
     }
 
-    async fn create_invitation(
-        &self,
-        config: ConnectionCreateInvitationConfig,
-    ) -> AgentResult<String> {
+    async fn create_invitation(&self, config: ConnectionCreateInvitationConfig) -> Result<String> {
         let endpoint = self.endpoint_create_invitation()?;
         let mut query: Vec<(&str, String)> = vec![];
         let mut body = None;
@@ -76,15 +73,15 @@ impl ConnectionModule for CloudAgentPython {
 
 impl ConnectionEndpoints for CloudAgentPython {
     /// base + connections
-    fn endpoint_get_connections(&self) -> AgentResult<Url> {
+    fn endpoint_get_connections(&self) -> Result<Url> {
         create_url(vec![&self.cloud_agent.endpoint, "connections"])
     }
     /// base + connections + :id
-    fn endpoint_get_connection_by_id(&self, id: &str) -> AgentResult<Url> {
+    fn endpoint_get_connection_by_id(&self, id: &str) -> Result<Url> {
         create_url(vec![&self.cloud_agent.endpoint, "connections", id])
     }
     /// base + connections + create-invitation
-    fn endpoint_create_invitation(&self) -> AgentResult<Url> {
+    fn endpoint_create_invitation(&self) -> Result<Url> {
         create_url(vec![
             &self.cloud_agent.endpoint,
             "connections",

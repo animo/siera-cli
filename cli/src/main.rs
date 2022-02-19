@@ -51,7 +51,7 @@ async fn main() {
     };
 
     match res {
-        Err(e) => logger.error(e),
+        Err(e) => logger.error(e.to_string()),
         Ok(_) => (),
     }
 }

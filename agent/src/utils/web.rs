@@ -1,15 +1,14 @@
-use reqwest::{Client, RequestBuilder, Url};
+use anyhow::{bail, Error, Result};
+use reqwest::{Client, RequestBuilder, StatusCode, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 
-use crate::{
-    cloud_agent::CloudAgent,
-    error::{AgentResult, Error},
-};
+use crate::{cloud_agent::CloudAgent, error};
 
-pub fn create_url(arr: Vec<&str>) -> AgentResult<Url> {
+pub fn create_url(arr: Vec<&str>) -> Result<Url> {
     let url = arr.join("/");
-    reqwest::Url::parse(&url).map_err(|e| e.to_string())
+    //remove
+    reqwest::Url::parse(&url).map_err(|e| Error::new(e))
 }
 
 /// Call logic for http calls
@@ -19,7 +18,7 @@ impl CloudAgent {
         &self,
         url: Url,
         query: Option<Vec<(&str, String)>>,
-    ) -> AgentResult<T> {
+    ) -> Result<T> {
         let client = match query {
             Some(q) => Client::new().get(url).query(&q),
             None => Client::new().get(url),
@@ -34,7 +33,7 @@ impl CloudAgent {
         url: Url,
         query: Option<Vec<(&str, String)>>,
         body: Option<Value>,
-    ) -> AgentResult<T> {
+    ) -> Result<T> {
         let client = Client::new().post(url).query(&query);
 
         let client = match body {
@@ -46,23 +45,26 @@ impl CloudAgent {
     }
 
     /// Sends any request
-    pub async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> AgentResult<T> {
+    pub async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> Result<T> {
         let client = match &self.api_key {
             Some(a) => client.header("X-API-KEY", a),
             None => client,
         };
 
+        // TODO: check errors. we want to have some response from the server logged.
+        //       like with issue credential which fields are missing
         match client.send().await {
-            Ok(res) => {
-                if res.status().is_success() {
-                    return res.json::<T>().await.map_err(|e| e.to_string());
-                }
-                if res.status() == 401 {
-                    return Err(Error::AuthenticationFailed.to_string());
-                }
-                Err(Error::InvalidEndpoint.to_string())
-            }
-            Err(e) => Err(e.to_string()),
+            Ok(res) => match res.status() {
+                StatusCode::OK => res
+                    .json::<T>()
+                    .await
+                    .or_else(|_| bail!(error::Error::UnableToParseResponse)),
+                StatusCode::UNAUTHORIZED => bail!(error::Error::AuthorizationFailed),
+                StatusCode::NOT_FOUND => bail!(error::Error::UrlDoesNotExist),
+                StatusCode::INTERNAL_SERVER_ERROR => bail!(error::Error::InternalServerError),
+                _ => bail!(error::Error::UnknownResponseStatusCode),
+            },
+            Err(e) => Err(Error::new(e)),
         }
     }
 }

@@ -1,4 +1,5 @@
 use agent::modules::connections::{ConnectionCreateInvitationConfig, ConnectionModule};
+use anyhow::Result;
 use clap::{Args, Subcommand};
 
 use crate::utils::{logger::Log, qr::print_qr_code};
@@ -30,7 +31,7 @@ pub async fn parse_connection_args(
     commands: &ConnectionSubcommands,
     agent: impl ConnectionModule,
     logger: Log,
-) -> Result<(), String> {
+) -> Result<()> {
     match commands {
         ConnectionSubcommands::Invite {
             auto_accept,
