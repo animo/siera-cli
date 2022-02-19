@@ -30,7 +30,7 @@ pub async fn parse_connection_args(
     commands: &ConnectionSubcommands,
     agent: impl ConnectionModule,
     logger: Log,
-) {
+) -> Result<(), String> {
     match commands {
         ConnectionSubcommands::Invite {
             auto_accept,
@@ -46,16 +46,14 @@ pub async fn parse_connection_args(
                 qr: *qr,
                 toolbox: *toolbox,
             };
-            match agent.create_invitation(config).await {
-                Ok(invite_url) => {
-                    if *qr {
-                        print_qr_code(invite_url).unwrap();
-                    } else {
-                        logger.log(invite_url);
-                    }
+            agent.create_invitation(config).await.map(|invite_url| {
+                if *qr {
+                    print_qr_code(invite_url).unwrap();
+                } else {
+                    logger.log(invite_url);
                 }
-                Err(e) => logger.error(e.to_string()),
-            }
+                ()
+            })
         }
     }
 }

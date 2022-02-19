@@ -1,9 +1,8 @@
 use async_trait::async_trait;
-use serde_json::Value;
 
 use crate::{
     error::AgentResult,
-    modules::features::{FeatureEndpoints, FeaturesModule},
+    modules::features::{FeatureEndpoints, Features, FeaturesModule},
     utils::web::create_url,
 };
 
@@ -17,9 +16,9 @@ impl FeatureEndpoints for CloudAgentPython {
 
 #[async_trait]
 impl FeaturesModule for CloudAgentPython {
-    async fn discover_features(&self) -> AgentResult<Value> {
+    async fn discover_features(&self) -> AgentResult<Features> {
         let url = self.endpoint_discover_features()?;
 
-        self.cloud_agent.get::<Value>(url, None).await
+        self.cloud_agent.get::<Features>(url, None).await
     }
 }

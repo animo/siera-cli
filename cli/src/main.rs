@@ -43,10 +43,15 @@ async fn main() {
         .await
         .unwrap_or_else(|e| logger.error(format!("{:?}", e.to_string())));
 
-    match &cli.commands {
+    let res = match &cli.commands {
         Commands::Connections(options) => {
             parse_connection_args(&options.commands, agent, logger).await
         }
         Commands::Features(_) => parse_features_args(agent, logger).await,
+    };
+
+    match res {
+        Err(e) => logger.error(e),
+        Ok(_) => (),
     }
 }
