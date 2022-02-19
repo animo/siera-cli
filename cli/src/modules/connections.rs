@@ -1,3 +1,4 @@
+use agent::modules::connections::{ConnectionCreateInvitationConfig, ConnectionModule};
 use clap::{Args, Subcommand};
 
 #[derive(Args)]
@@ -20,4 +21,29 @@ pub enum ConnectionSubcommands {
         #[clap(long, short = 'l')]
         alias: Option<String>,
     },
+}
+
+// TODO: Can we just send a dereferenced struct directly?
+pub async fn parse_connection_args(commands: &ConnectionSubcommands, agent: impl ConnectionModule) {
+    match commands {
+        ConnectionSubcommands::Invite {
+            auto_accept,
+            qr,
+            toolbox,
+            multi_use,
+            alias,
+        } => {
+            let config = ConnectionCreateInvitationConfig {
+                alias: alias.as_deref().map(|a| a.to_string()),
+                auto_accept: *auto_accept,
+                multi_use: *multi_use,
+                qr: *qr,
+                toolbox: *toolbox,
+            };
+            match agent.create_invitation(config).await {
+                Ok(_) => println!("Success!"),
+                Err(e) => println!("{:?}", e),
+            }
+        }
+    }
 }

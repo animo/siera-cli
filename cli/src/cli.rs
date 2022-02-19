@@ -10,6 +10,9 @@ pub struct Cli {
     pub endpoint: Option<String>,
 
     #[clap(long, short)]
+    pub api_key: Option<String>,
+
+    #[clap(long, short)]
     pub copy: bool,
 
     #[clap(subcommand)]

@@ -5,30 +5,20 @@ mod utils;
 use agent::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
 use clap::StructOpt;
 use cli::{Cli, Commands};
-use modules::connections::ConnectionSubcommands;
-use utils::logger::Log;
+use modules::{connections::parse_connection_args, features::parse_features_args};
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let cli = Cli::parse();
 
-    let _agent = CloudAgentPython::new("jes", Some("yes"), CloudAgentPythonVersion::ZeroSixZero);
+    let agent = CloudAgentPython::new(
+        cli.endpoint.unwrap(),
+        cli.api_key,
+        CloudAgentPythonVersion::ZeroSixZero,
+    );
 
     match &cli.commands {
-        Commands::Connections(options) => match &options.commands {
-            ConnectionSubcommands::Invite {
-                auto_accept,
-                multi_use,
-                qr,
-                toolbox,
-                alias,
-            } => {
-                Log::default().log(format!("{:?}", auto_accept));
-                Log::default().log(format!("{:?}", multi_use));
-                Log::default().log(format!("{:?}", qr));
-                Log::default().log(format!("{:?}", toolbox));
-                Log::default().log(format!("{:?}", alias));
-            }
-        },
-        Commands::Features(_) => Log::default().log("Features!"),
+        Commands::Connections(options) => parse_connection_args(&options.commands, agent).await,
+        Commands::Features(_) => parse_features_args().await,
     }
 }
