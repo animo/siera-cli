@@ -1,6 +1,5 @@
 // TODO: this should be under `server`
 use async_trait::async_trait;
-use reqwest::Url;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
@@ -17,8 +16,4 @@ pub struct Features {
 pub trait FeaturesModule {
     /// Requests all the features from the cloudagent
     async fn discover_features(&self) -> Result<Features>;
-}
-
-pub trait FeatureEndpoints {
-    fn endpoint_discover_features(&self) -> Result<Url>;
 }

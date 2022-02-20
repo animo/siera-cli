@@ -1,22 +1,53 @@
 use crate::error::Result;
 use async_trait::async_trait;
-use reqwest::Url;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+/// Type for received schema object
+#[derive(Debug, Clone, Deserialize)]
 pub struct Schema {
-    pub results: Value,
+    /// received value
+    pub sent: CreateSchemaResponse,
+}
+
+/// Sub value of Schema
+#[derive(Debug, Clone, Deserialize)]
+pub struct CreateSchemaResponse {
+    /// Schema metadata
+    pub schema: Value,
+
+    /// Id of the schema
+    pub schema_id: String,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GetSchemaResponse {
+    pub schema: SchemaContent,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct SchemaContent {
+    ver: String,
+    id: String,
+    name: String,
+    version: String,
+    #[serde(rename(deserialize = "attrNames"))]
+    attr_names: Vec<String>,
+    #[serde(rename(deserialize = "seqNo"))]
+    seq_no: i32,
 }
 
 #[async_trait]
 pub trait SchemaModule {
     /// Requests all the features from the cloudagent
-    async fn schema(&self) -> Result<Schema>;
+    async fn create(&self, options: SchemaCreateOptions) -> Result<String>;
+    async fn get_by_id(&self, id: String) -> Result<GetSchemaResponse>;
+    async fn get_all(&self) -> Result<Schema>;
 }
 
-pub trait SchemaEndpoints {
-    fn endpoint_schema(&self) -> Result<Url>;
-    fn endpoint_schema_created(&self) -> Result<Url>;
-    fn endpoint_schema_get_by_id(&self) -> Result<Url>;
+#[derive(Debug)]
+pub struct SchemaCreateOptions {
+    pub name: String,
+    pub version: String,
+    pub attributes: Vec<String>,
 }

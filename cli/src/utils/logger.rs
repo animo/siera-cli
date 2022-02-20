@@ -12,6 +12,7 @@ pub struct Log {
     pub suppress_output: bool,
 }
 
+// TODO: Why do we need to remove quotes?
 impl Log {
     /// json formatted stdout logger
     pub fn log_pretty(&self, obj: impl Serialize) {
@@ -29,7 +30,7 @@ impl Log {
     /// Generic CLI logger
     pub fn log(&self, string: impl AsRef<str>) {
         if !self.suppress_output {
-            println!("{}", string.as_ref());
+            println!("{}", string.as_ref().replace("\"", ""));
         }
         if self.should_copy {
             self.copy_to_buffer(string);

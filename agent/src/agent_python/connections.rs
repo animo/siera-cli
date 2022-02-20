@@ -1,12 +1,9 @@
 use crate::error::Result;
 use async_trait::async_trait;
-use reqwest::Url;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Map, Value};
 
-use crate::modules::connections::{
-    ConnectionCreateInvitationConfig, ConnectionEndpoints, ConnectionModule,
-};
+use crate::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use crate::utils::web::create_url;
 
 use super::agent::CloudAgentPython;
@@ -30,18 +27,27 @@ pub struct Invitation {
 #[async_trait]
 impl ConnectionModule for CloudAgentPython {
     async fn get_connections(&self) -> Result<()> {
+        let _url = create_url(vec![&self.cloud_agent.endpoint, "connections"]);
         todo!()
     }
 
-    async fn get_connection_by_id(&self, _id: String) -> Result<()> {
+    async fn get_connection_by_id(&self, id: String) -> Result<()> {
+        let _url = create_url(vec![&self.cloud_agent.endpoint, "connections", &id]);
         todo!()
     }
 
-    async fn create_invitation(&self, config: ConnectionCreateInvitationConfig) -> Result<String> {
-        let endpoint = self.endpoint_create_invitation()?;
+    async fn create_invitation(
+        &self,
+        options: ConnectionCreateInvitationOptions,
+    ) -> Result<String> {
+        let url = create_url(vec![
+            &self.cloud_agent.endpoint,
+            "connections",
+            "create-invitations",
+        ])?;
         let mut query: Vec<(&str, String)> = vec![];
         let mut body = None;
-        if config.toolbox {
+        if options.toolbox {
             query.push(("multi_use", false.to_string()));
             query.push(("auto_accept", true.to_string()));
             query.push(("alias", String::from("toolbox")));
@@ -52,40 +58,21 @@ impl ConnectionModule for CloudAgentPython {
                 }
             }));
         } else {
-            if config.multi_use {
+            if options.multi_use {
                 query.push(("multi_use", true.to_string()));
             }
-            if config.auto_accept {
+            if options.auto_accept {
                 query.push(("auto_accept", true.to_string()))
             }
-            if let Some(alias) = &config.alias {
+            if let Some(alias) = &options.alias {
                 query.push(("alias", alias.to_string()));
             }
         }
         let invite = self
             .cloud_agent
-            .post::<Invitation>(endpoint, Some(query), body)
+            .post::<Invitation>(url, Some(query), body)
             .await?;
 
         Ok(invite.invitation_url)
-    }
-}
-
-impl ConnectionEndpoints for CloudAgentPython {
-    /// base + connections
-    fn endpoint_get_connections(&self) -> Result<Url> {
-        create_url(vec![&self.cloud_agent.endpoint, "connections"])
-    }
-    /// base + connections + :id
-    fn endpoint_get_connection_by_id(&self, id: &str) -> Result<Url> {
-        create_url(vec![&self.cloud_agent.endpoint, "connections", id])
-    }
-    /// base + connections + create-invitation
-    fn endpoint_create_invitation(&self) -> Result<Url> {
-        create_url(vec![
-            &self.cloud_agent.endpoint,
-            "connections",
-            "create-invitation",
-        ])
     }
 }

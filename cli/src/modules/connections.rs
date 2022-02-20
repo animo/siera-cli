@@ -1,4 +1,4 @@
-use agent::modules::connections::{ConnectionCreateInvitationConfig, ConnectionModule};
+use agent::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
 
 use crate::error::Result;
@@ -40,14 +40,14 @@ pub async fn parse_connection_args(
             multi_use,
             alias,
         } => {
-            let config = ConnectionCreateInvitationConfig {
+            let options = ConnectionCreateInvitationOptions {
                 alias: alias.as_deref().map(|a| a.to_string()),
                 auto_accept: *auto_accept,
                 multi_use: *multi_use,
                 qr: *qr,
                 toolbox: *toolbox,
             };
-            agent.create_invitation(config).await.map(|invite_url| {
+            agent.create_invitation(options).await.map(|invite_url| {
                 if *qr {
                     print_qr_code(invite_url).unwrap();
                 } else {

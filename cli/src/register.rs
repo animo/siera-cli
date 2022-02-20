@@ -39,7 +39,7 @@ pub async fn register() -> Result<()> {
         Commands::Connections(options) => {
             parse_connection_args(&options.commands, agent, logger).await
         }
-        Commands::Schema(_) => parse_schema_args(agent, logger).await,
+        Commands::Schema(options) => parse_schema_args(&options.commands, agent, logger).await,
         Commands::Features(_) => parse_features_args(agent, logger).await,
     }?;
 

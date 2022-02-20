@@ -57,10 +57,10 @@ impl CloudAgent {
         // tip: bail! is like format! so we can make some cool stuff here
         match client.send().await {
             Ok(res) => match res.status().as_u16() {
-                200..=299 => res
-                    .json::<T>()
-                    .await
-                    .map_err(|_| error::Error::UnableToParseResponse.into()),
+                200..=299 => res.json::<T>().await.map_err(|e| {
+                    println!("{:?}", e);
+                    return error::Error::UnableToParseResponse.into();
+                }),
                 401 => Err(error::Error::AuthorizationFailed.into()),
                 404 => Err(error::Error::UrlDoesNotExist.into()),
                 500..=599 => Err(error::Error::InternalServerError.into()),

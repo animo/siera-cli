@@ -1,5 +1,4 @@
 use async_trait::async_trait;
-use reqwest::Url;
 
 use crate::error::Result;
 
@@ -12,20 +11,12 @@ pub trait ConnectionModule {
     async fn get_connection_by_id(&self, id: String) -> Result<()>;
 
     /// Create an invitation
-    async fn create_invitation(&self, config: ConnectionCreateInvitationConfig) -> Result<String>;
-}
-
-pub trait ConnectionEndpoints {
-    /// base + connections
-    fn endpoint_get_connections(&self) -> Result<Url>;
-    /// base + connections + :id
-    fn endpoint_get_connection_by_id(&self, id: &str) -> Result<Url>;
-    /// base + connections + create-invitation
-    fn endpoint_create_invitation(&self) -> Result<Url>;
+    async fn create_invitation(&self, options: ConnectionCreateInvitationOptions)
+        -> Result<String>;
 }
 
 #[derive(Debug)]
-pub struct ConnectionCreateInvitationConfig {
+pub struct ConnectionCreateInvitationOptions {
     pub auto_accept: bool,
     pub qr: bool,
     pub toolbox: bool,
