@@ -1,6 +1,5 @@
-use anyhow::Result;
-
 use crate::cloud_agent::CloudAgent;
+use crate::error::Result;
 
 /// ACA-Py supported versions
 /// TODO: How do we want to deal with mulitple versions? Architecture wise.

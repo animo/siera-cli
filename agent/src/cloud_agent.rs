@@ -1,5 +1,6 @@
-use anyhow::Result;
 use async_trait::async_trait;
+
+use crate::error::Result;
 
 /// Cloudagent properties
 #[derive(Debug, Clone)]

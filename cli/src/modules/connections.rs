@@ -1,7 +1,7 @@
 use agent::modules::connections::{ConnectionCreateInvitationConfig, ConnectionModule};
-use anyhow::Result;
 use clap::{Args, Subcommand};
 
+use crate::error::Result;
 use crate::utils::{logger::Log, qr::print_qr_code};
 
 #[derive(Args)]
@@ -47,14 +47,18 @@ pub async fn parse_connection_args(
                 qr: *qr,
                 toolbox: *toolbox,
             };
-            agent.create_invitation(config).await.map(|invite_url| {
-                if *qr {
-                    print_qr_code(invite_url).unwrap();
-                } else {
-                    logger.log(invite_url);
-                }
-                ()
-            })
+            agent
+                .create_invitation(config)
+                .await
+                .map(|invite_url| {
+                    if *qr {
+                        print_qr_code(invite_url).unwrap();
+                    } else {
+                        logger.log(invite_url);
+                    }
+                    ()
+                })
+                .map_err(|e| e.into())
         }
     }
 }

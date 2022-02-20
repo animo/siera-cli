@@ -2,7 +2,9 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 
-use crate::modules::{connections::ConnectionOptions, features::FeaturesOptions};
+use crate::modules::{
+    connections::ConnectionOptions, features::FeaturesOptions, schema::SchemaOptions,
+};
 
 #[derive(Parser)]
 #[clap(author, version, about)]
@@ -34,4 +36,5 @@ pub struct Cli {
 pub enum Commands {
     Connections(ConnectionOptions),
     Features(FeaturesOptions),
+    Schema(SchemaOptions),
 }

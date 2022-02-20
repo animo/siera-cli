@@ -14,7 +14,7 @@ pub struct Log {
 
 impl Log {
     /// json formatted stdout logger
-    pub fn _log_pretty(&self, obj: impl Serialize) {
+    pub fn log_pretty(&self, obj: impl Serialize) {
         let buf = Vec::new();
         let formatter = serde_json::ser::PrettyFormatter::with_indent(b"  ");
         let mut ser = serde_json::Serializer::with_formatter(buf, formatter);
@@ -42,8 +42,8 @@ impl Log {
     }
 
     /// Log messages that broke the program
-    pub fn error(&self, string: impl AsRef<str>) -> ! {
-        eprintln!("{}: {}", "Error".red(), string.as_ref().replace("\"", ""));
+    pub fn error(&self, e: Box<dyn std::error::Error>) -> ! {
+        eprintln!("{}: {}", "Error".red(), e.to_string().replace("\"", ""));
         std::process::exit(1)
     }
 

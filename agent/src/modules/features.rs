@@ -1,8 +1,10 @@
-use anyhow::Result;
+// TODO: this should be under `server`
 use async_trait::async_trait;
 use reqwest::Url;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
+
+use crate::error::Result;
 
 /// Type of the received features from `discover-features`
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]

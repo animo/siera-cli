@@ -17,4 +17,3 @@ clap = { version = "3.1.0", features = ["derive"] }
 tokio = {version = "1", features = ["full"]}
 rust-ini = "0.17.0"
 qr2term = "0.2.2"
-anyhow = "1.0.54"
