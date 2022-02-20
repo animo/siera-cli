@@ -11,9 +11,5 @@ pub async fn parse_features_args(agent: impl FeaturesModule, logger: Log) -> Res
     agent
         .discover_features()
         .await
-        .map(|features| {
-            logger.log_list(features.results.keys().collect());
-            ()
-        })
-        .map_err(|e| e.into())
+        .map(|features| logger.log_list(features.results.keys().collect()))
 }

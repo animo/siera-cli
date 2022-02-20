@@ -8,7 +8,7 @@ use crate::cloud_agent::CloudAgent;
 pub fn create_url(arr: Vec<&str>) -> Result<Url> {
     let url = arr.join("/");
     //remove
-    reqwest::Url::parse(&url).map_err(|_| error::Error::UnreachableUrl)
+    reqwest::Url::parse(&url).map_err(|_| error::Error::UnreachableUrl.into())
 }
 
 /// Call logic for http calls
@@ -60,13 +60,13 @@ impl CloudAgent {
                 200..=299 => res
                     .json::<T>()
                     .await
-                    .or_else(|_| Err(error::Error::UnableToParseResponse)),
-                401 => Err(error::Error::AuthorizationFailed),
-                404 => Err(error::Error::UrlDoesNotExist),
-                500..=599 => Err(error::Error::InternalServerError),
-                _ => Err(error::Error::UnknownResponseStatusCode),
+                    .map_err(|_| error::Error::UnableToParseResponse.into()),
+                401 => Err(error::Error::AuthorizationFailed.into()),
+                404 => Err(error::Error::UrlDoesNotExist.into()),
+                500..=599 => Err(error::Error::InternalServerError.into()),
+                _ => Err(error::Error::UnknownResponseStatusCode.into()),
             },
-            Err(_) => Err(error::Error::UnreachableUrl),
+            Err(_) => Err(error::Error::UnreachableUrl.into()),
         }
     }
 }

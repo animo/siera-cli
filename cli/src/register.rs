@@ -29,7 +29,7 @@ pub async fn register() -> Result<()> {
 
     let endpoint = cli.endpoint.unwrap_or(endpoint_from_config?);
 
-    let api_key = cli.api_key.or(api_key_from_config.ok());
+    let api_key = cli.api_key.or_else(|| api_key_from_config.ok());
 
     let version = CloudAgentPythonVersion::ZeroSixZero;
 

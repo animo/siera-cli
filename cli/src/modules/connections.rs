@@ -47,18 +47,13 @@ pub async fn parse_connection_args(
                 qr: *qr,
                 toolbox: *toolbox,
             };
-            agent
-                .create_invitation(config)
-                .await
-                .map(|invite_url| {
-                    if *qr {
-                        print_qr_code(invite_url).unwrap();
-                    } else {
-                        logger.log(invite_url);
-                    }
-                    ()
-                })
-                .map_err(|e| e.into())
+            agent.create_invitation(config).await.map(|invite_url| {
+                if *qr {
+                    print_qr_code(invite_url).unwrap();
+                } else {
+                    logger.log(invite_url);
+                }
+            })
         }
     }
 }

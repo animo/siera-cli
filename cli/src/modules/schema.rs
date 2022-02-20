@@ -7,12 +7,5 @@ use crate::{error::Result, utils::logger::Log};
 pub struct SchemaOptions {}
 
 pub async fn parse_schema_args(agent: impl SchemaModule, logger: Log) -> Result<()> {
-    agent
-        .schema()
-        .await
-        .map(|schema| {
-            logger.log_pretty(schema);
-            ()
-        })
-        .map_err(|e| e.into())
+    agent.schema().await.map(|schema| logger.log_pretty(schema))
 }
