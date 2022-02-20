@@ -5,12 +5,6 @@ use serde_json::Value;
 
 use crate::cloud_agent::CloudAgent;
 
-pub fn create_url(arr: Vec<&str>) -> Result<Url> {
-    let url = arr.join("/");
-    //remove
-    reqwest::Url::parse(&url).map_err(|_| error::Error::UnreachableUrl.into())
-}
-
 /// Call logic for http calls
 impl CloudAgent {
     /// Builds a get request and calls the sender

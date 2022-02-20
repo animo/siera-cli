@@ -4,7 +4,6 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json, Map, Value};
 
 use crate::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
-use crate::utils::web::create_url;
 
 use super::agent::CloudAgentPython;
 
@@ -27,12 +26,12 @@ pub struct Invitation {
 #[async_trait]
 impl ConnectionModule for CloudAgentPython {
     async fn get_connections(&self) -> Result<()> {
-        let _url = create_url(vec![&self.cloud_agent.endpoint, "connections"]);
+        let _url = self.cloud_agent.create_url(vec!["connections"]);
         todo!()
     }
 
     async fn get_connection_by_id(&self, id: String) -> Result<()> {
-        let _url = create_url(vec![&self.cloud_agent.endpoint, "connections", &id]);
+        let _url = self.cloud_agent.create_url(vec!["connections", &id]);
         todo!()
     }
 
@@ -40,11 +39,9 @@ impl ConnectionModule for CloudAgentPython {
         &self,
         options: ConnectionCreateInvitationOptions,
     ) -> Result<String> {
-        let url = create_url(vec![
-            &self.cloud_agent.endpoint,
-            "connections",
-            "create-invitations",
-        ])?;
+        let url = self
+            .cloud_agent
+            .create_url(vec!["connections", "create-invitation"])?;
         let mut query: Vec<(&str, String)> = vec![];
         let mut body = None;
         if options.toolbox {
