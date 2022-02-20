@@ -1,5 +1,5 @@
 use anyhow::{bail, Error, Result};
-use reqwest::{Client, RequestBuilder, StatusCode, Url};
+use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 
@@ -8,7 +8,7 @@ use crate::{cloud_agent::CloudAgent, error};
 pub fn create_url(arr: Vec<&str>) -> Result<Url> {
     let url = arr.join("/");
     //remove
-    reqwest::Url::parse(&url).map_err(|e| Error::new(e))
+    reqwest::Url::parse(&url).map_err(Error::new)
 }
 
 /// Call logic for http calls
@@ -53,18 +53,25 @@ impl CloudAgent {
 
         // TODO: check errors. we want to have some response from the server logged.
         //       like with issue credential which fields are missing
+        //       most likely this is from the unable to parse response.
+        // tip: bail! is like format! so we can make some cool stuff here
         match client.send().await {
-            Ok(res) => match res.status() {
-                StatusCode::OK => res
+            Ok(res) => match res.status().as_u16() {
+                200..=299 => res
                     .json::<T>()
                     .await
                     .or_else(|_| bail!(error::Error::UnableToParseResponse)),
-                StatusCode::UNAUTHORIZED => bail!(error::Error::AuthorizationFailed),
-                StatusCode::NOT_FOUND => bail!(error::Error::UrlDoesNotExist),
-                StatusCode::INTERNAL_SERVER_ERROR => bail!(error::Error::InternalServerError),
-                _ => bail!(error::Error::UnknownResponseStatusCode),
+                401 => bail!(error::Error::AuthorizationFailed),
+                404 => bail!(error::Error::UrlDoesNotExist),
+                500..=599 => bail!("{} {}", error::Error::InternalServerError, res.status()),
+                _ => bail!(
+                    "{} Code: {}",
+                    error::Error::UnknownResponseStatusCode,
+                    res.status()
+                ),
             },
-            Err(e) => Err(Error::new(e)),
+            // Err(e) => Err(Error::new(e)),
+            Err(_) => bail!(error::Error::UnreachableUrl),
         }
     }
 }

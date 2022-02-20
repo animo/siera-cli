@@ -14,7 +14,7 @@ pub struct Log {
 
 impl Log {
     /// json formatted stdout logger
-    pub fn log_pretty(&self, obj: impl Serialize) {
+    pub fn _log_pretty(&self, obj: impl Serialize) {
         let buf = Vec::new();
         let formatter = serde_json::ser::PrettyFormatter::with_indent(b"  ");
         let mut ser = serde_json::Serializer::with_formatter(buf, formatter);
