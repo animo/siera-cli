@@ -13,7 +13,6 @@ pub struct CloudAgent {
 }
 
 impl CloudAgent {
-    // TODO: This should be refactored
     pub fn create_url(&self, paths: Vec<&str>) -> Result<Url> {
         let mut url = Url::parse(&self.endpoint)
             .map_err(|_| Box::new(error::Error::UnreachableUrl) as Box<dyn std::error::Error>)?;
