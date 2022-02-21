@@ -10,6 +10,9 @@ pub struct Log {
 
     /// Whether it should suppress the output to the ClI
     pub suppress_output: bool,
+
+    /// Whether it should output debug strings
+    pub debug: bool,
 }
 
 // TODO: Why do we need to remove quotes?

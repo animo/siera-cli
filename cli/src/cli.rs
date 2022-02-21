@@ -30,6 +30,9 @@ pub struct Cli {
     #[clap(long, short = 'v', default_value = "Default")]
     pub environment: String,
 
+    #[clap(long, short)]
+    pub raw: bool,
+
     #[clap(subcommand)]
     pub commands: Commands,
 }

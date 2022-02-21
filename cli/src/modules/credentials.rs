@@ -50,10 +50,13 @@ pub async fn parse_credentials_args(
                 keys: key.iter().map(|k| k.to_string()).collect(),
                 values: value.iter().map(|v| v.to_string()).collect(),
             };
-            agent
-                .send_offer(options)
-                .await
-                .map(|_| logger.log(format!("Successfully offered a credential!")))
+            agent.send_offer(options).await.map(|res| {
+                if logger.debug {
+                    logger.log_pretty(res)
+                } else {
+                    logger.log(format!("Successfully offered a credential!"));
+                }
+            })
         }
         CredentialSubcommands::Propose { id: _id } => todo!(),
     }

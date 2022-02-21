@@ -18,6 +18,7 @@ pub async fn register() -> Result<()> {
     let logger = Log {
         should_copy: cli.copy,
         suppress_output: cli.quiet,
+        debug: cli.raw,
     };
 
     let home = env!("HOME");
