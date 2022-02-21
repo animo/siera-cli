@@ -45,16 +45,14 @@ impl CloudAgent {
             None => client,
         };
 
-        // TODO: check errors. we want to have some response from the server logged.
-        //       like with issue credential which fields are missing
-        //       most likely this is from the unable to parse response.
-        // tip: bail! is like format! so we can make some cool stuff here
         match client.send().await {
             Ok(res) => match res.status().as_u16() {
                 200..=299 => res.json::<T>().await.map_err(|e| {
                     println!("{:?}", e);
                     return error::Error::UnableToParseResponse.into();
                 }),
+                // Issue credential message when attributes are not correct
+                400 => Err(res.text().await?.into()),
                 401 => Err(error::Error::AuthorizationFailed.into()),
                 404 => Err(error::Error::UrlDoesNotExist.into()),
                 // TODO: This response is quite ugly. Is it only used at cred_def_id?

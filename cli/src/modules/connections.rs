@@ -67,6 +67,6 @@ pub async fn parse_connection_args(
         ConnectionSubcommands::GetAll {} => agent
             .get_connections()
             .await
-            .map(|connections| logger.log_pretty(connections)),
+            .map(|connections| logger.log_pretty(connections.results)),
     }
 }
