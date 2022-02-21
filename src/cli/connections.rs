@@ -1,5 +1,5 @@
 use super::register::Module;
-use crate::agent::agents::Agent;
+use crate::agent_controller::agents::Agent;
 use async_trait::async_trait;
 use clap::ArgMatches;
 use serde::{Deserialize, Serialize};

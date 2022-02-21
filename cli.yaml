@@ -1,42 +1,3 @@
-name: Aries CLI
-
-# Application settings
-settings:
-  - ArgRequiredElseHelp
-
-# Main command flags
-args:
-  - endpoint:
-      help: Url of the cloudagent
-      short: e
-      long: endpoint
-      takes_value: true
-  - apikey:
-      help: The admin apikey
-      short: k
-      long: apikey
-      takes_value: true
-  - environment:
-      help: select an environment from the configuration file
-      short: v
-      long: environment
-      takes_value: true
-      default_value: Default
-  - copy:
-      help: Copies any output to your OS buffer
-      short: c
-      long: copy
-  - suppress-output:
-      help: Suppresses the output to the CLI
-      short: s
-      long: suppress-output
-  - config:
-      help: Config file for the CLI
-      short: o
-      long: config
-      takes_value: true
-
-# Subcommands
 subcommands:
   - init:
       about: Initialise subcommand [alias to "config --create"]
@@ -61,35 +22,6 @@ subcommands:
             long: endpoint
             conflicts_with: edit
             default_value: https://agent.community.animo.id
-  - invite:
-      about: Invitations subcommand
-      version: '0.1.0'
-      args:
-        - auto-accept:
-            help: Whether the invitation should be auto-accepted
-            short: a
-            long: auto-accept
-            conflicts_with: toolbox
-        - multi-use:
-            help: Whether the invitation should be multi-use
-            short: m
-            long: multi-use
-            conflicts_with: toolbox
-        - toolbox:
-            help: Whether it should create a default toolbox invitation
-            short: t
-            long: toolbox
-        - qr:
-            help: Whether it should display a qr code
-            short: q
-            long: qr
-            conflicts_with: toolbox
-        - alias:
-            help: Alias for the connection
-            short: l
-            long: alias
-            takes_value: true
-            conflicts_with: toolbox
   - connections:
       about: Connections subcommand
       version: '0.1.0'

@@ -6,10 +6,10 @@ use super::invite::InvitationsModule;
 use super::issue_credential::CredentialsModule;
 use super::message::MessagesModule;
 use super::schema::SchemaModule;
-use crate::agent::agents::Agent;
-use crate::agent::agents::BaseAgent;
-use crate::agent::agents::HttpAgentExtended;
-use crate::agent::http_agent::HttpAgent;
+use crate::agent_controller::agents::Agent;
+use crate::agent_controller::agents::BaseAgent;
+use crate::agent_controller::agents::HttpAgentExtended;
+use crate::agent_controller::http_agent_controller::HttpAgent;
 use crate::error::{throw, Error};
 use crate::utils::config;
 use crate::utils::logger::Log;
@@ -58,7 +58,7 @@ pub async fn register_cli() {
     let yaml = load_yaml!("../../cli.yaml");
 
     // TODO: Make this configurable from the cli when we support multiple agents
-    let agent_type: SupportedAgent = SupportedAgent::AriesCloudagentPyton;
+    let agent_type: SupportedAgent = Supportedagent_controller::AriesCloudagentPyton;
 
     // Get all the supplied flags and values
     let matches = App::from_yaml(yaml)
@@ -124,12 +124,12 @@ pub async fn register_cli() {
     };
 
     let agent = match agent_type {
-        SupportedAgent::AriesCloudagentPyton => HttpAgent {
+        Supportedagent_controller::AriesCloudagentPyton => HttpAgent {
             base_agent,
             url: endpoint,
             api_key,
         },
-        SupportedAgent::AriesFrameworkJavaScriptRest => {
+        Supportedagent_controller::AriesFrameworkJavaScriptRest => {
             panic!("AFJ Rest agent is not yet supported")
         }
     };

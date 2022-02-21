@@ -4,7 +4,7 @@ use crate::{
 };
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Map, Value};
+use serde_json::{json, Value};
 
 use crate::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 
@@ -17,7 +17,7 @@ pub struct Invitation {
     pub connection_id: String,
 
     /// Invitation object
-    pub invitation: Map<String, Value>,
+    pub invitation: Value,
 
     /// Invitation url that can be used to accept it by another party
     pub invitation_url: String,

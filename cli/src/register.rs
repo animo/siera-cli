@@ -7,7 +7,7 @@ use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
 use crate::utils::{config::get_value_from_config, logger::Log};
-use agent::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
+use agent_controller::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
 use clap::Parser;
 
 pub async fn register() -> Result<()> {

@@ -1,6 +1,6 @@
 use super::register::ModuleWithBaseAgent;
 use crate::{
-    agent::agents::BaseAgent,
+    agent_controller::agents::BaseAgent,
     error::{throw, Error},
 };
 use async_trait::async_trait;

@@ -1,4 +1,4 @@
-use agent::modules::credential_definition::CredentialDefinitionModule;
+use agent_controller::modules::credential_definition::CredentialDefinitionModule;
 use clap::{Args, Subcommand};
 use serde_json::json;
 

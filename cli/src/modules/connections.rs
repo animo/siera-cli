@@ -1,4 +1,4 @@
-use agent::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
+use agent_controller::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
 
 use crate::error::Result;

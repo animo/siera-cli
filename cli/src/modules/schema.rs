@@ -1,4 +1,4 @@
-use agent::modules::schema::{SchemaCreateOptions, SchemaModule};
+use agent_controller::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
 
 use crate::{error::Result, utils::logger::Log};
