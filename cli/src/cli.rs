@@ -3,7 +3,8 @@ use std::path::PathBuf;
 use clap::{Parser, Subcommand};
 
 use crate::modules::{
-    connections::ConnectionOptions, features::FeaturesOptions, schema::SchemaOptions,
+    connections::ConnectionOptions, credential_definition::CredentialDefinitionOptions,
+    features::FeaturesOptions, schema::SchemaOptions,
 };
 
 #[derive(Parser)]
@@ -37,4 +38,5 @@ pub enum Commands {
     Connections(ConnectionOptions),
     Features(FeaturesOptions),
     Schema(SchemaOptions),
+    CredentialDefinition(CredentialDefinitionOptions),
 }

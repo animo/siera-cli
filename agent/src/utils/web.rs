@@ -57,6 +57,8 @@ impl CloudAgent {
                 }),
                 401 => Err(error::Error::AuthorizationFailed.into()),
                 404 => Err(error::Error::UrlDoesNotExist.into()),
+                // TODO: This response is quite ugly. Is it only used at cred_def_id?
+                422 => Err(res.text().await?.into()),
                 500..=599 => Err(error::Error::InternalServerError.into()),
                 _ => Err(error::Error::UnknownResponseStatusCode.into()),
             },

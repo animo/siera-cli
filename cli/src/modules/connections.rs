@@ -26,7 +26,6 @@ pub enum ConnectionSubcommands {
     },
 }
 
-// TODO: Can we just send a dereferenced struct directly?
 pub async fn parse_connection_args(
     commands: &ConnectionSubcommands,
     agent: impl ConnectionModule,

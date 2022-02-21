@@ -37,17 +37,17 @@ pub struct SchemaContent {
     seq_no: i32,
 }
 
+#[derive(Debug)]
+pub struct SchemaCreateOptions {
+    pub name: String,
+    pub version: String,
+    pub attributes: Vec<String>,
+}
+
 #[async_trait]
 pub trait SchemaModule {
     /// Requests all the features from the cloudagent
     async fn create(&self, options: SchemaCreateOptions) -> Result<String>;
     async fn get_by_id(&self, id: String) -> Result<GetSchemaResponse>;
     async fn get_all(&self) -> Result<Schema>;
-}
-
-#[derive(Debug)]
-pub struct SchemaCreateOptions {
-    pub name: String,
-    pub version: String,
-    pub attributes: Vec<String>,
 }

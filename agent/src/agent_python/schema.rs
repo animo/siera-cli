@@ -28,7 +28,7 @@ impl SchemaModule for CloudAgentPython {
 
     async fn get_by_id(&self, id: String) -> Result<GetSchemaResponse> {
         let url = self.cloud_agent.create_url(vec!["schemas", &id])?;
-        self.cloud_agent.get::<GetSchemaResponse>(url, None).await
+        self.cloud_agent.get(url, None).await
     }
 
     async fn get_all(&self) -> Result<Schema> {
