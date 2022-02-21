@@ -16,7 +16,7 @@ pub async fn register() -> Result<()> {
 
     let logger = Log {
         should_copy: cli.copy,
-        suppress_output: cli.suppress,
+        suppress_output: cli.quiet,
     };
 
     let home = env!("HOME");
@@ -40,7 +40,7 @@ pub async fn register() -> Result<()> {
     match &cli.commands {
         Commands::Schema(options) => parse_schema_args(&options.commands, agent, logger).await,
         Commands::Features(_) => parse_features_args(agent, logger).await,
-        Commands::Message(options) => parse_message_args(options,agent, logger).await,
+        Commands::Message(options) => parse_message_args(options, agent, logger).await,
         Commands::CredentialDefinition(options) => {
             parse_credential_definition_args(&options.commands, agent, logger).await
         }

@@ -21,7 +21,7 @@ pub struct Cli {
     pub copy: bool,
 
     #[clap(long, short)]
-    pub suppress: bool,
+    pub quiet: bool,
 
     #[clap(long, short = 'o')]
     pub config: Option<PathBuf>,
