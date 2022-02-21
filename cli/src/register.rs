@@ -3,6 +3,7 @@ use std::path::Path;
 use crate::cli::{Cli, Commands};
 use crate::error::{self, Result};
 use crate::modules::credential_definition::parse_credential_definition_args;
+use crate::modules::message::parse_message_args;
 use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
@@ -37,13 +38,14 @@ pub async fn register() -> Result<()> {
     let agent = CloudAgentPython::new(endpoint, api_key, version).await?;
 
     match &cli.commands {
-        Commands::Connections(options) => {
-            parse_connection_args(&options.commands, agent, logger).await
-        }
         Commands::Schema(options) => parse_schema_args(&options.commands, agent, logger).await,
         Commands::Features(_) => parse_features_args(agent, logger).await,
+        Commands::Message(options) => parse_message_args(options,agent, logger).await,
         Commands::CredentialDefinition(options) => {
             parse_credential_definition_args(&options.commands, agent, logger).await
+        }
+        Commands::Connections(options) => {
+            parse_connection_args(&options.commands, agent, logger).await
         }
     }?;
 

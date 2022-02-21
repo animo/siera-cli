@@ -4,7 +4,7 @@ use clap::{Parser, Subcommand};
 
 use crate::modules::{
     connections::ConnectionOptions, credential_definition::CredentialDefinitionOptions,
-    features::FeaturesOptions, schema::SchemaOptions,
+    features::FeaturesOptions, message::MessageOptions, schema::SchemaOptions,
 };
 
 #[derive(Parser)]
@@ -39,4 +39,5 @@ pub enum Commands {
     Features(FeaturesOptions),
     Schema(SchemaOptions),
     CredentialDefinition(CredentialDefinitionOptions),
+    Message(MessageOptions),
 }

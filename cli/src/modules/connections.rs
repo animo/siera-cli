@@ -31,6 +31,7 @@ pub enum ConnectionSubcommands {
     GetAll {},
 }
 
+// TODO: we should implement `from` so we can use todo and have a cleaner api
 pub async fn parse_connection_args(
     commands: &ConnectionSubcommands,
     agent: impl ConnectionModule,
