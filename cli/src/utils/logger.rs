@@ -30,7 +30,7 @@ impl Log {
     /// Generic CLI logger
     pub fn log(&self, string: impl AsRef<str>) {
         if !self.suppress_output {
-            println!("{}", string.as_ref().replace("\"", ""));
+            println!("{}", string.as_ref());
         }
         if self.should_copy {
             self.copy_to_buffer(string);
@@ -44,7 +44,7 @@ impl Log {
 
     /// Log messages that broke the program
     pub fn error(&self, e: Box<dyn std::error::Error>) -> ! {
-        eprintln!("{}: {}", "Error".red(), e.to_string().replace("\"", ""));
+        eprintln!("{}: {}", "Error".red(), e.to_string());
         std::process::exit(1)
     }
 

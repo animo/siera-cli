@@ -1,4 +1,7 @@
-use crate::error::Result;
+use crate::{
+    error::Result,
+    modules::connections::{GetConnectionByIdResponse, GetConnectionsResponse},
+};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Map, Value};
@@ -25,14 +28,14 @@ pub struct Invitation {
 
 #[async_trait]
 impl ConnectionModule for CloudAgentPython {
-    async fn get_connections(&self) -> Result<()> {
-        let _url = self.cloud_agent.create_url(vec!["connections"]);
-        todo!()
+    async fn get_connections(&self) -> Result<GetConnectionsResponse> {
+        let url = self.cloud_agent.create_url(vec!["connections"])?;
+        self.cloud_agent.get(url, None).await
     }
 
-    async fn get_connection_by_id(&self, id: String) -> Result<()> {
-        let _url = self.cloud_agent.create_url(vec!["connections", &id]);
-        todo!()
+    async fn get_connection_by_id(&self, id: String) -> Result<GetConnectionByIdResponse> {
+        let url = self.cloud_agent.create_url(vec!["connections", &id])?;
+        self.cloud_agent.get(url, None).await
     }
 
     async fn create_invitation(

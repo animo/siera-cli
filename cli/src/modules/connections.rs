@@ -24,6 +24,11 @@ pub enum ConnectionSubcommands {
         #[clap(long, short = 'l')]
         alias: Option<String>,
     },
+    Get {
+        #[clap(long, short)]
+        id: String,
+    },
+    GetAll {},
 }
 
 pub async fn parse_connection_args(
@@ -54,5 +59,13 @@ pub async fn parse_connection_args(
                 }
             })
         }
+        ConnectionSubcommands::Get { id } => agent
+            .get_connection_by_id(id.to_string())
+            .await
+            .map(|connection| logger.log_pretty(connection)),
+        ConnectionSubcommands::GetAll {} => agent
+            .get_connections()
+            .await
+            .map(|connections| logger.log_pretty(connections)),
     }
 }
