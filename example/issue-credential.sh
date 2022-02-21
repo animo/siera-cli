@@ -1,11 +1,12 @@
 #!/usr/bin/env sh
 
 ENDPOINT="https://agent.community.animo.id"
-ALIAS="demo"
 
-CONNECTION=$(aries-cli -e $ENDPOINT connections --alias $ALIAS | jq -r '.[0].connection_id' )
+CONNECTION=$(cargo run -- -e $ENDPOINT connections get-all | jq -r '.[0].connection_id' )
 
-CRED_DEF_ID=$(aries-cli -e $ENDPOINT credential-definition | jq -r '.[0]')
+SCHEMA_ID=$(cargo run -- -e $ENDPOINT schema create -n test-demo -a blob -a bleb)
+
+CRED_DEF_ID=$(cargo run -- -e $ENDPOINT credential-definition create --schema-id=${SCHEMA_ID})
 
 # Issue credential
-aries-cli -e $ENDPOINT issue-credential --full-output --connection-id $CONNECTION --credential-definition-id $CRED_DEF_ID --key leeftijd --value 10 --key naam --value bob
+cargo run -- -e $ENDPOINT credentials offer --connection-id $CONNECTION --cred-def-id $CRED_DEF_ID --key bleb --value 10 --key blob --value bob

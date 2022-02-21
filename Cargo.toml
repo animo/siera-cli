@@ -1,29 +1,6 @@
-[package]
-authors = ["Animo Solutions"]
-categories = ["cli"]
-description = "A simple Aries Cloudagent Controller"
-edition = "2021"
-homepage = "https://animo.id"
-keywords = ["aries", "cloudagent", "controller", "cli-tool"]
-license = "Apache-2.0"
-name = "aries-cli"
-readme = "README.md"
-repository = "https://github.com/animo/aries-cli"
-version = "0.1.1"
+[workspace]
 
-[[bin]]
-name = "aries-cli"
-path = "src/main.rs"
-
-[dependencies]
-async-trait = "0.1.51"
-clap = {version = "2.33.3", features = ["yaml"]}
-clipboard = "0.5.0"
-colored = "2.0.0"
-qr2term = "0.2.2"
-reqwest = {version = "0.11", features = ["json"]}
-rust-ini = "0.17.0"
-serde = {version = "1.0.130", features = ["derive"]}
-serde_json = "1.0.68"
-tokio = {version = "1", features = ["full"]}
-yaml-rust = "0.4.5"
+members = [
+  "agent-controller",
+  "cli",
+]
