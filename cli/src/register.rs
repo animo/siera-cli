@@ -75,7 +75,10 @@ fn initialise_agent_from_cli(
         .map_err(|_| Box::new(error::Error::NoEndpointSupplied) as Box<dyn std::error::Error>);
     let api_key_from_config = get_value_from_config(&config_path, &environment, "api_key");
 
-    let endpoint = endpoint.unwrap_or(endpoint_from_config?);
+    let endpoint = match endpoint {
+        Some(e) => e,
+        None => endpoint_from_config? 
+    };
 
     let api_key = api_key.or_else(|| api_key_from_config.ok());
 
