@@ -15,7 +15,6 @@ pub struct Log {
     pub debug: bool,
 }
 
-// TODO: Why do we need to remove quotes?
 impl Log {
     /// json formatted stdout logger
     pub fn log_pretty(&self, obj: impl Serialize) {

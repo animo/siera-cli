@@ -19,7 +19,7 @@ pub struct CloudAgentPython {
 }
 
 impl CloudAgentPython {
-    pub async fn new(
+    pub fn new(
         endpoint: impl AsRef<str>,
         api_key: Option<impl AsRef<str>>,
         version: CloudAgentPythonVersion,

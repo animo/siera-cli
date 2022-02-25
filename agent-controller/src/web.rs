@@ -47,7 +47,7 @@ impl CloudAgent {
 
         match client.send().await {
             Ok(res) => match res.status().as_u16() {
-                200..=299 => res.json::<T>().await.map_err(|e| {
+                200..=299 => res.json().await.map_err(|e| {
                     println!("{:?}", e);
                     return error::Error::UnableToParseResponse.into();
                 }),

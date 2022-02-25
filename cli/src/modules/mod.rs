@@ -1,3 +1,4 @@
+pub mod configuration;
 pub mod connections;
 pub mod credential_definition;
 pub mod credentials;
