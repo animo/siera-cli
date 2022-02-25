@@ -22,6 +22,6 @@ impl MessageModule for CloudAgentPython {
             .post::<Value>(url, None, Some(body))
             .await?;
 
-        Ok(String::from(options.message))
+        Ok(options.message)
     }
 }

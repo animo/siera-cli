@@ -46,7 +46,7 @@ impl Log {
 
     /// Log messages that broke the program
     pub fn error(&self, e: Box<dyn std::error::Error>) -> ! {
-        eprintln!("{}: {}", "Error".red(), e.to_string());
+        eprintln!("{}: {}", "Error".red(), e);
         std::process::exit(1)
     }
 

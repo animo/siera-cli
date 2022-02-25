@@ -13,4 +13,4 @@ docs:
 	cargo doc --open
 
 install: clippy build
-	cargo install --path .
+	cargo install --path ./cli

@@ -54,7 +54,7 @@ pub async fn parse_credentials_args(
                 if logger.debug {
                     logger.log_pretty(res)
                 } else {
-                    logger.log(format!("Successfully offered a credential!"));
+                    logger.log("Successfully offered a credential!");
                 }
             })
         }
