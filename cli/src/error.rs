@@ -7,6 +7,7 @@ pub enum Error {
     NoEndpointSupplied,
     NoConfigKey,
     UnqualAmountKeyValue,
+    ConfigAlreadyExists,
 }
 
 impl std::error::Error for Error {}
@@ -21,6 +22,7 @@ impl Display for Error {
             Error::NoEndpointSupplied => write!(f, "No endpoint supplied. Supply an endpoint either via `--endpoint` or via `--config`."),
             Error::NoConfigKey => write!(f, "Required key does not exist in the configuration file."),
             Error::UnqualAmountKeyValue => write!(f, "Supplies keys and values are not equal in size."),
+            Error::ConfigAlreadyExists => write!(f, "Configuration file already exists."),
         }
     }
 }
