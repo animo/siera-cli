@@ -39,7 +39,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Lo
         return Ok(());
     }
     if options.view {
-        view(&default_config_path,logger )?;
+        view(&default_config_path,logger)?;
         return Ok(());
     }
 
