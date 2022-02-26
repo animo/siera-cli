@@ -1,23 +1,80 @@
+use std::path::Path;
+use std::{fs, fmt};
+
 use clap::Args;
 
+use crate::error;
 use crate::error::Result;
 use crate::utils::logger::Log;
 
 #[derive(Args)]
 pub struct ConfigurationOptions {
-    #[clap(short, long)]
+    #[clap(short, long, conflicts_with = "view")]
     initialise: bool,
+
+    #[clap(short, long, conflicts_with = "initialise")]
+    view: bool,
 }
+
+struct ConfigurationEnvironment {
+    environment: String,
+    endpoint: String,
+    api_key: Option<String>,
+}
+
+impl fmt::Display for ConfigurationEnvironment {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "[{}]\nendpoint={}{}", self.environment, self.endpoint, self.api_key.as_ref().map(|val| format!("\napi_key={val}")).unwrap_or_else(|| "".to_string()))
+    }
+}
+ 
 
 // TODO: we should implement `from` so we can use todo and have a cleaner api
-pub async fn parse_configuration_args(options: &ConfigurationOptions, _logger: Log) -> Result<()> {
+pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
+    let home = env!("HOME");
+    let default_config_path = Path::new(home).join(".config/aries-cli/config.ini");
     if options.initialise {
-        initialise()?
+        initialise(&default_config_path)?;
+        logger.log("Initialised the configuration!");
+        return Ok(());
+    }
+    if options.view {
+        view(&default_config_path, logger)?;
+        return Ok(());
     }
 
-    Ok(())
+    Err(error::Error::UnreachableCode.into())
 }
 
-fn initialise() -> Result<()> {
+fn view(path: &Path, logger: Log) -> Result<()> {
+    let output = fs::read_to_string(path)?;
+    logger.log(output);
+    Ok(())
+
+}
+
+fn initialise(path: &Path) -> Result<()> {
+    let config = ConfigurationEnvironment{
+        environment: "Default".to_string(),
+        endpoint: "https://agent.community.animo.id".to_string(),
+        api_key: None,
+    };
+
+    if path.exists() {
+        return Err(error::Error::ConfigExists.into());
+    }
+
+    // Get the directories
+    let prefix = path.parent().unwrap();
+
+    // create all the required directories
+    fs::create_dir_all(prefix)?;
+
+    // Create the configuration file
+    fs::File::create(&path)?;
+    
+    // Write the default configuration to the file
+    fs::write(path, config.to_string())?;
+
     Ok(())
 }
