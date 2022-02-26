@@ -44,10 +44,15 @@ pub struct SchemaCreateOptions {
     pub attributes: Vec<String>,
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GetAllSchemasResponse {
+    pub schema_ids: Vec<String>,
+}
+
 #[async_trait]
 pub trait SchemaModule {
     /// Requests all the features from the cloudagent
     async fn create(&self, options: SchemaCreateOptions) -> Result<String>;
     async fn get_by_id(&self, id: String) -> Result<GetSchemaResponse>;
-    async fn get_all(&self) -> Result<Schema>;
+    async fn get_all(&self) -> Result<GetAllSchemasResponse>;
 }

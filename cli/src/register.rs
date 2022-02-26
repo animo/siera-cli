@@ -27,7 +27,7 @@ pub async fn register() -> Result<()> {
         Commands::Schema(options) => {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
-            parse_schema_args(&options.commands, agent, logger).await
+            parse_schema_args(options, agent, logger).await
         }
         Commands::Features(_) => {
             let agent =
