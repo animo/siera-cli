@@ -1,12 +1,18 @@
 use agent_controller::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
 
-use crate::{error::Result, utils::logger::Log};
+use crate::{error::{Result, Error}, utils::logger::Log};
 
 #[derive(Args)]
 pub struct SchemaOptions {
     #[clap(subcommand)]
-    pub commands: SchemaSubcommands,
+    pub commands: Option<SchemaSubcommands>,
+
+    #[clap(long, short, conflicts_with = "all")]
+    pub id: Option<String>,
+
+    #[clap(long, short, conflicts_with = "id")]
+    pub all: bool, 
 }
 
 #[derive(Subcommand, Debug)]
@@ -19,18 +25,25 @@ pub enum SchemaSubcommands {
         #[clap(short, long)]
         attributes: Vec<String>,
     },
-    Get {
-        #[clap(short, long)]
-        id: String,
-    },
 }
 
 pub async fn parse_schema_args(
-    commands: &SchemaSubcommands,
+    options: &SchemaOptions,
     agent: impl SchemaModule,
     logger: Log,
 ) -> Result<()> {
-    match commands {
+    if let Some(id) = &options.id {
+        return agent.get_by_id(id.to_string())
+        .await
+        .map(|schema| logger.log_pretty(schema.schema));
+    }
+    if options.all {
+        return agent.get_all()
+        .await
+        .map(|schemas| logger.log_list(schemas.schema_ids));
+    }
+    // TEMP
+    match options.commands.as_ref().ok_or_else(|| Error::NoSubcommandSupplied("schema".to_string()))?  {
         SchemaSubcommands::Create {
             name,
             attributes,
@@ -46,9 +59,5 @@ pub async fn parse_schema_args(
                 .await
                 .map(|schema_id| logger.log(schema_id))
         }
-        SchemaSubcommands::Get { id } => agent
-            .get_by_id(id.to_string())
-            .await
-            .map(|schema| logger.log_pretty(schema.schema)),
     }
 }
