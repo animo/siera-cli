@@ -1,7 +1,7 @@
 use crate::{
     error::Result,
     modules::credential_definition::{
-        CreateCredentialDefinitionResponse, GetCredentialDefinitionResponse,
+        CreateCredentialDefinitionResponse, GetCredentialDefinitionResponse, GetAllCredentialDefinitionsResponse,
     },
 };
 use async_trait::async_trait;
@@ -32,10 +32,10 @@ impl CredentialDefinitionModule for CloudAgentPython {
         self.cloud_agent.get(url, None).await
     }
 
-    async fn get_all(&self) -> Result<String> {
-        let _url = self
+    async fn get_all(&self) -> Result<GetAllCredentialDefinitionsResponse> {
+        let url = self
             .cloud_agent
             .create_url(vec!["credential-definitions", "created"])?;
-        todo!()
+        self.cloud_agent.get(url, None).await
     }
 }
