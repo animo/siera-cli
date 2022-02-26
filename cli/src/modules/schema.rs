@@ -1,7 +1,7 @@
 use agent_controller::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
 
-use crate::{error::Result, utils::logger::Log};
+use crate::{error::{Result, Error}, utils::logger::Log};
 
 #[derive(Args)]
 pub struct SchemaOptions {
@@ -43,7 +43,7 @@ pub async fn parse_schema_args(
         .map(|schemas| logger.log_list(schemas.schema_ids));
     }
     // TEMP
-    match options.commands.as_ref().unwrap() {
+    match options.commands.as_ref().ok_or_else(|| Error::NoSubcommandSupplied("schema".to_string()))?  {
         SchemaSubcommands::Create {
             name,
             attributes,
