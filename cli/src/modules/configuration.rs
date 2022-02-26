@@ -37,13 +37,12 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Lo
         initialise(&default_config_path)?;
         logger.log("Initialised the configuration!");
         return Ok(());
-    }
+    } 
     if options.view {
-        view(&default_config_path, logger)?;
-        return Ok(());
+        return view(&default_config_path, logger);
     }
 
-    Err(error::Error::UnreachableCode.into())
+    Err(error::Error::NoFlagSupplied("configuration".to_string()).into())
 }
 
 fn view(path: &Path, logger: Log) -> Result<()> {

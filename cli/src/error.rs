@@ -8,8 +8,8 @@ pub enum Error {
     NoConfigKey,
     UnqualAmountKeyValue,
     ConfigExists,
-    UnreachableCode,
     NoSubcommandSupplied(String),
+    NoFlagSupplied(String),
 }
 
 impl std::error::Error for Error {}
@@ -25,8 +25,8 @@ impl Display for Error {
             Error::NoConfigKey => write!(f, "Required key does not exist in the configuration file."),
             Error::UnqualAmountKeyValue => write!(f, "Supplies keys and values are not equal in size."),
             Error::ConfigExists => write!(f, "Configuration file already exists."),
-            Error::UnreachableCode => write!(f, "Unreachable code detected! Please report this issue with the command that caused it."),
-            Error::NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. check --help for the available options.", subcommand),
+            Error::NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. Check --help for the available options.", subcommand),
+            Error::NoFlagSupplied(subcommand) => write!(f, "The subcommand {} requires atleast one flag. Check --help for the available options.", subcommand),
             
         }
     }
