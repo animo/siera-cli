@@ -39,11 +39,11 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Lo
         return Ok(());
     }
     if options.view {
-        view(&default_config_path,logger)?;
+        view(&default_config_path, logger)?;
         return Ok(());
     }
 
-    unreachable!()
+    Err(error::Error::UnreachableCode.into())
 }
 
 fn view(path: &Path, logger: Log) -> Result<()> {
@@ -61,7 +61,7 @@ fn initialise(path: &Path) -> Result<()> {
     };
 
     if path.exists() {
-        return Err(error::Error::ConfigAlreadyExists.into());
+        return Err(error::Error::ConfigExists.into());
     }
 
     // Get the directories
