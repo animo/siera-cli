@@ -1,7 +1,10 @@
 use agent_controller::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
 
-use crate::{error::{Result, Error}, utils::logger::Log};
+use crate::{
+    error::{Error, Result},
+    utils::logger::Log,
+};
 
 #[derive(Args)]
 pub struct SchemaOptions {
@@ -12,7 +15,7 @@ pub struct SchemaOptions {
     pub id: Option<String>,
 
     #[clap(long, short, conflicts_with = "id")]
-    pub all: bool, 
+    pub all: bool,
 }
 
 #[derive(Subcommand, Debug)]
@@ -33,17 +36,22 @@ pub async fn parse_schema_args(
     logger: Log,
 ) -> Result<()> {
     if let Some(id) = &options.id {
-        return agent.get_by_id(id.to_string())
-        .await
-        .map(|schema| logger.log_pretty(schema.schema));
+        return agent
+            .get_by_id(id.to_string())
+            .await
+            .map(|schema| logger.log_pretty(schema.schema));
     }
     if options.all {
-        return agent.get_all()
-        .await
-        .map(|schemas| logger.log_list(schemas.schema_ids));
+        return agent
+            .get_all()
+            .await
+            .map(|schemas| logger.log_list(schemas.schema_ids));
     }
-    // TEMP
-    match options.commands.as_ref().ok_or_else(|| Error::NoSubcommandSupplied("schema".to_string()))?  {
+    match options
+        .commands
+        .as_ref()
+        .ok_or_else(|| Error::NoSubcommandSupplied("schema".to_string()))?
+    {
         SchemaSubcommands::Create {
             name,
             attributes,
