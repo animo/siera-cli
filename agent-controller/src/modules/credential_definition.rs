@@ -47,10 +47,16 @@ pub struct R {
     pub qqqqq: String,
 }
 
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+pub struct GetAllCredentialDefinitionsResponse {
+    pub credential_definition_ids: Vec<String>,
+}
+
+
 #[async_trait]
 pub trait CredentialDefinitionModule {
     /// Requests all the features from the cloudagent
     async fn create(&self, schema_id: String) -> Result<CreateCredentialDefinitionResponse>;
     async fn get_by_id(&self, id: String) -> Result<GetCredentialDefinitionResponse>;
-    async fn get_all(&self) -> Result<String>;
+    async fn get_all(&self) -> Result<GetAllCredentialDefinitionsResponse>;
 }

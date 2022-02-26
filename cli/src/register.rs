@@ -42,7 +42,7 @@ pub async fn register() -> Result<()> {
         Commands::CredentialDefinition(options) => {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
-            parse_credential_definition_args(&options.commands, agent, logger).await
+            parse_credential_definition_args(options, agent, logger).await
         }
         Commands::Connections(options) => {
             let agent =
