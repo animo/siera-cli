@@ -9,6 +9,7 @@ pub enum Error {
     UnqualAmountKeyValue,
     ConfigExists,
     UnreachableCode,
+    NoSubcommandSupplied(String),
 }
 
 impl std::error::Error for Error {}
@@ -25,6 +26,8 @@ impl Display for Error {
             Error::UnqualAmountKeyValue => write!(f, "Supplies keys and values are not equal in size."),
             Error::ConfigExists => write!(f, "Configuration file already exists."),
             Error::UnreachableCode => write!(f, "Unreachable code detected! Please report this issue with the command that caused it."),
+            Error::NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. check --help for the available options.", subcommand),
+            
         }
     }
 }
