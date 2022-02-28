@@ -1,5 +1,6 @@
+use std::env;
 use std::path::Path;
-use std::{fs, fmt};
+use std::{fmt, fs};
 
 use clap::Args;
 
@@ -24,15 +25,31 @@ struct ConfigurationEnvironment {
 
 impl fmt::Display for ConfigurationEnvironment {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "[{}]\nendpoint={}{}", self.environment, self.endpoint, self.api_key.as_ref().map(|val| format!("\napi_key={val}")).unwrap_or_else(|| "".to_string()))
+        write!(
+            f,
+            "[{}]\nendpoint={}{}",
+            self.environment,
+            self.endpoint,
+            self.api_key
+                .as_ref()
+                .map(|val| format!("\napi_key={val}"))
+                .unwrap_or_else(|| "".to_string())
+        )
     }
 }
- 
 
 // TODO: we should implement `from` so we can use todo and have a cleaner api
 pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
-    let home = env!("HOME");
-    let default_config_path = Path::new(home).join(".config/aries-cli/config.ini");
+    let default_config_path;
+    if cfg!(windows) {
+        let home = "C:\\Program Files\\Common Files\\".to_string();
+        let default_config_path_win = Path::new(&home).join(".config\\aries-cli\\config.ini");
+        default_config_path = default_config_path_win
+    } else {
+        let home = env!("HOME");
+        let default_config_path_unix = Path::new(home).join(".config/aries-cli/config.ini");
+        default_config_path = default_config_path_unix
+    }
     if options.initialise {
         initialise(&default_config_path)?;
         logger.log("Initialised the configuration!");
@@ -50,11 +67,10 @@ fn view(path: &Path, logger: Log) -> Result<()> {
     let output = fs::read_to_string(path)?;
     logger.log(output);
     Ok(())
-
 }
 
 fn initialise(path: &Path) -> Result<()> {
-    let config = ConfigurationEnvironment{
+    let config = ConfigurationEnvironment {
         environment: "Default".to_string(),
         endpoint: "https://agent.community.animo.id".to_string(),
         api_key: None,
@@ -72,7 +88,7 @@ fn initialise(path: &Path) -> Result<()> {
 
     // Create the configuration file
     fs::File::create(&path)?;
-    
+
     // Write the default configuration to the file
     fs::write(path, config.to_string())?;
 
