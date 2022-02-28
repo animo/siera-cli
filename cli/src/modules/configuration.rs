@@ -42,8 +42,8 @@ impl fmt::Display for ConfigurationEnvironment {
 pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
     let default_config_path;
     if cfg!(windows) {
-        let home = "C:\\Program Files\\Common Files\\".to_string();
-        let default_config_path_win = Path::new(&home).join(".config\\aries-cli\\config.ini");
+        let home = "%AppData%";
+        let default_config_path_win = Path::new(home).join("aries-cli/config.ini");
         default_config_path = default_config_path_win
     } else {
         let home = env!("HOME");
