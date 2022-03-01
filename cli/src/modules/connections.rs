@@ -1,7 +1,7 @@
 use agent_controller::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
 
-use crate::error::{Result, Error};
+use crate::error::{Error, Result};
 use crate::utils::{logger::Log, qr::print_qr_code};
 
 #[derive(Args)]
@@ -39,16 +39,22 @@ pub async fn parse_connection_args(
     logger: Log,
 ) -> Result<()> {
     if let Some(id) = &options.id {
-        return agent.get_connection_by_id(id.to_string())
-        .await
-        .map(|connection| logger.log_pretty(connection));
+        return agent
+            .get_connection_by_id(id.to_string())
+            .await
+            .map(|connection| logger.log_pretty(connection));
     }
     if options.all {
-        return agent.get_connections()
-        .await
-        .map(|connections| logger.log_pretty(connections.results));
+        return agent
+            .get_connections()
+            .await
+            .map(|connections| logger.log_pretty(connections.results));
     }
-    match &options.commands.as_ref().ok_or_else(|| Error::NoSubcommandSupplied("connections".to_string()))? {
+    match &options
+        .commands
+        .as_ref()
+        .ok_or_else(|| Error::NoSubcommandSupplied("connections".to_string()))?
+    {
         ConnectionSubcommands::Invite {
             auto_accept,
             qr,
