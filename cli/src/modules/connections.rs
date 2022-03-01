@@ -1,5 +1,6 @@
 use agent_controller::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
+use colored::*;
 
 use crate::error::{Result, Error};
 use crate::utils::{logger::Log, qr::print_qr_code};
@@ -63,11 +64,13 @@ pub async fn parse_connection_args(
                 qr: *qr,
                 toolbox: *toolbox,
             };
-            agent.create_invitation(options).await.map(|invite_url| {
+            agent.create_invitation(options).await.map(|response| {
                 if *qr {
-                    print_qr_code(invite_url).unwrap();
+                    logger.log(format!("{}: {}", "Connection id".green(), response.0));
+                    print_qr_code(response.1).unwrap();
                 } else {
-                    logger.log(invite_url);
+                    logger.log(format!("{}: {}", "Connection id".green(), response.0));
+                    logger.log(response.1);
                 }
             })
         }
