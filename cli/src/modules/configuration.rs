@@ -40,16 +40,13 @@ impl fmt::Display for ConfigurationEnvironment {
 
 // TODO: we should implement `from` so we can use todo and have a cleaner api
 pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
-    let default_config_path;
-    if cfg!(windows) {
+    let default_config_path = if cfg!(windows) {
         let home = "%AppData%";
-        let default_config_path_win = Path::new(home).join("aries-cli/config.ini");
-        default_config_path = default_config_path_win
+        Path::new(home).join("aries-cli/config.ini")
     } else {
         let home = env!("HOME");
-        let default_config_path_unix = Path::new(home).join(".config/aries-cli/config.ini");
-        default_config_path = default_config_path_unix
-    }
+        Path::new(home).join(".config/aries-cli/config.ini")
+    };
     if options.initialise {
         initialise(&default_config_path)?;
         logger.log("Initialised the configuration!");
