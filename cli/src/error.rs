@@ -9,6 +9,7 @@ pub enum Error {
     UnqualAmountKeyValue,
     ConfigExists,
     UnreachableCode,
+    RequiredAttributes,
     NoSubcommandSupplied(String),
 }
 
@@ -27,6 +28,7 @@ impl Display for Error {
             Error::ConfigExists => write!(f, "Configuration file already exists."),
             Error::UnreachableCode => write!(f, "Unreachable code detected! Please report this issue with the command that caused it."),
             Error::NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. check --help for the available options.", subcommand),
+            Error::RequiredAttributes => write!(f, "Creating a schema required at least one attribute. Please supply them via the --attributes flag."),
             
         }
     }
