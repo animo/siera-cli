@@ -53,7 +53,7 @@ pub trait ConnectionModule {
 
     /// Create an invitation
     async fn create_invitation(&self, options: ConnectionCreateInvitationOptions)
-        -> Result<String>;
+        -> Result<(String, String)>;
 }
 
 #[derive(Debug)]

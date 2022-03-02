@@ -11,9 +11,9 @@ use crate::utils::logger::Log;
 #[derive(Args)]
 pub struct ConfigurationOptions {
     #[clap(short, long, conflicts_with = "view")]
-    initialise: bool,
+    initialize: bool,
 
-    #[clap(short, long, conflicts_with = "initialise")]
+    #[clap(short, long, conflicts_with = "initialize")]
     view: bool,
 }
 
@@ -25,6 +25,7 @@ struct ConfigurationEnvironment {
 
 impl fmt::Display for ConfigurationEnvironment {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+<<<<<<< HEAD
         write!(
             f,
             "[{}]\nendpoint={}{}",
@@ -35,6 +36,9 @@ impl fmt::Display for ConfigurationEnvironment {
                 .map(|val| format!("\napi_key={val}"))
                 .unwrap_or_else(|| "".to_string())
         )
+=======
+        write!(f, "[{}]\nendpoint={}{}", self.environment, self.endpoint, self.api_key.as_ref().map(|val| format!("\napi_key={}", val)).unwrap_or_else(|| "".to_string()))
+>>>>>>> main
     }
 }
 
@@ -51,13 +55,12 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Lo
         initialise(&default_config_path)?;
         logger.log("Initialised the configuration!");
         return Ok(());
-    }
+    } 
     if options.view {
-        view(&default_config_path, logger)?;
-        return Ok(());
+        return view(&default_config_path, logger);
     }
 
-    Err(error::Error::UnreachableCode.into())
+    Err(error::Error::NoFlagSupplied("configuration".to_string()).into())
 }
 
 fn view(path: &Path, logger: Log) -> Result<()> {
@@ -91,3 +94,4 @@ fn initialise(path: &Path) -> Result<()> {
 
     Ok(())
 }
+
