@@ -41,7 +41,7 @@ impl ConnectionModule for CloudAgentPython {
     async fn create_invitation(
         &self,
         options: ConnectionCreateInvitationOptions,
-    ) -> Result<String> {
+    ) -> Result<(String, String)> {
         let url = self
             .cloud_agent
             .create_url(vec!["connections", "create-invitation"])?;
@@ -73,6 +73,6 @@ impl ConnectionModule for CloudAgentPython {
             .post::<Invitation>(url, Some(query), body)
             .await?;
 
-        Ok(invite.invitation_url)
+        Ok((invite.connection_id, invite.invitation_url))
     }
 }
