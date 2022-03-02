@@ -8,6 +8,7 @@ pub enum Error {
     NoConfigKey,
     UnqualAmountKeyValue,
     ConfigExists,
+    RequiredAttributes,
     NoSubcommandSupplied(String),
     NoFlagSupplied(String),
 }
@@ -25,8 +26,9 @@ impl Display for Error {
             Error::NoConfigKey => write!(f, "Required key does not exist in the configuration file."),
             Error::UnqualAmountKeyValue => write!(f, "Supplies keys and values are not equal in size."),
             Error::ConfigExists => write!(f, "Configuration file already exists."),
-            Error::NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. Check --help for the available options.", subcommand),
-            Error::NoFlagSupplied(subcommand) => write!(f, "The subcommand {} requires atleast one flag. Check --help for the available options.", subcommand),
+            Error::NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. Check `aries-cli {} --help for the available options.", subcommand, subcommand),
+            Error::NoFlagSupplied(subcommand) => write!(f, "The subcommand {} requires atleast one flag. Check `aries-cli {} --help for the available options.", subcommand, subcommand),
+            Error::RequiredAttributes => write!(f, "Creating a schema requires at least one attribute. Please supply them via the --attributes flag."),
             
         }
     }
