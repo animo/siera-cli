@@ -10,9 +10,9 @@ use crate::utils::logger::Log;
 #[derive(Args)]
 pub struct ConfigurationOptions {
     #[clap(short, long, conflicts_with = "view")]
-    initialise: bool,
+    initialize: bool,
 
-    #[clap(short, long, conflicts_with = "initialise")]
+    #[clap(short, long, conflicts_with = "initialize")]
     view: bool,
 }
 
@@ -24,7 +24,7 @@ struct ConfigurationEnvironment {
 
 impl fmt::Display for ConfigurationEnvironment {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "[{}]\nendpoint={}{}", self.environment, self.endpoint, self.api_key.as_ref().map(|val| format!("\napi_key={val}")).unwrap_or_else(|| "".to_string()))
+        write!(f, "[{}]\nendpoint={}{}", self.environment, self.endpoint, self.api_key.as_ref().map(|val| format!("\napi_key={}", val)).unwrap_or_else(|| "".to_string()))
     }
 }
  
@@ -33,7 +33,7 @@ impl fmt::Display for ConfigurationEnvironment {
 pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
     let home = env!("HOME");
     let default_config_path = Path::new(home).join(".config/aries-cli/config.ini");
-    if options.initialise {
+    if options.initialize {
         initialise(&default_config_path)?;
         logger.log("Initialised the configuration!");
         return Ok(());
@@ -78,3 +78,4 @@ fn initialise(path: &Path) -> Result<()> {
 
     Ok(())
 }
+
