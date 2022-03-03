@@ -8,7 +8,7 @@ pub mod top_level {
 
   pub static Quiet: &str = "Suppresses most output.";
 
-  pub static Verbose: &str = "Print debug logs. Cannot be used with --quiet.";
+  pub static Verbose: &str = "Print debug logs.";
 
   pub static Config: &str = "Path to your configuration file.";
 
