@@ -23,7 +23,7 @@ pub struct Cli {
     #[clap(long, short, help = HelpStrings::Copy)]
     pub copy: bool,
 
-    #[clap(long, short, help = HelpStrings::Quiet)]
+    #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "verbose")]
     pub quiet: bool,
 
     #[clap(long, short = 'o', help = HelpStrings::Config)]
@@ -32,7 +32,7 @@ pub struct Cli {
     #[clap(long, short = 'v', default_value = "Default", help = HelpStrings::Environment)]
     pub environment: String,
 
-    #[clap(long, short, help = HelpStrings::Verbose)]
+    #[clap(long, short, help = HelpStrings::Verbose, conflicts_with = "quiet")]
     pub raw: bool,
 
     #[clap(subcommand)]
