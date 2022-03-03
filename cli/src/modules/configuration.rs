@@ -1,5 +1,4 @@
-use std::env;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::{fmt, fs};
 
 use clap::Args;
@@ -40,23 +39,14 @@ impl fmt::Display for ConfigurationEnvironment {
 
 // TODO: we should implement `from` so we can use todo and have a cleaner api
 pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
-    let default_config_path;
-    if cfg!(windows) {
-        let home = "C:\\Program Files\\Common Files";
-        default_config_path = Path::new(home).join("aries-cli\\config.ini")
-    } else if cfg!(unix) {
-        let home = env!("HOME");
-        default_config_path = Path::new(home).join(".config/aries-cli/config.ini")
-    } else {
-        return Err(error::Error::OsUnknown.into());
-    };
+    let config_path = get_config_path()?;
     if options.initialize {
-        initialise(&default_config_path)?;
+        initialise(&config_path)?;
         logger.log("Initialised the configuration!");
         return Ok(());
     }
     if options.view {
-        return view(&default_config_path, logger);
+        return view(&config_path, logger);
     }
 
     Err(error::Error::NoFlagSupplied("configuration".to_string()).into())
@@ -92,4 +82,16 @@ fn initialise(path: &Path) -> Result<()> {
     fs::write(path, config.to_string())?;
 
     Ok(())
+}
+
+pub fn get_config_path() -> Result<PathBuf> {
+    if cfg!(windows) {
+        let home = "C:\\Program Files\\Common Files";
+        Ok(Path::new(home).join("aries-cli\\config.ini"))
+    } else if cfg!(unix) {
+        let home = option_env!("HOME").ok_or_else(|| error::Error::HomeNotFoundError);
+        Ok(Path::new(&home?).join(".config/aries-cli/config.ini"))
+    } else {
+        Err(error::Error::OsUnknown.into())
+    }
 }

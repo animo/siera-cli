@@ -1,8 +1,8 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use crate::cli::{Cli, Commands};
 use crate::error::{self, Result};
-use crate::modules::configuration::parse_configuration_args;
+use crate::modules::configuration::{get_config_path, parse_configuration_args};
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::credentials::parse_credentials_args;
 use crate::modules::message::parse_message_args;
@@ -65,22 +65,13 @@ fn initialise_agent_from_cli(
     endpoint: Option<String>,
     api_key: Option<String>,
 ) -> Result<CloudAgentPython> {
-    let default_config_path;
-    if cfg!(windows) {
-        let home = "C:\\Program Files\\Common Files";
-        default_config_path = Path::new(home).join("aries-cli\\config.ini")
-    } else if cfg!(unix) {
-        let home = env!("HOME");
-        default_config_path = Path::new(home).join(".config/aries-cli/config.ini")
-    } else {
-        return Err(error::Error::OsUnknown.into());
-    };
-    let config_path = config.unwrap_or(default_config_path);
+    let config_path = get_config_path()?;
+    let config_path = config.unwrap_or(config_path);
     let environment = environment;
 
-    // We cannot infer type of error here with `.into()` as we are async
-    let endpoint_from_config = get_value_from_config(&config_path, &environment, "endpoint")
-        .map_err(|_| Box::new(error::Error::NoEndpointSupplied) as Box<dyn std::error::Error>);
+    let endpoint_from_config: Result<String> =
+        get_value_from_config(&config_path, &environment, "endpoint")
+            .map_err(|_| error::Error::NoEndpointSupplied.into());
     let api_key_from_config = get_value_from_config(&config_path, &environment, "api_key");
 
     let endpoint = match endpoint {
