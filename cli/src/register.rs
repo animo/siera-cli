@@ -65,8 +65,16 @@ fn initialise_agent_from_cli(
     endpoint: Option<String>,
     api_key: Option<String>,
 ) -> Result<CloudAgentPython> {
-    let home = env!("HOME");
-    let default_config_path = Path::new(home).join(".config/aries-cli/config.ini");
+    let default_config_path = if cfg!(windows) {
+        let home = "C:\\Program Files\\Common Files";
+        Path::new(home).join("aries-cli\\config.ini")
+    } else if cfg!(unix) {
+        let home = env!("HOME");
+        Path::new(home).join(".config/aries-cli/config.ini")
+    } else {
+        let home = ".";
+        Path::new(home).join(".config/aries-cli/config.ini")
+    };
     let config_path = config.unwrap_or(default_config_path);
     let environment = environment;
 
@@ -77,7 +85,7 @@ fn initialise_agent_from_cli(
 
     let endpoint = match endpoint {
         Some(e) => e,
-        None => endpoint_from_config? 
+        None => endpoint_from_config?,
     };
 
     let api_key = api_key.or_else(|| api_key_from_config.ok());
