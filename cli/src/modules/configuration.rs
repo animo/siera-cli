@@ -1,5 +1,5 @@
-use std::path::Path;
-use std::{fs, fmt};
+use std::path::{Path, PathBuf};
+use std::{fmt, fs};
 
 use clap::Args;
 
@@ -24,22 +24,29 @@ struct ConfigurationEnvironment {
 
 impl fmt::Display for ConfigurationEnvironment {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "[{}]\nendpoint={}{}", self.environment, self.endpoint, self.api_key.as_ref().map(|val| format!("\napi_key={}", val)).unwrap_or_else(|| "".to_string()))
+        write!(
+            f,
+            "[{}]\nendpoint={}{}",
+            self.environment,
+            self.endpoint,
+            self.api_key
+                .as_ref()
+                .map(|val| format!("\napi_key={}", val))
+                .unwrap_or_else(|| "".to_string())
+        )
     }
 }
- 
 
 // TODO: we should implement `from` so we can use todo and have a cleaner api
 pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
-    let home = env!("HOME");
-    let default_config_path = Path::new(home).join(".config/aries-cli/config.ini");
+    let config_path = get_config_path()?;
     if options.initialize {
-        initialise(&default_config_path)?;
+        initialise(&config_path)?;
         logger.log("Initialised the configuration!");
         return Ok(());
-    } 
+    }
     if options.view {
-        return view(&default_config_path, logger);
+        return view(&config_path, logger);
     }
 
     Err(error::Error::NoFlagSupplied("configuration".to_string()).into())
@@ -49,11 +56,10 @@ fn view(path: &Path, logger: Log) -> Result<()> {
     let output = fs::read_to_string(path)?;
     logger.log(output);
     Ok(())
-
 }
 
 fn initialise(path: &Path) -> Result<()> {
-    let config = ConfigurationEnvironment{
+    let config = ConfigurationEnvironment {
         environment: "Default".to_string(),
         endpoint: "https://agent.community.animo.id".to_string(),
         api_key: None,
@@ -71,10 +77,21 @@ fn initialise(path: &Path) -> Result<()> {
 
     // Create the configuration file
     fs::File::create(&path)?;
-    
+
     // Write the default configuration to the file
     fs::write(path, config.to_string())?;
 
     Ok(())
 }
 
+pub fn get_config_path() -> Result<PathBuf> {
+    if cfg!(windows) {
+        let home = "C:\\Program Files\\Common Files";
+        Ok(Path::new(home).join("aries-cli\\config.ini"))
+    } else if cfg!(unix) {
+        let home = option_env!("HOME").ok_or_else(|| error::Error::HomeNotFoundError);
+        Ok(Path::new(&home?).join(".config/aries-cli/config.ini"))
+    } else {
+        Err(error::Error::OsUnknown.into())
+    }
+}
