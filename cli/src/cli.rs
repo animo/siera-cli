@@ -14,25 +14,25 @@ use crate::modules::{
 #[clap(author, version, about)]
 #[clap(arg_required_else_help = true)]
 pub struct Cli {
-    #[clap(long, short, help = HelpStrings::ENDPOINT)]
+    #[clap(long, short, help = HelpStrings::Endpoint)]
     pub endpoint: Option<String>,
 
-    #[clap(long, short, help = HelpStrings::API_KEY)]
+    #[clap(long, short, help = HelpStrings::ApiKey)]
     pub api_key: Option<String>,
 
-    #[clap(long, short, help = HelpStrings::COPY)]
+    #[clap(long, short, help = HelpStrings::Copy)]
     pub copy: bool,
 
-    #[clap(long, short, help = HelpStrings::QUIET)]
+    #[clap(long, short, help = HelpStrings::Quiet)]
     pub quiet: bool,
 
-    #[clap(long, short = 'o', help = HelpStrings::CONFIG)]
+    #[clap(long, short = 'o', help = HelpStrings::Config)]
     pub config: Option<PathBuf>,
 
-    #[clap(long, short = 'v', default_value = "Default", help = HelpStrings::ENVIRONMENT)]
+    #[clap(long, short = 'v', default_value = "Default", help = HelpStrings::Environment)]
     pub environment: String,
 
-    #[clap(long, short, help = HelpStrings::VERBOSE)]
+    #[clap(long, short, help = HelpStrings::Verbose)]
     pub raw: bool,
 
     #[clap(subcommand)]
