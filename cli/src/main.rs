@@ -3,6 +3,7 @@ mod error;
 mod modules;
 mod register;
 mod utils;
+mod help_strings;
 
 use register::register;
 use utils::logger::Log;

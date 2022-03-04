@@ -2,6 +2,8 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 
+use crate::help_strings::HelpStrings;
+
 use crate::modules::{
     configuration::ConfigurationOptions, connections::ConnectionOptions,
     credential_definition::CredentialDefinitionOptions, credentials::CredentialOptions,
@@ -12,25 +14,25 @@ use crate::modules::{
 #[clap(author, version, about)]
 #[clap(arg_required_else_help = true)]
 pub struct Cli {
-    #[clap(long, short)]
+    #[clap(long, short, help = HelpStrings::Endpoint)]
     pub endpoint: Option<String>,
 
-    #[clap(long, short)]
+    #[clap(long, short, help = HelpStrings::ApiKey)]
     pub api_key: Option<String>,
 
-    #[clap(long, short)]
+    #[clap(long, short, help = HelpStrings::Copy)]
     pub copy: bool,
 
-    #[clap(long, short)]
+    #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "raw")]
     pub quiet: bool,
 
-    #[clap(long, short = 'o')]
+    #[clap(long, short = 'o', help = HelpStrings::Config)]
     pub config: Option<PathBuf>,
 
-    #[clap(long, short = 'v', default_value = "default")]
+    #[clap(long, short = 'v', default_value = "default", help = HelpStrings::Environment)]
     pub environment: String,
 
-    #[clap(long, short)]
+    #[clap(long, short, help = HelpStrings::Verbose, conflicts_with = "quiet")]
     pub raw: bool,
 
     #[clap(subcommand)]
