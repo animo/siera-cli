@@ -19,6 +19,7 @@ pub fn init(level: LevelFilter) {
             .set_time_level(LevelFilter::Debug)
             .set_target_level(LevelFilter::Debug)
             .set_max_level(LevelFilter::Debug)
+            .add_filter_allow(String::from("aries_cli"))
             .build(),
         TerminalMode::default(),
         ColorChoice::Never,

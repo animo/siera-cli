@@ -3,7 +3,7 @@ use clap::Parser;
 use colored::*;
 use log::debug;
 use log::LevelFilter;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use crate::cli::{Cli, Commands};
 use crate::error::{Error, Result};
@@ -15,6 +15,7 @@ use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
 use crate::utils::config::{get_config_from_path, get_config_path};
+use crate::utils::logger;
 
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();

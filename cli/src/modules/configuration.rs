@@ -18,7 +18,7 @@ pub struct ConfigurationOptions {
     view: bool,
 }
 
-pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
+pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
     let config_path = get_config_path()?;
     if options.initialize {
         initialise(&config_path)?;
@@ -26,7 +26,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Lo
         return Ok(());
     }
     if options.view {
-        return view(&config_path, logger);
+        return view(&config_path);
     }
 
     Err(error::Error::NoFlagSupplied("configuration".to_string()).into())
@@ -34,7 +34,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Lo
 
 fn view(path: &Path) -> Result<()> {
     let output = fs::read_to_string(path)?;
-    println!("{}", output);
+    info!("{}", output);
     Ok(())
 }
 
