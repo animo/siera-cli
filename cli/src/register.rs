@@ -1,8 +1,12 @@
+use agent_controller::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
+use clap::Parser;
+use colored::*;
+use log::LevelFilter;
 use std::path::{Path, PathBuf};
 
 use crate::cli::{Cli, Commands};
-use crate::error::{self, Result};
 use crate::debug;
+use crate::error::{self, Result};
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::credentials::parse_credentials_args;
@@ -11,14 +15,13 @@ use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
 use crate::utils::{config::get_value_from_config, logger};
-use agent_controller::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
-use clap::Parser;
-use log::LevelFilter;
 
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();
     let level = if cli.quiet {
         LevelFilter::Off
+    } else if cli.raw {
+        LevelFilter::Debug
     } else {
         LevelFilter::Info
     };
@@ -60,7 +63,7 @@ pub async fn register() -> Result<()> {
         }
     }?;
 
-    debug!("Successfully executed command");
+    debug!("{} executed command", "Successfully".green());
     Ok(())
 }
 

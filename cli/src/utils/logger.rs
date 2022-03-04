@@ -18,7 +18,7 @@ pub fn init(level: LevelFilter) {
             .set_thread_level(LevelFilter::Off)
             .set_time_level(LevelFilter::Debug)
             .set_target_level(LevelFilter::Debug)
-            .set_max_level(LevelFilter::Off)
+            .set_max_level(LevelFilter::Debug)
             .build(),
         TerminalMode::default(),
         ColorChoice::Never,
