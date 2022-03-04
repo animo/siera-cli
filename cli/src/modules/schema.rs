@@ -62,6 +62,9 @@ pub async fn parse_schema_args(
                 version: version.to_string(),
                 attributes: attributes.to_vec(),
             };
+            if options.attributes.is_empty() {
+                return Err(Error::RequiredAttributes.into());
+            }
             agent
                 .create(options)
                 .await

@@ -7,9 +7,12 @@ pub enum Error {
     NoEndpointSupplied,
     NoConfigKey,
     UnqualAmountKeyValue,
+    HomeNotFoundError,
     ConfigExists,
-    UnreachableCode,
+    OsUnknown,
+    RequiredAttributes,
     NoSubcommandSupplied(String),
+    NoFlagSupplied(String),
 }
 
 impl std::error::Error for Error {}
@@ -24,9 +27,12 @@ impl Display for Error {
             Error::NoEndpointSupplied => write!(f, "No endpoint supplied. Supply an endpoint either via `--endpoint` or via `--config`."),
             Error::NoConfigKey => write!(f, "Required key does not exist in the configuration file."),
             Error::UnqualAmountKeyValue => write!(f, "Supplies keys and values are not equal in size."),
+            Error::HomeNotFoundError => write!(f, "Unable to find home directory."),
             Error::ConfigExists => write!(f, "Configuration file already exists."),
-            Error::UnreachableCode => write!(f, "Unreachable code detected! Please report this issue with the command that caused it."),
-            Error::NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. check --help for the available options.", subcommand),
+            Error::OsUnknown => write!(f, "Unknown operating system. Failed to detect OS as windows or unix."),
+            Error::NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. Check `aries-cli {} --help for the available options.", subcommand, subcommand),
+            Error::NoFlagSupplied(subcommand) => write!(f, "The subcommand {} requires atleast one flag. Check `aries-cli {} --help for the available options.", subcommand, subcommand),
+            Error::RequiredAttributes => write!(f, "Creating a schema requires at least one attribute. Please supply them via the --attributes flag."),
             
         }
     }
