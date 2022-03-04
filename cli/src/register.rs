@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use crate::cli::{Cli, Commands};
-use crate::error::{Result, Error};
+use crate::error::{Error, Result};
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::credentials::parse_credentials_args;
@@ -60,7 +60,7 @@ pub async fn register() -> Result<()> {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_workflow_args(options, agent, logger).await
-        },
+        }
     }?;
 
     Ok(())
@@ -78,32 +78,35 @@ fn initialise_agent_from_cli(
             let config = get_config_path();
             match config {
                 Ok(c) => {
-                    if c.exists() { Some(c) } 
-                    else { None }},
-                Err(_) => None
+                    if c.exists() {
+                        Some(c)
+                    } else {
+                        None
+                    }
+                }
+                Err(_) => None,
             }
         }
     };
 
     let (endpoint, api_key) = match config_path {
         Some(cp) => {
-           let configurations = get_config_from_path(cp)?;
-           let configuration = configurations
-               .configurations
-               .into_iter()
-               .find(|c| c.name == environment)
-               .ok_or(Error::InvalidEnvironment)?;
-           let endpoint = endpoint.unwrap_or(configuration.endpoint);
-           let api_key = api_key.or(configuration.api_key);
-           (endpoint, api_key)
-        },
+            let configurations = get_config_from_path(cp)?;
+            let configuration = configurations
+                .configurations
+                .into_iter()
+                .find(|c| c.name == environment)
+                .ok_or(Error::InvalidEnvironment)?;
+            let endpoint = endpoint.unwrap_or(configuration.endpoint);
+            let api_key = api_key.or(configuration.api_key);
+            (endpoint, api_key)
+        }
         None => {
-           let endpoint = endpoint.ok_or(Error::NoEndpointSupplied)?; 
-           (endpoint, api_key)
-        },
+            let endpoint = endpoint.ok_or(Error::NoEndpointSupplied)?;
+            (endpoint, api_key)
+        }
     };
 
     let version = CloudAgentPythonVersion::ZeroSixZero;
-    CloudAgentPython::new(endpoint, api_key,version)
-
+    CloudAgentPython::new(endpoint, api_key, version)
 }

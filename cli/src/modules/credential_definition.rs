@@ -2,7 +2,10 @@ use agent_controller::modules::credential_definition::CredentialDefinitionModule
 use clap::{Args, Subcommand};
 use serde_json::json;
 
-use crate::{error::{Result, Error}, utils::logger::Log};
+use crate::{
+    error::{Error, Result},
+    utils::logger::Log,
+};
 
 #[derive(Args)]
 pub struct CredentialDefinitionOptions {
@@ -13,7 +16,7 @@ pub struct CredentialDefinitionOptions {
     pub id: Option<String>,
 
     #[clap(long, short)]
-    pub all: bool, 
+    pub all: bool,
 }
 
 #[derive(Subcommand, Debug)]
@@ -46,11 +49,16 @@ pub async fn parse_credential_definition_args(
         });
     }
     if options.all {
-        return agent.get_all()
-        .await
-        .map(|cred_defs| logger.log_list(cred_defs.credential_definition_ids));
+        return agent
+            .get_all()
+            .await
+            .map(|cred_defs| logger.log_list(cred_defs.credential_definition_ids));
     }
-    match options.commands.as_ref().ok_or_else(|| Error::NoSubcommandSupplied("credential-definition".to_string()))? {
+    match options
+        .commands
+        .as_ref()
+        .ok_or_else(|| Error::NoSubcommandSupplied("credential-definition".to_string()))?
+    {
         CredentialDefinitionSubcommands::Create { schema_id } => agent
             .create(schema_id.to_string())
             .await

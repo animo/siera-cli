@@ -1,9 +1,9 @@
-mod workflows;
 mod cli;
 mod error;
 mod modules;
 mod register;
 mod utils;
+mod workflows;
 
 use register::register;
 use utils::logger::Log;
