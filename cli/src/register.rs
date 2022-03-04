@@ -20,7 +20,7 @@ pub async fn register() -> Result<()> {
     let level = if cli.quiet {
         LevelFilter::Off
     } else {
-        LevelFilter::max()
+        LevelFilter::Info
     };
     logger::init(level);
 
