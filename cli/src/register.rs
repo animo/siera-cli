@@ -1,15 +1,16 @@
 use std::path::PathBuf;
 
 use crate::cli::{Cli, Commands};
-use crate::error::{self, Result};
-use crate::modules::configuration::{get_config_path, parse_configuration_args};
+use crate::error::{Result, Error};
+use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::credentials::parse_credentials_args;
 use crate::modules::message::parse_message_args;
 use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
-use crate::utils::{config::get_value_from_config, logger::Log};
+use crate::utils::config::{get_config_from_path, Configuration, get_config_path};
+use crate::utils::logger::Log;
 use agent_controller::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
 use clap::Parser;
 
@@ -65,24 +66,30 @@ fn initialise_agent_from_cli(
     endpoint: Option<String>,
     api_key: Option<String>,
 ) -> Result<CloudAgentPython> {
-    let config_path = get_config_path()?;
-    let config_path = config.unwrap_or(config_path);
-    let environment = environment;
-
-    let endpoint_from_config: Result<String> =
-        get_value_from_config(&config_path, &environment, "endpoint")
-            .map_err(|_| error::Error::NoEndpointSupplied.into());
-    let api_key_from_config = get_value_from_config(&config_path, &environment, "api_key");
-
-    let endpoint = match endpoint {
-        Some(e) => e,
-        None => endpoint_from_config?,
+    let config_path = match config {
+        Some(c) => Some(c),
+        None => get_config_path().ok()
     };
 
-    let api_key = api_key.or_else(|| api_key_from_config.ok());
+    let (endpoint, api_key) = match config_path {
+        Some(cp) => {
+           let configurations = get_config_from_path(cp)?;
+           let configuration: Configuration = configurations
+               .configurations
+               .into_iter()
+               .find(|c| c.name == environment)
+               .ok_or(Error::InvalidEnvironment)?;
+           let endpoint = endpoint.unwrap_or(configuration.endpoint);
+           let api_key = api_key.or(configuration.api_key);
+           (endpoint, api_key)
+        },
+        None => {
+           let endpoint = endpoint.ok_or(Error::NoEndpointSupplied)?; 
+           (endpoint, api_key)
+        },
+    };
 
     let version = CloudAgentPythonVersion::ZeroSixZero;
+    CloudAgentPython::new(endpoint, api_key,version)
 
-    let agent = CloudAgentPython::new(endpoint, api_key, version)?;
-    Ok(agent)
 }

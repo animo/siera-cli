@@ -1,10 +1,11 @@
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::{fmt, fs};
 
 use clap::Args;
 
 use crate::error;
 use crate::error::Result;
+use crate::utils::config::get_config_path;
 use crate::utils::logger::Log;
 
 #[derive(Args)]
@@ -82,16 +83,4 @@ fn initialise(path: &Path) -> Result<()> {
     fs::write(path, config.to_string())?;
 
     Ok(())
-}
-
-pub fn get_config_path() -> Result<PathBuf> {
-    if cfg!(windows) {
-        let home = "C:\\Program Files\\Common Files";
-        Ok(Path::new(home).join("aries-cli\\config.ini"))
-    } else if cfg!(unix) {
-        let home = option_env!("HOME").ok_or_else(|| error::Error::HomeNotFoundError);
-        Ok(Path::new(&home?).join(".config/aries-cli/config.ini"))
-    } else {
-        Err(error::Error::OsUnknown.into())
-    }
 }
