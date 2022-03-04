@@ -53,7 +53,7 @@ fn initialise(path: &Path) -> Result<()> {
     // Create the configuration file
     fs::File::create(&path)?;
 
-    let initial_configuration = format!("configurations:\n{}", config.to_string());
+    let initial_configuration = format!("configurations:\n{}", config);
 
     // Write the default configuration to the file
     fs::write(path, initial_configuration)?;
