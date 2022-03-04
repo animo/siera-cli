@@ -1,9 +1,9 @@
 use agent_controller::modules::features::FeaturesModule;
 use clap::Args;
+use log::{debug, info};
 
 use crate::error::Result;
 use crate::utils::logger::pretty_stringify_obj;
-use crate::{debug, info};
 
 #[derive(Args)]
 pub struct FeaturesOptions {}

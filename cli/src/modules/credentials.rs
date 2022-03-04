@@ -1,9 +1,9 @@
 use agent_controller::modules::credentials::{CredentialsModule, CredentialsOfferOptions};
 use clap::{Args, Subcommand};
+use log::{debug, info};
 
 use crate::error::{Error, Result};
 use crate::utils::logger::pretty_stringify_obj;
-use crate::{debug, info};
 use colored::*;
 
 #[derive(Args)]

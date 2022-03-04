@@ -1,7 +1,7 @@
 use agent_controller::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
+use log::info;
 
-use crate::info;
 use crate::{
     error::{Error, Result},
     utils::logger::pretty_print_obj,

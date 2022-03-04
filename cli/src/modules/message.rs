@@ -1,9 +1,9 @@
 use agent_controller::modules::message::{MessageModule, SendMessageOptions};
 use clap::Args;
 use colored::*;
+use log::info;
 
 use crate::error::Result;
-use crate::info;
 
 #[derive(Args)]
 pub struct MessageOptions {

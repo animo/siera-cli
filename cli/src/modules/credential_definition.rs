@@ -1,8 +1,7 @@
 use agent_controller::modules::credential_definition::CredentialDefinitionModule;
 use clap::{Args, Subcommand};
 use serde_json::json;
-
-use crate::{debug, info};
+use log::{debug, info};
 
 use crate::{
     error::{Error, Result},

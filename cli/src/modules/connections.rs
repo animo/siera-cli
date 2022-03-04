@@ -1,8 +1,8 @@
 use agent_controller::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
 use colored::*;
+use log::{info};
 
-use crate::{info};
 use crate::error::{Result, Error};
 use crate::utils::{logger::{pretty_print_obj, copy_to_clipboard}, qr::print_qr_code};
 

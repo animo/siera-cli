@@ -1,9 +1,8 @@
 use std::path::Path;
 use std::{fmt, fs};
-
 use clap::Args;
+use log::{info};
 
-use crate::{info};
 use crate::error;
 use crate::error::Result;
 use colored::*;

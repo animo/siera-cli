@@ -28,26 +28,6 @@ pub fn init(level: LevelFilter) {
     }
 }
 
-#[macro_export]
-macro_rules! debug {
-    ($($arg:tt)*) => {
-        $crate::log::debug!($($arg)*)
-    };
-}
-#[macro_export]
-macro_rules! info {
-    ($($arg:tt)*) => {
-        $crate::log::info!($($arg)*)
-    };
-}
-
-#[macro_export]
-macro_rules! err {
-    ($($arg:tt)*) => {
-        $crate::log::error!($($arg)*)
-    };
-}
-
 pub fn pretty_stringify_obj(obj: impl Serialize) -> String {
     let buf = Vec::new();
     let formatter = serde_json::ser::PrettyFormatter::with_indent(b"  ");

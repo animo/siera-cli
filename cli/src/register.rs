@@ -3,9 +3,9 @@ use clap::Parser;
 use colored::*;
 use log::LevelFilter;
 use std::path::{Path, PathBuf};
+use log::debug;
 
 use crate::cli::{Cli, Commands};
-use crate::debug;
 use crate::error::{self, Result};
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
