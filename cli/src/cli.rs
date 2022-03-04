@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
 
-use crate::help_strings::top_level as HelpStrings;
+use crate::help_strings::HelpStrings;
 
 use crate::modules::{
     configuration::ConfigurationOptions, connections::ConnectionOptions,
@@ -23,7 +23,7 @@ pub struct Cli {
     #[clap(long, short, help = HelpStrings::Copy)]
     pub copy: bool,
 
-    #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "verbose")]
+    #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "raw")]
     pub quiet: bool,
 
     #[clap(long, short = 'o', help = HelpStrings::Config)]
