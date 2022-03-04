@@ -1,4 +1,4 @@
-use std::fmt;
+use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
 use crate::error::{Error, Result};
@@ -6,30 +6,13 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Configuration {
-    pub name: String,
     pub endpoint: String,
     pub api_key: Option<String>,
 }
 
-impl fmt::Display for Configuration {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "  - name: {}\n    endpoint: {}\n{}",
-            self.name,
-            self.endpoint,
-            self.api_key
-                .as_ref()
-                .map(|val| format!("    apiKey: {}\n", val))
-                .unwrap_or_else(|| "".to_string())
-        )
-    }
-}
-
 impl Default for Configuration {
     fn default() -> Self {
-        Configuration {
-            name: String::from("default"),
+        Self {
             endpoint: String::from("https://agent.community.animo.id"),
             api_key: None,
         }
@@ -38,7 +21,15 @@ impl Default for Configuration {
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Configurations {
-    pub configurations: Vec<Configuration>,
+    pub configurations: BTreeMap<String, Configuration>,
+}
+
+impl Default for Configurations {
+    fn default() -> Self {
+        let mut configurations = BTreeMap::<String, Configuration>::new();
+        configurations.insert(String::from("default"), Configuration::default());
+        Self { configurations }
+    }
 }
 
 pub fn get_config_from_path(config_path: PathBuf) -> Result<Configurations> {

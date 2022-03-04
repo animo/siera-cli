@@ -8,28 +8,35 @@ use crate::error;
 use crate::error::Result;
 use crate::utils::config::{get_config_path, Configuration};
 use colored::*;
+use clap::{Args, Subcommand};
+
+use crate::error;
+use crate::error::Result;
+use crate::utils::config::{get_config_path, Configurations};
+use crate::utils::logger::Log;
 
 #[derive(Args)]
 pub struct ConfigurationOptions {
-    #[clap(short, long, conflicts_with = "view")]
-    initialize: bool,
+    #[clap(subcommand)]
+    pub commands: ConfigurationSubcommands,
+}
 
-    #[clap(short, long, conflicts_with = "initialize")]
-    view: bool,
+#[derive(Subcommand, Debug)]
+pub enum ConfigurationSubcommands {
+    Initialize,
+    View,
 }
 
 pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
     let config_path = get_config_path()?;
-    if options.initialize {
-        initialise(&config_path)?;
-        info!("{} the configuration", "Initialised".cyan());
-        return Ok(());
+    match options.commands {
+        ConfigurationSubcommands::Initialize => {
+            initialise(&config_path)?;
+            logger.log("Initialised the configuration!");
+            return Ok(());
+        }
+        ConfigurationSubcommands::View => view(&config_path, logger),
     }
-    if options.view {
-        return view(&config_path);
-    }
-
-    Err(error::Error::NoFlagSupplied("configuration".to_string()).into())
 }
 
 fn view(path: &Path) -> Result<()> {
@@ -39,8 +46,7 @@ fn view(path: &Path) -> Result<()> {
 }
 
 fn initialise(path: &Path) -> Result<()> {
-    let config = Configuration::default();
-
+    // Check if the path exists and stop so we do not override the existing configuration file
     if path.exists() {
         return Err(error::Error::ConfigExists.into());
     }
@@ -54,10 +60,8 @@ fn initialise(path: &Path) -> Result<()> {
     // Create the configuration file
     fs::File::create(&path)?;
 
-    let initial_configuration = format!("configurations:\n{}", config);
-
     // Write the default configuration to the file
-    fs::write(path, initial_configuration)?;
+    fs::write(path, serde_yaml::to_string(&Configurations::default())?)?;
 
     Ok(())
 }

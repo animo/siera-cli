@@ -97,11 +97,10 @@ fn initialise_agent_from_cli(
             let configurations = get_config_from_path(cp)?;
             let configuration = configurations
                 .configurations
-                .into_iter()
-                .find(|c| c.name == environment)
+                .get_key_value(&environment)
                 .ok_or(Error::InvalidEnvironment)?;
-            let endpoint = endpoint.unwrap_or(configuration.endpoint);
-            let api_key = api_key.or(configuration.api_key);
+            let endpoint = endpoint.unwrap_or(configuration.1.endpoint.to_owned());
+            let api_key = api_key.or(configuration.1.api_key.to_owned());
             (endpoint, api_key)
         }
         None => {
