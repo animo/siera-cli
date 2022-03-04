@@ -2,6 +2,7 @@ use std::path::{Path, PathBuf};
 
 use crate::cli::{Cli, Commands};
 use crate::error::{self, Result};
+use crate::debug;
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::credentials::parse_credentials_args;
@@ -9,53 +10,57 @@ use crate::modules::message::parse_message_args;
 use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
-use crate::utils::{config::get_value_from_config, logger::Log};
+use crate::utils::{config::get_value_from_config, logger};
 use agent_controller::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
 use clap::Parser;
+use log::LevelFilter;
 
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();
-
-    let logger = Log {
-        should_copy: cli.copy,
-        suppress_output: cli.quiet,
-        debug: cli.raw,
+    let level = if cli.quiet {
+        LevelFilter::Off
+    } else {
+        LevelFilter::max()
     };
+    logger::init(level);
+
+    debug!("Parsed CLI options and initialized logger");
 
     match &cli.commands {
-        Commands::Configuration(options) => parse_configuration_args(options, logger).await,
+        Commands::Configuration(options) => parse_configuration_args(options).await,
         Commands::Schema(options) => {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
-            parse_schema_args(options, agent, logger).await
+            parse_schema_args(options, agent).await
         }
         Commands::Features(_) => {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
-            parse_features_args(agent, logger).await
+            parse_features_args(agent).await
         }
         Commands::Message(options) => {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
-            parse_message_args(options, agent, logger).await
+            parse_message_args(options, agent).await
         }
         Commands::CredentialDefinition(options) => {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
-            parse_credential_definition_args(options, agent, logger).await
+            parse_credential_definition_args(options, agent).await
         }
         Commands::Connections(options) => {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
-            parse_connection_args(options, agent, logger).await
+            parse_connection_args(options, agent).await
         }
         Commands::Credentials(options) => {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
-            parse_credentials_args(&options.commands, agent, logger).await
+            parse_credentials_args(&options.commands, agent).await
         }
     }?;
 
+    debug!("Successfully executed command");
     Ok(())
 }
 
@@ -77,7 +82,7 @@ fn initialise_agent_from_cli(
 
     let endpoint = match endpoint {
         Some(e) => e,
-        None => endpoint_from_config? 
+        None => endpoint_from_config?,
     };
 
     let api_key = api_key.or_else(|| api_key_from_config.ok());

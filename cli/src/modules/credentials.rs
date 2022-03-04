@@ -2,7 +2,9 @@ use agent_controller::modules::credentials::{CredentialsModule, CredentialsOffer
 use clap::{Args, Subcommand};
 
 use crate::error::{Error, Result};
-use crate::utils::logger::Log;
+use crate::utils::logger::pretty_stringify_obj;
+use crate::{debug, info};
+use colored::*;
 
 #[derive(Args)]
 pub struct CredentialOptions {
@@ -31,7 +33,6 @@ pub enum CredentialSubcommands {
 pub async fn parse_credentials_args(
     commands: &CredentialSubcommands,
     agent: impl CredentialsModule,
-    logger: Log,
 ) -> Result<()> {
     match commands {
         CredentialSubcommands::Offer {
@@ -51,11 +52,8 @@ pub async fn parse_credentials_args(
                 values: value.iter().map(|v| v.to_string()).collect(),
             };
             agent.send_offer(options).await.map(|res| {
-                if logger.debug {
-                    logger.log_pretty(res)
-                } else {
-                    logger.log("Successfully offered a credential!");
-                }
+                debug!("{}", pretty_stringify_obj(res));
+                info!("{} offered a credential", "Sucessefully".green());
             })
         }
         CredentialSubcommands::Propose { id: _id } => todo!(),

@@ -1,9 +1,9 @@
 use agent_controller::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
-use colored::*;
+// use colored::*;
 
 use crate::error::{Result, Error};
-use crate::utils::{logger::Log, qr::print_qr_code};
+use crate::utils::{logger::pretty_print_obj, qr::print_qr_code};
 
 #[derive(Args)]
 pub struct ConnectionOptions {
@@ -37,17 +37,16 @@ pub enum ConnectionSubcommands {
 pub async fn parse_connection_args(
     options: &ConnectionOptions,
     agent: impl ConnectionModule,
-    logger: Log,
 ) -> Result<()> {
     if let Some(id) = &options.id {
         return agent.get_connection_by_id(id.to_string())
         .await
-        .map(|connection| logger.log_pretty(connection));
+        .map(|connection| pretty_print_obj(connection));
     }
     if options.all {
         return agent.get_connections()
         .await
-        .map(|connections| logger.log_pretty(connections.results));
+        .map(|connections| pretty_print_obj(connections.results));
     }
     match &options.commands.as_ref().ok_or_else(|| Error::NoSubcommandSupplied("connections".to_string()))? {
         ConnectionSubcommands::Invite {
@@ -66,11 +65,11 @@ pub async fn parse_connection_args(
             };
             agent.create_invitation(options).await.map(|response| {
                 if *qr {
-                    logger.log(format!("{}: {}", "Connection id".green(), response.0));
+                    // logger.log(format!("{}: {}", "Connection id".green(), response.0));
                     print_qr_code(response.1).unwrap();
                 } else {
-                    logger.log(format!("{}: {}", "Connection id".green(), response.0));
-                    logger.log(response.1);
+                    // logger.log(format!("{}: {}", "Connection id".green(), response.0));
+                    // logger.log(response.1);
                 }
             })
         }
