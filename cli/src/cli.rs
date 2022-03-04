@@ -6,6 +6,7 @@ use crate::modules::{
     configuration::ConfigurationOptions, connections::ConnectionOptions,
     credential_definition::CredentialDefinitionOptions, credentials::CredentialOptions,
     features::FeaturesOptions, message::MessageOptions, schema::SchemaOptions,
+    workflow::WorkflowOptions,
 };
 
 #[derive(Parser)]
@@ -46,4 +47,5 @@ pub enum Commands {
     Message(MessageOptions),
     Credentials(CredentialOptions),
     Configuration(ConfigurationOptions),
+    Workflow(WorkflowOptions),
 }

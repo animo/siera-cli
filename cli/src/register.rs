@@ -6,6 +6,7 @@ use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::credentials::parse_credentials_args;
 use crate::modules::message::parse_message_args;
+use crate::modules::workflow::parse_workflow_args;
 use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
@@ -55,6 +56,11 @@ pub async fn register() -> Result<()> {
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_credentials_args(&options.commands, agent, logger).await
         }
+        Commands::Workflow(options) => {
+            let agent =
+                initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
+            parse_workflow_args(options, agent, logger).await
+        },
     }?;
 
     Ok(())

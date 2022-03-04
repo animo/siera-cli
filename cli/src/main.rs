@@ -1,3 +1,4 @@
+mod workflows;
 mod cli;
 mod error;
 mod modules;
