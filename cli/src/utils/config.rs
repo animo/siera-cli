@@ -1,38 +1,61 @@
-use std::path::Path;
+use std::fmt;
+use std::path::{Path, PathBuf};
 
-use ini::{Ini, Properties};
+use crate::error::{Error, Result};
+use serde::{Deserialize, Serialize};
 
-use crate::error;
-use crate::error::Result;
-
-/// Load a config file and ignore errors as we will just fall back on the option provided
-fn load(path: &Path) -> Result<Ini> {
-    Ini::load_from_file(path).map_err(|_| error::Error::InvalidConfigurationPath.into())
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+pub struct Configuration {
+    pub name: String,
+    pub endpoint: String,
+    pub api_key: Option<String>,
 }
 
-/// Get a section in the config file
-fn get_section(key: &str, cfg: &Ini) -> Result<Properties> {
-    cfg.section(Some(key))
-        .map(|s| s.to_owned())
-        .ok_or_else(|| error::Error::InvalidEnvironment.into())
+impl fmt::Display for Configuration {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "  - name: {}\n    endpoint: {}\n{}",
+            self.name,
+            self.endpoint,
+            self.api_key
+                .as_ref()
+                .map(|val| format!("    apiKey: {}\n", val))
+                .unwrap_or_else(|| "".to_string())
+        )
+    }
 }
 
-/// Get a value by key in the section
-fn get_value_by_key(key: &str, prop: &Properties) -> Result<String> {
-    prop.get(key)
-        .map(String::from)
-        .ok_or_else(|| error::Error::NoConfigKey.into())
+impl Default for Configuration {
+    fn default() -> Self {
+        Configuration {
+            name: String::from("default"),
+            endpoint: String::from("https://agent.community.animo.id"),
+            api_key: None,
+        }
+    }
 }
 
-/// Get a value by path, section and key
-pub fn get_value_from_config(
-    path: &Path,
-    section: impl AsRef<str>,
-    key: impl AsRef<str>,
-) -> Result<String> {
-    let cfg = load(path)?;
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+pub struct Configurations {
+    pub configurations: Vec<Configuration>,
+}
 
-    let sec = get_section(section.as_ref(), &cfg)?;
+pub fn get_config_from_path(config_path: PathBuf) -> Result<Configurations> {
+    let out: Result<String> =
+        std::fs::read_to_string(config_path).map_err(|_| Error::InvalidConfigurationPath.into());
+    serde_yaml::from_str::<Configurations>(&out?)
+        .map_err(|_| Error::InvalidConfigurationStructure.into())
+}
 
-    get_value_by_key(key.as_ref(), &sec)
+pub fn get_config_path() -> Result<PathBuf> {
+    if cfg!(windows) {
+        let home = "C:\\Program Files\\Common Files";
+        Ok(Path::new(home).join("aries-cli\\config.yaml"))
+    } else if cfg!(unix) {
+        let home = option_env!("HOME").ok_or(Error::HomeNotFound);
+        Ok(Path::new(&home?).join(".config/aries-cli/config.yaml"))
+    } else {
+        Err(Error::OsUnknown.into())
+    }
 }

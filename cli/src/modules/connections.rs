@@ -1,10 +1,13 @@
 use agent_controller::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
 use colored::*;
-use log::{info};
+use log::info;
 
-use crate::error::{Result, Error};
-use crate::utils::{logger::{pretty_print_obj, copy_to_clipboard}, qr::print_qr_code};
+use crate::error::{Error, Result};
+use crate::utils::{
+    logger::{copy_to_clipboard, pretty_print_obj},
+    qr::print_qr_code,
+};
 
 #[derive(Args)]
 pub struct ConnectionOptions {
@@ -41,16 +44,22 @@ pub async fn parse_connection_args(
     copy: bool,
 ) -> Result<()> {
     if let Some(id) = &options.id {
-        return agent.get_connection_by_id(id.to_string())
-        .await
-        .map(|connection| pretty_print_obj(connection));
+        return agent
+            .get_connection_by_id(id.to_string())
+            .await
+            .map(|connection| pretty_print_obj(connection));
     }
     if options.all {
-        return agent.get_connections()
-        .await
-        .map(|connections| pretty_print_obj(connections.results));
+        return agent
+            .get_connections()
+            .await
+            .map(|connections| pretty_print_obj(connections.results));
     }
-    match &options.commands.as_ref().ok_or_else(|| Error::NoSubcommandSupplied("connections".to_string()))? {
+    match &options
+        .commands
+        .as_ref()
+        .ok_or_else(|| Error::NoSubcommandSupplied("connections".to_string()))?
+    {
         ConnectionSubcommands::Invite {
             auto_accept,
             qr,

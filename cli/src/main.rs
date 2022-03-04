@@ -5,6 +5,7 @@ mod error;
 mod modules;
 mod register;
 mod utils;
+mod help_strings;
 
 use log::error;
 use register::register;

@@ -1,12 +1,12 @@
 use agent_controller::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
 use clap::Parser;
 use colored::*;
+use log::debug;
 use log::LevelFilter;
 use std::path::{Path, PathBuf};
-use log::debug;
 
 use crate::cli::{Cli, Commands};
-use crate::error::{self, Result};
+use crate::error::{Error, Result};
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::credentials::parse_credentials_args;
@@ -14,7 +14,7 @@ use crate::modules::message::parse_message_args;
 use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
-use crate::utils::{config::get_value_from_config, logger};
+use crate::utils::config::{get_config_from_path, get_config_path};
 
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();
@@ -73,25 +73,41 @@ fn initialise_agent_from_cli(
     endpoint: Option<String>,
     api_key: Option<String>,
 ) -> Result<CloudAgentPython> {
-    let home = env!("HOME");
-    let default_config_path = Path::new(home).join(".config/aries-cli/config.ini");
-    let config_path = config.unwrap_or(default_config_path);
-    let environment = environment;
-
-    // We cannot infer type of error here with `.into()` as we are async
-    let endpoint_from_config = get_value_from_config(&config_path, &environment, "endpoint")
-        .map_err(|_| Box::new(error::Error::NoEndpointSupplied) as Box<dyn std::error::Error>);
-    let api_key_from_config = get_value_from_config(&config_path, &environment, "api_key");
-
-    let endpoint = match endpoint {
-        Some(e) => e,
-        None => endpoint_from_config?,
+    let config_path = match config {
+        Some(c) => Some(c),
+        None => {
+            let config = get_config_path();
+            match config {
+                Ok(c) => {
+                    if c.exists() {
+                        Some(c)
+                    } else {
+                        None
+                    }
+                }
+                Err(_) => None,
+            }
+        }
     };
 
-    let api_key = api_key.or_else(|| api_key_from_config.ok());
+    let (endpoint, api_key) = match config_path {
+        Some(cp) => {
+            let configurations = get_config_from_path(cp)?;
+            let configuration = configurations
+                .configurations
+                .into_iter()
+                .find(|c| c.name == environment)
+                .ok_or(Error::InvalidEnvironment)?;
+            let endpoint = endpoint.unwrap_or(configuration.endpoint);
+            let api_key = api_key.or(configuration.api_key);
+            (endpoint, api_key)
+        }
+        None => {
+            let endpoint = endpoint.ok_or(Error::NoEndpointSupplied)?;
+            (endpoint, api_key)
+        }
+    };
 
     let version = CloudAgentPythonVersion::ZeroSixZero;
-
-    let agent = CloudAgentPython::new(endpoint, api_key, version)?;
-    Ok(agent)
+    CloudAgentPython::new(endpoint, api_key, version)
 }
