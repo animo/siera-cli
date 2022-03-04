@@ -4,4 +4,4 @@ configurations:
     endpoint: agent.community.animo.id
     apiKey: Hello-world
   - name: test
-    endpoint: agent.community.animo.id
+    endpoint: https://agent.community.animo.id

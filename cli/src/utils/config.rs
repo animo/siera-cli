@@ -1,3 +1,4 @@
+use std::fmt;
 use std::path::{Path, PathBuf};
 
 use crate::error::{Error, Result};
@@ -8,6 +9,31 @@ pub struct Configuration {
     pub name: String,
     pub endpoint: String,
     pub api_key: Option<String>,
+}
+
+impl fmt::Display for Configuration {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "  - name: {}\n    endpoint: {}\n{}",
+            self.name,
+            self.endpoint,
+            self.api_key
+                .as_ref()
+                .map(|val| format!("    apiKey: {}\n", val))
+                .unwrap_or_else(|| "".to_string())
+        )
+    }
+}
+
+impl Default for Configuration {
+    fn default() -> Self {
+        Configuration {
+            name: String::from("default"),
+            endpoint: String::from("https://agent.community.animo.id"),
+            api_key: None,
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -25,10 +51,10 @@ pub fn get_config_from_path(config_path: PathBuf) -> Result<Configurations> {
 pub fn get_config_path() -> Result<PathBuf> {
     if cfg!(windows) {
         let home = "C:\\Program Files\\Common Files";
-        Ok(Path::new(home).join("aries-cli\\config.ini"))
+        Ok(Path::new(home).join("aries-cli\\config.yaml"))
     } else if cfg!(unix) {
-        let home = option_env!("HOME").ok_or_else(|| Error::HomeNotFound);
-        Ok(Path::new(&home?).join(".config/aries-cli/config.ini"))
+        let home = option_env!("HOME").ok_or(Error::HomeNotFound);
+        Ok(Path::new(&home?).join(".config/aries-cli/config.yaml"))
     } else {
         Err(Error::OsUnknown.into())
     }

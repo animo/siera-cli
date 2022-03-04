@@ -27,7 +27,7 @@ pub struct Cli {
     #[clap(long, short = 'o')]
     pub config: Option<PathBuf>,
 
-    #[clap(long, short = 'v', default_value = "Default")]
+    #[clap(long, short = 'v', default_value = "default")]
     pub environment: String,
 
     #[clap(long, short)]

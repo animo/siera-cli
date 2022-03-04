@@ -1,11 +1,11 @@
 use std::path::Path;
-use std::{fmt, fs};
+use std::fs;
 
 use clap::Args;
 
 use crate::error;
 use crate::error::Result;
-use crate::utils::config::get_config_path;
+use crate::utils::config::{get_config_path, Configuration};
 use crate::utils::logger::Log;
 
 #[derive(Args)]
@@ -17,28 +17,6 @@ pub struct ConfigurationOptions {
     view: bool,
 }
 
-struct ConfigurationEnvironment {
-    environment: String,
-    endpoint: String,
-    api_key: Option<String>,
-}
-
-impl fmt::Display for ConfigurationEnvironment {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "[{}]\nendpoint={}{}",
-            self.environment,
-            self.endpoint,
-            self.api_key
-                .as_ref()
-                .map(|val| format!("\napi_key={}", val))
-                .unwrap_or_else(|| "".to_string())
-        )
-    }
-}
-
-// TODO: we should implement `from` so we can use todo and have a cleaner api
 pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
     let config_path = get_config_path()?;
     if options.initialize {
@@ -60,11 +38,7 @@ fn view(path: &Path, logger: Log) -> Result<()> {
 }
 
 fn initialise(path: &Path) -> Result<()> {
-    let config = ConfigurationEnvironment {
-        environment: "Default".to_string(),
-        endpoint: "https://agent.community.animo.id".to_string(),
-        api_key: None,
-    };
+    let config = Configuration::default();
 
     if path.exists() {
         return Err(error::Error::ConfigExists.into());
@@ -79,8 +53,10 @@ fn initialise(path: &Path) -> Result<()> {
     // Create the configuration file
     fs::File::create(&path)?;
 
+    let initial_configuration = format!("configurations:\n{}", config.to_string());
+
     // Write the default configuration to the file
-    fs::write(path, config.to_string())?;
+    fs::write(path, initial_configuration)?;
 
     Ok(())
 }

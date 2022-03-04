@@ -9,7 +9,7 @@ use crate::modules::message::parse_message_args;
 use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
-use crate::utils::config::{get_config_from_path, Configuration, get_config_path};
+use crate::utils::config::{get_config_from_path, get_config_path};
 use crate::utils::logger::Log;
 use agent_controller::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
 use clap::Parser;
@@ -68,13 +68,21 @@ fn initialise_agent_from_cli(
 ) -> Result<CloudAgentPython> {
     let config_path = match config {
         Some(c) => Some(c),
-        None => get_config_path().ok()
+        None => {
+            let config = get_config_path();
+            match config {
+                Ok(c) => {
+                    if c.exists() { Some(c) } 
+                    else { None }},
+                Err(_) => None
+            }
+        }
     };
 
     let (endpoint, api_key) = match config_path {
         Some(cp) => {
            let configurations = get_config_from_path(cp)?;
-           let configuration: Configuration = configurations
+           let configuration = configurations
                .configurations
                .into_iter()
                .find(|c| c.name == environment)
