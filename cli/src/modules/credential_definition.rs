@@ -60,6 +60,6 @@ pub async fn parse_credential_definition_args(
         CredentialDefinitionSubcommands::Create { schema_id } => agent
             .create(schema_id.to_string())
             .await
-            .map(|cred_def| println!("{}", cred_def.sent.credential_definition_id)),
+            .map(|cred_def| info!("{}", cred_def.sent.credential_definition_id)),
     }
 }
