@@ -24,10 +24,10 @@ struct ConfigurationEnvironment {
 
 impl fmt::Display for ConfigurationEnvironment {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "[{}]\nendpoint={}{}", self.environment, self.endpoint, self.api_key.as_ref().map(|val| format!("\napi_key={val}")).unwrap_or_else(|| "".to_string()))
+        write!(f, "[{}]\nendpoint={}{}", self.environment, self.endpoint, self.api_key.as_ref().map(|val| format!("\napi_key={}", val)).unwrap_or_else(|| "".to_string()))
     }
 }
- 
+
 
 // TODO: we should implement `from` so we can use todo and have a cleaner api
 pub async fn parse_configuration_args(options: &ConfigurationOptions, logger: Log) -> Result<()> {
@@ -72,7 +72,7 @@ fn initialise(path: &Path) -> Result<()> {
 
     // Create the configuration file
     fs::File::create(&path)?;
-    
+
     // Write the default configuration to the file
     fs::write(path, config.to_string())?;
 
