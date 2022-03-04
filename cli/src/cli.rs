@@ -29,7 +29,7 @@ pub struct Cli {
     #[clap(long, short = 'o', help = HelpStrings::Config)]
     pub config: Option<PathBuf>,
 
-    #[clap(long, short = 'v', default_value = "Default", help = HelpStrings::Environment)]
+    #[clap(long, short = 'v', default_value = "default", help = HelpStrings::Environment)]
     pub environment: String,
 
     #[clap(long, short, help = HelpStrings::Verbose, conflicts_with = "quiet")]
