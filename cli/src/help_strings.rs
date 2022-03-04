@@ -28,7 +28,7 @@ impl HelpStrings {
       HelpStrings::Verbose => "Print debug logs.",
       HelpStrings::Config => "Path to your configuration file.",
       HelpStrings::Environment => "Specify your current environment.",
-      // TODO: Add docs for all subcommands in their own modules.
+      // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
     }
   }
 }
