@@ -1,9 +1,10 @@
 use agent_controller::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
-// use colored::*;
+use colored::*;
 
+use crate::{info};
 use crate::error::{Result, Error};
-use crate::utils::{logger::pretty_print_obj, qr::print_qr_code};
+use crate::utils::{logger::{pretty_print_obj, copy_to_clipboard}, qr::print_qr_code};
 
 #[derive(Args)]
 pub struct ConnectionOptions {
@@ -37,6 +38,7 @@ pub enum ConnectionSubcommands {
 pub async fn parse_connection_args(
     options: &ConnectionOptions,
     agent: impl ConnectionModule,
+    copy: bool,
 ) -> Result<()> {
     if let Some(id) = &options.id {
         return agent.get_connection_by_id(id.to_string())
@@ -65,11 +67,14 @@ pub async fn parse_connection_args(
             };
             agent.create_invitation(options).await.map(|response| {
                 if *qr {
-                    // logger.log(format!("{}: {}", "Connection id".green(), response.0));
+                    info!("{}", format!("{}: {}", "Connection id".green(), response.0));
                     print_qr_code(response.1).unwrap();
                 } else {
-                    // logger.log(format!("{}: {}", "Connection id".green(), response.0));
-                    // logger.log(response.1);
+                    info!("{}", format!("{}: {}", "Connection id".green(), response.0));
+                    info!("{}", response.1);
+                    if copy {
+                        copy_to_clipboard(response.1);
+                    }
                 }
             })
         }

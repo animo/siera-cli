@@ -2,9 +2,11 @@ use agent_controller::modules::credential_definition::CredentialDefinitionModule
 use clap::{Args, Subcommand};
 use serde_json::json;
 
+use crate::{debug, info};
+
 use crate::{
     error::{Error, Result},
-    utils::logger::pretty_print_obj,
+    utils::logger::{pretty_stringify_obj},
 };
 
 #[derive(Args)]
@@ -33,9 +35,6 @@ pub async fn parse_credential_definition_args(
 ) -> Result<()> {
     if let Some(id) = &options.id {
         return agent.get_by_id(id.to_string()).await.map(|cred_def| {
-            // if logger.debug {
-            //     logger.log_pretty(cred_def)
-            // } else {
             let loggable = json!({
                 "id": cred_def.credential_definition.id,
                 "schema_id": cred_def.credential_definition.schema_id,
@@ -43,8 +42,7 @@ pub async fn parse_credential_definition_args(
                 "tag": cred_def.credential_definition.tag,
                 "ver": cred_def.credential_definition.ver,
             });
-            pretty_print_obj(loggable)
-            // }
+            debug!("{}", pretty_stringify_obj(loggable));
         });
     }
     if options.all {
@@ -52,7 +50,7 @@ pub async fn parse_credential_definition_args(
             cred_defs
                 .credential_definition_ids
                 .iter()
-                .for_each(|x| println!("{}", x))
+                .for_each(|x| info!("{}", x))
         });
     }
     match options

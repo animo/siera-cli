@@ -31,20 +31,20 @@ pub fn init(level: LevelFilter) {
 #[macro_export]
 macro_rules! debug {
     ($($arg:tt)*) => {
-        $crate::log::debug!($($arg)*);
+        $crate::log::debug!($($arg)*)
     };
 }
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)*) => {
-        $crate::log::info!($($arg)*);
+        $crate::log::info!($($arg)*)
     };
 }
 
 #[macro_export]
 macro_rules! err {
     ($($arg:tt)*) => {
-        $crate::log::error!($($arg)*);
+        $crate::log::error!($($arg)*)
     };
 }
 
@@ -62,7 +62,7 @@ pub fn pretty_print_obj(obj: impl Serialize) {
     println!("{}", pretty_stringify_obj(obj));
 }
 
-pub fn copy_to_buffer(string: impl AsRef<str>) {
+pub fn copy_to_clipboard(string: impl AsRef<str>) {
     let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
     ctx.set_contents(string.as_ref().to_string()).unwrap();
 }

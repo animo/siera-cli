@@ -51,7 +51,7 @@ pub async fn register() -> Result<()> {
         Commands::Connections(options) => {
             let agent =
                 initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
-            parse_connection_args(options, agent).await
+            parse_connection_args(options, agent, cli.copy).await
         }
         Commands::Credentials(options) => {
             let agent =
