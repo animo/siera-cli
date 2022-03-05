@@ -1,9 +1,10 @@
 use agent_controller::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
+use log::info;
 
 use crate::{
     error::{Error, Result},
-    utils::logger::Log,
+    utils::logger::pretty_print_obj,
 };
 
 #[derive(Args)]
@@ -30,22 +31,18 @@ pub enum SchemaSubcommands {
     },
 }
 
-pub async fn parse_schema_args(
-    options: &SchemaOptions,
-    agent: impl SchemaModule,
-    logger: Log,
-) -> Result<()> {
+pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule) -> Result<()> {
     if let Some(id) = &options.id {
         return agent
             .get_by_id(id.to_string())
             .await
-            .map(|schema| logger.log_pretty(schema.schema));
+            .map(|schema| pretty_print_obj(schema.schema));
     }
     if options.all {
         return agent
             .get_all()
             .await
-            .map(|schemas| logger.log_list(schemas.schema_ids));
+            .map(|schemas| schemas.schema_ids.iter().for_each(|x| info!("{}", x)));
     }
     match options
         .commands
@@ -68,7 +65,7 @@ pub async fn parse_schema_args(
             agent
                 .create(options)
                 .await
-                .map(|schema_id| logger.log(schema_id))
+                .map(|schema_id| info!("{}", schema_id))
         }
     }
 }
