@@ -69,7 +69,7 @@ pub async fn register() -> Result<()> {
     Ok(())
 }
 
-fn initialise_agent_from_cli(
+fn initialize_agent_from_cli(
     config: Option<PathBuf>,
     environment: String,
     endpoint: Option<String>,

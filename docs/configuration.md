@@ -38,9 +38,9 @@ aries-cli --config ./project/cli/config.ini --environment ENVIRONMENT invite
 
 ## Default configuration file
 
-The default can be initialised with one of the two commands: `aries-cli init` and `aries-cli config --initialise`. These two commands create a default configuration file. On any \*NIX system it uses the following location: `~/.config/aries-cli/config.ini` and for Windows systems it uses `TODO` as the location.
+The default can be initialized with one of the two commands: `aries-cli init` and `aries-cli config --initialize`. These two commands create a default configuration file. On any \*NIX system it uses the following location: `~/.config/aries-cli/config.ini` and for Windows systems it uses `TODO` as the location.
 
-The configuration is initialised with the following structure:
+The configuration is initialized with the following structure:
 
 ```ini
 [Default]

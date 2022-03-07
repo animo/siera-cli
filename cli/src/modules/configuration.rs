@@ -31,8 +31,8 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
     let config_path = get_config_path()?;
     match options.commands {
         ConfigurationSubcommands::Initialize => {
-            initialise(&config_path)?;
-            logger.log("Initialised the configuration!");
+            initialize(&config_path)?;
+            logger.log("Initialized the configuration!");
             return Ok(());
         }
         ConfigurationSubcommands::View => view(&config_path, logger),
@@ -45,7 +45,7 @@ fn view(path: &Path) -> Result<()> {
     Ok(())
 }
 
-fn initialise(path: &Path) -> Result<()> {
+fn initialize(path: &Path) -> Result<()> {
     // Check if the path exists and stop so we do not override the existing configuration file
     if path.exists() {
         return Err(error::Error::ConfigExists.into());
