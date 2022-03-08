@@ -8,6 +8,7 @@ pub enum Error {
     InternalServerError,
     UnknownResponseStatusCode,
     UnreachableUrl,
+    HttpServiceUnavailable,
 }
 
 impl std::error::Error for Error {}
@@ -23,6 +24,8 @@ impl Display for Error {
             Error::InternalServerError => write!(f, "Internal Server Error!"),
             Error::UnknownResponseStatusCode => write!(f, "Received unknown status code from the server. Endpoint is likely incorrect. If the endpoint is correct, please report this error."),
             Error::UnreachableUrl => write!(f, "Provided url is unreachable. Is the provided endpoint valid?"),
+            Error::HttpServiceUnavailable => write!(f, "Cloudagent is currently unavailable. Are you sure the agent is online?")
+
         }
     }
 }

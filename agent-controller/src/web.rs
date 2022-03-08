@@ -1,4 +1,4 @@
-use crate::error::{self, Result};
+use crate::error::{Error, Result};
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -47,19 +47,21 @@ impl CloudAgent {
 
         match client.send().await {
             Ok(res) => match res.status().as_u16() {
-                200..=299 => res.json().await.map_err(|_| 
-                    error::Error::UnableToParseResponse.into()
-                ),
+                200..=299 => res
+                    .json()
+                    .await
+                    .map_err(|_| Error::UnableToParseResponse.into()),
                 // Issue credential message when attributes are not correct
                 400 => Err(res.text().await?.into()),
-                401 => Err(error::Error::AuthorizationFailed.into()),
-                404 => Err(error::Error::UrlDoesNotExist.into()),
+                401 => Err(Error::AuthorizationFailed.into()),
+                404 => Err(Error::UrlDoesNotExist.into()),
                 // TODO: This response is quite ugly. Is it only used at cred_def_id?
                 422 => Err(res.text().await?.into()),
-                500..=599 => Err(error::Error::InternalServerError.into()),
-                _ => Err(error::Error::UnknownResponseStatusCode.into()),
+                503 => Err(Error::HttpServiceUnavailable.into()),
+                500..=599 => Err(Error::InternalServerError.into()),
+                _ => Err(Error::UnknownResponseStatusCode.into()),
             },
-            Err(_) => Err(error::Error::UnreachableUrl.into()),
+            Err(_) => Err(Error::UnreachableUrl.into()),
         }
     }
 }
