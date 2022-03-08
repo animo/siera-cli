@@ -11,7 +11,7 @@ use crate::modules::{
 };
 
 #[derive(Parser)]
-#[clap(author, version, about)]
+#[clap(author, version, about = HelpStrings::Cli)]
 #[clap(arg_required_else_help = true)]
 pub struct Cli {
     #[clap(long, short, help = HelpStrings::Endpoint)]
