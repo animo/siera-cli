@@ -1,11 +1,12 @@
 use agent_controller::modules::credential_definition::CredentialDefinitionModule;
 use clap::{Args, Subcommand};
-use serde_json::json;
 use log::{debug, info};
+use serde_json::json;
 
 use crate::{
     error::{Error, Result},
-    utils::logger::{pretty_stringify_obj},
+    utils::loader::{start_loader, Loader},
+    utils::logger::pretty_stringify_obj,
 };
 
 #[derive(Args)]
@@ -32,6 +33,7 @@ pub async fn parse_credential_definition_args(
     options: &CredentialDefinitionOptions,
     agent: impl CredentialDefinitionModule,
 ) -> Result<()> {
+    start_loader(Loader::Spinner);
     if let Some(id) = &options.id {
         return agent.get_by_id(id.to_string()).await.map(|cred_def| {
             let loggable = json!({

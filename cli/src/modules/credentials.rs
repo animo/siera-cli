@@ -3,7 +3,10 @@ use clap::{Args, Subcommand};
 use log::{debug, info};
 
 use crate::error::{Error, Result};
-use crate::utils::logger::pretty_stringify_obj;
+use crate::{
+    utils::loader::{start_loader, Loader},
+    utils::logger::pretty_stringify_obj,
+};
 use colored::*;
 
 #[derive(Args)]
@@ -34,6 +37,7 @@ pub async fn parse_credentials_args(
     commands: &CredentialSubcommands,
     agent: impl CredentialsModule,
 ) -> Result<()> {
+    start_loader(Loader::Spinner);
     match commands {
         CredentialSubcommands::Offer {
             connection_id,

@@ -4,6 +4,7 @@ use log::info;
 
 use crate::{
     error::{Error, Result},
+    utils::loader::{start_loader, Loader},
     utils::logger::pretty_print_obj,
 };
 
@@ -32,6 +33,7 @@ pub enum SchemaSubcommands {
 }
 
 pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule) -> Result<()> {
+    start_loader(Loader::Spinner);
     if let Some(id) = &options.id {
         return agent
             .get_by_id(id.to_string())

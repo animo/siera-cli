@@ -37,7 +37,6 @@ pub enum ConnectionSubcommands {
     },
 }
 
-// TODO: we should implement `from` so we can use todo and have a cleaner api
 pub async fn parse_connection_args(
     options: &ConnectionOptions,
     agent: impl ConnectionModule,
@@ -47,7 +46,7 @@ pub async fn parse_connection_args(
         return agent
             .get_connection_by_id(id.to_string())
             .await
-            .map(|connection| pretty_print_obj(connection));
+            .map(pretty_print_obj);
     }
     if options.all {
         return agent

@@ -4,6 +4,7 @@ use colored::*;
 use log::info;
 
 use crate::error::Result;
+use crate::utils::loader::{start_loader, Loader};
 
 #[derive(Args)]
 pub struct MessageOptions {
@@ -14,6 +15,7 @@ pub struct MessageOptions {
 }
 
 pub async fn parse_message_args(options: &MessageOptions, agent: impl MessageModule) -> Result<()> {
+    start_loader(Loader::Spinner);
     let send_options = SendMessageOptions {
         id: options.id.to_owned(),
         message: options.message.to_owned(),
