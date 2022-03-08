@@ -64,7 +64,7 @@ impl CloudAgent {
                     // TODO: This response is quite ugly. Is it only used at cred_def_id?
                     422 => Err(res.text().await?.into()),
                     503 => Err(Error::HttpServiceUnavailable.into()),
-                    500..=599 => Err(Error::InternalServerError.into()),
+                    500..=599 => Err(Error::InternalServerError(res.status().as_u16()).into()),
                     _ => Err(Error::UnknownResponseStatusCode(res.text().await?).into()),
                 }
             }
