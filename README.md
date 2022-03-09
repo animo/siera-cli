@@ -78,12 +78,12 @@ cargo install --path .
 
 ## Configuration
 
-In order to easily use the aries-cli, you can setup a configuration that allows you to set some default values. the configuration can be initialised with the following command:
+In order to easily use the aries-cli, you can setup a configuration that allows you to set some default values. the configuration can be initialized with the following command:
 
 ```sh
 aries-cli init
 # or
-aries-cli config --initialise
+aries-cli config --initialize
 ```
 
 This will create a file at `~/.config/aries-cli/config.ini` for \*NIX systems and `TODO` for Windows. It will set a default endpoint to `https://agent.community.animo.id`.

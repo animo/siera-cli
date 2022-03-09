@@ -34,33 +34,33 @@ pub async fn register() -> Result<()> {
         Commands::Configuration(options) => parse_configuration_args(options).await,
         Commands::Schema(options) => {
             let agent =
-                initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
+                initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_schema_args(options, agent).await
         }
         Commands::Features(_) => {
             let agent =
-                initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
+                initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_features_args(agent).await
         }
         Commands::Message(options) => {
             let agent =
-                initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
+                initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_message_args(options, agent).await
         }
         Commands::CredentialDefinition(options) => {
             let agent =
-                initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
+                initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_credential_definition_args(options, agent).await
         }
         Commands::Connections(options) => {
             let agent =
-                initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
+                initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             // TODO: refactor cli.copy
             parse_connection_args(options, agent, cli.copy).await
         }
         Commands::Credentials(options) => {
             let agent =
-                initialise_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
+                initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_credentials_args(&options.commands, agent).await
         }
     }?;
@@ -69,7 +69,7 @@ pub async fn register() -> Result<()> {
     Ok(())
 }
 
-fn initialise_agent_from_cli(
+fn initialize_agent_from_cli(
     config: Option<PathBuf>,
     environment: String,
     endpoint: Option<String>,
@@ -97,11 +97,10 @@ fn initialise_agent_from_cli(
             let configurations = get_config_from_path(cp)?;
             let configuration = configurations
                 .configurations
-                .into_iter()
-                .find(|c| c.name == environment)
+                .get_key_value(&environment)
                 .ok_or(Error::InvalidEnvironment)?;
-            let endpoint = endpoint.unwrap_or(configuration.endpoint);
-            let api_key = api_key.or(configuration.api_key);
+            let endpoint = endpoint.unwrap_or(configuration.1.endpoint.to_owned());
+            let api_key = api_key.or(configuration.1.api_key.to_owned());
             (endpoint, api_key)
         }
         None => {
