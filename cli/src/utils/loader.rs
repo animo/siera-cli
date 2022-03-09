@@ -1,41 +1,86 @@
 use core::time;
 use std::io::{self, Write};
+use std::sync::mpsc::{Receiver, Sender};
+
+/// Macaroni
+macro_rules! print_char_with_stop {
+    ($char: expr, $timeout: expr, $inplace: expr, $receiver: expr) => {
+        Loader::print_char($char, $timeout, $inplace);
+        if $receiver.try_recv().is_ok() {
+            break;
+        }
+    };
+}
 
 /// All the types of loaders
-pub enum Loader {
+pub enum LoaderVariant {
     Spinner,
+    #[allow(dead_code)]
+    Dots,
 }
 
-/// prints a char to stdout with a delay and whether it should be inplace or
-/// not
-pub fn print_char(c: impl Into<String>, timeout: u64, inplace: bool) {
-    if inplace {
-        print!("{}\r", c.into());
-    } else {
-        print!("{}", c.into());
-    }
-    io::stdout().flush().unwrap();
-    std::thread::sleep(time::Duration::from_millis(timeout));
+/// Loader structure
+pub struct Loader {
+    sender: Sender<bool>,
 }
 
-/// Start the loader
-pub fn start_loader(loader: Loader) {
-    match loader {
-        Loader::Spinner => spinner_loader(),
+/// We implement default here so that the public api for calling the logger can just use this one
+/// if unsure about which loader variant to call
+impl Default for LoaderVariant {
+    fn default() -> Self {
+        LoaderVariant::Spinner
     }
 }
 
-/// Spinning loader. Does inplace replacement.
-fn spinner_loader() {
-    let time_between = 50;
+impl Loader {
+    /// Start a specific loader
+    pub fn start(loader_variant: LoaderVariant) -> Self {
+        let (sender, receiver) = std::sync::mpsc::channel::<bool>();
+        match loader_variant {
+            LoaderVariant::Spinner => Loader::loader_spinner(receiver),
+            LoaderVariant::Dots => Loader::loader_dots(receiver),
+        };
+        Loader { sender }
+    }
 
-    std::thread::spawn(move || loop {
-        print_char('|', time_between, true);
-        print_char('/', time_between * 2, true);
-        print_char('-', time_between * 3, true);
-        print_char('\\', time_between * 4, true);
-        print_char('/', time_between * 5, true);
-        print_char('-', time_between * 6, true);
-        print_char('\\', time_between * 7, true);
-    });
+    /// Stop the loader instance
+    pub fn stop(&self) {
+        println!();
+        self.sender.send(false).unwrap();
+    }
+
+    /// prints a char to stdout with a delay and whether it should be inplace or
+    /// not
+    fn print_char(c: impl Into<String>, timeout: u64, inplace: bool) {
+        if inplace {
+            print!("{}\r", c.into());
+        } else {
+            print!("{}", c.into());
+        }
+        io::stdout().flush().unwrap();
+        std::thread::sleep(time::Duration::from_millis(timeout));
+    }
+
+    /// Spinning loader. Does inplace replacement.
+    fn loader_spinner(receiver: Receiver<bool>) {
+        let time_between = 50;
+
+        std::thread::spawn(move || loop {
+            print_char_with_stop!('|', time_between, true, receiver);
+            print_char_with_stop!('/', time_between * 2, true, receiver);
+            print_char_with_stop!('-', time_between * 3, true, receiver);
+            print_char_with_stop!('\\', time_between * 4, true, receiver);
+            print_char_with_stop!('/', time_between * 5, true, receiver);
+            print_char_with_stop!('-', time_between * 6, true, receiver);
+            print_char_with_stop!('\\', time_between * 7, true, receiver);
+        });
+    }
+
+    fn loader_dots(receiver: Receiver<bool>) {
+        let time_between = 100;
+
+        std::thread::spawn(move || loop {
+            print_char_with_stop!('.', time_between, false, receiver);
+        });
+    }
 }
