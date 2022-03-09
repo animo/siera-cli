@@ -5,7 +5,7 @@ use serde_json::Value;
 use crate::error::Result;
 
 /// Type of the received features from `discover-features`
-#[derive(Default, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DiscoverFeaturesResponse {
     pub trace: bool,
@@ -14,7 +14,7 @@ pub struct DiscoverFeaturesResponse {
     pub disclose: Disclose,
 }
 
-#[derive(Default, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Disclose {
     #[serde(rename = "@type")]
@@ -24,7 +24,7 @@ pub struct Disclose {
     pub protocols: Vec<Protocol>,
 }
 
-#[derive(Default, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Protocol {
     pub pid: String,

@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ConnectionCreateInvitationResponse {
     pub connection_id: String,
     pub invitation: Value,
@@ -11,13 +11,13 @@ pub struct ConnectionCreateInvitationResponse {
     pub alias: Option<String>,
 }
 
-#[derive(Default, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConnectionGetAllResponse {
     pub results: Vec<ConnectionGetByIdResponse>,
 }
 
-#[derive(Default, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConnectionGetByIdResponse {
     #[serde(rename = "their_role")]

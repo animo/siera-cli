@@ -15,7 +15,7 @@ pub struct CredentialDefinitionGetByIdResponse {
     pub credential_definition: CredentialDefinition,
 }
 
-#[derive(Default, Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CredentialDefinition {
     pub ver: String,
@@ -27,7 +27,7 @@ pub struct CredentialDefinition {
     pub value: Value,
 }
 
-#[derive(Default, Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct CredentialDefinitionGetAllResponse {
     pub credential_definition_ids: Vec<String>,
 }

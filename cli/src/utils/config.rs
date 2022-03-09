@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use crate::error::{Error, Result};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Configuration {
     pub endpoint: String,
     pub api_key: Option<String>,
@@ -19,7 +19,7 @@ impl Default for Configuration {
     }
 }
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Configurations {
     pub configurations: BTreeMap<String, Configuration>,
 }
