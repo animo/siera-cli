@@ -6,11 +6,6 @@ use serde_json::Value;
 use crate::error::Result;
 
 /// Type of the received features from `discover-features`
-//#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-//pub struct Features {
-//    /// List of all the features the cloudagent supports
-//    pub results: Map<String, Value>,
-//}
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Features {
