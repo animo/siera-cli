@@ -2,7 +2,7 @@ use agent::error::{Error, Result};
 use reqwest::Url;
 
 /// Cloudagent properties
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct CloudAgent {
     /// base url of the cloudagent
     pub endpoint: String,

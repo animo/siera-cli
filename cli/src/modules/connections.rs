@@ -45,16 +45,13 @@ pub async fn parse_connection_args(
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
     if let Some(id) = &options.id {
-        return agent
-            .get_connection_by_id(id.to_string())
-            .await
-            .map(|connections| {
-                loader.stop();
-                pretty_print_obj(connections)
-            });
+        return agent.get_by_id(id.to_string()).await.map(|connections| {
+            loader.stop();
+            pretty_print_obj(connections)
+        });
     }
     if options.all {
-        return agent.get_connections().await.map(|connections| {
+        return agent.get_all().await.map(|connections| {
             loader.stop();
             pretty_print_obj(connections.results)
         });
@@ -81,13 +78,19 @@ pub async fn parse_connection_args(
             agent.create_invitation(options).await.map(|response| {
                 loader.stop();
                 if *qr {
-                    info!("{}", format!("{}: {}", "Connection id".green(), response.0));
-                    print_qr_code(response.1).unwrap();
+                    info!(
+                        "{}",
+                        format!("{}: {}", "Connection id".green(), response.connection_id)
+                    );
+                    print_qr_code(response.invitation_url).unwrap();
                 } else {
-                    info!("{}", format!("{}: {}", "Connection id".green(), response.0));
-                    info!("{}", response.1);
+                    info!(
+                        "{}",
+                        format!("{}: {}", "Connection id".green(), response.connection_id)
+                    );
+                    info!("{}", response.invitation_url);
                     if copy {
-                        copy_to_clipboard(response.1);
+                        copy_to_clipboard(response.connection_id);
                     }
                 }
             })

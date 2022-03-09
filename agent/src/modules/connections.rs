@@ -3,31 +3,23 @@ use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-/// Type of the received invitation
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Invitation {
-    /// Connection id
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+pub struct ConnectionCreateInvitationResponse {
     pub connection_id: String,
-
-    /// Invitation object
     pub invitation: Value,
-
-    /// Invitation url that can be used to accept it by another party
     pub invitation_url: String,
-
-    /// Alias for the given invitation
     pub alias: Option<String>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetConnectionsResponse {
-    pub results: Vec<GetConnectionByIdResponse>,
+pub struct ConnectionGetAllResponse {
+    pub results: Vec<ConnectionGetByIdResponse>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetConnectionByIdResponse {
+pub struct ConnectionGetByIdResponse {
     #[serde(rename = "their_role")]
     pub their_role: String,
     #[serde(rename = "created_at")]
@@ -62,16 +54,16 @@ pub struct GetConnectionByIdResponse {
 #[async_trait]
 pub trait ConnectionModule {
     /// Gets all the connections
-    async fn get_connections(&self) -> Result<GetConnectionsResponse>;
+    async fn get_all(&self) -> Result<ConnectionGetAllResponse>;
 
     /// Get a connection by id
-    async fn get_connection_by_id(&self, id: String) -> Result<GetConnectionByIdResponse>;
+    async fn get_by_id(&self, id: String) -> Result<ConnectionGetByIdResponse>;
 
     /// Create an invitation
     async fn create_invitation(
         &self,
         options: ConnectionCreateInvitationOptions,
-    ) -> Result<(String, String)>;
+    ) -> Result<ConnectionCreateInvitationResponse>;
 }
 
 #[derive(Debug)]

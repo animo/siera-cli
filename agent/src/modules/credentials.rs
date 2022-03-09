@@ -4,7 +4,7 @@ use serde_json::Value;
 
 use crate::error::Result;
 
-#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CredentialOfferResponse {
     #[serde(rename = "auto_issue")]

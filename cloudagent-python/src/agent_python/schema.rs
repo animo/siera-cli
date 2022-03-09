@@ -1,14 +1,15 @@
 use super::agent::CloudAgentPython;
 use agent::error::Result;
 use agent::modules::schema::{
-    GetAllSchemasResponse, GetSchemaResponse, Schema, SchemaCreateOptions, SchemaModule,
+    SchemaCreateOptions, SchemaCreateResponse, SchemaGetResponse, SchemaModule,
+    SchemasGetAllResponse,
 };
 use async_trait::async_trait;
 use serde_json::json;
 
 #[async_trait]
 impl SchemaModule for CloudAgentPython {
-    async fn create(&self, options: SchemaCreateOptions) -> Result<Schema> {
+    async fn create(&self, options: SchemaCreateOptions) -> Result<SchemaCreateResponse> {
         let url = self.cloud_agent.create_url(vec!["schemas"])?;
 
         let body = json!({
@@ -20,12 +21,12 @@ impl SchemaModule for CloudAgentPython {
         self.cloud_agent.post(url, None, Some(body)).await
     }
 
-    async fn get_by_id(&self, id: String) -> Result<GetSchemaResponse> {
+    async fn get_by_id(&self, id: String) -> Result<SchemaGetResponse> {
         let url = self.cloud_agent.create_url(vec!["schemas", &id])?;
         self.cloud_agent.get(url, None).await
     }
 
-    async fn get_all(&self) -> Result<GetAllSchemasResponse> {
+    async fn get_all(&self) -> Result<SchemasGetAllResponse> {
         let url = self.cloud_agent.create_url(vec!["schemas", "created"])?;
         self.cloud_agent.get(url, None).await
     }
