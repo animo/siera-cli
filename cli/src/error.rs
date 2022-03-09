@@ -33,7 +33,6 @@ impl Display for Error {
             Error::NoFlagSupplied(subcommand) => write!(f, "The subcommand {} requires atleast one flag. Check `aries-cli {} --help for the available options.", subcommand, subcommand),
             Error::RequiredAttributes => write!(f, "Creating a schema requires at least one attribute. Please supply them via the --attributes flag."),
             Error::InvalidConfigurationStructure => write!(f, "Invalid configuration structure. Please make sure you have a valid configuration file."),
-
         }
     }
 }
