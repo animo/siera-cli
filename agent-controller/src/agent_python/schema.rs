@@ -1,6 +1,6 @@
 use crate::{
     error::Result,
-    modules::schema::{GetSchemaResponse, SchemaCreateOptions, GetAllSchemasResponse},
+    modules::schema::{GetAllSchemasResponse, GetSchemaResponse, SchemaCreateOptions},
 };
 use async_trait::async_trait;
 use serde_json::json;
@@ -11,7 +11,7 @@ use super::agent::CloudAgentPython;
 
 #[async_trait]
 impl SchemaModule for CloudAgentPython {
-    async fn create(&self, options: SchemaCreateOptions) -> Result<String> {
+    async fn create(&self, options: SchemaCreateOptions) -> Result<Schema> {
         let url = self.cloud_agent.create_url(vec!["schemas"])?;
 
         let body = json!({
@@ -20,10 +20,7 @@ impl SchemaModule for CloudAgentPython {
           "schema_version": options.version
         });
 
-        self.cloud_agent
-            .post::<Schema>(url, None, Some(body))
-            .await
-            .map(|s| s.sent.schema_id)
+        self.cloud_agent.post::<Schema>(url, None, Some(body)).await
     }
 
     async fn get_by_id(&self, id: String) -> Result<GetSchemaResponse> {

@@ -1,10 +1,10 @@
 use agent_controller::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
-use log::info;
+use log::{debug, info};
 
 use crate::{
     error::{Error, Result},
-    utils::loader::{Loader, LoaderVariant},
+    utils::{loader::{Loader, LoaderVariant}, logger::pretty_stringify_obj},
     utils::logger::pretty_print_obj,
 };
 
@@ -64,9 +64,9 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             if options.attributes.is_empty() {
                 return Err(Error::RequiredAttributes.into());
             }
-            agent.create(options).await.map(|schema_id| {
-                loader.stop();
-                info!("{}", schema_id)
+            agent.create(options).await.map(|schema| {
+                debug!("{}", pretty_stringify_obj(&schema));
+                info!("{}", schema.schema_id);
             })
         }
     }

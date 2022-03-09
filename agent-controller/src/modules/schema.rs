@@ -3,16 +3,9 @@ use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-/// Type for received schema object
-#[derive(Debug, Clone, Deserialize)]
+/// Create schema response
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Schema {
-    /// received value
-    pub sent: CreateSchemaResponse,
-}
-
-/// Sub value of Schema
-#[derive(Debug, Clone, Deserialize)]
-pub struct CreateSchemaResponse {
     /// Schema metadata
     pub schema: Value,
 
@@ -52,7 +45,7 @@ pub struct GetAllSchemasResponse {
 #[async_trait]
 pub trait SchemaModule {
     /// Requests all the features from the cloudagent
-    async fn create(&self, options: SchemaCreateOptions) -> Result<String>;
+    async fn create(&self, options: SchemaCreateOptions) -> Result<Schema>;
     async fn get_by_id(&self, id: String) -> Result<GetSchemaResponse>;
     async fn get_all(&self) -> Result<GetAllSchemasResponse>;
 }
