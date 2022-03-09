@@ -2,14 +2,14 @@ extern crate log;
 
 mod cli;
 mod error;
+mod help_strings;
 mod modules;
 mod register;
 mod utils;
-mod help_strings;
 
+use colored::*;
 use log::error;
 use register::register;
-use colored::*;
 
 #[tokio::main]
 async fn main() {

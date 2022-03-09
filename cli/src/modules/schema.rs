@@ -4,6 +4,7 @@ use log::info;
 
 use crate::{
     error::{Error, Result},
+    utils::loader::{Loader, LoaderVariant},
     utils::logger::pretty_print_obj,
 };
 
@@ -32,17 +33,18 @@ pub enum SchemaSubcommands {
 }
 
 pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule) -> Result<()> {
+    let loader = Loader::start(LoaderVariant::default());
     if let Some(id) = &options.id {
-        return agent
-            .get_by_id(id.to_string())
-            .await
-            .map(|schema| pretty_print_obj(schema.schema));
+        return agent.get_by_id(id.to_string()).await.map(|schema| {
+            loader.stop();
+            pretty_print_obj(schema.schema)
+        });
     }
     if options.all {
-        return agent
-            .get_all()
-            .await
-            .map(|schemas| schemas.schema_ids.iter().for_each(|x| info!("{}", x)));
+        return agent.get_all().await.map(|schemas| {
+            loader.stop();
+            schemas.schema_ids.iter().for_each(|x| info!("{}", x))
+        });
     }
     match options
         .commands
@@ -62,10 +64,10 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             if options.attributes.is_empty() {
                 return Err(Error::RequiredAttributes.into());
             }
-            agent
-                .create(options)
-                .await
-                .map(|schema_id| info!("{}", schema_id))
+            agent.create(options).await.map(|schema_id| {
+                loader.stop();
+                info!("{}", schema_id)
+            })
         }
     }
 }

@@ -3,7 +3,10 @@ use clap::{Args, Subcommand};
 use log::{debug, info};
 
 use crate::error::{Error, Result};
-use crate::utils::logger::pretty_stringify_obj;
+use crate::utils::{
+    loader::{Loader, LoaderVariant},
+    logger::pretty_stringify_obj,
+};
 use colored::*;
 
 #[derive(Args)]
@@ -34,6 +37,7 @@ pub async fn parse_credentials_args(
     commands: &CredentialSubcommands,
     agent: impl CredentialsModule,
 ) -> Result<()> {
+    let loader = Loader::start(LoaderVariant::default());
     match commands {
         CredentialSubcommands::Offer {
             connection_id,
@@ -52,6 +56,7 @@ pub async fn parse_credentials_args(
                 values: value.iter().map(|v| v.to_string()).collect(),
             };
             agent.send_offer(options).await.map(|res| {
+                loader.stop();
                 debug!("{}", pretty_stringify_obj(res));
                 info!("{} offered a credential", "Sucessefully".green());
             })

@@ -5,6 +5,7 @@ use log::info;
 
 use crate::error::{Error, Result};
 use crate::utils::{
+    loader::{Loader, LoaderVariant},
     logger::{copy_to_clipboard, pretty_print_obj},
     qr::print_qr_code,
 };
@@ -37,23 +38,26 @@ pub enum ConnectionSubcommands {
     },
 }
 
-// TODO: we should implement `from` so we can use todo and have a cleaner api
 pub async fn parse_connection_args(
     options: &ConnectionOptions,
     agent: impl ConnectionModule,
     copy: bool,
 ) -> Result<()> {
+    let loader = Loader::start(LoaderVariant::default());
     if let Some(id) = &options.id {
         return agent
             .get_connection_by_id(id.to_string())
             .await
-            .map(|connection| pretty_print_obj(connection));
+            .map(|connections| {
+                loader.stop();
+                pretty_print_obj(connections)
+            });
     }
     if options.all {
-        return agent
-            .get_connections()
-            .await
-            .map(|connections| pretty_print_obj(connections.results));
+        return agent.get_connections().await.map(|connections| {
+            loader.stop();
+            pretty_print_obj(connections.results)
+        });
     }
     match &options
         .commands
@@ -75,6 +79,7 @@ pub async fn parse_connection_args(
                 toolbox: *toolbox,
             };
             agent.create_invitation(options).await.map(|response| {
+                loader.stop();
                 if *qr {
                     info!("{}", format!("{}: {}", "Connection id".green(), response.0));
                     print_qr_code(response.1).unwrap();

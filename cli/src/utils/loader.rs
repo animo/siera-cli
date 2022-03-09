@@ -1,0 +1,86 @@
+use core::time;
+use std::io::{self, Write};
+use std::sync::mpsc::{Receiver, Sender};
+
+/// Macaroni
+macro_rules! print_char_with_stop {
+    ($char: expr, $timeout: expr, $inplace: expr, $receiver: expr) => {
+        Loader::print_char($char, $timeout, $inplace);
+        if $receiver.try_recv().is_ok() {
+            break;
+        }
+    };
+}
+
+/// All the types of loaders
+pub enum LoaderVariant {
+    Spinner,
+    #[allow(dead_code)]
+    Dots,
+}
+
+/// Loader structure
+pub struct Loader {
+    sender: Sender<bool>,
+}
+
+/// We implement default here so that the public api for calling the logger can just use this one
+/// if unsure about which loader variant to call
+impl Default for LoaderVariant {
+    fn default() -> Self {
+        LoaderVariant::Spinner
+    }
+}
+
+impl Loader {
+    /// Start a specific loader
+    pub fn start(loader_variant: LoaderVariant) -> Self {
+        let (sender, receiver) = std::sync::mpsc::channel::<bool>();
+        match loader_variant {
+            LoaderVariant::Spinner => Loader::loader_spinner(receiver),
+            LoaderVariant::Dots => Loader::loader_dots(receiver),
+        };
+        Loader { sender }
+    }
+
+    /// Stop the loader instance
+    pub fn stop(&self) {
+        eprintln!();
+        self.sender.send(false).unwrap();
+    }
+
+    /// prints a char to stdout with a delay and whether it should be inplace or
+    /// not
+    fn print_char(c: impl Into<String>, timeout: u64, inplace: bool) {
+        if inplace {
+            eprint!("{}\r", c.into());
+        } else {
+            eprint!("{}", c.into());
+        }
+        io::stdout().flush().unwrap();
+        std::thread::sleep(time::Duration::from_millis(timeout));
+    }
+
+    /// Spinning loader. Does inplace replacement.
+    fn loader_spinner(receiver: Receiver<bool>) {
+        let time_between = 50;
+
+        std::thread::spawn(move || loop {
+            print_char_with_stop!('|', time_between, true, receiver);
+            print_char_with_stop!('/', time_between * 2, true, receiver);
+            print_char_with_stop!('-', time_between * 3, true, receiver);
+            print_char_with_stop!('\\', time_between * 4, true, receiver);
+            print_char_with_stop!('/', time_between * 5, true, receiver);
+            print_char_with_stop!('-', time_between * 6, true, receiver);
+            print_char_with_stop!('\\', time_between * 7, true, receiver);
+        });
+    }
+
+    fn loader_dots(receiver: Receiver<bool>) {
+        let time_between = 100;
+
+        std::thread::spawn(move || loop {
+            print_char_with_stop!('.', time_between, false, receiver);
+        });
+    }
+}
