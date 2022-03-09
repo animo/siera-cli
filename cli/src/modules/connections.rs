@@ -43,7 +43,7 @@ pub async fn parse_connection_args(
     agent: impl ConnectionModule,
     copy: bool,
 ) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::Dots);
+    let loader = Loader::start(LoaderVariant::default());
     if let Some(id) = &options.id {
         return agent
             .get_connection_by_id(id.to_string())
