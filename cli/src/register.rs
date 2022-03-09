@@ -1,5 +1,5 @@
-use agent_controller::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
 use clap::Parser;
+use cloudagent_python::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
 use colored::*;
 use log::debug;
 use log::LevelFilter;

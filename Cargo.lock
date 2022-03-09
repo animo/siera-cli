@@ -3,11 +3,10 @@
 version = 3
 
 [[package]]
-name = "agent-controller"
+name = "agent"
 version = "0.2.0"
 dependencies = [
  "async-trait",
- "reqwest",
  "serde",
  "serde_json",
 ]
@@ -135,9 +134,10 @@ dependencies = [
 name = "cli"
 version = "0.2.0"
 dependencies = [
- "agent-controller",
+ "agent",
  "clap",
  "clipboard",
+ "cloudagent-python",
  "colored",
  "log",
  "qr2term",
@@ -168,6 +168,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3a093d6fed558e5fe24c3dfc85a68bb68f1c824f440d3ba5aca189e2998786b"
 dependencies = [
  "winapi",
+]
+
+[[package]]
+name = "cloudagent-python"
+version = "0.2.0"
+dependencies = [
+ "agent",
+ "async-trait",
+ "reqwest",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

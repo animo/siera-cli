@@ -1,9 +1,8 @@
-use crate::error::{Error, Result};
+use crate::cloud_agent::CloudAgent;
+use agent::error::{Error, Result};
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
-
-use crate::cloud_agent::CloudAgent;
 
 /// Call logic for http calls
 impl CloudAgent {

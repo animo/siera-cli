@@ -1,4 +1,4 @@
-use agent_controller::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
+use agent::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
 use colored::*;
 use log::info;

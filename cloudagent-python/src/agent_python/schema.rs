@@ -1,13 +1,10 @@
-use crate::{
-    error::Result,
-    modules::schema::{GetAllSchemasResponse, GetSchemaResponse, SchemaCreateOptions},
+use super::agent::CloudAgentPython;
+use agent::error::Result;
+use agent::modules::schema::{
+    GetAllSchemasResponse, GetSchemaResponse, Schema, SchemaCreateOptions, SchemaModule,
 };
 use async_trait::async_trait;
 use serde_json::json;
-
-use crate::modules::schema::{Schema, SchemaModule};
-
-use super::agent::CloudAgentPython;
 
 #[async_trait]
 impl SchemaModule for CloudAgentPython {
@@ -20,7 +17,7 @@ impl SchemaModule for CloudAgentPython {
           "schema_version": options.version
         });
 
-        self.cloud_agent.post::<Schema>(url, None, Some(body)).await
+        self.cloud_agent.post(url, None, Some(body)).await
     }
 
     async fn get_by_id(&self, id: String) -> Result<GetSchemaResponse> {

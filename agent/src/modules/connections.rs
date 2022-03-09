@@ -1,7 +1,23 @@
+use crate::error::Result;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
-use crate::error::Result;
+/// Type of the received invitation
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Invitation {
+    /// Connection id
+    pub connection_id: String,
+
+    /// Invitation object
+    pub invitation: Value,
+
+    /// Invitation url that can be used to accept it by another party
+    pub invitation_url: String,
+
+    /// Alias for the given invitation
+    pub alias: Option<String>,
+}
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -52,8 +68,10 @@ pub trait ConnectionModule {
     async fn get_connection_by_id(&self, id: String) -> Result<GetConnectionByIdResponse>;
 
     /// Create an invitation
-    async fn create_invitation(&self, options: ConnectionCreateInvitationOptions)
-        -> Result<(String, String)>;
+    async fn create_invitation(
+        &self,
+        options: ConnectionCreateInvitationOptions,
+    ) -> Result<(String, String)>;
 }
 
 #[derive(Debug)]

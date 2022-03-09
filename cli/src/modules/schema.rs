@@ -1,11 +1,14 @@
-use agent_controller::modules::schema::{SchemaCreateOptions, SchemaModule};
+use agent::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
 use log::{debug, info};
 
 use crate::{
     error::{Error, Result},
-    utils::{loader::{Loader, LoaderVariant}, logger::pretty_stringify_obj},
     utils::logger::pretty_print_obj,
+    utils::{
+        loader::{Loader, LoaderVariant},
+        logger::pretty_stringify_obj,
+    },
 };
 
 #[derive(Args)]

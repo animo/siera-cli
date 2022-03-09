@@ -1,9 +1,7 @@
-use crate::error::Result;
-use async_trait::async_trait;
-
-use crate::modules::features::{Features, FeaturesModule};
-
 use super::agent::CloudAgentPython;
+use agent::error::Result;
+use agent::modules::features::{Features, FeaturesModule};
+use async_trait::async_trait;
 
 #[async_trait]
 impl FeaturesModule for CloudAgentPython {

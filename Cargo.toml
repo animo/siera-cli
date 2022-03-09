@@ -1,6 +1,7 @@
 [workspace]
 
 members = [
-  "agent-controller",
+  "cloudagent-python",
+  "agent",
   "cli",
 ]

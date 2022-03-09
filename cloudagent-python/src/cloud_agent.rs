@@ -1,6 +1,5 @@
+use agent::error::{Error, Result};
 use reqwest::Url;
-
-use crate::error::{self, Result};
 
 /// Cloudagent properties
 #[derive(Debug, Clone)]
@@ -15,7 +14,7 @@ pub struct CloudAgent {
 impl CloudAgent {
     pub fn create_url(&self, paths: Vec<&str>) -> Result<Url> {
         let mut url = Url::parse(&self.endpoint)
-            .map_err(|_| Box::new(error::Error::UnreachableUrl) as Box<dyn std::error::Error>)?;
+            .map_err(|_| Box::new(Error::UnreachableUrl) as Box<dyn std::error::Error>)?;
         url.set_path(&paths.join("/"));
         Ok(url)
     }

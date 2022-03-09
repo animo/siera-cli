@@ -1,30 +1,11 @@
-use crate::{
-    error::Result,
-    modules::connections::{GetConnectionByIdResponse, GetConnectionsResponse},
+use super::agent::CloudAgentPython;
+use agent::error::Result;
+use agent::modules::connections::{
+    ConnectionCreateInvitationOptions, ConnectionModule, GetConnectionByIdResponse,
+    GetConnectionsResponse, Invitation,
 };
 use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
-
-use crate::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
-
-use super::agent::CloudAgentPython;
-
-/// Type of the received invitation
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Invitation {
-    /// Connection id
-    pub connection_id: String,
-
-    /// Invitation object
-    pub invitation: Value,
-
-    /// Invitation url that can be used to accept it by another party
-    pub invitation_url: String,
-
-    /// Alias for the given invitation
-    pub alias: Option<String>,
-}
+use serde_json::json;
 
 #[async_trait]
 impl ConnectionModule for CloudAgentPython {
@@ -35,7 +16,9 @@ impl ConnectionModule for CloudAgentPython {
 
     async fn get_connection_by_id(&self, id: String) -> Result<GetConnectionByIdResponse> {
         let url = self.cloud_agent.create_url(vec!["connections", &id])?;
-        self.cloud_agent.get(url, None).await
+        self.cloud_agent
+            .get::<GetConnectionByIdResponse>(url, None)
+            .await
     }
 
     async fn create_invitation(
