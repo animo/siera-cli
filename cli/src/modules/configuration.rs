@@ -1,19 +1,10 @@
-use std::fs;
-use std::path::Path;
-
-use clap::Args;
-use log::info;
-
-use crate::error;
-use crate::error::Result;
-use crate::utils::config::{get_config_path, Configuration};
-use colored::*;
-use clap::{Args, Subcommand};
-
 use crate::error;
 use crate::error::Result;
 use crate::utils::config::{get_config_path, Configurations};
-use crate::utils::logger::Log;
+use clap::{Args, Subcommand};
+use log::info;
+use std::fs;
+use std::path::Path;
 
 #[derive(Args)]
 pub struct ConfigurationOptions {
@@ -32,10 +23,10 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
     match options.commands {
         ConfigurationSubcommands::Initialize => {
             initialize(&config_path)?;
-            logger.log("Initialized the configuration!");
+            info!("Initialized the configuration!");
             return Ok(());
         }
-        ConfigurationSubcommands::View => view(&config_path, logger),
+        ConfigurationSubcommands::View => view(&config_path),
     }
 }
 
