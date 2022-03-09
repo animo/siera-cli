@@ -16,13 +16,8 @@ pub async fn parse_features_args(agent: impl FeaturesModule) -> Result<()> {
     agent.discover_features().await.map(|features| {
         loader.stop();
         debug!("{}", pretty_stringify_obj(&features));
-        features
-            .results
-            .keys()
-            .collect::<Vec<_>>()
-            .iter()
-            .for_each(|x| {
-                info!("{}", x);
-            });
+        features.disclose.protocols.iter().for_each(|p| {
+            info!("{}", p.pid);
+        });
     })
 }
