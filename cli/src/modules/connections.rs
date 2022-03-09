@@ -3,10 +3,12 @@ use clap::{Args, Subcommand};
 use colored::*;
 use log::info;
 
+use crate::copy;
 use crate::error::{Error, Result};
+use crate::utils::logger::pretty_stringify_obj;
 use crate::utils::{
     loader::{Loader, LoaderVariant},
-    logger::{copy_to_clipboard, pretty_print_obj},
+    logger::pretty_print_obj,
     qr::print_qr_code,
 };
 
@@ -41,7 +43,6 @@ pub enum ConnectionSubcommands {
 pub async fn parse_connection_args(
     options: &ConnectionOptions,
     agent: impl ConnectionModule,
-    copy: bool,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
     if let Some(id) = &options.id {
@@ -50,12 +51,14 @@ pub async fn parse_connection_args(
             .await
             .map(|connections| {
                 loader.stop();
+                copy!("{}", pretty_stringify_obj(&connections));
                 pretty_print_obj(connections)
             });
     }
     if options.all {
         return agent.get_connections().await.map(|connections| {
             loader.stop();
+            copy!("{}", pretty_stringify_obj(&connections.results));
             pretty_print_obj(connections.results)
         });
     }
@@ -82,13 +85,12 @@ pub async fn parse_connection_args(
                 loader.stop();
                 if *qr {
                     info!("{}", format!("{}: {}", "Connection id".green(), response.0));
+                    copy!("{}", response.0);
                     print_qr_code(response.1).unwrap();
                 } else {
                     info!("{}", format!("{}: {}", "Connection id".green(), response.0));
                     info!("{}", response.1);
-                    if copy {
-                        copy_to_clipboard(response.1);
-                    }
+                    copy!("{}", response.1);
                 }
             })
         }

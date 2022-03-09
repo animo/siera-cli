@@ -3,6 +3,7 @@ extern crate log;
 mod cli;
 mod error;
 mod help_strings;
+mod macros;
 mod modules;
 mod register;
 mod utils;
