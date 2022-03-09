@@ -42,7 +42,7 @@ To begin working with the aries-cli, run the following command:
 
     $ aries-cli configuration initialize
 
-This command willi initialize the configuration file and makes sure
+This command will initialize the configuration file and makes sure
 that you do not have to pass the --endpoint argument with every call.
 
 Some example commands are the following:
@@ -54,7 +54,7 @@ Some example commands are the following:
     $ aries-cli features   
         - Fetches all the features of the cloudagent
     $ aries-cli schema create --name FOO -a BAR -a BAZ 
-        - Create a new schema
+        - Create a new schema with the name as 'FOO' and the attributes as 'BAR' and 'BAZ'
 
 -----------------
 ";
