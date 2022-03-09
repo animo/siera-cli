@@ -6,7 +6,7 @@ pub enum Error {
     UnableToParseResponse,
     UrlDoesNotExist,
     InternalServerError,
-    UnknownResponseStatusCode,
+    UnknownResponseStatusCode(String),
     UnreachableUrl,
     HttpServiceUnavailable,
 }
@@ -22,7 +22,7 @@ impl Display for Error {
             Error::UnableToParseResponse => write!(f, "Unable to parse the response from the server. Is the cloudagent the correct version?"),
             Error::UrlDoesNotExist => write!(f, "Path does not exist on endpoint. This can happen when querying by id and the id is not valid."),
             Error::InternalServerError => write!(f, "Internal Server Error!"),
-            Error::UnknownResponseStatusCode => write!(f, "Received unknown status code from the server. Endpoint is likely incorrect. If the endpoint is correct, please report this error."),
+            Error::UnknownResponseStatusCode(msg) => write!(f, "Received unknown status code from the server. Endpoint is likely incorrect. If the endpoint is correct, please report this error at https://github.com/animo/aries-cli/issues/new \nAdditional info: {}", msg),
             Error::UnreachableUrl => write!(f, "Provided url is unreachable. Is the provided endpoint valid?"),
             Error::HttpServiceUnavailable => write!(f, "Cloudagent is currently unavailable. Are you sure the agent is online?")
 

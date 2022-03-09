@@ -2,19 +2,12 @@ use crate::error::Result;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
-/// Type for received schema object
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct CreateCredentialDefinitionResponse {
-    /// received value
-    pub sent: CredentialDefinitionId,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct CredentialDefinitionId {
     pub credential_definition_id: String,
 }
 
-#[derive(Default, Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetCredentialDefinitionResponse {
     #[serde(rename = "credential_definition")]
@@ -51,7 +44,6 @@ pub struct R {
 pub struct GetAllCredentialDefinitionsResponse {
     pub credential_definition_ids: Vec<String>,
 }
-
 
 #[async_trait]
 pub trait CredentialDefinitionModule {

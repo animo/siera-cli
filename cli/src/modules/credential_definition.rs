@@ -44,7 +44,8 @@ pub async fn parse_credential_definition_args(
                 "tag": cred_def.credential_definition.tag,
                 "ver": cred_def.credential_definition.ver,
             });
-            debug!("{}", pretty_stringify_obj(loggable));
+            debug!("{}", pretty_stringify_obj(cred_def));
+            info!("{}", pretty_stringify_obj(loggable));
         });
     }
     if options.all {
@@ -64,7 +65,7 @@ pub async fn parse_credential_definition_args(
         CredentialDefinitionSubcommands::Create { schema_id } => {
             agent.create(schema_id.to_string()).await.map(|cred_def| {
                 loader.stop();
-                info!("{}", cred_def.sent.credential_definition_id);
+                info!("{}", cred_def.credential_definition_id);
             })
         }
     }

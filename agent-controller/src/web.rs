@@ -59,7 +59,7 @@ impl CloudAgent {
                 422 => Err(res.text().await?.into()),
                 503 => Err(Error::HttpServiceUnavailable.into()),
                 500..=599 => Err(Error::InternalServerError.into()),
-                _ => Err(Error::UnknownResponseStatusCode.into()),
+                _ => Err(Error::UnknownResponseStatusCode(res.text().await?).into()),
             },
             Err(_) => Err(Error::UnreachableUrl.into()),
         }
