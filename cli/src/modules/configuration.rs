@@ -24,7 +24,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
         ConfigurationSubcommands::Initialize => {
             initialize(&config_path)?;
             info!("Initialized the configuration!");
-            return Ok(());
+            Ok(())
         }
         ConfigurationSubcommands::View => view(&config_path),
     }
