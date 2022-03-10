@@ -3,13 +3,23 @@ use log::LevelFilter;
 use serde::Serialize;
 use simplelog::{ColorChoice, ConfigBuilder, TermLogger, TerminalMode};
 
-static mut LOGGER_INITED: bool = false;
+#[derive(Default)]
+pub struct LoggerState {
+    pub init: bool,
+    pub should_copy: bool,
+}
 
-pub fn init(level: LevelFilter) {
+pub static mut STATE: LoggerState = LoggerState {
+    init: false,
+    should_copy: false,
+};
+
+pub fn init(level: LevelFilter, should_copy: bool) {
     unsafe {
-        if LOGGER_INITED {
+        if STATE.init {
             panic!("Logger should only be initialized once!");
         }
+        STATE.should_copy = should_copy;
     }
     let _ = TermLogger::init(
         level,
@@ -25,7 +35,7 @@ pub fn init(level: LevelFilter) {
         ColorChoice::Never,
     );
     unsafe {
-        LOGGER_INITED = true;
+        STATE.init = true;
     }
 }
 

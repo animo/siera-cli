@@ -26,7 +26,7 @@ pub async fn register() -> Result<()> {
     } else {
         LevelFilter::Info
     };
-    logger::init(level);
+    logger::init(level, cli.copy);
 
     debug!("Parsed CLI options and initialized logger");
 
@@ -56,7 +56,7 @@ pub async fn register() -> Result<()> {
             let agent =
                 initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             // TODO: refactor cli.copy
-            parse_connection_args(options, agent, cli.copy).await
+            parse_connection_args(options, agent).await
         }
         Commands::Credentials(options) => {
             let agent =
@@ -99,8 +99,8 @@ fn initialize_agent_from_cli(
                 .configurations
                 .get_key_value(&environment)
                 .ok_or(Error::InvalidEnvironment)?;
-            let endpoint = endpoint.unwrap_or(configuration.1.endpoint.to_owned());
-            let api_key = api_key.or(configuration.1.api_key.to_owned());
+            let endpoint = endpoint.unwrap_or_else(|| configuration.1.endpoint.to_owned());
+            let api_key = api_key.or_else(|| configuration.1.api_key.to_owned());
             (endpoint, api_key)
         }
         None => {

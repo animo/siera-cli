@@ -2,7 +2,7 @@ use core::time;
 use std::io::{self, Write};
 use std::sync::mpsc::{Receiver, Sender};
 
-/// Macaroni
+/// Prints a character to stdout and breaks the loop when a message is received
 macro_rules! print_char_with_stop {
     ($char: expr, $timeout: expr, $inplace: expr, $receiver: expr) => {
         Loader::print_char($char, $timeout, $inplace);

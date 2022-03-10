@@ -4,6 +4,7 @@ use log::{debug, info};
 use serde_json::json;
 
 use crate::{
+    copy,
     error::{Error, Result},
     utils::loader::{Loader, LoaderVariant},
     utils::logger::pretty_stringify_obj,
@@ -45,6 +46,7 @@ pub async fn parse_credential_definition_args(
                 "ver": cred_def.credential_definition.ver,
             });
             debug!("{}", pretty_stringify_obj(cred_def));
+            copy!("{}", pretty_stringify_obj(&loggable));
             info!("{}", pretty_stringify_obj(loggable));
         });
     }
@@ -65,6 +67,7 @@ pub async fn parse_credential_definition_args(
         CredentialDefinitionSubcommands::Create { schema_id } => {
             agent.create(schema_id.to_string()).await.map(|cred_def| {
                 loader.stop();
+                copy!("{}", cred_def.credential_definition_id);
                 info!("{}", cred_def.credential_definition_id);
             })
         }

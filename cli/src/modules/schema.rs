@@ -3,6 +3,7 @@ use clap::{Args, Subcommand};
 use log::{debug, info};
 
 use crate::{
+    copy,
     error::{Error, Result},
     utils::logger::pretty_print_obj,
     utils::{
@@ -40,6 +41,7 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
     if let Some(id) = &options.id {
         return agent.get_by_id(id.to_string()).await.map(|schema| {
             loader.stop();
+            copy!("{}", pretty_stringify_obj(&schema.schema));
             pretty_print_obj(schema.schema)
         });
     }
@@ -69,6 +71,7 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             }
             agent.create(options).await.map(|schema| {
                 debug!("{}", pretty_stringify_obj(&schema));
+                copy!("{}", schema.schema_id);
                 info!("{}", schema.schema_id);
             })
         }
