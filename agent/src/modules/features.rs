@@ -1,4 +1,3 @@
-// TODO: this should be under `server`
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -6,16 +5,16 @@ use serde_json::Value;
 use crate::error::Result;
 
 /// Type of the received features from `discover-features`
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Features {
+pub struct DiscoverFeaturesResponse {
     pub trace: bool,
     #[serde(rename = "query_msg")]
     pub query_msg: Value,
     pub disclose: Disclose,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Disclose {
     #[serde(rename = "@type")]
@@ -25,7 +24,7 @@ pub struct Disclose {
     pub protocols: Vec<Protocol>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Protocol {
     pub pid: String,
@@ -34,5 +33,5 @@ pub struct Protocol {
 #[async_trait]
 pub trait FeaturesModule {
     /// Requests all the features from the cloudagent
-    async fn discover_features(&self) -> Result<Features>;
+    async fn discover_features(&self) -> Result<DiscoverFeaturesResponse>;
 }

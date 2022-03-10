@@ -1,17 +1,25 @@
+use crate::error::Result;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
-use crate::error::Result;
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct GetConnectionsResponse {
-    pub results: Vec<GetConnectionByIdResponse>,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ConnectionCreateInvitationResponse {
+    pub connection_id: String,
+    pub invitation: Value,
+    pub invitation_url: String,
+    pub alias: Option<String>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetConnectionByIdResponse {
+pub struct ConnectionGetAllResponse {
+    pub results: Vec<ConnectionGetByIdResponse>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ConnectionGetByIdResponse {
     #[serde(rename = "their_role")]
     pub their_role: String,
     #[serde(rename = "created_at")]
@@ -46,14 +54,16 @@ pub struct GetConnectionByIdResponse {
 #[async_trait]
 pub trait ConnectionModule {
     /// Gets all the connections
-    async fn get_connections(&self) -> Result<GetConnectionsResponse>;
+    async fn get_all(&self) -> Result<ConnectionGetAllResponse>;
 
     /// Get a connection by id
-    async fn get_connection_by_id(&self, id: String) -> Result<GetConnectionByIdResponse>;
+    async fn get_by_id(&self, id: String) -> Result<ConnectionGetByIdResponse>;
 
     /// Create an invitation
-    async fn create_invitation(&self, options: ConnectionCreateInvitationOptions)
-        -> Result<(String, String)>;
+    async fn create_invitation(
+        &self,
+        options: ConnectionCreateInvitationOptions,
+    ) -> Result<ConnectionCreateInvitationResponse>;
 }
 
 #[derive(Debug)]

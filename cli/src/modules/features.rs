@@ -1,4 +1,4 @@
-use agent_controller::modules::features::FeaturesModule;
+use agent::modules::features::FeaturesModule;
 use clap::Args;
 use log::{debug, info};
 

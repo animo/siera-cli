@@ -1,11 +1,8 @@
-use crate::{
-    error::Result,
-    modules::message::{MessageModule, SendMessageOptions},
-};
+use super::agent::CloudAgentPython;
+use agent::error::Result;
+use agent::modules::message::{MessageModule, SendMessageOptions};
 use async_trait::async_trait;
 use serde_json::{json, Value};
-
-use super::agent::CloudAgentPython;
 
 #[async_trait]
 impl MessageModule for CloudAgentPython {

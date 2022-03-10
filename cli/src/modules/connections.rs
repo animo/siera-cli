@@ -1,4 +1,4 @@
-use agent_controller::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
+use agent::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use clap::{Args, Subcommand};
 use colored::*;
 use log::info;
@@ -47,7 +47,7 @@ pub async fn parse_connection_args(
     let loader = Loader::start(LoaderVariant::default());
     if let Some(id) = &options.id {
         return agent
-            .get_connection_by_id(id.to_string())
+            .get_by_id(id.to_string())
             .await
             .map(|connections| {
                 loader.stop();
@@ -56,7 +56,7 @@ pub async fn parse_connection_args(
             });
     }
     if options.all {
-        return agent.get_connections().await.map(|connections| {
+        return agent.get_all().await.map(|connections| {
             loader.stop();
             copy!("{}", pretty_stringify_obj(&connections.results));
             pretty_print_obj(connections.results)
@@ -84,13 +84,12 @@ pub async fn parse_connection_args(
             agent.create_invitation(options).await.map(|response| {
                 loader.stop();
                 if *qr {
-                    info!("{}", format!("{}: {}", "Connection id".green(), response.0));
-                    copy!("{}", response.0);
-                    print_qr_code(response.1).unwrap();
+                    info!(
+                        "{}",
+                        format!("{}: {}", "Connection id".green(), response.connection_id)
+                    );
+                    print_qr_code(response.invitation_url).unwrap();
                 } else {
-                    info!("{}", format!("{}: {}", "Connection id".green(), response.0));
-                    info!("{}", response.1);
-                    copy!("{}", response.1);
                 }
             })
         }

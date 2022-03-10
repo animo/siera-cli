@@ -1,14 +1,10 @@
+use super::agent::CloudAgentPython;
+use agent::error::Result;
+use agent::modules::credentials::{
+    CredentialOfferResponse, CredentialsModule, CredentialsOfferOptions, SendProposalOptions,
+};
 use async_trait::async_trait;
 use serde_json::{json, Value};
-
-use crate::{
-    error::Result,
-    modules::credentials::{
-        CredentialOfferResponse, CredentialsModule, CredentialsOfferOptions, SendProposalOptions,
-    },
-};
-
-use super::agent::CloudAgentPython;
 
 #[async_trait]
 impl CredentialsModule for CloudAgentPython {

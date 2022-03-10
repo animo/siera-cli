@@ -1,4 +1,4 @@
-use agent_controller::modules::credentials::{CredentialsModule, CredentialsOfferOptions};
+use agent::modules::credentials::{CredentialsModule, CredentialsOfferOptions};
 use clap::{Args, Subcommand};
 use log::{debug, info};
 

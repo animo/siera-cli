@@ -1,24 +1,23 @@
 use crate::error::Result;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
 /// Create schema response
-#[derive(Debug, Clone, Deserialize, Serialize)]
-pub struct Schema {
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SchemaCreateResponse {
     /// Schema metadata
-    pub schema: Value,
+    pub schema: SchemaContent,
 
     /// Id of the schema
     pub schema_id: String,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
-pub struct GetSchemaResponse {
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SchemaGetResponse {
     pub schema: SchemaContent,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct SchemaContent {
     ver: String,
     id: String,
@@ -37,15 +36,15 @@ pub struct SchemaCreateOptions {
     pub attributes: Vec<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
-pub struct GetAllSchemasResponse {
+#[derive(Debug, Deserialize, Serialize)]
+pub struct SchemasGetAllResponse {
     pub schema_ids: Vec<String>,
 }
 
 #[async_trait]
 pub trait SchemaModule {
     /// Requests all the features from the cloudagent
-    async fn create(&self, options: SchemaCreateOptions) -> Result<Schema>;
-    async fn get_by_id(&self, id: String) -> Result<GetSchemaResponse>;
-    async fn get_all(&self) -> Result<GetAllSchemasResponse>;
+    async fn create(&self, options: SchemaCreateOptions) -> Result<SchemaCreateResponse>;
+    async fn get_by_id(&self, id: String) -> Result<SchemaGetResponse>;
+    async fn get_all(&self) -> Result<SchemasGetAllResponse>;
 }
