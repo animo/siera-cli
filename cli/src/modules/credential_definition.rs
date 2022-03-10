@@ -1,5 +1,6 @@
 use agent::modules::credential_definition::CredentialDefinitionModule;
 use clap::{Args, Subcommand};
+use colored::*;
 use log;
 use serde_json::json;
 
