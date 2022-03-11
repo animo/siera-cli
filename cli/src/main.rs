@@ -17,7 +17,7 @@ async fn main() {
     match register().await {
         Ok(_) => (),
         Err(e) => {
-            error!("{} {}", "Error:".red(), e);
+            error!("{} {}", "error:".bold().red(), e);
             std::process::exit(1);
         }
     }

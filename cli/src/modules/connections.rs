@@ -46,14 +46,11 @@ pub async fn parse_connection_args(
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
     if let Some(id) = &options.id {
-        return agent
-            .get_by_id(id.to_string())
-            .await
-            .map(|connections| {
-                loader.stop();
-                copy!("{}", pretty_stringify_obj(&connections));
-                pretty_print_obj(connections)
-            });
+        return agent.get_by_id(id.to_string()).await.map(|connections| {
+            loader.stop();
+            copy!("{}", pretty_stringify_obj(&connections));
+            pretty_print_obj(connections)
+        });
     }
     if options.all {
         return agent.get_all().await.map(|connections| {
@@ -90,6 +87,7 @@ pub async fn parse_connection_args(
                     );
                     print_qr_code(response.invitation_url).unwrap();
                 } else {
+                    info!("{}", response.invitation_url)
                 }
             })
         }
