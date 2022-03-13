@@ -4,7 +4,7 @@ use colored::*;
 use log::info;
 
 use crate::copy;
-use crate::error::{Error, Result};
+use crate::error::Result;
 use crate::utils::logger::pretty_stringify_obj;
 use crate::utils::{
     loader::{Loader, LoaderVariant},
@@ -14,10 +14,7 @@ use crate::utils::{
 
 #[derive(Args)]
 pub struct ConnectionOptions {
-    #[clap(long, short, conflicts_with = "id")]
-    pub all: bool,
-
-    #[clap(long, short, conflicts_with = "all")]
+    #[clap(long, short)]
     pub id: Option<String>,
 
     #[clap(subcommand)]
@@ -52,44 +49,41 @@ pub async fn parse_connection_args(
             pretty_print_obj(connections)
         });
     }
-    if options.all {
-        return agent.get_all().await.map(|connections| {
+
+    match &options.commands {
+        Some(o) => match o {
+            ConnectionSubcommands::Invite {
+                auto_accept,
+                qr,
+                toolbox,
+                multi_use,
+                alias,
+            } => {
+                let options = ConnectionCreateInvitationOptions {
+                    alias: alias.as_deref().map(|a| a.to_string()),
+                    auto_accept: *auto_accept,
+                    multi_use: *multi_use,
+                    qr: *qr,
+                    toolbox: *toolbox,
+                };
+                agent.create_invitation(options).await.map(|response| {
+                    loader.stop();
+                    if *qr {
+                        info!(
+                            "{}",
+                            format!("{}: {}", "Connection id".green(), response.connection_id)
+                        );
+                        print_qr_code(response.invitation_url).unwrap();
+                    } else {
+                        info!("{}", response.invitation_url)
+                    }
+                })
+            }
+        },
+        None => agent.get_all().await.map(|connections| {
             loader.stop();
             copy!("{}", pretty_stringify_obj(&connections.results));
             pretty_print_obj(connections.results)
-        });
-    }
-    match &options
-        .commands
-        .as_ref()
-        .ok_or_else(|| Error::NoSubcommandSupplied("connections".to_string()))?
-    {
-        ConnectionSubcommands::Invite {
-            auto_accept,
-            qr,
-            toolbox,
-            multi_use,
-            alias,
-        } => {
-            let options = ConnectionCreateInvitationOptions {
-                alias: alias.as_deref().map(|a| a.to_string()),
-                auto_accept: *auto_accept,
-                multi_use: *multi_use,
-                qr: *qr,
-                toolbox: *toolbox,
-            };
-            agent.create_invitation(options).await.map(|response| {
-                loader.stop();
-                if *qr {
-                    info!(
-                        "{}",
-                        format!("{}: {}", "Connection id".green(), response.connection_id)
-                    );
-                    print_qr_code(response.invitation_url).unwrap();
-                } else {
-                    info!("{}", response.invitation_url)
-                }
-            })
-        }
+        }),
     }
 }

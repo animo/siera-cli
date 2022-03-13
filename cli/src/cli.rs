@@ -43,8 +43,8 @@ pub struct Cli {
 pub enum Commands {
     Connections(ConnectionOptions),
     Features(FeaturesOptions),
-    Schema(SchemaOptions),
-    CredentialDefinition(CredentialDefinitionOptions),
+    Schemas(SchemaOptions),
+    CredentialDefinitions(CredentialDefinitionOptions),
     Message(MessageOptions),
     Credentials(CredentialOptions),
     Configuration(ConfigurationOptions),

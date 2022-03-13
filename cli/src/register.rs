@@ -32,7 +32,7 @@ pub async fn register() -> Result<()> {
 
     match &cli.commands {
         Commands::Configuration(options) => parse_configuration_args(options).await,
-        Commands::Schema(options) => {
+        Commands::Schemas(options) => {
             let agent =
                 initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_schema_args(options, agent).await
@@ -47,7 +47,7 @@ pub async fn register() -> Result<()> {
                 initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_message_args(options, agent).await
         }
-        Commands::CredentialDefinition(options) => {
+        Commands::CredentialDefinitions(options) => {
             let agent =
                 initialize_agent_from_cli(cli.config, cli.environment, cli.endpoint, cli.api_key)?;
             parse_credential_definition_args(options, agent).await

@@ -5,21 +5,18 @@ use serde_json::json;
 
 use crate::{
     copy,
-    error::{Error, Result},
+    error::Result,
     utils::loader::{Loader, LoaderVariant},
     utils::logger::pretty_stringify_obj,
 };
 
 #[derive(Args)]
 pub struct CredentialDefinitionOptions {
-    #[clap(subcommand)]
-    pub commands: Option<CredentialDefinitionSubcommands>,
-
     #[clap(long, short)]
     pub id: Option<String>,
 
-    #[clap(long, short)]
-    pub all: bool,
+    #[clap(subcommand)]
+    pub commands: Option<CredentialDefinitionSubcommands>,
 }
 
 #[derive(Subcommand, Debug)]
@@ -50,26 +47,23 @@ pub async fn parse_credential_definition_args(
             info!("{}", pretty_stringify_obj(loggable));
         });
     }
-    if options.all {
-        return agent.get_all().await.map(|cred_defs| {
+
+    match &options.commands {
+        Some(o) => match o {
+            CredentialDefinitionSubcommands::Create { schema_id } => {
+                agent.create(schema_id.to_string()).await.map(|cred_def| {
+                    loader.stop();
+                    copy!("{}", cred_def.credential_definition_id);
+                    info!("{}", cred_def.credential_definition_id);
+                })
+            }
+        },
+        None => agent.get_all().await.map(|cred_defs| {
             loader.stop();
             cred_defs
                 .credential_definition_ids
                 .iter()
                 .for_each(|x| info!("{}", x))
-        });
-    }
-    match options
-        .commands
-        .as_ref()
-        .ok_or_else(|| Error::NoSubcommandSupplied("credential-definition".to_string()))?
-    {
-        CredentialDefinitionSubcommands::Create { schema_id } => {
-            agent.create(schema_id.to_string()).await.map(|cred_def| {
-                loader.stop();
-                copy!("{}", cred_def.credential_definition_id);
-                info!("{}", cred_def.credential_definition_id);
-            })
-        }
+        }),
     }
 }

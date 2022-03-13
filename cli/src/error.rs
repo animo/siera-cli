@@ -11,7 +11,7 @@ pub enum Error {
     ConfigExists,
     OsUnknown,
     RequiredAttributes,
-    NoSubcommandSupplied(String),
+    _NoSubcommandSupplied(String),
 }
 
 impl std::error::Error for Error {}
@@ -28,7 +28,7 @@ impl Display for Error {
             Error::HomeNotFound => write!(f, "Unable to find home directory."),
             Error::ConfigExists => write!(f, "Configuration file already exists."),
             Error::OsUnknown => write!(f, "Unknown operating system. Failed to detect OS as windows or unix."),
-            Error::NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. Check `aries-cli {} --help for the available options.", subcommand, subcommand),
+            Error::_NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. Check `aries-cli {} --help for the available options.", subcommand, subcommand),
             Error::RequiredAttributes => write!(f, "Creating a schema requires at least one attribute. Please supply them via the --attributes flag."),
             Error::InvalidConfigurationStructure => write!(f, "Invalid configuration structure. Please make sure you have a valid configuration file."),
         }
