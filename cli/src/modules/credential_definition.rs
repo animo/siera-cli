@@ -1,7 +1,7 @@
 use agent::modules::credential_definition::CredentialDefinitionModule;
 use clap::{Args, Subcommand};
 use colored::*;
-use log;
+use log:{debug, info};
 use serde_json::json;
 
 use crate::{
@@ -43,9 +43,9 @@ pub async fn parse_credential_definition_args(
                 "tag": cred_def.credential_definition.tag,
                 "ver": cred_def.credential_definition.ver,
             });
-            log::debug!("{}", pretty_stringify_obj(cred_def));
+            debug!("{}", pretty_stringify_obj(cred_def));
             copy!("{}", pretty_stringify_obj(&loggable));
-            log::info!("{}", pretty_stringify_obj(loggable));
+            info!("{}", pretty_stringify_obj(loggable));
         });
     }
 
