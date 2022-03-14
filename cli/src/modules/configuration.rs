@@ -37,16 +37,10 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 String::from(config_path.to_str().unwrap()).bold()
             );
 
-            let _ = match view(&config_path) {
-                Ok(config) => config,
-                Err(e) => {
-                    error!(
-                        "Cannot not read configuration file. Try initializing configuration first."
-                    );
-                    return Err(e);
-                }
-            };
-            return Ok(());
+            view(&config_path).map_err(|err| {
+                debug!("Failed to read config file: {}", err);
+                return error::Error::CannotReadConfigurationFile.into();
+            })
         }
     }
 }
