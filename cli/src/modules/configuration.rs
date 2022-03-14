@@ -39,7 +39,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
 
             view(&config_path).map_err(|err| {
                 debug!("Failed to read config file: {}", err);
-                return error::Error::CannotReadConfigurationFile.into();
+                error::Error::CannotReadConfigurationFile.into()
             })
         }
     }

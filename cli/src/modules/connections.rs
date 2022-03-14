@@ -73,7 +73,7 @@ pub async fn parse_connection_args(
                         format!(
                             "{} invite with connection id: {}\n",
                             "Created".green(),
-                            response.0.bold(),
+                            response.connection_id,
                         )
                     );
                     if *qr {
