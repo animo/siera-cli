@@ -2,7 +2,8 @@ use crate::error;
 use crate::error::Result;
 use crate::utils::config::{get_config_path, Configurations};
 use clap::{Args, Subcommand};
-use log::info;
+use colored::*;
+use log::{debug, info};
 use std::fs;
 use std::path::Path;
 
@@ -23,10 +24,24 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
     match options.commands {
         ConfigurationSubcommands::Initialize => {
             initialize(&config_path)?;
-            info!("Initialized the configuration!");
+            info!(
+                "{} configuration file at {}.",
+                "Initialised".cyan(),
+                config_path.display()
+            );
             Ok(())
         }
-        ConfigurationSubcommands::View => view(&config_path),
+        ConfigurationSubcommands::View => {
+            debug!(
+                "Loaded configuration from {}",
+                String::from(config_path.to_str().unwrap()).bold()
+            );
+
+            view(&config_path).map_err(|err| {
+                debug!("Failed to read config file: {}", err);
+                error::Error::CannotReadConfigurationFile.into()
+            })
+        }
     }
 }
 

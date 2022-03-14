@@ -1,5 +1,6 @@
 use agent::modules::credential_definition::CredentialDefinitionModule;
 use clap::{Args, Subcommand};
+use colored::*;
 use log::{debug, info};
 use serde_json::json;
 
@@ -54,7 +55,11 @@ pub async fn parse_credential_definition_args(
                 agent.create(schema_id.to_string()).await.map(|cred_def| {
                     loader.stop();
                     copy!("{}", cred_def.credential_definition_id);
-                    info!("{}", cred_def.credential_definition_id);
+                    info!(
+                        "{} credential definition with id: {}.",
+                        "Created".green(),
+                        cred_def.credential_definition_id
+                    )
                 })
             }
         },
