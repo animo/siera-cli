@@ -46,10 +46,8 @@ impl CloudAgent {
 
         match client.send().await {
             Ok(res) => match res.status().as_u16() {
-                200..=299 => res
-                    .json()
-                    .await
-                    .map_err(|_| Error::UnableToParseResponse.into()),
+                200..=299 => res.json().await.map_err(|e| e.into()),
+                //.map_err(|_| Error::UnableToParseResponse.into()),
                 // Issue credential message when attributes are not correct
                 400 => Err(res.text().await?.into()),
                 401 => Err(Error::AuthorizationFailed.into()),
