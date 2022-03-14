@@ -176,6 +176,7 @@ version = "0.2.0"
 dependencies = [
  "agent",
  "async-trait",
+ "log",
  "reqwest",
  "serde",
  "serde_json",
