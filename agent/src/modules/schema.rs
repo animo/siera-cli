@@ -26,7 +26,7 @@ pub struct SchemaContent {
     #[serde(rename(deserialize = "attrNames"))]
     attr_names: Vec<String>,
     #[serde(rename(deserialize = "seqNo"))]
-    seq_no: i32,
+    seq_no: Option<i32>,
 }
 
 #[derive(Debug)]
