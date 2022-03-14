@@ -45,10 +45,12 @@ impl CloudAgent {
             None => client,
         };
 
+        // TODO: change this to trace! when we support multiple log levels
         debug!("About to send request:\n{:#?}", client);
         match client.send().await {
             Ok(res) => {
                 let status_code = res.status().as_u16();
+                // TODO: change this to trace! when we support multiple log levels
                 debug!("Got {} response:\n{:#?}", status_code, res);
                 match status_code {
                     200..=299 => res
@@ -67,6 +69,7 @@ impl CloudAgent {
                 }
             }
             Err(e) => {
+                // TODO: change this to trace! when we support multiple log levels
                 debug!("Request failed {}", e);
                 Err(Error::UnreachableUrl.into())
             }
