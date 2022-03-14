@@ -14,14 +14,11 @@ use crate::{
 
 #[derive(Args)]
 pub struct SchemaOptions {
-    #[clap(subcommand)]
-    pub commands: Option<SchemaSubcommands>,
-
-    #[clap(long, short, conflicts_with = "all")]
+    #[clap(long, short)]
     pub id: Option<String>,
 
-    #[clap(long, short, conflicts_with = "id")]
-    pub all: bool,
+    #[clap(subcommand)]
+    pub commands: Option<SchemaSubcommands>,
 }
 
 #[derive(Subcommand, Debug)]
@@ -45,35 +42,32 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             pretty_print_obj(schema.schema)
         });
     }
-    if options.all {
-        return agent.get_all().await.map(|schemas| {
+
+    match &options.commands {
+        Some(o) => match o {
+            SchemaSubcommands::Create {
+                name,
+                attributes,
+                version,
+            } => {
+                let options = SchemaCreateOptions {
+                    name: name.to_string(),
+                    version: version.to_string(),
+                    attributes: attributes.to_vec(),
+                };
+                if options.attributes.is_empty() {
+                    return Err(Error::RequiredAttributes.into());
+                }
+                agent.create(options).await.map(|schema| {
+                    debug!("{}", pretty_stringify_obj(&schema));
+                    copy!("{}", schema.schema_id);
+                    info!("{}", schema.schema_id);
+                })
+            }
+        },
+        None => agent.get_all().await.map(|schemas| {
             loader.stop();
             schemas.schema_ids.iter().for_each(|x| info!("{}", x))
-        });
-    }
-    match options
-        .commands
-        .as_ref()
-        .ok_or_else(|| Error::NoSubcommandSupplied("schema".to_string()))?
-    {
-        SchemaSubcommands::Create {
-            name,
-            attributes,
-            version,
-        } => {
-            let options = SchemaCreateOptions {
-                name: name.to_string(),
-                version: version.to_string(),
-                attributes: attributes.to_vec(),
-            };
-            if options.attributes.is_empty() {
-                return Err(Error::RequiredAttributes.into());
-            }
-            agent.create(options).await.map(|schema| {
-                debug!("{}", pretty_stringify_obj(&schema));
-                copy!("{}", schema.schema_id);
-                info!("{}", schema.schema_id);
-            })
-        }
+        }),
     }
 }
