@@ -22,7 +22,7 @@ pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            Error::CannotReadConfigurationFile => write!(f, "Cannot not read configuration file. Try initializing configuration first."),
+            Error::CannotReadConfigurationFile => write!(f, "Cannot not read configuration file. Try initializing first using: `aries-cli configuration initialize`."),
             Error::InvalidConfigurationPath => write!(f, "Invalid configuration path."),
             Error::InvalidEnvironment => write!(f, "Invalid environment."),
             Error::NoEndpointSupplied => write!(f, "No endpoint supplied. Supply an endpoint either via `--endpoint` or via `--config`."),
