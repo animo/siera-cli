@@ -1,6 +1,6 @@
 use crate::cloud_agent::CloudAgent;
 use agent::error::{Error, Result};
-use log::trace;
+use log::debug;
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -45,11 +45,11 @@ impl CloudAgent {
             None => client,
         };
 
-        trace!("About to send request:\n{:#?}", client);
+        debug!("About to send request:\n{:#?}", client);
         match client.send().await {
             Ok(res) => {
                 let status_code = res.status().as_u16();
-                trace!("Got {} response:\n{:#?}", status_code, res);
+                debug!("Got {} response:\n{:#?}", status_code, res);
                 match status_code {
                     200..=299 => res
                         .json()
@@ -67,7 +67,7 @@ impl CloudAgent {
                 }
             }
             Err(e) => {
-                trace!("Request failed {}", e);
+                debug!("Request failed {}", e);
                 Err(Error::UnreachableUrl.into())
             }
         }
