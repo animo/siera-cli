@@ -14,7 +14,7 @@ use crate::modules::{
 #[clap(name = "aries-cli", author, version, about = HelpStrings::Cli)]
 #[clap(arg_required_else_help = true)]
 pub struct Cli {
-    #[clap(long, short, help = HelpStrings::Endpoint)]
+    #[clap(long, short='u', help = HelpStrings::AgentURL)]
     pub endpoint: Option<String>,
 
     #[clap(long, short, help = HelpStrings::ApiKey)]
