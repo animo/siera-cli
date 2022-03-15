@@ -41,6 +41,11 @@ pub enum HelpStrings {
 
     // Features
     Features,
+
+    // Message
+    Message,
+    MessageId,
+    MessageMessage,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -107,6 +112,10 @@ impl HelpStrings {
             HelpStrings::CredentialsProposeId => "????",
 
             HelpStrings::Features => "List all available features",
+
+            HelpStrings::Message => "Send a secure message to an exist connection",
+            HelpStrings::MessageId => "Specify the connection ID to send the message to",
+            HelpStrings::MessageMessage => "Contents of the message",
             // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
         }
     }
