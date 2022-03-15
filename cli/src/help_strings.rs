@@ -13,6 +13,12 @@ pub enum HelpStrings {
     Environment,
     ConfigurationInitialize,
     ConfigurationView,
+    ConnectionsInvite,
+    ConnectionsInviteAutoAccept,
+    ConnectionsInviteAlias,
+    ConnectionsInviteMultiUse,
+    ConnectionsInviteQr,
+    ConnectionsInviteToolbox,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -36,6 +42,22 @@ impl HelpStrings {
                 "Initialize a new configuration file with a default environment"
             }
             HelpStrings::ConfigurationView => "Print your current configuration file",
+
+            HelpStrings::ConnectionsInvite => "Create a new connection invitation",
+            HelpStrings::ConnectionsInviteAlias => {
+                "A name the new connection will use to identify itself"
+            }
+            HelpStrings::ConnectionsInviteAutoAccept => {
+                "Automatically accept the new connection once they accept this invitation"
+            }
+            HelpStrings::ConnectionsInviteMultiUse => {
+                "Whether this invitation can be used more than once"
+            }
+            HelpStrings::ConnectionsInviteQr => {
+                "Print a QR code, convenient for use with mobile apps"
+            }
+            // TODO: Find out what "toolbox" is
+            HelpStrings::ConnectionsInviteToolbox => "????",
             // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
         }
     }
