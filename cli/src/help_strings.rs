@@ -19,6 +19,10 @@ pub enum HelpStrings {
     ConnectionsInviteMultiUse,
     ConnectionsInviteQr,
     ConnectionsInviteToolbox,
+    CredentialDefinition,
+    CredentialDefinitionId,
+    CredentialDefinitionCreate,
+    CredentialDefinitionCreateSchemaId,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -45,7 +49,7 @@ impl HelpStrings {
 
             HelpStrings::ConnectionsInvite => "Create a new connection invitation",
             HelpStrings::ConnectionsInviteAlias => {
-                "A name the new connection will use to identify itself"
+                "The name a new connection will use to identify itself"
             }
             HelpStrings::ConnectionsInviteAutoAccept => {
                 "Automatically accept the new connection once they accept this invitation"
@@ -58,6 +62,12 @@ impl HelpStrings {
             }
             // TODO: Find out what "toolbox" is
             HelpStrings::ConnectionsInviteToolbox => "????",
+            HelpStrings::CredentialDefinition => "Retrieve or create credential definitions",
+            HelpStrings::CredentialDefinitionId => {
+                "Specify the ID of a credential definition to retrieve"
+            }
+            HelpStrings::CredentialDefinitionCreate => "Create a new credential definition",
+            HelpStrings::CredentialDefinitionCreateSchemaId => "Specify the schema ID",
             // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
         }
     }
