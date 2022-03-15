@@ -1,10 +1,10 @@
 # Configuration file and environments
 
-Providing an endpoint and api-key with every call can be rather annoying. So in order to create a clean api we have decided to add a configuration file to the tool. The default location of the configuration file on \*NIX systems is `~/.config/aries-cli/config.ini` and on Windows `TODO`.
+Providing an agent URL and an api-key with every call can be rather annoying. So in order to create a clean api we have decided to add a configuration file to the tool. The default location of the configuration file on \*NIX systems is `~/.config/aries-cli/config.ini` and on Windows `TODO`.
 
 ## No Configuration file
 
-Without a configuration file the `--endpoint` is required and the `--api-key` is only required if the cloudagent requires this.
+Without a configuration file the `--agent-url` is required and the `--api-key` is only required if the cloudagent requires this.
 
 **example**
 
@@ -47,7 +47,7 @@ The configuration is initialized with the following structure:
 endpoint = https://agent.community.animo.id
 ```
 
-If a custom default endpoint is required the `--endpoint=https://cloudagent.example.com` can be supplied. Like so:
+If a custom default agent URL is required the `--agent-url=https://cloudagent.example.com` can be supplied. Like so:
 
 ```sh
 aries-cli config -i -e=https://cloudagent.example.com
@@ -64,7 +64,7 @@ This is the same as the two following commands:
 ```sh
 aries-cli --config=~/.config/aries-cli/config.ini invite --qr
 
-aries-cli --endpoint=https://agent.community.animo.id invite --qr
+aries-cli --agent-url=https://agent.community.animo.id invite --qr
 ```
 
 The default configuration can be expanded with your own default cloud agent and other environments.
