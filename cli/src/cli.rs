@@ -15,7 +15,7 @@ use crate::modules::{
 #[clap(arg_required_else_help = true)]
 pub struct Cli {
     #[clap(long, short='u', help = HelpStrings::AgentURL)]
-    pub endpoint: Option<String>,
+    pub agent_url: Option<String>,
 
     #[clap(long, short, help = HelpStrings::ApiKey)]
     pub api_key: Option<String>,

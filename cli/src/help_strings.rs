@@ -4,7 +4,7 @@ use std::convert::From;
 
 pub enum HelpStrings {
     Cli,
-    Endpoint,
+    AgentURL,
     ApiKey,
     Copy,
     Quiet,
@@ -23,7 +23,7 @@ impl HelpStrings {
     fn as_str(&self) -> &'static str {
         match self {
             HelpStrings::Cli => HELP_STRING_CLI,
-            HelpStrings::Endpoint => "The Aries agent endpoint requests are sent to",
+            HelpStrings::AgentURL => "The Aries agent URL that requests will be sent to",
             HelpStrings::ApiKey => "This API key will be passed to the agent.",
             HelpStrings::Copy => "Copy output to your clipboard.",
             HelpStrings::Quiet => "Suppresses most output.",
@@ -36,24 +36,24 @@ impl HelpStrings {
 }
 
 const HELP_STRING_CLI: &str = "
---- Aries cli --- 
+--- Aries cli ---
 
 To begin working with the aries-cli, run the following command:
 
     $ aries-cli configuration initialize
 
 This command will initialize the configuration file and makes sure
-that you do not have to pass the --endpoint argument with every call.
+that you do not have to pass the --agent-url argument with every call.
 
 Some example commands are the following:
 
-    $ aries-cli connections 
+    $ aries-cli connections
         - fetches all the connections (jq compatible)
     $ aries-cli connections invite -qr
         - create an invitation (as a qr code)
-    $ aries-cli features   
+    $ aries-cli features
         - Fetches all the features of the cloudagent
-    $ aries-cli schema create --name FOO -a BAR -a BAZ 
+    $ aries-cli schema create --name FOO -a BAR -a BAZ
         - Create a new schema with the name as 'FOO' and the attributes as 'BAR' and 'BAZ'
 
 -----------------
