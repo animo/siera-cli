@@ -11,6 +11,9 @@ pub enum HelpStrings {
     Verbose,
     Config,
     Environment,
+
+    /// Configuration
+    Configuration,
     ConfigurationInitialize,
     ConfigurationView,
 
@@ -75,6 +78,7 @@ impl HelpStrings {
             HelpStrings::Config => "Path to your configuration file",
             HelpStrings::Environment => "Specify your current environment",
 
+            HelpStrings::Configuration => "Initialize or view current configuration",
             HelpStrings::ConfigurationInitialize => {
                 "Initialize a new configuration file with a default environment"
             }
