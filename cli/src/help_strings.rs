@@ -26,16 +26,16 @@ impl HelpStrings {
         match self {
             HelpStrings::Cli => HELP_STRING_CLI,
             HelpStrings::AgentURL => "The Aries agent URL that requests will be sent to",
-            HelpStrings::ApiKey => "This API key will be passed to the agent.",
-            HelpStrings::Copy => "Copy output to your clipboard.",
-            HelpStrings::Quiet => "Suppresses most output.",
-            HelpStrings::Verbose => "Print debug logs.",
-            HelpStrings::Config => "Path to your configuration file.",
-            HelpStrings::Environment => "Specify your current environment.",
+            HelpStrings::ApiKey => "This API key will be passed to the agent",
+            HelpStrings::Copy => "Copy output to your clipboard",
+            HelpStrings::Quiet => "Suppresses most output",
+            HelpStrings::Verbose => "Print debug logs",
+            HelpStrings::Config => "Path to your configuration file",
+            HelpStrings::Environment => "Specify your current environment",
             HelpStrings::ConfigurationInitialize => {
-                "Initialize a new configuration file with a default environment."
+                "Initialize a new configuration file with a default environment"
             }
-            HelpStrings::ConfigurationView => "Print your current configuration file.",
+            HelpStrings::ConfigurationView => "Print your current configuration file",
             // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
         }
     }
