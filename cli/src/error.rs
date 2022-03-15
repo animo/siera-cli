@@ -25,7 +25,7 @@ impl Display for Error {
             Error::CannotReadConfigurationFile => write!(f, "Cannot not read configuration file. Try initializing first using: `aries-cli configuration initialize`."),
             Error::InvalidConfigurationPath => write!(f, "Invalid configuration path."),
             Error::InvalidEnvironment => write!(f, "Invalid environment."),
-            Error::NoAgentURLSupplied => write!(f, "No agent URL supplied. Supply an agent URL either via `--agent-url` or see `aries-cli configuration --help` to learn about environments."),
+            Error::NoAgentURLSupplied => write!(f, "No agent URL supplied. Supply an agent URL either via `--agent-url` or see `aries-cli configuration --help` to learn about setting up an environment."),
             Error::UnqualAmountKeyValue => write!(f, "Supplies keys and values are not equal in size."),
             Error::HomeNotFound => write!(f, "Unable to find home directory."),
             Error::ConfigExists => write!(f, "Configuration file already exists."),
