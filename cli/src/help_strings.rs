@@ -16,6 +16,7 @@ pub enum HelpStrings {
 
     /// Connections
     Connections,
+    ConnectionsId,
     ConnectionsInvite,
     ConnectionsInviteAutoAccept,
     ConnectionsInviteAlias,
@@ -46,6 +47,14 @@ pub enum HelpStrings {
     Message,
     MessageId,
     MessageMessage,
+
+    // Schema
+    Schema,
+    SchemaId,
+    SchemaCreate,
+    SchemaCreateName,
+    SchemaCreateVersion,
+    SchemaCreateAttributes,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -72,6 +81,7 @@ impl HelpStrings {
             HelpStrings::ConfigurationView => "Print your current configuration file",
 
             HelpStrings::Connections => "Retrieve connections or create invitations",
+            HelpStrings::ConnectionsId => "ID of connection to retrieve",
             HelpStrings::ConnectionsInvite => "Create a new connection invitation",
             HelpStrings::ConnectionsInviteAlias => {
                 "The name a new connection will use to identify itself"
@@ -105,6 +115,7 @@ impl HelpStrings {
             HelpStrings::CredentialsOfferValue => "????",
             // TODO: What dis?
             HelpStrings::CredentialsPropose => "????",
+            // TODO: What dis?
             HelpStrings::CredentialsProposeId => "????",
 
             HelpStrings::Features => "List all available features",
@@ -112,7 +123,14 @@ impl HelpStrings {
             HelpStrings::Message => "Send a secure message to an exist connection",
             HelpStrings::MessageId => "Connection ID to send the message to",
             HelpStrings::MessageMessage => "Contents of the message",
-            // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
+
+            HelpStrings::Schema => "Retrieve or create schemas",
+            HelpStrings::SchemaId => "ID of the schema to retrieve",
+            HelpStrings::SchemaCreate => "Create a new schema",
+            HelpStrings::SchemaCreateName => "Name of the schema",
+            HelpStrings::SchemaCreateVersion => "Version of of the schema, useful to be able to specify multiple versions of the same schema",
+            // TODO: What dis?
+            HelpStrings::SchemaCreateAttributes => "????",
         }
     }
 }
