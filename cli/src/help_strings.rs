@@ -11,6 +11,8 @@ pub enum HelpStrings {
     Verbose,
     Config,
     Environment,
+    ConfigurationInitialize,
+    ConfigurationView,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -30,6 +32,10 @@ impl HelpStrings {
             HelpStrings::Verbose => "Print debug logs.",
             HelpStrings::Config => "Path to your configuration file.",
             HelpStrings::Environment => "Specify your current environment.",
+            HelpStrings::ConfigurationInitialize => {
+                "Initialize a new configuration file with a default environment."
+            }
+            HelpStrings::ConfigurationView => "Print your current configuration file.",
             // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
         }
     }

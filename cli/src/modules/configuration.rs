@@ -1,5 +1,6 @@
 use crate::error;
 use crate::error::Result;
+use crate::help_strings::HelpStrings;
 use crate::utils::config::{get_config_path, Configurations};
 use clap::{Args, Subcommand};
 use colored::*;
@@ -15,7 +16,9 @@ pub struct ConfigurationOptions {
 
 #[derive(Subcommand, Debug)]
 pub enum ConfigurationSubcommands {
+    #[clap(about = HelpStrings::ConfigurationInitialize)]
     Initialize,
+    #[clap(about = HelpStrings::ConfigurationView)]
     View,
 }
 
