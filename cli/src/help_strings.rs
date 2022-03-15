@@ -13,6 +13,8 @@ pub enum HelpStrings {
     Environment,
     ConfigurationInitialize,
     ConfigurationView,
+
+    /// Connections
     Connections,
     ConnectionsInvite,
     ConnectionsInviteAutoAccept,
@@ -20,10 +22,22 @@ pub enum HelpStrings {
     ConnectionsInviteMultiUse,
     ConnectionsInviteQr,
     ConnectionsInviteToolbox,
+
+    /// Credential Definitions
     CredentialDefinition,
     CredentialDefinitionId,
     CredentialDefinitionCreate,
     CredentialDefinitionCreateSchemaId,
+
+    /// Credentials
+    Credentials,
+    CredentialsOffer,
+    CredentialsOfferCredentialDefinitionId,
+    CredentialsOfferConnectionId,
+    CredentialsOfferKey,
+    CredentialsOfferValue,
+    CredentialsPropose,
+    CredentialsProposeId,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -43,6 +57,7 @@ impl HelpStrings {
             HelpStrings::Verbose => "Print debug logs",
             HelpStrings::Config => "Path to your configuration file",
             HelpStrings::Environment => "Specify your current environment",
+
             HelpStrings::ConfigurationInitialize => {
                 "Initialize a new configuration file with a default environment"
             }
@@ -64,12 +79,29 @@ impl HelpStrings {
             }
             // TODO: Find out what "toolbox" is
             HelpStrings::ConnectionsInviteToolbox => "????",
+
             HelpStrings::CredentialDefinition => "Retrieve or create credential definitions",
             HelpStrings::CredentialDefinitionId => {
                 "Specify the ID of a credential definition to retrieve"
             }
             HelpStrings::CredentialDefinitionCreate => "Create a new credential definition",
             HelpStrings::CredentialDefinitionCreateSchemaId => "Specify the schema ID",
+
+            HelpStrings::Credentials => "Offer or propose credentials",
+            HelpStrings::CredentialsOffer => "Offer a new credential to an existing connection",
+            HelpStrings::CredentialsOfferConnectionId => {
+                "Specify the connection to offer the credential to"
+            }
+            HelpStrings::CredentialsOfferCredentialDefinitionId => {
+                "Specify the credential definition to base the credential on"
+            }
+            // TODO: What dis?
+            HelpStrings::CredentialsOfferKey => "????",
+            // TODO: What dis?
+            HelpStrings::CredentialsOfferValue => "????",
+            // TODO: What dis?
+            HelpStrings::CredentialsPropose => "????",
+            HelpStrings::CredentialsProposeId => "????",
             // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
         }
     }
