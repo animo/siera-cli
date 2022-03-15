@@ -21,10 +21,13 @@ pub async fn register() -> Result<()> {
     let cli = Cli::parse();
     let level = if cli.quiet {
         LevelFilter::Error
-    } else if cli.raw {
-        LevelFilter::Debug
     } else {
-        LevelFilter::Info
+        match cli.verbose {
+            1 => LevelFilter::Debug,
+            2 => LevelFilter::Trace,
+            2.. => LevelFilter::max(),
+            _ => LevelFilter::Info,
+        }
     };
     logger::init(level, cli.copy);
 

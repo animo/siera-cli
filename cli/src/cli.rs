@@ -23,17 +23,17 @@ pub struct Cli {
     #[clap(long, short, help = HelpStrings::Copy)]
     pub copy: bool,
 
-    #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "raw")]
+    #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "verbose")]
     pub quiet: bool,
 
     #[clap(long, short = 'o', help = HelpStrings::Config)]
     pub config: Option<PathBuf>,
 
-    #[clap(long, short = 'v', default_value = "default", help = HelpStrings::Environment)]
+    #[clap(long, short = 'e', default_value = "default", help = HelpStrings::Environment)]
     pub environment: String,
 
-    #[clap(long, short, help = HelpStrings::Verbose, conflicts_with = "quiet")]
-    pub raw: bool,
+    #[clap(long, short='v', help = HelpStrings::Verbose, parse(from_occurrences), conflicts_with = "quiet")]
+    pub verbose: usize,
 
     #[clap(subcommand)]
     pub commands: Commands,
