@@ -38,6 +38,9 @@ pub enum HelpStrings {
     CredentialsOfferValue,
     CredentialsPropose,
     CredentialsProposeId,
+
+    // Features
+    Features,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -102,6 +105,8 @@ impl HelpStrings {
             // TODO: What dis?
             HelpStrings::CredentialsPropose => "????",
             HelpStrings::CredentialsProposeId => "????",
+
+            HelpStrings::Features => "List all available features",
             // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
         }
     }
