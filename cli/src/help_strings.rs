@@ -79,9 +79,7 @@ impl HelpStrings {
             HelpStrings::ConnectionsInviteAutoAccept => {
                 "Automatically accept the new connection once they accept this invitation"
             }
-            HelpStrings::ConnectionsInviteMultiUse => {
-                "Whether this invitation can be used more than once"
-            }
+            HelpStrings::ConnectionsInviteMultiUse => "This invitation can be used more than once",
             HelpStrings::ConnectionsInviteQr => {
                 "Print a QR code, convenient for use with mobile apps"
             }
@@ -89,19 +87,17 @@ impl HelpStrings {
             HelpStrings::ConnectionsInviteToolbox => "????",
 
             HelpStrings::CredentialDefinition => "Retrieve or create credential definitions",
-            HelpStrings::CredentialDefinitionId => {
-                "Specify the ID of a credential definition to retrieve"
-            }
+            HelpStrings::CredentialDefinitionId => "ID of a credential definition to retrieve",
             HelpStrings::CredentialDefinitionCreate => "Create a new credential definition",
-            HelpStrings::CredentialDefinitionCreateSchemaId => "Specify the schema ID",
+            HelpStrings::CredentialDefinitionCreateSchemaId => "Schema ID to use in the definition",
 
             HelpStrings::Credentials => "Offer or propose credentials",
             HelpStrings::CredentialsOffer => "Offer a new credential to an existing connection",
             HelpStrings::CredentialsOfferConnectionId => {
-                "Specify the connection to offer the credential to"
+                "Existing connection ID to offer the credential to"
             }
             HelpStrings::CredentialsOfferCredentialDefinitionId => {
-                "Specify the credential definition to base the credential on"
+                "A credential definition to base the credential on"
             }
             // TODO: What dis?
             HelpStrings::CredentialsOfferKey => "????",
@@ -114,7 +110,7 @@ impl HelpStrings {
             HelpStrings::Features => "List all available features",
 
             HelpStrings::Message => "Send a secure message to an exist connection",
-            HelpStrings::MessageId => "Specify the connection ID to send the message to",
+            HelpStrings::MessageId => "Connection ID to send the message to",
             HelpStrings::MessageMessage => "Contents of the message",
             // TODO: Add docs for all subcommands, e.g., ConnectionsAll.
         }
