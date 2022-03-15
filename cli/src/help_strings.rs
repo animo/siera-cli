@@ -13,6 +13,7 @@ pub enum HelpStrings {
     Environment,
     ConfigurationInitialize,
     ConfigurationView,
+    Connections,
     ConnectionsInvite,
     ConnectionsInviteAutoAccept,
     ConnectionsInviteAlias,
@@ -47,6 +48,7 @@ impl HelpStrings {
             }
             HelpStrings::ConfigurationView => "Print your current configuration file",
 
+            HelpStrings::Connections => "Retrieve connections or create invitations",
             HelpStrings::ConnectionsInvite => "Create a new connection invitation",
             HelpStrings::ConnectionsInviteAlias => {
                 "The name a new connection will use to identify itself"

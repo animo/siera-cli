@@ -23,6 +23,7 @@ pub struct ConnectionOptions {
 }
 
 #[derive(Subcommand, Debug)]
+#[clap(about = HelpStrings::Connections)]
 pub enum ConnectionSubcommands {
     #[clap(about = HelpStrings::ConnectionsInvite)]
     Invite {
