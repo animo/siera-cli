@@ -98,8 +98,7 @@ impl HelpStrings {
             HelpStrings::ConnectionsInviteQr => {
                 "Print a QR code, convenient for use with mobile apps"
             }
-            // TODO: Find out what "toolbox" is
-            HelpStrings::ConnectionsInviteToolbox => "????",
+            HelpStrings::ConnectionsInviteToolbox => HELP_STRING_CONNECTIONS_INVITE_TOOLBOX,
 
             HelpStrings::CredentialDefinition => "Retrieve or create credential definitions",
             HelpStrings::CredentialDefinitionId => "ID of a credential definition to retrieve",
@@ -139,6 +138,12 @@ impl HelpStrings {
         }
     }
 }
+
+const HELP_STRING_CONNECTIONS_INVITE_TOOLBOX: &str = "Short-hand to create an invitation for the Aries Toolbox that sets:
+    alias=\"toolbox\"
+    multi-use=\"false\"
+    auto-accept=\"true\"
+    and gives admin rights over the invitation to the toolbox";
 
 const HELP_STRING_CLI: &str = "
 --- Aries cli ---
