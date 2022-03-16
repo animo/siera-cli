@@ -129,7 +129,7 @@ impl HelpStrings {
             HelpStrings::SchemaCreate => "Create a new schema",
             HelpStrings::SchemaCreateName => "Name of the schema",
             HelpStrings::SchemaCreateVersion => "Version of of the schema, useful to be able to specify multiple versions of the same schema",
-            HelpStrings::SchemaCreateAttributes => "Key-value pairs that describe the structure of the schema",
+            HelpStrings::SchemaCreateAttributes => "Keys that describe the structure of the schema - for example \"age\"",
         }
     }
 }
