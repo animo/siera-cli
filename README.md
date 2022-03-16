@@ -11,7 +11,7 @@ Aries CLI is the most convenient way for self-sovereign identity (SSI) developer
 Building an SSI solution requires many, _many_ interactions with an SSI agent. Each interaction, often comprised of multiple steps, must be furnished with an endpoint and associated data. The Aries CLI provides for each of these needs by giving users:
 
 * 🌐 **Environments** to easily manage configuration for multiple projects and agents
-* ⭐ **Actions** that you can perform against an agent (see our [support matrix](linky))
+* ⭐ **Actions and workflows** that you can perform against an agent (see our [support matrix](./docs/support_matrix.md))
 * 💅🏻 **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
 ## Installation
