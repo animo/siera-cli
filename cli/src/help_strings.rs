@@ -3,6 +3,7 @@ use std::convert::From;
 /// Help documentation for CLI commands.
 
 pub enum HelpStrings {
+    // Top level
     Cli,
     AgentURL,
     ApiKey,
@@ -12,12 +13,12 @@ pub enum HelpStrings {
     Config,
     Environment,
 
-    /// Configuration
+    // Configuration
     Configuration,
     ConfigurationInitialize,
     ConfigurationView,
 
-    /// Connections
+    // Connections
     Connections,
     ConnectionsId,
     ConnectionsInvite,
@@ -27,13 +28,13 @@ pub enum HelpStrings {
     ConnectionsInviteQr,
     ConnectionsInviteToolbox,
 
-    /// Credential Definitions
+    // Credential Definitions
     CredentialDefinition,
     CredentialDefinitionId,
     CredentialDefinitionCreate,
     CredentialDefinitionCreateSchemaId,
 
-    /// Credentials
+    // Credentials
     Credentials,
     CredentialsOffer,
     CredentialsOfferCredentialDefinitionId,
