@@ -14,12 +14,12 @@ pub struct ConnectionCreateInvitationResponse {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConnectionGetAllResponse {
-    pub results: Vec<ConnectionGetByIdResponse>,
+    pub results: Vec<Connection>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ConnectionGetByIdResponse {
+pub struct Connection {
     #[serde(rename = "their_role")]
     pub their_role: String,
     #[serde(rename = "created_at")]
@@ -57,13 +57,18 @@ pub trait ConnectionModule {
     async fn get_all(&self) -> Result<ConnectionGetAllResponse>;
 
     /// Get a connection by id
-    async fn get_by_id(&self, id: String) -> Result<ConnectionGetByIdResponse>;
+    async fn get_by_id(&self, id: String) -> Result<Connection>;
 
     /// Create an invitation
     async fn create_invitation(
         &self,
         options: ConnectionCreateInvitationOptions,
     ) -> Result<ConnectionCreateInvitationResponse>;
+
+    async fn receive_invitation(
+        &self,
+        invitation: ConnectionReceiveInvitationOptions,
+    ) -> Result<Connection>;
 }
 
 #[derive(Debug)]
@@ -73,4 +78,28 @@ pub struct ConnectionCreateInvitationOptions {
     pub toolbox: bool,
     pub multi_use: bool,
     pub alias: Option<String>,
+}
+
+/// Everything is optional as most fields actually any did collides with service_endpoint
+/// and routing_keys
+/// We rely on the error handling of the actual cloudagent for this check.
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+// Sadly we cannot skip serializing on the whole struct, we must specify it for each element
+pub struct ConnectionReceiveInvitationOptions {
+    #[serde(rename = "@id")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub did: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub image_url: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub recipient_keys: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub routing_keys: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub service_endpoint: Option<String>,
 }

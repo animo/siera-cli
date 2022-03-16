@@ -1,8 +1,8 @@
 use super::agent::CloudAgentPython;
 use agent::error::Result;
 use agent::modules::connections::{
-    ConnectionCreateInvitationOptions, ConnectionCreateInvitationResponse,
-    ConnectionGetAllResponse, ConnectionGetByIdResponse, ConnectionModule,
+    Connection, ConnectionCreateInvitationOptions, ConnectionCreateInvitationResponse,
+    ConnectionGetAllResponse, ConnectionModule, ConnectionReceiveInvitationOptions,
 };
 use async_trait::async_trait;
 use serde_json::json;
@@ -14,11 +14,9 @@ impl ConnectionModule for CloudAgentPython {
         self.cloud_agent.get(url, None).await
     }
 
-    async fn get_by_id(&self, id: String) -> Result<ConnectionGetByIdResponse> {
+    async fn get_by_id(&self, id: String) -> Result<Connection> {
         let url = self.cloud_agent.create_url(vec!["connections", &id])?;
-        self.cloud_agent
-            .get::<ConnectionGetByIdResponse>(url, None)
-            .await
+        self.cloud_agent.get::<Connection>(url, None).await
     }
 
     async fn create_invitation(
@@ -53,6 +51,17 @@ impl ConnectionModule for CloudAgentPython {
         }
         self.cloud_agent
             .post::<ConnectionCreateInvitationResponse>(url, Some(query), body)
+            .await
+    }
+    async fn receive_invitation(
+        &self,
+        invitation: ConnectionReceiveInvitationOptions,
+    ) -> Result<Connection> {
+        let url = self
+            .cloud_agent
+            .create_url(vec!["connections", "receive-invitation"])?;
+        self.cloud_agent
+            .post(url, None, Some(serde_json::to_value(invitation)?))
             .await
     }
 }
