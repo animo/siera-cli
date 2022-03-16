@@ -45,7 +45,7 @@ pub async fn parse_credential_definition_args(
             });
             debug!("{}", pretty_stringify_obj(cred_def));
             copy!("{}", pretty_stringify_obj(&loggable));
-            info!("{}", pretty_stringify_obj(loggable));
+            println!("{}", pretty_stringify_obj(loggable));
         });
     }
 
@@ -55,11 +55,8 @@ pub async fn parse_credential_definition_args(
                 agent.create(schema_id.to_string()).await.map(|cred_def| {
                     loader.stop();
                     copy!("{}", cred_def.credential_definition_id);
-                    info!(
-                        "{} credential definition with id: {}.",
-                        "Created".green(),
-                        cred_def.credential_definition_id
-                    )
+                    info!("{} credential definition with id: ", "Created".green());
+                    println!("{}", cred_def.credential_definition_id);
                 })
             }
         },

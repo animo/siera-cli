@@ -26,7 +26,7 @@ pub async fn register() -> Result<()> {
             1 => LevelFilter::Debug,
             2 => LevelFilter::Trace,
             2.. => LevelFilter::max(),
-            _ => LevelFilter::Info,
+            _ => LevelFilter::Error,
         }
     };
     logger::init(level, cli.copy);
