@@ -23,9 +23,13 @@ pub async fn register() -> Result<()> {
         LevelFilter::Error
     } else {
         match cli.verbose {
+            // prints for error!, info!, debug!
             1 => LevelFilter::Debug,
+            // prints for all of the above and trace!
             2 => LevelFilter::Trace,
+            // TODO: what does this print for?
             2.. => LevelFilter::max(),
+            // TODO: We might want to log an error with the verbosity levels available
             _ => LevelFilter::Info,
         }
     };

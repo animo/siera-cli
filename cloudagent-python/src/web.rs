@@ -13,10 +13,12 @@ impl CloudAgent {
         url: Url,
         query: Option<Vec<(&str, String)>>,
     ) -> Result<T> {
-        let client = match query {
+        let client = match &query {
             Some(q) => Client::new().get(url).query(&q),
             None => Client::new().get(url),
         };
+
+        trace!("Get request query:\n{:#?}", query);
 
         self.send::<T>(client).await
     }
@@ -30,10 +32,13 @@ impl CloudAgent {
     ) -> Result<T> {
         let client = Client::new().post(url).query(&query);
 
-        let client = match body {
+        let client = match &body {
             Some(b) => client.json(&b),
             None => client,
         };
+
+        trace!("Post request body:\n{:#?}", body);
+        trace!("Post request query:\n{:#?}", query);
 
         self.send::<T>(client).await
     }
