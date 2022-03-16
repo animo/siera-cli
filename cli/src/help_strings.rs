@@ -113,14 +113,10 @@ impl HelpStrings {
             HelpStrings::CredentialsOfferCredentialDefinitionId => {
                 "A credential definition to base the credential on"
             }
-            // TODO: What dis?
-            HelpStrings::CredentialsOfferKey => "????",
-            // TODO: What dis?
-            HelpStrings::CredentialsOfferValue => "????",
-            // TODO: What dis?
-            HelpStrings::CredentialsPropose => "????",
-            // TODO: What dis?
-            HelpStrings::CredentialsProposeId => "????",
+            HelpStrings::CredentialsOfferKey => "An attribute key name",
+            HelpStrings::CredentialsOfferValue => "An attribute value",
+            HelpStrings::CredentialsPropose => "Not implemented yet: propose a credential that should be offered to you",
+            HelpStrings::CredentialsProposeId => "Not implemented yet: connection ID to send proposal to",
 
             HelpStrings::Features => "List all available features",
 
@@ -133,8 +129,7 @@ impl HelpStrings {
             HelpStrings::SchemaCreate => "Create a new schema",
             HelpStrings::SchemaCreateName => "Name of the schema",
             HelpStrings::SchemaCreateVersion => "Version of of the schema, useful to be able to specify multiple versions of the same schema",
-            // TODO: What dis?
-            HelpStrings::SchemaCreateAttributes => "????",
+            HelpStrings::SchemaCreateAttributes => "Key-value pairs that describe the structure of the schema",
         }
     }
 }
