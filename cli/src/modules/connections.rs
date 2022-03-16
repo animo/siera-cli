@@ -5,6 +5,7 @@ use log::info;
 
 use crate::copy;
 use crate::error::Result;
+use crate::help_strings::HelpStrings;
 use crate::utils::logger::pretty_stringify_obj;
 use crate::utils::{
     loader::{Loader, LoaderVariant},
@@ -22,17 +23,19 @@ pub struct ConnectionOptions {
 }
 
 #[derive(Subcommand, Debug)]
+#[clap(about = HelpStrings::Connections)]
 pub enum ConnectionSubcommands {
+    #[clap(about = HelpStrings::ConnectionsInvite)]
     Invite {
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::ConnectionsInviteAutoAccept)]
         auto_accept: bool,
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::ConnectionsInviteQr)]
         qr: bool,
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::ConnectionsInviteToolbox)]
         toolbox: bool,
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::ConnectionsInviteMultiUse)]
         multi_use: bool,
-        #[clap(long, short = 'l')]
+        #[clap(long, short = 'l', help = HelpStrings::ConnectionsInviteAlias)]
         alias: Option<String>,
     },
 }

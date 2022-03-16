@@ -4,13 +4,15 @@ use colored::*;
 use log::info;
 
 use crate::error::Result;
+use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 
 #[derive(Args)]
+#[clap(about = HelpStrings::Message)]
 pub struct MessageOptions {
-    #[clap(short, long)]
+    #[clap(short, long, help=HelpStrings::MessageId)]
     id: String,
-    #[clap(short, long)]
+    #[clap(short, long, help=HelpStrings::MessageMessage)]
     message: String,
 }
 

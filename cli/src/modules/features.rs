@@ -3,12 +3,14 @@ use clap::Args;
 use log::{debug, info};
 
 use crate::error::Result;
+use crate::help_strings::HelpStrings;
 use crate::utils::{
     loader::{Loader, LoaderVariant},
     logger::pretty_stringify_obj,
 };
 
 #[derive(Args)]
+#[clap(about = HelpStrings::Features)]
 pub struct FeaturesOptions {}
 
 pub async fn parse_features_args(agent: impl FeaturesModule) -> Result<()> {
