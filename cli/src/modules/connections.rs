@@ -103,12 +103,21 @@ pub async fn parse_connection_args(
                     .map(|u| u.to_owned())
                     .collect::<Vec<String>>();
 
-                // Get the c_i string
-                let encoded_part = split_url.get(1).ok_or(Error::InvalidAgentInvitation)?;
+                // Get the query parameters
+                let query_parameters = split_url
+                    .get(1)
+                    .ok_or(Error::InvalidAgentInvitation)?
+                    .split("&")
+                    .map(|u| u.to_owned())
+                    .collect::<Vec<String>>();
+
+                let serialized_invitation = query_parameters
+                    .get(0)
+                    .ok_or(Error::InvalidAgentInvitation)?;
 
                 // Base64 decode the invitation to a Vec<u8>
-                let decoded =
-                    base64::decode(encoded_part).map_err(|_| Error::InvalidAgentInvitation)?;
+                let decoded = base64::decode(serialized_invitation)
+                    .map_err(|_| Error::InvalidAgentInvitation)?;
 
                 // Convert the vec to a valid string
                 let decoded_str = str::from_utf8(&decoded)?;

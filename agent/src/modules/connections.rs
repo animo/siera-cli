@@ -80,9 +80,8 @@ pub struct ConnectionCreateInvitationOptions {
     pub alias: Option<String>,
 }
 
-/// Everything is optional as most fields actually any did collides with service_endpoint
-/// and routing_keys
-/// We rely on the error handling of the actual cloudagent for this check.
+/// Every field is optional here as there are some collisions between, for example, did and
+/// routing_key. We rely on the cloudagent for error handling these collisions
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 // Sadly we cannot skip serializing on the whole struct, we must specify it for each element
