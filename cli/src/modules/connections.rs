@@ -1,11 +1,14 @@
-use agent::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
+use agent::modules::connections::{
+    ConnectionCreateInvitationOptions, ConnectionModule, ConnectionReceiveInvitationOptions,
+};
 use clap::{Args, Subcommand};
 use colored::*;
-use log::info;
+use log::{debug, info};
+use std::str;
 
 use crate::copy;
-use crate::error::Result;
 use crate::help_strings::HelpStrings;
+use crate::error::{Error, Result};
 use crate::utils::logger::pretty_stringify_obj;
 use crate::utils::{
     loader::{Loader, LoaderVariant},
@@ -37,6 +40,10 @@ pub enum ConnectionSubcommands {
         multi_use: bool,
         #[clap(long, short = 'l', help = HelpStrings::ConnectionsInviteAlias)]
         alias: Option<String>,
+    },
+    Receive {
+        #[clap(long, short)]
+        url: String,
     },
 }
 
@@ -81,12 +88,51 @@ pub async fn parse_connection_args(
                     );
                     if *qr {
                         info!("Scan this QR code to accept the invitation:\n");
+                        info!("{}: {}", "Connection id".green(), response.connection_id);
                         print_qr_code(response.invitation_url).unwrap();
                     } else {
                         info!("Another agent can use this URL to accept your invitation:\n");
                         info!("{}", response.invitation_url)
                     }
                 })
+            }
+            ConnectionSubcommands::Receive { url } => {
+                // Split the url
+                let split_url = url
+                    .split("c_i=")
+                    .map(|u| u.to_owned())
+                    .collect::<Vec<String>>();
+
+                // Get the query parameters
+                let query_parameters = split_url
+                    .get(1)
+                    .ok_or(Error::InvalidAgentInvitation)?
+                    .split("&")
+                    .map(|u| u.to_owned())
+                    .collect::<Vec<String>>();
+
+                let serialized_invitation = query_parameters
+                    .get(0)
+                    .ok_or(Error::InvalidAgentInvitation)?;
+
+                // Base64 decode the invitation to a Vec<u8>
+                let decoded = base64::decode(serialized_invitation)
+                    .map_err(|_| Error::InvalidAgentInvitation)?;
+
+                // Convert the vec to a valid string
+                let decoded_str = str::from_utf8(&decoded)?;
+
+                // Convert the string to an invitation object
+                let invitation: ConnectionReceiveInvitationOptions =
+                    serde_json::from_str(decoded_str)?;
+
+                agent
+                    .receive_invitation(invitation)
+                    .await
+                    .map(|connection| {
+                        debug!("{}", pretty_stringify_obj(&connection));
+                        info!("{}: {}", "Connection id".green(), connection.connection_id);
+                    })
             }
         },
         None => agent.get_all().await.map(|connections| {
