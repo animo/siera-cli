@@ -7,6 +7,7 @@ pub enum Error {
     InvalidConfigurationStructure,
     InvalidEnvironment,
     NoAgentURLSupplied,
+    InvalidAgentInvitation,
     UnqualAmountKeyValue,
     HomeNotFound,
     ConfigExists,
@@ -33,6 +34,7 @@ impl Display for Error {
             Error::_NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. Check `aries-cli {} --help for the available options.", subcommand, subcommand),
             Error::RequiredAttributes => write!(f, "Creating a schema requires at least one attribute. Please supply them via the --attributes flag."),
             Error::InvalidConfigurationStructure => write!(f, "Invalid configuration structure. Please make sure you have a valid configuration file."),
+            Error::InvalidAgentInvitation => write!(f, "The supplied agent url is incorrect. Make sure it contains the `c_i` query parameter and that the invitation part is correctly base64 encoded"),
         }
     }
 }

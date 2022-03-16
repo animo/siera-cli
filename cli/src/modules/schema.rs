@@ -5,6 +5,7 @@ use log::{debug, info};
 use crate::{
     copy,
     error::{Error, Result},
+    help_strings::HelpStrings,
     utils::logger::pretty_print_obj,
     utils::{
         loader::{Loader, LoaderVariant},
@@ -13,8 +14,9 @@ use crate::{
 };
 
 #[derive(Args)]
+#[clap(about = HelpStrings::Schema)]
 pub struct SchemaOptions {
-    #[clap(long, short)]
+    #[clap(long, short, help=HelpStrings::SchemaId)]
     pub id: Option<String>,
 
     #[clap(subcommand)]
@@ -23,12 +25,13 @@ pub struct SchemaOptions {
 
 #[derive(Subcommand, Debug)]
 pub enum SchemaSubcommands {
+    #[clap(about = HelpStrings::SchemaCreate)]
     Create {
-        #[clap(short, long)]
+        #[clap(short, long, help=HelpStrings::SchemaCreateName)]
         name: String,
-        #[clap(short, long, default_value = "1.0")]
+        #[clap(short, long, help=HelpStrings::SchemaCreateVersion, default_value = "1.0")]
         version: String,
-        #[clap(short, long)]
+        #[clap(short, long, help=HelpStrings::SchemaCreateAttributes)]
         attributes: Vec<String>,
     },
 }

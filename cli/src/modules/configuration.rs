@@ -15,6 +15,7 @@ pub struct ConfigurationOptions {
 }
 
 #[derive(Subcommand, Debug)]
+#[clap(about = HelpStrings::Configuration)]
 pub enum ConfigurationSubcommands {
     #[clap(about = HelpStrings::ConfigurationInitialize)]
     Initialize,

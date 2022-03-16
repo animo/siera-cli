@@ -20,13 +20,14 @@ use crate::utils::logger;
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();
     let level = if cli.quiet {
-        LevelFilter::Error
+        LevelFilter::Warn
     } else {
         match cli.verbose {
-            1 => LevelFilter::Debug,
-            2 => LevelFilter::Trace,
-            2.. => LevelFilter::max(),
-            _ => LevelFilter::Error,
+            1 => LevelFilter::Info,
+            2 => LevelFilter::Debug,
+            3.. => LevelFilter::Trace,
+            _ => LevelFilter::Warn,
+
         }
     };
     logger::init(level, cli.copy);

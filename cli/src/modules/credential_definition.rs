@@ -7,13 +7,15 @@ use serde_json::json;
 use crate::{
     copy,
     error::Result,
+    help_strings::HelpStrings,
     utils::loader::{Loader, LoaderVariant},
     utils::logger::pretty_stringify_obj,
 };
 
 #[derive(Args)]
+#[clap(about = "Retrieve or create credential definitions")]
 pub struct CredentialDefinitionOptions {
-    #[clap(long, short)]
+    #[clap(long, short, help = HelpStrings::CredentialDefinitionId)]
     pub id: Option<String>,
 
     #[clap(subcommand)]
@@ -22,8 +24,9 @@ pub struct CredentialDefinitionOptions {
 
 #[derive(Subcommand, Debug)]
 pub enum CredentialDefinitionSubcommands {
+    #[clap(about = HelpStrings::CredentialDefinitionCreate)]
     Create {
-        #[clap(short, long)]
+        #[clap(short, long, help = HelpStrings::CredentialDefinitionCreateSchemaId)]
         schema_id: String,
     },
 }

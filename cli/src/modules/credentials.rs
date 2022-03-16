@@ -3,6 +3,7 @@ use clap::{Args, Subcommand};
 use log::{debug, info};
 
 use crate::error::{Error, Result};
+use crate::help_strings::HelpStrings;
 use crate::utils::{
     loader::{Loader, LoaderVariant},
     logger::pretty_stringify_obj,
@@ -16,19 +17,22 @@ pub struct CredentialOptions {
 }
 
 #[derive(Subcommand, Debug)]
+#[clap(about = HelpStrings::Credentials)]
 pub enum CredentialSubcommands {
+    #[clap(about = HelpStrings::CredentialsOffer)]
     Offer {
-        #[clap(long, short = 'i')]
+        #[clap(long, short = 'i', help  = HelpStrings::CredentialsOfferConnectionId)]
         connection_id: String,
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::CredentialsOfferCredentialDefinitionId)]
         cred_def_id: String,
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::CredentialsOfferKey)]
         key: Vec<String>,
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::CredentialsOfferValue)]
         value: Vec<String>,
     },
+    #[clap(about = HelpStrings::CredentialsPropose)]
     Propose {
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::CredentialsProposeId)]
         id: String,
     },
 }
