@@ -17,8 +17,7 @@ Building an SSI solution requires many, _many_ interactions with an SSI agent. E
 ## Installation
 ### macOS
 #### Binary
-<!-- TODO: Add link -->
-[Download the binary](linky) and place it on your PATH.
+[Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH.
 
 #### Brew
 ```sh
@@ -27,8 +26,7 @@ echo "Coming soon!"
 
 ### Linux
 #### Binary
-<!-- TODO: Add link -->
-[Download the binary](linky) and place it on your PATH.
+[Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH.
 
 #### Apt-get
 ```sh
@@ -38,8 +36,7 @@ echo "Coming soon!"
 ### Windows
 
 #### Binary
-<!-- TODO: Add link -->
-[Download the binary](linky) and place it on your PATH
+[Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH
 
 #### Chocolatey
 
