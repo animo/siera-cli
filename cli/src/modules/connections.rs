@@ -78,21 +78,15 @@ pub async fn parse_connection_args(
                 };
                 agent.create_invitation(options).await.map(|response| {
                     loader.stop();
-                    info!(
-                        "{}",
-                        format!(
-                            "{} invite with connection id: {}\n",
-                            "Created".green(),
-                            response.connection_id,
-                        )
-                    );
+                    info!("{} invite with connection id: ", "Created".green());
+                    println!("{}", response.connection_id);
                     if *qr {
                         info!("Scan this QR code to accept the invitation:\n");
                         info!("{}: {}", "Connection id".green(), response.connection_id);
                         print_qr_code(response.invitation_url).unwrap();
                     } else {
                         info!("Another agent can use this URL to accept your invitation:\n");
-                        info!("{}", response.invitation_url)
+                        println!("{}", response.invitation_url)
                     }
                 })
             }
