@@ -1414,6 +1414,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "workflow"
+version = "0.1.0"
+dependencies = [
+ "agent",
+ "async-trait",
+ "cloudagent-python",
+]
+
+[[package]]
 name = "x11-clipboard"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
