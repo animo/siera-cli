@@ -81,7 +81,7 @@ community agent as your default environment, or use your own agent.
 aries-cli --copy --quiet connections invite --toolbox
 ```
 
-We wanted a quick-fire way of creating an invite to the toolbox so that we can
+With this quick-fire way of creating an invite to the [Aries toolbox](https://github.com/hyperledger/aries-toolbox) you can continue
 continue with the task at hand: testing an invitation workflow for our app. This
 command takes care of all the plumbing for us:
 
