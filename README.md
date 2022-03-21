@@ -24,7 +24,7 @@ Aries CLI is the most convenient way for self-sovereign identity (SSI) developer
 Building an SSI solution requires many, _many_ interactions with an SSI agent. Each interaction, often comprised of multiple steps, must be furnished with an endpoint and associated data. The Aries CLI makes working with verifiable credentials easy by giving users:
 
 * 🌐 **Environments** to easily manage configuration for multiple projects and agents
-* 🌟 **Actions and workflows** that you can perform against an agent (see our [support matrix](./docs/support_matrix.md))
+* 🌟 **Actions and workflows** that you can perform against an agent
 * 💅🏻 **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
 This README was set up for you to get started as fast as possible. Looking for more information about the concepts, example code and tutorials on how to use the CLI? Check out our extensive [docs](https://github.com/animo/aries-cli/pull/www.google.com).
@@ -101,15 +101,19 @@ For more options under the `connections invite` subcommand see:
 aries-cli connections invite --help
 ```
 
-### Another descriptive name for example
-
-insert details
-
 ## Contributing
 
 Is there something you'd like to fix or add to the CLI? Great! We 💗 community
 contributions. [Get involved](./docs/contributing.md).
 
-## Support matrix
+## Roadmap
 
-We intend to support every version of the Aries agent. See [this catalogue](./docs/support_matrix.md) of the features we currently support.
+<!-- TODO: Add more details about the actions and features we support -->
+We intend to support multiple versions of the Aries agent. See the CLI help `aries-cli --help` for a list of actions we currently support.
+
+Next we are looking at adding:
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| Mock data | 🚧 | Generate mock data for large data structures like schemas and credential definitions |
+| Workflows | 🚧 | Chain multiple actions together for higher-level goals like: issue a credential |
