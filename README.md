@@ -1,116 +1,119 @@
-# Aries CLI
+<p align="center">
+  <br />
+  <img
+    alt="Aries CLI logo"
+    src="https://github.com/animo/aries-cli/blob/ea9589cafa34a1375a7847995fcec2b000141b97/images/aries-cli.png"
+    height="250px"
+  />
+</p>
+<h1 align="center"><b>Aries CLI</b></h1>
+<p align="center">
+  <a href="#getting-started">Getting started</a> &nbsp;|&nbsp;
+  <a href="#common-examples">Common examples</a> &nbsp;|&nbsp;
+   <a href="#contributing">Contributing</a> &nbsp;|&nbsp;
+    <a href="#roadmap">Roadmap</a> &nbsp;|&nbsp;
+</p>
 
-> Powered by Animo Solutions
 
-## Summary
+> Powered by [Animo](https://animo.id) solutions
 
-The Aries-CLI started out as a small project to practise in Rust. It is now at a point where it can publicly be used and benefit everyone. The goal of this project was to make development easier. Think of things like filling your wallet with test credentials, creating quick invitations and sending basic messages. Many of the functionality is already supported. See [example](#examples) for some useful starter commands.
+<!-- Add badges? -->
 
-## Support
+Aries CLI is the most convenient way for self-sovereign identity (SSI) developers to interact with SSI agents.
 
-At this moment there is only support for some functionality of [**aries-cloudagent-python**](https://github.com/hyperledger/aries-cloudagent-python).
-Support for [**aries-framework-javascript**](https://github.com/hyperledger/aries-framework-javascript) will be added in the future via the [rest api](https://github.com/hyperledger/aries-framework-javascript-ext/tree/main/packages/rest).
+Building an SSI solution requires many, _many_ interactions with an SSI agent. Each interaction, often comprised of multiple steps, must be furnished with an endpoint and associated data. The Aries CLI makes working with verifiable credentials easy by giving users:
 
-## Installation
+* 🌐 **Environments** to easily manage configuration for multiple projects and agents
+* 🌟 **Actions and workflows** that you can perform against an agent
+* 💅🏻 **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
-Installig via `cargo` can be done when [rustup](https://www.rust-lang.org/tools/install) is installed.
+This README was set up for you to get started as fast as possible. Looking for more information about the concepts, example code and tutorials on how to use the CLI? Check out our extensive [docs](https://github.com/animo/aries-cli/pull/www.google.com).
 
-The tool can be downloaded within a terminal and the correct package manager or via the release section located [here](https://github.com/animo/aries-cli/releases).
+## Getting started
 
-### MacOS
+Whatever your system, we've got you covered.
+### macOS
+#### Binary
+[Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH.
 
-**Cargo**
-
-```sh
-cargo install aries-cli
-
-```
-
-**Git**
-
-```sh
-git clone https://github.com/animo/aries-cli.git
-cd aries-cli
-cargo install --path .
-```
-
-**Brew**
-
+#### Brew
 ```sh
 echo "Coming soon!"
 ```
 
 ### Linux
+#### Binary
+[Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH.
 
-**Cargo**
-
+#### Apt-get
 ```sh
-cargo install aries-cli
-
-```
-
-**Git**
-
-```sh
-git clone https://github.com/animo/aries-cli.git
-cd aries-cli
-cargo install --path .
+echo "Coming soon!"
 ```
 
 ### Windows
 
-> Has not been tested extensively
+#### Binary
+[Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH
 
-**Cargo**
+#### Chocolatey
 
-```sh
-cargo install aries-cli
-
+```powershell
+Write-Output "Coming soon!"
 ```
 
-**Git**
+### Advanced installation
+
+See [this document](./docs/advanced_installation.md) for advanced installation options.
+
+## Setting up your environment
 
 ```sh
-git clone https://github.com/animo/aries-cli.git
-cd aries-cli
-cargo install --path .
+aries-cli configuration initialize
 ```
 
-## Configuration
+We highly recommend using `environment`s to avoid the repetitive task of
+specifying agent URLs. With this CLI you can get up and running with our
+community agent as your default environment, or use your own agent.
 
-In order to easily use the aries-cli, you can setup a configuration that allows you to set some default values. the configuration can be initialized with the following command:
+## Common examples
 
-```sh
-aries-cli init
-# or
-aries-cli config --initialize
-```
-
-This will create a file at `~/.config/aries-cli/config.ini` for \*NIX systems and `TODO` for Windows. It will set a default endpoint to `https://agent.community.animo.id`.
-
-See [here](#extra-documentation) for more information.
-
-## Usage
-
-To see the complete functionality use the `--help` or `-h` flag.
-Each individual subcommand also has the `--help` flag, e.g. `aries-cli features --help`.
-
-## Examples
-
-Here are some code examples for common use cases.
+Below you will find some of the most common useful commands within the Aries CLI. To see all options, simply use the `--help` or `-h` flag.
 
 ### Creating an invitation for the toolbox
 
 ```sh
-aries-cli -c -s invite -t
+aries-cli --copy --quiet connections invite --toolbox
 ```
 
-The `-t` flag makes sure the invite has an alias as `Toolbox`, sets auto accept to `true` and adds `{ "metadata": { "group": "admin" } }` to the body
+With this quick-fire way of creating an invite to the [Aries toolbox](https://github.com/hyperledger/aries-toolbox) you can continue
+with the task at hand: testing an invitation workflow for your app. This
+command takes care of all the plumbing.
 
-The `-c` flag copies the output to your clipboard so it can easily be pasted in the toolbox
+The `--toolbox` flag makes sure the invite has an alias as Toolbox, sets auto accept to true and sets the toolbox as admin for the invite.
 
-The `-s` flag suppresses the output to stdout
+The `--copy` flag will copy the invite URL to your clipboard so it can easily be pasted in the toolbox
 
-## Extra documentation
+Optionally, add the `--quiet` flag to suppress output to stdout.
 
-1. [Configuration](./docs/configuration.md)
+For more options under the `connections invite` subcommand see:
+
+```
+aries-cli connections invite --help
+```
+
+## Contributing
+
+Is there something you'd like to fix or add to the CLI? Great! We 💗 community
+contributions. [Get involved](./docs/contributing.md).
+
+## Roadmap
+
+<!-- TODO: Add more details about the actions and features we support -->
+We intend to support multiple versions of the Aries agent. See the CLI help `aries-cli --help` for a list of actions we currently support.
+
+Next we are looking at adding:
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| Mock data | 🚧 | Generate mock data for large data structures like schemas and credential definitions |
+| Workflows | 🚧 | Chain multiple actions together for higher-level goals like: issue a credential |
