@@ -6,7 +6,7 @@ contribution in mind we encourage you to look for issues labelled with as
 
 ## Fixes
 
-If you have a fix, go straight to "Getting setup".
+If you have a fix, go straight to "Getting set up".
 
 ## Features
 
@@ -19,7 +19,7 @@ encourage you to create a new GitHub issue that documents:
 This gives your new idea the best chance to get accepted by the repository
 maintainers.
 
-## Getting setup
+## Getting set up
 
 ```
 git clone https://github.com/animo/aries-cli.git

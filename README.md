@@ -27,6 +27,8 @@ Building an SSI solution requires many, _many_ interactions with an SSI agent. E
 * 🌟 **Actions and workflows** that you can perform against an agent (see our [support matrix](./docs/support_matrix.md))
 * 💅🏻 **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
+This README was set up for you to get started as fast as possible. Looking for more information about the concepts, example code and tutorials on how to use the CLI? Check out our extensive [docs](https://github.com/animo/aries-cli/pull/www.google.com).
+
 ## Getting started
 
 Whatever your system, we've got you covered.
