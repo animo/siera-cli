@@ -61,8 +61,12 @@ pub async fn parse_credentials_args(
             };
             agent.send_offer(options).await.map(|res| {
                 loader.stop();
-                debug!("{}", pretty_stringify_obj(res));
-                info!("{} offered a credential", "Sucessefully".green());
+                debug!("{}", pretty_stringify_obj(&res));
+                info!(
+                    "{} offered a credential. Credential exchange id: ",
+                    "Sucessefully".green()
+                );
+                println!("{}", res.credential_exchange_id)
             })
         }
         CredentialSubcommands::Propose { id: _id } => todo!(),

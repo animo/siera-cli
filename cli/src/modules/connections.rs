@@ -56,7 +56,7 @@ pub async fn parse_connection_args(
         return agent.get_by_id(id.to_string()).await.map(|connections| {
             loader.stop();
             copy!("{}", pretty_stringify_obj(&connections));
-            pretty_print_obj(connections)
+            println!("{}", pretty_stringify_obj(connections));
         });
     }
 
@@ -78,21 +78,15 @@ pub async fn parse_connection_args(
                 };
                 agent.create_invitation(options).await.map(|response| {
                     loader.stop();
-                    info!(
-                        "{}",
-                        format!(
-                            "{} invite with connection id: {}\n",
-                            "Created".green(),
-                            response.connection_id,
-                        )
-                    );
+                    info!("{} invite with connection id: ", "Created".green());
+                    println!("{}", response.connection_id);
                     if *qr {
                         info!("Scan this QR code to accept the invitation:\n");
                         info!("{}: {}", "Connection id".green(), response.connection_id);
                         print_qr_code(response.invitation_url).unwrap();
                     } else {
                         info!("Another agent can use this URL to accept your invitation:\n");
-                        info!("{}", response.invitation_url)
+                        println!("{}", response.invitation_url)
                     }
                 })
             }
@@ -138,7 +132,7 @@ pub async fn parse_connection_args(
         None => agent.get_all().await.map(|connections| {
             loader.stop();
             copy!("{}", pretty_stringify_obj(&connections.results));
-            pretty_print_obj(connections.results)
+            println!("{}", pretty_stringify_obj(connections.results))
         }),
     }
 }

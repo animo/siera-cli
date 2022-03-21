@@ -21,17 +21,14 @@ use crate::utils::logger;
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();
     let level = if cli.quiet {
-        LevelFilter::Error
+        LevelFilter::Warn
     } else {
         match cli.verbose {
-            // prints for error!, info!, debug!
-            1 => LevelFilter::Debug,
-            // prints for all of the above and trace!
-            2 => LevelFilter::Trace,
-            // TODO: what does this print for?
-            3.. => LevelFilter::max(),
-            // TODO: We might want to log an error with the verbosity levels available
-            _ => LevelFilter::Info,
+            1 => LevelFilter::Info,
+            2 => LevelFilter::Debug,
+            3.. => LevelFilter::Trace,
+            _ => LevelFilter::Warn,
+
         }
     };
     logger::init(level, cli.copy);
