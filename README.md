@@ -27,7 +27,9 @@ Building an SSI solution requires many, _many_ interactions with an SSI agent. E
 * 🌟 **Actions and workflows** that you can perform against an agent (see our [support matrix](./docs/support_matrix.md))
 * 💅🏻 **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
-## Installation
+## Getting started
+
+Whatever your system, we've got you covered. 
 ### macOS
 #### Binary
 [Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH.
