@@ -29,7 +29,7 @@ Building an SSI solution requires many, _many_ interactions with an SSI agent. E
 
 ## Getting started
 
-Whatever your system, we've got you covered. 
+Whatever your system, we've got you covered.
 ### macOS
 #### Binary
 [Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH.
@@ -74,6 +74,8 @@ specifying agent URLs. With this CLI you can get up and running with our
 community agent as your default environment, or use your own agent.
 
 ## Common examples
+
+Below you will find some of the most common useful commands within the Aries CLI. To see all options, simply use the `--help` or `-h` flag.
 
 ### Creating an invitation for the toolbox
 
