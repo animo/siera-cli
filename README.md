@@ -2,7 +2,7 @@
   <br />
   <img
     alt="Aries CLI logo"
-    src="https://raw.githubusercontent.com/hyperledger/aries-framework-javascript/aa31131825e3331dc93694bc58414d955dcb1129/images/aries-logo.png"
+    src="https://github.com/animo/aries-cli/blob/ea9589cafa34a1375a7847995fcec2b000141b97/images/aries-cli.png"
     height="250px"
   />
 </p>
