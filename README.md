@@ -82,7 +82,7 @@ aries-cli --copy --quiet connections invite --toolbox
 ```
 
 With this quick-fire way of creating an invite to the [Aries toolbox](https://github.com/hyperledger/aries-toolbox) you can continue
-continue with the task at hand: testing an invitation workflow for our app. This
+with the task at hand: testing an invitation workflow for your app. This
 command takes care of all the plumbing for us:
 
 The `--toolbox` flag makes sure the invite has an alias as Toolbox, sets auto accept to true and sets the toolbox as admin for the invite.
