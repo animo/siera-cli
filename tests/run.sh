@@ -5,10 +5,6 @@ ENDPOINT=https://agent.community.animo.id
 echo "Some mock tests... Just for input/output parsing"
 echo "------------------------------------------------"
 
-base() {
-  cargo run -q -- -u=$ENDPOINT  --environment=test
-}
-
 features() {
   echo "--- Features ---"
   cargo run -q -- -u=$ENDPOINT  features &> /dev/null

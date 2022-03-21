@@ -31,7 +31,7 @@ pub struct Connection {
     #[serde(rename = "their_did")]
     pub their_did: Option<String>,
     #[serde(rename = "invitation_key")]
-    pub invitation_key: String,
+    pub invitation_key: Option<String>,
     pub state: String,
     #[serde(rename = "routing_state")]
     pub routing_state: String,
