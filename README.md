@@ -71,7 +71,7 @@ aries-cli configuration initialize
 
 We highly recommend using `environment`s to avoid the repetitive task of
 specifying agent URLs. With this CLI you can get up and running with our
-community agent as your default environment.
+community agent as your default environment, or use your own agent.
 
 ## Common examples
 
