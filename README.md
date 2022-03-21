@@ -14,7 +14,6 @@
     <a href="#roadmap">Roadmap</a> &nbsp;|&nbsp;
 </p>
 
-# Aries CLI
 
 > Powered by [Animo](https://animo.id) solutions
 
