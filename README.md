@@ -104,7 +104,7 @@ insert details
 ## Contributing
 
 Is there something you'd like to fix or add to the CLI? Great! We 💗 community
-contributions. See [this doc](./docs/contributing.md) to get started.
+contributions. [Get involved](./docs/contributing.md).
 
 ## Support matrix
 
