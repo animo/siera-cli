@@ -1,4 +1,18 @@
-# insert logo
+<p align="center">
+  <br />
+  <img
+    alt="Aries CLI logo"
+    src="https://raw.githubusercontent.com/hyperledger/aries-framework-javascript/aa31131825e3331dc93694bc58414d955dcb1129/images/aries-logo.png"
+    height="250px"
+  />
+</p>
+<h1 align="center"><b>Aries CLI</b></h1>
+<p align="center">
+  <a href="#getting-started">Getting started</a> &nbsp;|&nbsp;
+  <a href="#common-examples">Common examples</a> &nbsp;|&nbsp;
+   <a href="#contributing">Contributing</a> &nbsp;|&nbsp;
+    <a href="#roadmap">Roadmap</a> &nbsp;|&nbsp;
+</p>
 
 # Aries CLI
 
