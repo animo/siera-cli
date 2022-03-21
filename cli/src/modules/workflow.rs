@@ -1,4 +1,6 @@
-use agent::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
+use agent::modules::connections::{
+    ConnectionCreateInvitationOptions, ConnectionModule, ConnectionReceiveInvitationOptions,
+};
 use agent::modules::credential_definition::CredentialDefinitionModule;
 use agent::modules::credentials::CredentialsModule;
 use agent::modules::schema::SchemaModule;
@@ -10,6 +12,7 @@ use workflow::workflows::credential_offer::CredentialOfferWorkflow;
 
 use crate::copy;
 use crate::error::{Error, Result};
+use crate::modules::connections::invite_url_to_object;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr;
 
@@ -27,6 +30,9 @@ pub enum WorkflowSubcommands {
 
         #[clap(long, short)]
         timeout: Option<u32>,
+
+        #[clap(long = "self", short = 's')]
+        sent_to_self: bool,
     },
 }
 
@@ -40,6 +46,7 @@ pub async fn parse_workflow_args(
         WorkflowSubcommands::CredentialOffer {
             connection_id,
             timeout,
+            sent_to_self,
         } => match connection_id {
             Some(c) => credential_offer(c.to_owned(), agent).await?,
             None => {
@@ -50,13 +57,18 @@ pub async fn parse_workflow_args(
                         ..Default::default()
                     })
                     .await?;
-                qr::print_qr_code(&connection.invitation_url)?;
-                println!("Connection id: {}", connection.connection_id);
-                println!(
-                    "Use this invitation to connect with your agent.\n{}",
-                    connection.invitation_url
-                );
-                copy!("{}", connection.invitation_url);
+                if *sent_to_self {
+                    let invitation_object = invite_url_to_object(connection.invitation_url)?;
+                    agent.receive_invitation(invitation_object).await?;
+                } else {
+                    qr::print_qr_code(&connection.invitation_url)?;
+                    println!("Connection id: {}", connection.connection_id);
+                    println!(
+                        "Use this invitation to connect with your agent.\n{}",
+                        connection.invitation_url
+                    );
+                    copy!("{}", connection.invitation_url);
+                }
                 let limit = timeout.map(|t| t / 1000).unwrap_or(10);
                 debug!("Looping {} times", limit);
                 for i in 1..=limit {
