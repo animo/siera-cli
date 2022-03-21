@@ -15,7 +15,7 @@
 </p>
 
 
-> Powered by [Animo](https://animo.id) solutions
+> Powered By &nbsp; <img src="./images/animo-logo-dark-background.png#gh-dark-mode-only" height="12px"><img src="./images/animo-logo-light-background.png#gh-light-mode-only" height="12px">
 
 <!-- Add badges? -->
 
