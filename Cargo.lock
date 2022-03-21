@@ -147,6 +147,7 @@ dependencies = [
  "serde_yaml",
  "simplelog",
  "tokio",
+ "workflow",
 ]
 
 [[package]]
@@ -1411,6 +1412,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0120db82e8a1e0b9fb3345a539c478767c0048d842860994d96113d5b667bd69"
 dependencies = [
  "winapi",
+]
+
+[[package]]
+name = "workflow"
+version = "0.1.0"
+dependencies = [
+ "agent",
+ "async-trait",
+ "cloudagent-python",
+ "log",
 ]
 
 [[package]]

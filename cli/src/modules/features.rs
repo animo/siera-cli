@@ -1,6 +1,6 @@
 use agent::modules::features::FeaturesModule;
 use clap::Args;
-use log::{debug, info};
+use log::debug;
 
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
@@ -19,7 +19,7 @@ pub async fn parse_features_args(agent: impl FeaturesModule) -> Result<()> {
         loader.stop();
         debug!("{}", pretty_stringify_obj(&features));
         features.disclose.protocols.iter().for_each(|p| {
-            info!("{}", p.pid);
+            println!("{}", p.pid);
         });
     })
 }

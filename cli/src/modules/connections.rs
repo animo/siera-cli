@@ -101,7 +101,7 @@ pub async fn parse_connection_args(
                 let query_parameters = split_url
                     .get(1)
                     .ok_or(Error::InvalidAgentInvitation)?
-                    .split("&")
+                    .split('&')
                     .map(|u| u.to_owned())
                     .collect::<Vec<String>>();
 
