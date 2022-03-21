@@ -31,6 +31,7 @@ pub fn init(level: LevelFilter, should_copy: bool) {
             .set_max_level(LevelFilter::Debug)
             .add_filter_allow(String::from("aries_cli"))
             .add_filter_allow(String::from("cloudagent_"))
+            .add_filter_allow(String::from("workflow"))
             .build(),
         TerminalMode::default(),
         ColorChoice::Never,

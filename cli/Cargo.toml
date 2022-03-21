@@ -18,6 +18,7 @@ path = "src/main.rs"
 [dependencies]
 cloudagent-python = {path = "../cloudagent-python"}
 agent = {path = "../agent"}
+workflow = {path = "../workflow"}
 base64 = "0.13.0"
 clap = {version = "3.1.0", features = ["derive"]}
 clipboard = "0.5.0"

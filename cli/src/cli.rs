@@ -4,6 +4,7 @@ use clap::{Parser, Subcommand};
 
 use crate::help_strings::HelpStrings;
 
+use crate::modules::workflow::WorkflowOptions;
 use crate::modules::{
     configuration::ConfigurationOptions, connections::ConnectionOptions,
     credential_definition::CredentialDefinitionOptions, credentials::CredentialOptions,
@@ -48,4 +49,5 @@ pub enum Commands {
     Message(MessageOptions),
     Credentials(CredentialOptions),
     Configuration(ConfigurationOptions),
+    Workflow(WorkflowOptions),
 }

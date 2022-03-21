@@ -7,8 +7,8 @@ use log::{debug, info};
 use std::str;
 
 use crate::copy;
-use crate::help_strings::HelpStrings;
 use crate::error::{Error, Result};
+use crate::help_strings::HelpStrings;
 use crate::utils::logger::pretty_stringify_obj;
 use crate::utils::{
     loader::{Loader, LoaderVariant},
@@ -107,7 +107,7 @@ pub async fn parse_connection_args(
                 let query_parameters = split_url
                     .get(1)
                     .ok_or(Error::InvalidAgentInvitation)?
-                    .split("&")
+                    .split('&')
                     .map(|u| u.to_owned())
                     .collect::<Vec<String>>();
 

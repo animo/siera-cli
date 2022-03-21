@@ -147,6 +147,7 @@ dependencies = [
  "serde_yaml",
  "simplelog",
  "tokio",
+ "workflow",
 ]
 
 [[package]]
@@ -1420,6 +1421,7 @@ dependencies = [
  "agent",
  "async-trait",
  "cloudagent-python",
+ "log",
 ]
 
 [[package]]

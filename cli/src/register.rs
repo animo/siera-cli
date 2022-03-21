@@ -11,6 +11,7 @@ use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::credentials::parse_credentials_args;
 use crate::modules::message::parse_message_args;
+use crate::modules::workflow::parse_workflow_args;
 use crate::modules::{
     connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
 };
@@ -28,7 +29,7 @@ pub async fn register() -> Result<()> {
             // prints for all of the above and trace!
             2 => LevelFilter::Trace,
             // TODO: what does this print for?
-            2.. => LevelFilter::max(),
+            3.. => LevelFilter::max(),
             // TODO: We might want to log an error with the verbosity levels available
             _ => LevelFilter::Info,
         }
@@ -62,13 +63,17 @@ pub async fn register() -> Result<()> {
         Commands::Connections(options) => {
             let agent =
                 initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
-            // TODO: refactor cli.copy
             parse_connection_args(options, agent).await
         }
         Commands::Credentials(options) => {
             let agent =
                 initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
             parse_credentials_args(&options.commands, agent).await
+        }
+        Commands::Workflow(options) => {
+            let agent =
+                initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
+            parse_workflow_args(options, agent).await
         }
     }?;
 

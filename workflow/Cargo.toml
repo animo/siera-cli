@@ -6,6 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.51"
 cloudagent-python = {path = "../cloudagent-python"}
 agent = {path = "../agent"}
+async-trait = "0.1.51"
+log = "0.4.14"
