@@ -71,7 +71,7 @@ pub trait ConnectionModule {
     ) -> Result<Connection>;
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct ConnectionCreateInvitationOptions {
     pub auto_accept: bool,
     pub qr: bool,
