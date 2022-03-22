@@ -124,7 +124,8 @@ pub async fn parse_connection_args(
                     .await
                     .map(|connection| {
                         debug!("{}", pretty_stringify_obj(&connection));
-                        println!("{}: {}", "Connection id".green(), connection.connection_id);
+                        info!("{} connection id:", "Fetched".green());
+                        println!("{}", connection.connection_id);
                     })
             }
         },
