@@ -77,7 +77,7 @@ community agent as your default environment, or use your own agent.
 
 If you are getting started with the tool, we recommend enabling informational logs by
 passing the `--verbose` (or `-v`) flag to get more information about what the CLI is
-doing.
+doing. We also support stacking verbosity up to three levels for debug logs: `-vv` and `-vvv`.
 
 ## Common examples
 
