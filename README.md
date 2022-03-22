@@ -75,6 +75,10 @@ We highly recommend using `environment`s to avoid the repetitive task of
 specifying agent URLs. With this CLI you can get up and running with our
 community agent as your default environment, or use your own agent.
 
+If you are getting started with the tool, we recommend enabling informational logs by
+passing the `--verbose` (or `-v`) flag to get more information about what the CLI is
+doing.
+
 ## Common examples
 
 Below you will find some of the most common useful commands within the Aries CLI. To see all options, simply use the `--help` or `-h` flag.
@@ -82,7 +86,7 @@ Below you will find some of the most common useful commands within the Aries CLI
 ### Creating an invitation for the toolbox
 
 ```sh
-aries-cli --copy --quiet connections invite --toolbox
+aries-cli --copy --verbose connections invite --toolbox
 ```
 
 With this quick-fire way of creating an invite to the [Aries toolbox](https://github.com/hyperledger/aries-toolbox) you can continue
