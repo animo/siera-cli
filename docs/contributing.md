@@ -57,4 +57,5 @@ we have built in different log-levels:
 This means **by default** we will only log command output, warnings and errors.
 
 **Note**: for command output, we use `println!` to ensure that the result of a command
-returned on stdout. This implies output printed via `println!` should be machine readable.
+returned on stdout. This implies output printed via `println!` should be machine readable a
+few exceptions.
