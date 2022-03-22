@@ -51,10 +51,6 @@ pub fn pretty_stringify_obj(obj: impl Serialize) -> String {
     String::from_utf8(ser.into_inner()).unwrap()
 }
 
-pub fn pretty_print_obj(obj: impl Serialize) {
-    info!("{}", pretty_stringify_obj(obj));
-}
-
 pub fn copy_to_clipboard(string: impl AsRef<str>) {
     let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
     ctx.set_contents(string.as_ref().to_string()).unwrap();

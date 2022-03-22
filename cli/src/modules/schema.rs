@@ -7,7 +7,6 @@ use crate::{
     copy,
     error::{Error, Result},
     help_strings::HelpStrings,
-    utils::logger::pretty_print_obj,
     utils::{
         loader::{Loader, LoaderVariant},
         logger::pretty_stringify_obj,

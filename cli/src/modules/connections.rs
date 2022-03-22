@@ -12,7 +12,6 @@ use crate::help_strings::HelpStrings;
 use crate::utils::logger::pretty_stringify_obj;
 use crate::utils::{
     loader::{Loader, LoaderVariant},
-    logger::pretty_print_obj,
     qr::print_qr_code,
 };
 
