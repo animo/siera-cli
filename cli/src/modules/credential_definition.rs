@@ -68,7 +68,11 @@ pub async fn parse_credential_definition_args(
             cred_defs
                 .credential_definition_ids
                 .iter()
-                .for_each(|x| info!("{}", x))
+                .for_each(|x| println!("{}", x));
+            info!(
+                "{} fetched credential definition IDs",
+                "Sucessfully".green()
+            );
         }),
     }
 }

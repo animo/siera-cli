@@ -5,6 +5,7 @@ use agent::modules::{
     credentials::{CredentialsModule, CredentialsOfferOptions},
     schema::{SchemaCreateOptions, SchemaModule},
 };
+use colored::*;
 use log::trace;
 use std::collections::HashMap;
 
@@ -28,14 +29,14 @@ impl CredentialOfferWorkflow {
             self.attributes.values().map(|e| e.to_owned()).collect();
 
         // Check if it as a valid connection
-        println!("Fetching the connection...");
+        println!("{} the connection...", "Fetching".cyan());
         let connection = ConnectionModule::get_by_id(&agent, self.connection_id.to_owned()).await?;
         if connection.state != "active" {
             return Err(Error::ConnectionNotReady.into());
         }
 
         // Create or fetch the schema
-        println!("Registering the schema...");
+        println!("{} the schema...", "Registering".cyan());
         let schema = SchemaModule::create(
             &agent,
             SchemaCreateOptions {
@@ -46,12 +47,12 @@ impl CredentialOfferWorkflow {
         )
         .await?;
 
-        println!("Registering the credential definition...");
+        println!("{} the credential definition...", "Registering".cyan());
         // Create or fetch the credential definition
         let credential_definition =
             CredentialDefinitionModule::create(&agent, schema.schema_id).await?;
 
-        println!("Offering the credential...");
+        println!("{} the credential...", "Offering".cyan());
         let credential_offer_response = agent
             .send_offer(CredentialsOfferOptions {
                 keys: attribute_keys,

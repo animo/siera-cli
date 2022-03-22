@@ -12,7 +12,6 @@ use crate::help_strings::HelpStrings;
 use crate::utils::logger::pretty_stringify_obj;
 use crate::utils::{
     loader::{Loader, LoaderVariant},
-    logger::pretty_print_obj,
     qr::print_qr_code,
 };
 
@@ -82,7 +81,7 @@ pub async fn parse_connection_args(
                     println!("{}", response.connection_id);
                     if *qr {
                         info!("Scan this QR code to accept the invitation:\n");
-                        info!("{}: {}", "Connection id".green(), response.connection_id);
+                        println!("{}: {}", "Connection id".green(), response.connection_id);
                         print_qr_code(response.invitation_url).unwrap();
                     } else {
                         info!("Another agent can use this URL to accept your invitation:\n");
@@ -125,7 +124,8 @@ pub async fn parse_connection_args(
                     .await
                     .map(|connection| {
                         debug!("{}", pretty_stringify_obj(&connection));
-                        info!("{}: {}", "Connection id".green(), connection.connection_id);
+                        info!("{} connection id:", "Fetched".green());
+                        println!("{}", connection.connection_id);
                     })
             }
         },

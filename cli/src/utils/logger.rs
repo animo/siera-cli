@@ -1,5 +1,5 @@
 use clipboard::{ClipboardContext, ClipboardProvider};
-use log::{info, LevelFilter};
+use log::LevelFilter;
 use serde::Serialize;
 use simplelog::{ColorChoice, ConfigBuilder, TermLogger, TerminalMode};
 
@@ -49,10 +49,6 @@ pub fn pretty_stringify_obj(obj: impl Serialize) -> String {
     obj.serialize(&mut ser).unwrap();
 
     String::from_utf8(ser.into_inner()).unwrap()
-}
-
-pub fn pretty_print_obj(obj: impl Serialize) {
-    info!("{}", pretty_stringify_obj(obj));
 }
 
 pub fn copy_to_clipboard(string: impl AsRef<str>) {

@@ -40,3 +40,22 @@ encourage you to take a look at [Rust's guide](https://doc.rust-lang.org/book/ch
 to provide support for writing tests on the PR.
 
 Currently a simple suite of tests can be executed by running `./tests/run.sh`.
+
+
+### Using log levels
+
+We believe that good logging makes for a good CLI user experience but we also believe
+a productivity focussed tool should not flood the terminal with logging. That is why
+we have built in different log-levels:
+
+| CLI flags | Rust logger | Description |
+| --------- | ----------- | ----------- |
+| `--verbose` or `-v` | `info!` | up to **informational**-level logging |
+| `--verbose --verbose` or `-vv` | `debug!` | up to **debug**-level logging |
+| `--verbose --verbose --verbose` or `-vvv` | `trace!` | up to **trace**-level logging |
+
+This means **by default** we will only log command output, warnings and errors.
+
+**Note**: for command output, we use `println!` to ensure that the result of a command
+returned on stdout. This implies output printed via `println!` should be machine readable a
+few exceptions.
