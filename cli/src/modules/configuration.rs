@@ -28,7 +28,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
     match options.commands {
         ConfigurationSubcommands::Initialize => {
             initialize(&config_path)?;
-            info!(
+            println!(
                 "{} configuration file at {}.",
                 "Initialised".cyan(),
                 config_path.display()
