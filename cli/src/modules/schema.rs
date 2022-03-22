@@ -70,8 +70,8 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
         },
         None => agent.get_all().await.map(|schemas| {
             loader.stop();
-            info!("{} schema IDs:", "Fetched".green());
-            schemas.schema_ids.iter().for_each(|x| println!("{}", x))
+            schemas.schema_ids.iter().for_each(|x| println!("{}", x));
+            info!("{} fetched schema IDs", "Successfully".green());
         }),
     }
 }
