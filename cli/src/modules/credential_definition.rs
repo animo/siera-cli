@@ -65,10 +65,11 @@ pub async fn parse_credential_definition_args(
         },
         None => agent.get_all().await.map(|cred_defs| {
             loader.stop();
+            info!("{} credential definition IDs:", "Fetched".green());
             cred_defs
                 .credential_definition_ids
                 .iter()
-                .for_each(|x| info!("{}", x))
+                .for_each(|x| println!("{}", x))
         }),
     }
 }
