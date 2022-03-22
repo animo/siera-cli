@@ -1,5 +1,6 @@
 use agent::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
+use colored::*;
 use log::{debug, info};
 
 use crate::{
@@ -70,7 +71,8 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
         },
         None => agent.get_all().await.map(|schemas| {
             loader.stop();
-            schemas.schema_ids.iter().for_each(|x| info!("{}", x))
+            info!("{} schema IDs:", "Fetched".green());
+            schemas.schema_ids.iter().for_each(|x| println!("{}", x))
         }),
     }
 }
