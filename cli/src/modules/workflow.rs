@@ -76,7 +76,7 @@ pub async fn parse_workflow_args(
                         ConnectionModule::get_by_id(&agent, connection.connection_id.to_owned())
                             .await?;
                     if connection.state != "active" && connection.state != "response" {
-                        trace!("Connection state is not active");
+                        trace!("Connection state is not active, waiting 1 second then trying again...");
                         std::thread::sleep(std::time::Duration::from_millis(1000));
                     } else {
                         println!("Invitation {}!", "accepted".green());
