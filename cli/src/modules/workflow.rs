@@ -1,6 +1,10 @@
-use agent::modules::connections::{
-    ConnectionCreateInvitationOptions, ConnectionModule, ConnectionReceiveInvitationOptions,
-};
+use crate::copy;
+use crate::error::{Error, Result};
+use crate::help_strings::HelpStrings;
+use crate::modules::connections::invite_url_to_object;
+use crate::utils::loader::{Loader, LoaderVariant};
+use crate::utils::qr;
+use agent::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
 use agent::modules::credential_definition::CredentialDefinitionModule;
 use agent::modules::credentials::CredentialsModule;
 use agent::modules::schema::SchemaModule;
@@ -10,13 +14,8 @@ use log::{debug, trace};
 use std::collections::HashMap;
 use workflow::workflows::credential_offer::CredentialOfferWorkflow;
 
-use crate::copy;
-use crate::error::{Error, Result};
-use crate::modules::connections::invite_url_to_object;
-use crate::utils::loader::{Loader, LoaderVariant};
-use crate::utils::qr;
-
 #[derive(Args)]
+#[clap(about = HelpStrings::Workflow)]
 pub struct WorkflowOptions {
     #[clap(subcommand)]
     pub commands: WorkflowSubcommands,
@@ -24,6 +23,7 @@ pub struct WorkflowOptions {
 
 #[derive(Subcommand, Debug)]
 pub enum WorkflowSubcommands {
+    #[clap(about = HelpStrings::WorkflowCredentialOffer )]
     CredentialOffer {
         #[clap(long, short)]
         connection_id: Option<String>,
@@ -86,7 +86,9 @@ pub async fn parse_workflow_args(
                         ConnectionModule::get_by_id(&agent, connection.connection_id.to_owned())
                             .await?;
                     if connection.state != "active" && connection.state != "response" {
-                        trace!("Connection state is not active, waiting 1 second then trying again...");
+                        trace!(
+                            "Connection state is not active, waiting 1 second then trying again..."
+                        );
                         std::thread::sleep(std::time::Duration::from_millis(1000));
                     } else {
                         println!("Invitation {}!", "accepted".green());
@@ -101,7 +103,10 @@ pub async fn parse_workflow_args(
         },
     };
     println!("{} executed workflow", "Successfully".green());
-    println!("{}: It might take a few seconds for the credential to arrive", "Note".cyan());
+    println!(
+        "{}: It might take a few seconds for the credential to arrive",
+        "Note".cyan()
+    );
     loader.stop();
     Ok(())
 }
