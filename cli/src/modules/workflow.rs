@@ -77,7 +77,7 @@ pub async fn parse_workflow_args(
                     );
                     println!();
                     println!(
-                        "{} the QR to accept the invitation or use this URL:\n\n{}",
+                        "{} the QR code to accept the invitation or use this URL:\n\n{}",
                         "Scan".bold(),
                         connection.invitation_url
                     );
