@@ -91,7 +91,7 @@ pub async fn parse_workflow_args(
         },
     };
     println!("{} executed workflow", "Successfully".green());
-    println!("Depending on the wallet and agent it might take a few seconds for the credential to arrive");
+    println!("{}: It might take a few seconds for the credential to arrive", "Note".cyan());
     loader.stop();
     Ok(())
 }
