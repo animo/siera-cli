@@ -79,7 +79,7 @@ pub async fn parse_workflow_args(
                         trace!("Connection state is not active");
                         std::thread::sleep(std::time::Duration::from_millis(1000));
                     } else {
-                        trace!("Connection state is active, continuing the flow");
+                        println!("Invitation {}!", "accepted".green());
                         credential_offer(connection.connection_id, agent).await?;
                         break;
                     }
