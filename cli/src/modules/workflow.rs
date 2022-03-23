@@ -86,10 +86,10 @@ pub async fn parse_workflow_args(
                         ConnectionModule::get_by_id(&agent, connection.connection_id.to_owned())
                             .await?;
                     if connection.state != "active" && connection.state != "response" {
-                        trace!("Connection state is not active");
+                        trace!("Connection state is not active, waiting 1 second then trying again...");
                         std::thread::sleep(std::time::Duration::from_millis(1000));
                     } else {
-                        trace!("Connection state is active, continuing the flow");
+                        println!("Invitation {}!", "accepted".green());
                         credential_offer(connection.connection_id, agent).await?;
                         break;
                     }
@@ -101,7 +101,7 @@ pub async fn parse_workflow_args(
         },
     };
     println!("{} executed workflow", "Successfully".green());
-    println!("Depending on the wallet and agent it might take a few seconds for the credential to arrive");
+    println!("{}: It might take a few seconds for the credential to arrive", "Note".cyan());
     loader.stop();
     Ok(())
 }
