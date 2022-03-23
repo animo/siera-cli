@@ -57,19 +57,29 @@ pub async fn parse_workflow_args(
                         ..Default::default()
                     })
                     .await?;
+                let limit = timeout.map(|t| t / 1000).unwrap_or(60);
                 if *sent_to_self {
                     let invitation_object = invite_url_to_object(connection.invitation_url)?;
                     agent.receive_invitation(invitation_object).await?;
                 } else {
                     qr::print_qr_code(&connection.invitation_url)?;
-                    println!("Connection id: {}", connection.connection_id);
                     println!(
-                        "Use this invitation to connect with your agent.\n{}",
+                        "{} invitation to connect with. Connection id {}",
+                        "Created".green(),
+                        connection.connection_id.bold()
+                    );
+                    println!(
+                        "{} rhe QR code above to accept the invitation or use this URL:\n{}",
+                        "Scan".bold(),
                         connection.invitation_url
+                    );
+                    println!(
+                        "{} for the invitation to be accepted. Timeout is {} seconds",
+                        "Waiting".cyan(),
+                        limit
                     );
                     copy!("{}", connection.invitation_url);
                 }
-                let limit = timeout.map(|t| t / 1000).unwrap_or(10);
                 debug!("Looping {} times", limit);
                 for i in 1..=limit {
                     let connection =
@@ -115,10 +125,10 @@ async fn credential_offer(
     attributes.insert(String::from("Valid Until"), String::from("20251212"));
     debug!("Mock credential:\n{:#?}", attributes);
 
-    let options = CredentialOfferWorkflow {
+    let workflow = CredentialOfferWorkflow {
         connection_id,
         attributes,
     };
 
-    options.execute(agent).await
+    workflow.execute(agent).await
 }
