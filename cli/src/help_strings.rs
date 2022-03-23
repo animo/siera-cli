@@ -59,6 +59,10 @@ pub enum HelpStrings {
     SchemaCreateName,
     SchemaCreateVersion,
     SchemaCreateAttributes,
+
+    // Workflow
+    Workflow,
+    WorkflowCredentialOffer,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -130,11 +134,15 @@ impl HelpStrings {
             HelpStrings::SchemaCreateName => "Name of the schema",
             HelpStrings::SchemaCreateVersion => "Version of of the schema, useful to be able to specify multiple versions of the same schema",
             HelpStrings::SchemaCreateAttributes => "Keys that describe the structure of the schema - for example \"age\"",
+
+            HelpStrings::Workflow => "Automated actions that combine multiple functions",
+            HelpStrings::WorkflowCredentialOffer => "Simple credential offer workflow to offer a premade credential to any agent",
         }
     }
 }
 
-const HELP_STRING_CONNECTIONS_INVITE_TOOLBOX: &str = "Short-hand to create an invitation for the Aries Toolbox that sets:
+const HELP_STRING_CONNECTIONS_INVITE_TOOLBOX: &str =
+    "Short-hand to create an invitation for the Aries Toolbox that sets:
     alias=\"toolbox\"
     multi-use=\"false\"
     auto-accept=\"true\"

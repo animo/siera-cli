@@ -90,35 +90,7 @@ pub async fn parse_connection_args(
                 })
             }
             ConnectionSubcommands::Receive { url } => {
-                // Split the url
-                let split_url = url
-                    .split("c_i=")
-                    .map(|u| u.to_owned())
-                    .collect::<Vec<String>>();
-
-                // Get the query parameters
-                let query_parameters = split_url
-                    .get(1)
-                    .ok_or(Error::InvalidAgentInvitation)?
-                    .split('&')
-                    .map(|u| u.to_owned())
-                    .collect::<Vec<String>>();
-
-                let serialized_invitation = query_parameters
-                    .get(0)
-                    .ok_or(Error::InvalidAgentInvitation)?;
-
-                // Base64 decode the invitation to a Vec<u8>
-                let decoded = base64::decode(serialized_invitation)
-                    .map_err(|_| Error::InvalidAgentInvitation)?;
-
-                // Convert the vec to a valid string
-                let decoded_str = str::from_utf8(&decoded)?;
-
-                // Convert the string to an invitation object
-                let invitation: ConnectionReceiveInvitationOptions =
-                    serde_json::from_str(decoded_str)?;
-
+                let invitation = invite_url_to_object(url.to_owned())?;
                 agent
                     .receive_invitation(invitation)
                     .await
@@ -135,4 +107,34 @@ pub async fn parse_connection_args(
             println!("{}", pretty_stringify_obj(connections.results))
         }),
     }
+}
+
+pub fn invite_url_to_object(url: String) -> Result<ConnectionReceiveInvitationOptions> {
+    // Split the url
+    let split_url = url
+        .split("c_i=")
+        .map(|u| u.to_owned())
+        .collect::<Vec<String>>();
+
+    // Get the query parameters
+    let query_parameters = split_url
+        .get(1)
+        .ok_or(Error::InvalidAgentInvitation)?
+        .split('&')
+        .map(|u| u.to_owned())
+        .collect::<Vec<String>>();
+
+    let serialized_invitation = query_parameters
+        .get(0)
+        .ok_or(Error::InvalidAgentInvitation)?;
+
+    // Base64 decode the invitation to a Vec<u8>
+    let decoded =
+        base64::decode(serialized_invitation).map_err(|_| Error::InvalidAgentInvitation)?;
+
+    // Convert the vec to a valid string
+    let decoded_str = str::from_utf8(&decoded)?;
+
+    // Convert the string to an invitation object
+    serde_json::from_str(decoded_str).map_err(|e| e.into())
 }

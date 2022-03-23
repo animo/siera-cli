@@ -31,7 +31,7 @@ impl CredentialOfferWorkflow {
         // Check if it as a valid connection
         println!("{} the connection...", "Fetching".cyan());
         let connection = ConnectionModule::get_by_id(&agent, self.connection_id.to_owned()).await?;
-        if connection.state != "active" {
+        if connection.state != "active" && connection.state != "response" {
             return Err(Error::ConnectionNotReady.into());
         }
 

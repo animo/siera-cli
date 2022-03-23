@@ -6,6 +6,7 @@ pub enum Error {
     InvalidConfigurationPath,
     InvalidConfigurationStructure,
     InvalidEnvironment,
+    InactiveConnection,
     NoAgentURLSupplied,
     InvalidAgentInvitation,
     UnqualAmountKeyValue,
@@ -35,6 +36,7 @@ impl Display for Error {
             Error::RequiredAttributes => write!(f, "Creating a schema requires at least one attribute. Please supply them via the --attributes flag."),
             Error::InvalidConfigurationStructure => write!(f, "Invalid configuration structure. Please make sure you have a valid configuration file."),
             Error::InvalidAgentInvitation => write!(f, "The supplied agent url is incorrect. Make sure it contains the `c_i` query parameter and that the invitation part is correctly base64 encoded"),
+            Error::InactiveConnection => write!(f, "The connection was not activated within the specified time. Please try again with a higher --timeout."),
         }
     }
 }
