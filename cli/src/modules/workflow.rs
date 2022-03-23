@@ -63,18 +63,28 @@ pub async fn parse_workflow_args(
                     agent.receive_invitation(invitation_object).await?;
                 } else {
                     qr::print_qr_code(&connection.invitation_url)?;
+                    println!();
+                    println!();
+                    println!("================");
+                    println!("{}", "Credential offer".bold());
+                    println!("================");
+                    println!();
+
                     println!(
-                        "{} invitation to connect with. Connection id {}",
+                        "{} invitation with connection id {}.",
                         "Created".green(),
                         connection.connection_id.bold()
                     );
+                    println!();
                     println!(
-                        "{} rhe QR code above to accept the invitation or use this URL:\n{}",
+                        "{} the QR to accept the invitation or use this URL:\n\n{}",
                         "Scan".bold(),
                         connection.invitation_url
                     );
+                    println!();
+                    println!();
                     println!(
-                        "{} for the invitation to be accepted. Timeout is {} seconds",
+                        "{} for the invitation to be accepted. Timeout is {} seconds...",
                         "Waiting".cyan(),
                         limit
                     );
