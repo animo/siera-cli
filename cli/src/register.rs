@@ -28,7 +28,6 @@ pub async fn register() -> Result<()> {
             2 => LevelFilter::Debug,
             3.. => LevelFilter::Trace,
             _ => LevelFilter::Warn,
-
         }
     };
     logger::init(level, cli.copy);
@@ -38,38 +37,73 @@ pub async fn register() -> Result<()> {
     match &cli.commands {
         Commands::Configuration(options) => parse_configuration_args(options).await,
         Commands::Schemas(options) => {
-            let agent =
-                initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
+            let agent = initialize_agent_from_cli(
+                cli.config,
+                cli.environment,
+                cli.agent_url,
+                cli.api_key,
+                cli.token,
+            )?;
             parse_schema_args(options, agent).await
         }
         Commands::Features(_) => {
-            let agent =
-                initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
+            let agent = initialize_agent_from_cli(
+                cli.config,
+                cli.environment,
+                cli.agent_url,
+                cli.api_key,
+                cli.token,
+            )?;
             parse_features_args(agent).await
         }
         Commands::Message(options) => {
-            let agent =
-                initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
+            let agent = initialize_agent_from_cli(
+                cli.config,
+                cli.environment,
+                cli.agent_url,
+                cli.api_key,
+                cli.token,
+            )?;
             parse_message_args(options, agent).await
         }
         Commands::CredentialDefinitions(options) => {
-            let agent =
-                initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
+            let agent = initialize_agent_from_cli(
+                cli.config,
+                cli.environment,
+                cli.agent_url,
+                cli.api_key,
+                cli.token,
+            )?;
             parse_credential_definition_args(options, agent).await
         }
         Commands::Connections(options) => {
-            let agent =
-                initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
+            let agent = initialize_agent_from_cli(
+                cli.config,
+                cli.environment,
+                cli.agent_url,
+                cli.api_key,
+                cli.token,
+            )?;
             parse_connection_args(options, agent).await
         }
         Commands::Credentials(options) => {
-            let agent =
-                initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
+            let agent = initialize_agent_from_cli(
+                cli.config,
+                cli.environment,
+                cli.agent_url,
+                cli.api_key,
+                cli.token,
+            )?;
             parse_credentials_args(&options.commands, agent).await
         }
         Commands::Workflow(options) => {
-            let agent =
-                initialize_agent_from_cli(cli.config, cli.environment, cli.agent_url, cli.api_key)?;
+            let agent = initialize_agent_from_cli(
+                cli.config,
+                cli.environment,
+                cli.agent_url,
+                cli.api_key,
+                cli.token,
+            )?;
             parse_workflow_args(options, agent).await
         }
     }?;
@@ -83,6 +117,7 @@ fn initialize_agent_from_cli(
     environment: String,
     agent_url: Option<String>,
     api_key: Option<String>,
+    auth_token: Option<String>,
 ) -> Result<CloudAgentPython> {
     let config_path = match config {
         Some(c) => Some(c),
@@ -101,7 +136,7 @@ fn initialize_agent_from_cli(
         }
     };
 
-    let (agent_url, api_key) = match config_path {
+    let (agent_url, api_key, auth_token) = match config_path {
         Some(cp) => {
             let configurations = get_config_from_path(cp)?;
             let configuration = configurations
@@ -110,14 +145,15 @@ fn initialize_agent_from_cli(
                 .ok_or(Error::InvalidEnvironment)?;
             let agent_url = agent_url.unwrap_or_else(|| configuration.1.endpoint.to_owned());
             let api_key = api_key.or_else(|| configuration.1.api_key.to_owned());
-            (agent_url, api_key)
+            let auth_token = auth_token.or_else(|| configuration.1.auth_token.to_owned());
+            (agent_url, api_key, auth_token)
         }
         None => {
             let agent_url = agent_url.ok_or(Error::NoAgentURLSupplied)?;
-            (agent_url, api_key)
+            (agent_url, api_key, auth_token)
         }
     };
 
     let version = CloudAgentPythonVersion::ZeroSixZero;
-    CloudAgentPython::new(agent_url, api_key, version)
+    CloudAgentPython::new(agent_url, api_key, auth_token, version)
 }

@@ -50,6 +50,11 @@ impl CloudAgent {
             None => client,
         };
 
+        let client = match &self.auth_token {
+            Some(t) => client.header("Authorization", format!("Bearer {}", t)),
+            None => client,
+        };
+
         trace!("About to send request:\n{:#?}", client);
         match client.send().await {
             Ok(res) => {

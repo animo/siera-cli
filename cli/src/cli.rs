@@ -21,6 +21,9 @@ pub struct Cli {
     #[clap(long, short, help = HelpStrings::ApiKey)]
     pub api_key: Option<String>,
 
+    #[clap(long, short = 't', help = HelpStrings::ConfigurationInitializeToken)]
+    pub token: Option<String>,
+
     #[clap(long, short, help = HelpStrings::Copy)]
     pub copy: bool,
 

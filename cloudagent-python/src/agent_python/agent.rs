@@ -22,12 +22,14 @@ impl CloudAgentPython {
     pub fn new(
         endpoint: impl AsRef<str>,
         api_key: Option<impl AsRef<str>>,
+        auth_token: Option<String>,
         version: CloudAgentPythonVersion,
     ) -> Result<Self> {
         let agent = CloudAgentPython {
             cloud_agent: CloudAgent {
                 endpoint: endpoint.as_ref().to_string(),
                 api_key: api_key.map(|a| a.as_ref().to_string()),
+                auth_token,
             },
             version,
         };
