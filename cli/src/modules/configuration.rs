@@ -4,7 +4,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::config::{get_config_path, Configurations};
 use clap::{Args, Subcommand};
 use colored::*;
-use log::{debug, info};
+use log::{debug, info, trace};
 use std::fs;
 use std::path::Path;
 
@@ -18,16 +18,19 @@ pub struct ConfigurationOptions {
 #[clap(about = HelpStrings::Configuration)]
 pub enum ConfigurationSubcommands {
     #[clap(about = HelpStrings::ConfigurationInitialize)]
-    Initialize,
+    Initialize {
+        #[clap(short, long, help= HelpStrings::ConfigurationInitializeToken)]
+        token: Option<String>,
+    },
     #[clap(about = HelpStrings::ConfigurationView)]
     View,
 }
 
 pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
     let config_path = get_config_path()?;
-    match options.commands {
-        ConfigurationSubcommands::Initialize => {
-            initialize(&config_path)?;
+    match &options.commands {
+        ConfigurationSubcommands::Initialize { token } => {
+            initialize(&config_path, token.to_owned())?;
             println!(
                 "{} configuration file at {}.",
                 "Initialised".cyan(),
@@ -55,7 +58,7 @@ fn view(path: &Path) -> Result<()> {
     Ok(())
 }
 
-fn initialize(path: &Path) -> Result<()> {
+fn initialize(path: &Path, token: Option<String>) -> Result<()> {
     // Check if the path exists and stop so we do not override the existing configuration file
     if path.exists() {
         return Err(error::Error::ConfigExists.into());
@@ -70,8 +73,13 @@ fn initialize(path: &Path) -> Result<()> {
     // Create the configuration file
     fs::File::create(&path)?;
 
+    // Content
+    let content = serde_yaml::to_string(&Configurations::init(token))?;
+
+    trace!("{} {:#?} to {:#?}", "Writing".cyan(), content, path);
+
     // Write the default configuration to the file
-    fs::write(path, serde_yaml::to_string(&Configurations::default())?)?;
+    fs::write(path, content)?;
 
     Ok(())
 }

@@ -18,7 +18,7 @@ pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            Error::AuthorizationFailed => write!(f, "Failed to authorize. Either the wrong or no api-key is provided."),
+            Error::AuthorizationFailed => write!(f, "Failed to authorize. Api-key or authorization token is either wrong or missing."),
             Error::UnableToParseResponse => write!(f, "Unable to parse the response from the server. Is the cloudagent the correct version?"),
             Error::UrlDoesNotExist => write!(f, "Path does not exist on agent URL. This can happen when querying by id and the id is not valid."),
             Error::UnknownResponseStatusCode(msg) => write!(f, "Received unknown status code from the server. Agent URL is likely incorrect. If the agent URL is correct, please report this error at https://github.com/animo/aries-cli/issues/new \nAdditional info: {}", msg),

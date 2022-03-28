@@ -8,13 +8,15 @@ use serde::{Deserialize, Serialize};
 pub struct Configuration {
     pub endpoint: String,
     pub api_key: Option<String>,
+    pub auth_token: Option<String>,
 }
 
-impl Default for Configuration {
-    fn default() -> Self {
+impl Configuration {
+    fn init(token: Option<String>) -> Self {
         Self {
-            endpoint: String::from("https://agent.community.animo.id"),
+            endpoint: String::from("https://agent.ssi.community"),
             api_key: None,
+            auth_token: token,
         }
     }
 }
@@ -24,10 +26,10 @@ pub struct Configurations {
     pub configurations: BTreeMap<String, Configuration>,
 }
 
-impl Default for Configurations {
-    fn default() -> Self {
+impl Configurations {
+    pub fn init(token: Option<String>) -> Self {
         let mut configurations = BTreeMap::<String, Configuration>::new();
-        configurations.insert(String::from("default"), Configuration::default());
+        configurations.insert(String::from("default"), Configuration::init(token));
         Self { configurations }
     }
 }
