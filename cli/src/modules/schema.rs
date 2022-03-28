@@ -63,8 +63,18 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
                 }
                 agent.create(options).await.map(|schema| {
                     debug!("{}", pretty_stringify_obj(&schema));
-                    copy!("{}", schema.schema_id);
+                    info!(
+                        "{} schema with the following attributes: ",
+                        "Created".green(),
+                    );
+                    schema
+                        .schema
+                        .attr_names
+                        .into_iter()
+                        .for_each(|name| info!("- {}", name));
+                    info!("{}", "Schema id: ".cyan());
                     println!("{}", schema.schema_id);
+                    copy!("{}", schema.schema_id);
                 })
             }
         },
