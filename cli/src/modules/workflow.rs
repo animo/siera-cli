@@ -33,6 +33,9 @@ pub enum WorkflowSubcommands {
 
         #[clap(long = "self", short = 's')]
         sent_to_self: bool,
+
+        #[clap(long, short)]
+        no_qr: bool,
     },
 }
 
@@ -47,6 +50,7 @@ pub async fn parse_workflow_args(
             connection_id,
             timeout,
             sent_to_self,
+            no_qr,
         } => match connection_id {
             Some(c) => credential_offer(c.to_owned(), agent).await?,
             None => {
@@ -62,7 +66,9 @@ pub async fn parse_workflow_args(
                     let invitation_object = invite_url_to_object(connection.invitation_url)?;
                     agent.receive_invitation(invitation_object).await?;
                 } else {
-                    qr::print_qr_code(&connection.invitation_url)?;
+                    if !no_qr {
+                        qr::print_qr_code(&connection.invitation_url)?;
+                    }
                     println!();
                     println!();
                     println!("================");
