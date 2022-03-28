@@ -17,6 +17,7 @@ pub enum HelpStrings {
     Configuration,
     ConfigurationInitialize,
     ConfigurationView,
+    ConfigurationInitializeToken,
 
     // Connections
     Connections,
@@ -88,6 +89,7 @@ impl HelpStrings {
                 "Initialize a new configuration file with a default environment"
             }
             HelpStrings::ConfigurationView => "Print your current configuration file",
+            HelpStrings::ConfigurationInitializeToken => "Authentication token for a multi tenancy agent",
 
             HelpStrings::Connections => "Retrieve connections or create invitations",
             HelpStrings::ConnectionsId => "ID of connection to retrieve",
