@@ -2,20 +2,30 @@
   <br />
   <img
     alt="Aries CLI logo"
-    src="https://github.com/animo/aries-cli/blob/ea9589cafa34a1375a7847995fcec2b000141b97/images/aries-cli.png"
+    src="./images/aries-cli-dark.png#gh-dark-mode-only"
+    height="250px"
+  />
+   <img
+    alt="Aries CLI logo"
+    src="./images/aries-cli-light.png#gh-light-mode-only"
     height="250px"
   />
 </p>
-<h1 align="center"><b>Aries CLI</b></h1>
+
+
+<h1 align="center" ><b>Aries CLI</b></h1>
+
+
+<h3 align="center">Powered By &nbsp; <img src="./images/animo-logo-dark-background.png#gh-dark-mode-only" height="12px"><img src="./images/animo-logo-light-background.png#gh-light-mode-only" height="12px"></h3><br>
+
+
+
 <p align="center">
   <a href="#getting-started">Getting started</a> &nbsp;|&nbsp;
   <a href="#common-examples">Common examples</a> &nbsp;|&nbsp;
    <a href="#contributing">Contributing</a> &nbsp;|&nbsp;
     <a href="#roadmap">Roadmap</a> &nbsp;|&nbsp;
 </p>
-
-
-> Powered By &nbsp; <img src="./images/animo-logo-dark-background.png#gh-dark-mode-only" height="12px"><img src="./images/animo-logo-light-background.png#gh-light-mode-only" height="12px">
 
 <!-- Add badges? -->
 
@@ -27,11 +37,13 @@ Building an SSI solution requires many, _many_ interactions with an SSI agent. E
 * 🌟 **Actions and workflows** that you can perform against an agent
 * 💅🏻 **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
-This README was set up for you to get started as fast as possible. Looking for more information about the concepts, example code and tutorials on how to use the CLI? Check out our extensive [docs](https://github.com/animo/aries-cli/pull/www.google.com).
+This README was set up for you to get started as fast as possible. If you are looking for more information about the concepts, example code and tutorials on how to use the CLI we recommend you check out our extensive [docs](https://github.com/animo/aries-cli/pull/www.google.com).
 
 ## Getting started
 
-Whatever your system, we've got you covered.
+Heres how to install Aries-CLI using the most popular package managers. For advanced installation options, binaries and troubleshooting we recommend checking out the [installation docs](./docs/advanced_installation.md).
+
+
 ### macOS
 #### Binary
 [Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH.
@@ -117,7 +129,7 @@ We intend to support multiple versions of the Aries agent. See the CLI help `ari
 
 Next we are looking at adding:
 
-| Feature | Status | Description |
-|---------|--------|-------------|
-| Mock data | 🚧 | Generate mock data for large data structures like schemas and credential definitions |
-| Workflows | 🚧 | Chain multiple actions together for higher-level goals like: issue a credential |
+| Feature   | Status | Description                                                                          |
+| --------- | ------ | ------------------------------------------------------------------------------------ |
+| Mock data | 🚧      | Generate mock data for large data structures like schemas and credential definitions |
+| Workflows | 🚧      | Chain multiple actions together for higher-level goals like: issue a credential      |
