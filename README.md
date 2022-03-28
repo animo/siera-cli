@@ -2,12 +2,12 @@
   <br />
   <img
     alt="Aries CLI logo"
-    src="./images/aries-cli-dark.png#gh-dark-mode-only"
+    src="./images/aries-cli-dark.svg#gh-dark-mode-only"
     height="250px"
   />
    <img
     alt="Aries CLI logo"
-    src="./images/aries-cli-light.png#gh-light-mode-only"
+    src="./images/aries-cli-light.svg#gh-light-mode-only"
     height="250px"
   />
 </p>
