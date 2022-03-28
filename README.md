@@ -21,10 +21,11 @@
 
 
 <p align="center">
+<a href="#roadmap">Roadmap</a> &nbsp;|&nbsp;
   <a href="#getting-started">Getting started</a> &nbsp;|&nbsp;
   <a href="#common-examples">Common examples</a> &nbsp;|&nbsp;
-   <a href="#contributing">Contributing</a> &nbsp;|&nbsp;
-    <a href="#roadmap">Roadmap</a> &nbsp;|&nbsp;
+   <a href="#contributing">Contributing</a> 
+    
 </p>
 
 <!-- Add badges? -->
@@ -39,45 +40,44 @@ Building an SSI solution requires many, _many_ interactions with an SSI agent. E
 
 This README was set up for you to get started as fast as possible. If you are looking for more information about the concepts, example code and tutorials on how to use the CLI we recommend you check out our extensive [docs](https://github.com/animo/aries-cli/pull/www.google.com).
 
+## Roadmap
+
+<!-- TODO: Add more details about the actions and features we support -->
+We intend to support multiple versions of the Aries agent. See the CLI help `aries-cli --help` for a list of actions we currently support.
+
+Next we are looking at adding:
+
+| Feature          | Status | Description                                                                           |
+| ---------------- | ------ | ------------------------------------------------------------------------------------- |
+| Mock data        | 🚧      | Generate mock data for large data structures like schemas and credential definitions. |
+| Filters          | 🚧      | Use filters to determine what server output you want returned.                        |
+| Workflows        | 🚧      | Chain multiple actions together for higher-level goals like: issue a credential.      |
+| Present proof v2 | 🚧      | Present proofs.                                                                       |
+
+
 ## Getting started
 
 Heres how to install Aries-CLI using the most popular package managers. For advanced installation options, binaries and troubleshooting we recommend checking out the [installation docs](./docs/advanced_installation.md).
 
+### macOS using Brew
 
-### macOS
-#### Binary
-[Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH.
-
-#### Brew
 ```sh
 echo "Coming soon!"
 ```
 
-### Linux
-#### Binary
-[Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH.
+### Linux using Apt-get
 
-#### Apt-get
 ```sh
 echo "Coming soon!"
 ```
 
-### Windows
-
-#### Binary
-[Download the binary](https://github.com/animo/aries-cli/releases) and place it on your PATH
-
-#### Chocolatey
+### Windows using Chocolatey
 
 ```powershell
 Write-Output "Coming soon!"
 ```
 
-### Advanced installation
-
-See [this document](./docs/advanced_installation.md) for advanced installation options.
-
-## Setting up your environment
+### Setting up your environment
 
 ```sh
 aries-cli configuration initialize
@@ -122,14 +122,4 @@ aries-cli connections invite --help
 Is there something you'd like to fix or add to the CLI? Great! We 💗 community
 contributions. [Get involved](./docs/contributing.md).
 
-## Roadmap
 
-<!-- TODO: Add more details about the actions and features we support -->
-We intend to support multiple versions of the Aries agent. See the CLI help `aries-cli --help` for a list of actions we currently support.
-
-Next we are looking at adding:
-
-| Feature   | Status | Description                                                                          |
-| --------- | ------ | ------------------------------------------------------------------------------------ |
-| Mock data | 🚧      | Generate mock data for large data structures like schemas and credential definitions |
-| Workflows | 🚧      | Chain multiple actions together for higher-level goals like: issue a credential      |
