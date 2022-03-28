@@ -14,7 +14,7 @@ pub struct Configuration {
 impl Configuration {
     fn init(token: Option<String>) -> Self {
         Self {
-            endpoint: String::from("https://agent.community.animo.id"),
+            endpoint: String::from("https://agent.ssi.community"),
             api_key: None,
             auth_token: token,
         }
