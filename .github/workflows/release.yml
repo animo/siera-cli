@@ -1,33 +1,72 @@
+name: build-and-release
+
 on:
-  release:
-    types: [created]
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
-  release:
-    name: release ${{ matrix.target }}
+  build-windows:
+    name: build
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        architecture: [x86_64-pc-windows-gnu, i686-pc-windows-gnu]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.architecture}}
+          # TODO: ZIP
+          path: target/${{ matrix.architecture }}/release/aries-cli.exe
+  build-linux:
+    name: build
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        include:
-          - target: x86_64-pc-windows-gnu
-            archive: zip
-          - target: x86_64-unknown-linux-musl
-            archive: tar.gz
-          - target: x86_64-apple-darwin
-            archive: tar.gz
-          - target: aarch64-apple-darwin
-            archive: tar.gz
+        architecture: [x86_64-unknown-linux-musl, aarch64-unknown-linux-musl]
     steps:
-      - uses: actions/checkout@main
-      - name: Compile and release
-        uses: rust-build/rust-build.action@latest
-        env:
-          SRC_DIR: "./cli"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RUSTTARGET: ${{ matrix.target }}
-          ARCHIVE_TYPES: ${{ matrix.archive }}
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.architecture}}
+          # TODO: tar.gz
+          path: target/${{ matrix.architecture }}/release/aries-cli
+  build-macos:
+    name: build
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        architecture: [aarch64-apple-darwin, x86_64-apple-darwin]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.architecture}}
+          # TODO: tar.gz
+          path: target/${{ matrix.architecture }}/release/aries-cli
   release-cargo:
     name: release on cargo
     runs-on: ubuntu-latest
