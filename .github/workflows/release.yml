@@ -42,6 +42,9 @@ jobs:
       matrix:
         architecture: [x86_64-unknown-linux-musl]
     steps:
+      - run: sudo apt-get update
+      - run: sudo apt-get upgrade
+      - run: sudo apt-get install libssl-dev
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
