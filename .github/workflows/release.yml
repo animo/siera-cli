@@ -21,7 +21,7 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --release --all-features --package cli
+          args: --release --target ${{matrix.architecture}} --all-features --package cli
       - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
@@ -34,13 +34,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        architecture: [x86_64-unknown-linux-musl, aarch64-unknown-linux-musl]
+        architecture: [x86_64-unknown-linux-musl]
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --release --all-features --package cli
+          args: --release --target ${{matrix.architecture}} --all-features --package cli
       - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
@@ -59,19 +59,20 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --release --all-features --package cli
+          args: --release --target ${{matrix.architecture}} --all-features --package cli
       - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.architecture}}
           # TODO: tar.gz
-          path: target/${{ matrix.architecture }}/release/aries-cli
-  release-cargo:
-    name: release on cargo
-    runs-on: ubuntu-latest
-    steps:
-      - uses: katyo/publish-crates@v1
-        with:
-          registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-          path: "./cli"
+          path:
+            target/${{ matrix.architecture }}/release/aries-cli
+            #  release-cargo:
+            #    name: release on cargo
+            #    runs-on: ubuntu-latest
+            #    steps:
+            #      - uses: katyo/publish-crates@v1
+            #        with:
+            #          registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+            #          path: "./cli"
