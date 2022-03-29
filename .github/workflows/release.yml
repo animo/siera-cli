@@ -10,19 +10,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: build
-    runs-on: ubuntu-latest
+  build-macos:
+    name: build ${{ matrix.architecture }}
+    runs-on: macos-latest
     strategy:
       matrix:
-        architecture: [aarch64-apple-darwin, x86_64-apple-darwin, x86_64-unknown-linux-musl, x86_64-pc-windows-gnu]
+        architecture: [aarch64-apple-darwin, x86_64-apple-darwin]
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/cargo@v1
         with:
-          use-cross: true
           command: build
-          args: --release --target ${{matrix.architecture}} --all-features --package cli
+          args: --release --target ${{ matrix.architecture }} --package cli
       - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
@@ -30,3 +29,35 @@ jobs:
           name: ${{ matrix.architecture}}
           # TODO: tar.gz
           path: target/${{ matrix.architecture }}/release/aries-cli
+  build-linux:
+    name: build ${{ matrix.architecture }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.architecture}}
+          # TODO: tar.gz
+          path: target/release/aries-cli
+  build-windows:
+    name: build ${{ matrix.architecture }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.architecture}}
+          # TODO: tar.gz
+          path: target/release/aries-cli
