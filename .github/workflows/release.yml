@@ -18,8 +18,14 @@ jobs:
         architecture: [x86_64-pc-windows-gnu, i686-pc-windows-gnu]
     steps:
       - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{matrix.architecture}}
+          override: true
       - uses: actions-rs/cargo@v1
         with:
+          use-cross: true
           command: build
           args: --release --target ${{matrix.architecture}} --all-features --package cli
       - run: ls -R
@@ -37,6 +43,11 @@ jobs:
         architecture: [x86_64-unknown-linux-musl]
     steps:
       - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{matrix.architecture}}
+          override: true
       - uses: actions-rs/cargo@v1
         with:
           command: build
@@ -56,6 +67,11 @@ jobs:
         architecture: [aarch64-apple-darwin, x86_64-apple-darwin]
     steps:
       - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{matrix.architecture}}
+          override: true
       - uses: actions-rs/cargo@v1
         with:
           command: build
