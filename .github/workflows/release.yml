@@ -15,7 +15,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        architecture: [aarch64-apple-darwin, x86_64-unknown-linux-musl, x86_64-pc-windows-gnu]
+        architecture: [aarch64-apple-darwin, x86_64-apple-darwin, x86_64-unknown-linux-musl, x86_64-pc-windows-gnu]
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/cargo@v1
