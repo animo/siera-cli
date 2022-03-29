@@ -1,4 +1,4 @@
-name: build-and-release
+name: build
 
 on:
   pull_request:
