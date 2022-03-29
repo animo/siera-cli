@@ -52,7 +52,7 @@ Next we are looking at adding:
 | Mock data        | 🚧      | Generate mock data for large data structures like schemas and credential definitions. |
 | Filters          | 🚧      | Use filters to determine what server output you want returned.                        |
 | Workflows        | 🚧      | Chain multiple actions together for higher-level goals like: issue a credential.      |
-| Present proof v2 | 🚧      | Present proofs.                                                                       |
+| Present proof    | 🚧      | Present proofs.                                                                       |
 
 
 ## Getting started
