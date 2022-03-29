@@ -1,4 +1,4 @@
-name: build
+name: build-all-platforms
 
 on:
   pull_request:
@@ -8,6 +8,8 @@ on:
     branches:
       - main
   workflow_dispatch:
+  release:
+    types: [created]
 
 jobs:
   build-macos:
