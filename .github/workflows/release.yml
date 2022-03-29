@@ -10,48 +10,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-windows:
+  build:
     name: build
-    runs-on: windows-latest
+    runs-on: macos-latest
     strategy:
       matrix:
-        architecture: [x86_64-pc-windows-gnu, i686-pc-windows-gnu]
+        architecture: [aarch64-apple-darwin, x86_64-unknown-linux-musl, x86_64-pc-windows-gnu]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: ${{matrix.architecture}}
-          override: true
       - uses: actions-rs/cargo@v1
         with:
-          command: build
-          args: --release --target ${{matrix.architecture}} --all-features --package cli
-      - run: ls -R
-      - name: Save library
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.architecture}}
-          # TODO: ZIP
-          path: target/${{ matrix.architecture }}/release/aries-cli.exe
-  build-linux:
-    name: build
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        architecture: [x86_64-unknown-linux-musl]
-    steps:
-      - run: sudo apt-get update
-      - run: sudo apt-get upgrade
-      - run: sudo apt-get install libssl-dev
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: ${{matrix.architecture}}
-          override: true
-      - uses: actions-rs/cargo@v1
-        with:
+          use-cross: true
           command: build
           args: --release --target ${{matrix.architecture}} --all-features --package cli
       - run: ls -R
@@ -61,36 +30,3 @@ jobs:
           name: ${{ matrix.architecture}}
           # TODO: tar.gz
           path: target/${{ matrix.architecture }}/release/aries-cli
-  build-macos:
-    name: build
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        architecture: [aarch64-apple-darwin, x86_64-apple-darwin]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: ${{matrix.architecture}}
-          override: true
-      - uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --target ${{matrix.architecture}} --all-features --package cli
-      - run: ls -R
-      - name: Save library
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.architecture}}
-          # TODO: tar.gz
-          path:
-            target/${{ matrix.architecture }}/release/aries-cli
-            #  release-cargo:
-            #    name: release on cargo
-            #    runs-on: ubuntu-latest
-            #    steps:
-            #      - uses: katyo/publish-crates@v1
-            #        with:
-            #          registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-            #          path: "./cli"
