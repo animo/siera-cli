@@ -36,9 +36,12 @@ jobs:
           # TODO: tar.gz
           path: target/${{ matrix.architecture }}/release/aries-cli
   build-linux:
-    name: build ${{ matrix.architecture }}
+    name: build linux
     runs-on: ubuntu-latest
     steps:
+      - run: sudo apt-get update
+      - run: sudo apt-get upgrade
+      - run: sudo apt-get install libxcb-shape0-dev libxcb-xfixes0-dev
       - uses: actions/checkout@v2
       - uses: actions-rs/cargo@v1
         with:
@@ -52,7 +55,7 @@ jobs:
           # TODO: tar.gz
           path: target/release/aries-cli
   build-windows:
-    name: build ${{ matrix.architecture }}
+    name: build windows
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
