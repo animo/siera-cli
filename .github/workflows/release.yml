@@ -31,7 +31,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.architecture }}-aries-cli
-          # TODO: tar.gz
           path: target/${{ matrix.architecture }}/release/aries-cli
   build-linux:
     name: build linux
@@ -50,7 +49,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: linux-aries-cli
-          # TODO: tar.gz
           path: target/release/aries-cli
   build-windows:
     name: build windows
@@ -66,5 +64,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: windows-aries-cli.exe
-          # TODO: tar.gz
           path: target/release/aries-cli.exe
