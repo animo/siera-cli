@@ -1,17 +1,9 @@
 name: Brew Release
 
-# Change me back to commented out after testing
-# on:
-#   push:
-#    tags:
-#      - '*'
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+   tags:
+     - '*'
 
 jobs:
   release-brew:
