@@ -1,8 +1,7 @@
 # Contributing
 
-We welcome contributions that to make the CLI better. If you do not have a specific
-contribution in mind we encourage you to look for issues labelled with as
-`good first issue` or look for missing actions in our [support matrix](./support_matrix.md).
+We welcome contributions that make the CLI better. If you do not have a specific
+contribution in mind look for issues labelled as `good first issue`.
 
 ## Fixes
 
@@ -11,12 +10,12 @@ If you have a fix, go straight to "Getting set up".
 ## Features
 
 If you have something bigger in mind (structural changes, new features) we strongly
-encourage you to create a new GitHub issue that documents:
+encourage you to create a new GitHub issue with:
 
-* motivate the changes you want to make
-* how you want to make them
+* motivation for the changes you want to make
+* approach for how you want to make them
 
-This gives your new idea the best chance to get accepted by the repository
+This gives your new idea the best chance to get accepted by the
 maintainers.
 
 ## Getting set up
@@ -25,8 +24,7 @@ maintainers.
 git clone https://github.com/animo/aries-cli.git
 ```
 
-Once you have the code locally, you should be able to test out the current
-source code by running:
+Once you have the code locally you can run commands using:
 
 ```sh
 # "cargo run -q --" instead of aries-cli
@@ -35,18 +33,18 @@ cargo run -q -- <cmd>
 
 ### Tests
 
-We love tests, but recognize that there is a shortage of them at the moment. We
-encourage you to take a look at [Rust's guide](https://doc.rust-lang.org/book/ch11-01-writing-tests.html) on how to create an automated test. We are happy
-to provide support for writing tests on the PR.
+We love tests, but recognize that there is a shortage of them at the moment. Take a look at
+[Rust's guide](https://doc.rust-lang.org/book/ch11-01-writing-tests.html) on how to create an automated test. We are happy
+to provide support for writing tests on your PR.
 
-Currently a simple suite of tests can be executed by running `./tests/run.sh`.
+A simple suite of tests can be executed by running `./tests/run.sh`.
 
 
 ### Using log levels
 
-We believe that good logging makes for a good CLI user experience but we also believe
-a productivity focussed tool should not flood the terminal with logging. That is why
-we have built in different log-levels:
+We believe that good logging makes for a good CLI user experience. However,
+a productivity focussed tool should not flood the terminal with logs. That is why
+we have different log-levels:
 
 | CLI flags | Rust logger | Description |
 | --------- | ----------- | ----------- |
