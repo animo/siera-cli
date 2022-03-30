@@ -64,7 +64,10 @@ Write-Output "Coming soon!"
 ### Binaries
 
 See [binaries](https://github.com/animo/aries-cli/releases).
+### Cargo install
 
+```sh
+cargo install --git https://github.com/animo/aries-cli
 ### Setting up your environment
 
 ```sh
