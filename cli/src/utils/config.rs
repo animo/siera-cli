@@ -14,7 +14,11 @@ pub struct Configuration {
 impl Configuration {
     fn init(token: Option<String>) -> Self {
         Self {
-            endpoint: String::from("https://agent.ssi.community"),
+            // Set the multi tenancy agent when an auth token is provided
+            endpoint: match token {
+                Some(_) => String::from("https://agent.ssi.community"),
+                None => String::from("https://agent.community.animo.id"),
+            },
             api_key: None,
             auth_token: token,
         }

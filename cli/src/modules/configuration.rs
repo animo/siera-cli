@@ -61,7 +61,7 @@ fn view(path: &Path) -> Result<()> {
 fn initialize(path: &Path, token: Option<String>) -> Result<()> {
     // Check if the path exists and stop so we do not override the existing configuration file
     if path.exists() {
-        return Err(error::Error::ConfigExists.into());
+        return Err(error::Error::ConfigExists(path.to_str().unwrap().into()).into());
     }
 
     // Get the directories
