@@ -1,0 +1,66 @@
+name: build-all-platforms
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  build-macos:
+    name: build ${{ matrix.architecture }}
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        architecture: [aarch64-apple-darwin, x86_64-apple-darwin]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{matrix.architecture}}
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --target ${{ matrix.architecture }} --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.architecture }}-aries-cli
+          path: target/${{ matrix.architecture }}/release/aries-cli
+  build-linux:
+    name: build linux
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get update
+      - run: sudo apt-get upgrade
+      - run: sudo apt-get install libxcb-shape0-dev libxcb-xfixes0-dev
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-aries-cli
+          path: target/release/aries-cli
+  build-windows:
+    name: build windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-aries-cli.exe
+          path: target/release/aries-cli.exe
