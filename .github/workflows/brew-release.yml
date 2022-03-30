@@ -3,39 +3,45 @@ on:
   push:
    tags:
      - '*'
+
 jobs:
-  release-osx:
-    runs-on: macos-latest
+  release-brew:
+    name: release brew
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Build Release
-      run: |
-        cargo build --release
-        cd target/release
-        
-    - name: Get version
-      id: get_version
-      run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
-    - name: Set SHA
-      id: shasum
-      run: |
-        echo ::set-output name=sha::"$(shasum -a 256 ./target/gitui-mac.tar.gz | awk '{printf $1}')"
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        draft: false
-        prerelease: true
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./target/gitui-mac.tar.gz
-        asset_name: gitui-mac.tar.gz
-        asset_content_type: application/gzip
+      - name: Get Ruby file
+        id: get_ruby_file
+        run: curl -o aries-cli.rb https://raw.githubusercontent.com/animo/homebrew-aries-cli/main/Formula/aries-cli.rb
+      - name: Gather data
+        id: gather_data
+        run: |
+          VERSION=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq '.[-1]' |  jq -r .tag_name)
+          URLS=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq -r '.[] .assets[].browser_download_url' | grep "macos") # two lines with 1 download url each
+          URL_ARM=$(echo $URLS | grep "arm")
+          URL_X86=$(echo $URLS | grep "x86")  
+          SHA_ARM=$(curl --silent $URL_ARM | shasum -a 256  | awk '{ print $1 }')
+          SHA_X86=$(curl --silent $URL_X86 | shasum -a 256  | awk '{ print $1 }')
+      - name: Create new ruby file for brew
+        id: create_brew_ruby_file
+        run: |
+          # replace intel download url 
+          sed -i -e "7s|.*|    url \"$URL_X86\"|" Formula/aries-cli.rb
+          # replace intel sha
+          sed -i -e "8s|.*|    sha256 \"$SHA_X86\"|" Formula/aries-cli.rb
+          # replace arm downlaod url 
+          sed -i -e "12s|.*|    url \"$URL_ARM\"|" Formula/aries-cli.rb
+          # replace arm sha
+          sed -i -e "13s|.*|    sha256 \"$SHA_ARM\"|" Formula/aries-cli.rb
+      - name: sth
+        uses: actions/checkout@v2
+      - name: Push file to homebrew repo
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
+        with:
+          source_file: 'aries-cli.rb'
+          destination_repo: 'animo/homebrew-aries-cli'
+          destination_folder: 'Formula'
+          user_email: 'development@animo.id'
+          user_name: 'animoNinja'
+          commit_message: 'A new aries-cli version has been released to homebrew'
