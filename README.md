@@ -16,7 +16,7 @@
 <h1 align="center" ><b>Aries CLI</b></h1>
 
 
-<h3 align="center">Powered By &nbsp; <img src="./images/animo-logo-dark-background.png#gh-dark-mode-only" height="12px"><img src="./images/animo-logo-light-background.png#gh-light-mode-only" height="12px"></h3><br>
+<h3 align="center">Powered by &nbsp; <img src="./images/animo-logo-dark-background.png#gh-dark-mode-only" height="12px"><img src="./images/animo-logo-light-background.png#gh-light-mode-only" height="12px"></h3><br>
 
 
 
