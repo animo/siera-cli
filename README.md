@@ -21,8 +21,7 @@
 
 
 <p align="center">
-
-  <a href="#getting-started">Getting started</a> &nbsp;|&nbsp;
+<a href="#getting-started">Getting started</a> &nbsp;|&nbsp;
   <a href="#common-examples">Common examples</a> &nbsp;|&nbsp;
   <a href="#roadmap">Roadmap</a> &nbsp;|&nbsp;
   <a href="#contributing">Contributing</a> 
