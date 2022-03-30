@@ -104,7 +104,7 @@ The `--toolbox` flag creates an invitation for the [Toolbox](https://github.com/
 
 The `--copy` flag will copy the invite URL to your clipboard so it can easily be pasted in the toolbox
 
-Optionally, add the `--quiet` flag to suppress output to stdout.
+Replace `--verbose` with `--quiet` to suppress non-essential output to stdout.
 
 For more options under the `connections invite` subcommand see:
 
