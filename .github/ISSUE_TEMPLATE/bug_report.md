@@ -1,30 +1,40 @@
----
-name: Bug report
-about: Report an issue or bug to help us improve
-title: ''
-labels: bug
-assignees: ''
-
----
-
 **Describe the bug**
+
 A clear and concise description of what the bug is.
 
 **To Reproduce**
+
 Steps to reproduce the behavior:
+
 1.
 
 **Expected behavior**
+
 A clear and concise description of what you expected to happen.
 
-**Aries-CLI version (run aries-cli --version)**
+**Aries CLI version (run `aries-cli --version`)**
+
 x.x.x
 
 **Desktop OS**
 - OS:
 - Version:
 
-**Logs, screenshots, screen recordings**
+**Verbose logs**
+
+Run your command with the `-vvv` flag. See `aries-cli --help` for guidance.
+
+<details>
+  <summary>Logs</summary>
+
+  ```
+< Paste your logs here >
+  ```
+
+</details>
+<br/>
+
+**Screenshots, screen recordings**
 If applicable.
 
 **Additional context**
