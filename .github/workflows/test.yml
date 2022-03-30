@@ -12,5 +12,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - run: sudo apt-get update
+      - run: sudo apt-get upgrade
+      - run: sudo apt-get install libxcb-shape0-dev libxcb-xfixes0-dev
       - uses: actions/checkout@v1
       - run: sh ./tests/run.sh
