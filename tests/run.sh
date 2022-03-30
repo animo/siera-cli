@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 ENDPOINT=https://agent.community.animo.id
 
 echo "Some mock tests... Just for input/output parsing"
@@ -31,10 +33,10 @@ schemas() {
   SCHEMA_ID=`cargo run -q -- -u=$ENDPOINT schemas create -n=foo -a=bar -a=baz 2> /dev/null`
   handle_out $? 0 "Schemas: Create"
 
-  cargo run -q -- -u=$ENDPOINT schemas &> /dev/null
+  cargo run -q -- -q -u=$ENDPOINT schemas &> /dev/null
   handle_out $? 0 "Schemas: Get All"
 
-  cargo run -q -- -u=$ENDPOINT schemas --id=$SCHEMA_ID &> /dev/null
+  cargo run -q -- -q -u=$ENDPOINT schemas --id=$SCHEMA_ID &> /dev/null
   handle_out $? 0 "Schemas: Get By Id"
 }
 
