@@ -46,6 +46,6 @@ jobs:
           source_file: './aries-cli.rb'
           destination_repo: 'animo/homebrew-aries-cli'
           destination_folder: 'Formula'
-          user_email: 'development@animo.id'
-          user_name: 'animoNinja'
+          user_email: 'contact@animo.id'
+          user_name: 'animo-bot'
           commit_message: 'A new aries-cli version has been released to homebrew'
