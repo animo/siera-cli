@@ -52,5 +52,5 @@ pub enum Commands {
     Message(MessageOptions),
     Credentials(CredentialOptions),
     Configuration(ConfigurationOptions),
-    Workflow(WorkflowOptions),
+    Automate(WorkflowOptions),
 }
