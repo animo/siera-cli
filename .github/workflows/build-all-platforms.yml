@@ -1,9 +1,6 @@
 name: build-all-platforms
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
   release:
     types: [created]
