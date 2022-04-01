@@ -96,7 +96,7 @@ pub async fn register() -> Result<()> {
             )?;
             parse_credentials_args(&options.commands, agent).await
         }
-        Commands::Workflow(options) => {
+        Commands::Automate(options) => {
             let agent = initialize_agent_from_cli(
                 cli.config,
                 cli.environment,
