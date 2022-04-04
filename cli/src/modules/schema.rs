@@ -29,7 +29,7 @@ pub enum SchemaSubcommands {
         #[clap(short, long, help=HelpStrings::SchemaCreateVersion, default_value = "1.0")]
         version: String,
         #[clap(short, long, help=HelpStrings::SchemaCreateAttributes, required = true)]
-        attributes: Vec<String>,
+        attribute: Vec<String>,
     },
     #[clap(about = HelpStrings::SchemaList)]
     List {
@@ -44,12 +44,12 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
         SchemaSubcommands::Create {
             name,
             version,
-            attributes,
+            attribute,
         } => {
             let options = SchemaCreateOptions {
                 name: name.to_string(),
                 version: version.to_string(),
-                attributes: attributes.to_vec(),
+                attributes: attribute.to_vec(),
             };
             if options.attributes.is_empty() {
                 return Err(Error::RequiredAttributes.into());
