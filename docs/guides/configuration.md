@@ -72,16 +72,20 @@ You can add new environments by using the `configuration add` command and specif
 aries-cli configuration add --environment=<YOUR_ENV_NAME> --agent-url=<YOUR_AGENT_URL> --api-key=<YOUR_API_KEY> --token=<YOUR_TOKEN>
 ```
 
-To use the new environment, simply use the `--environment <ENVIRONMENT>` flag.
-
-The Aries CLI uses the 'default' environment when no `--environment` flag is given. If you want to use another environment as your default, you can override your current default environment by specifying `--environment= default` in the above command.
-
 ```yaml
 ---
 configurations:
+  default:
+    endpoint: "https://agent.community.animo.id"
+    api_key: ~
+    token: ~
   <YOUR_ENV_NAME>:
     endpoint: <YOUR_AGENT_URL>
     api_key: <YOUR_API_KEY>
     token: <YOUR_TOKEN>
 ```
+
+To use the new environment, simply use the `--environment <ENVIRONMENT>` flag.
+
+The Aries CLI uses the 'default' environment when no `--environment` flag is given. If you want to use another environment as your default, you can override your current default environment by specifying `--environment= default` in the above command.
 
