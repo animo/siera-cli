@@ -7,7 +7,7 @@ description: >-
 
 # Configuration
 
-### Basic configuration&#x20;
+### Basic configuration
 
 After installation, the CLI prompts you to initialize your configuration with the following command.
 
@@ -25,21 +25,21 @@ configurations:
         token: ~ 
 ```
 
-The config file contains an endpoint for the agent that handles all of your CLI actions. By default, this is the URL for the Animo community agent. Using this agent, you can get started right away without any further setup.&#x20;
+The config file contains an endpoint for the agent that handles all of your CLI actions. By default, this is the URL for the Animo community agent. Using this agent, you can get started right away without any further setup.
 
 You might find, however, that you want some more advanced configuration in order to avoid the clutter of the community agent (as you will encounter the actions of everyone using it). No worries! In a few easy steps, you can set up your own tenant environment or connect your own agent instead.
 
-### Advanced configuration - use our multitenant agent&#x20;
+### Advanced configuration - use our multitenant agent
 
-With a tenant you don't have to worry about the connections, schema's and credentials of other community members. You get your own agent to use however you like.&#x20;
+With a tenant you don't have to worry about the connections, schema's and credentials of other community members. You get your own agent to use however you like.
 
-To use our meltitenant agent to set up your own tenant, simply:&#x20;
+To use our multitenant agent to set up your own tenant, simply:
 
-* Choose to [claim your token via the Aries CLI website](https://aries-cli.animo.id).&#x20;
-* Connect your GitHub account by following the instructions that pop up.&#x20;
-* Copy the command that appears and run it in your terminal.&#x20;
+* Choose to [claim your token via the Aries CLI website](https://aries-cli.animo.id).
+* Connect your GitHub account by following the instructions that pop up.
+* Copy the command that appears and run it in your terminal.
 
-The `config.yaml` will now be overwritten (or created if you hadn't initialized yet) with a 'default' environment.&#x20;
+The `config.yaml` will now be overwritten (or created if you hadn't initialized yet) with a 'default' environment.
 
 ```yaml
 configurations: 
@@ -49,11 +49,9 @@ configurations:
         token: <YOUR_TOKEN>
 ```
 
-This new environment contains the endpoint for the agent that handles all of your CLI actions (in this case, the URL of our tenant agent). It also contains a custom token you claimed by connecting your GitHub account. You can now use a subtenant of the Animo community agent to execute all CLI commands.&#x20;
+This new environment contains the endpoint for the agent that handles all of your CLI actions (in this case, the URL of our tenant agent). It also contains a custom token you claimed by connecting your GitHub account. You can now use a subtenant of the Animo community agent to execute all CLI commands.
 
-The Aries CLI uses the 'default' environment  when no `--environment <ENVIRONMENT>` flag is given. Having your own tenant will help a lot with keeping your development process clear, however, if you already have a development agent you might want to consider either adding an environment for it or switching over to it completely.&#x20;
-
-
+The Aries CLI uses the 'default' environment when no `--environment <ENVIRONMENT>` flag is given. Having your own tenant will help a lot with keeping your development process clear, however, if you already have a development agent you might want to consider either adding an environment for it or switching over to it completely.
 
 ### Additional configuration - using your own agent
 
@@ -68,7 +66,7 @@ configurations:
     token: ~
 ```
 
-You can add new environments by using the `configuration add` command and specifying the environment name, agent endpoint, API key (optional) and token (optional) in the `config.yaml`.&#x20;
+You can add new environments by using the `configuration add` command and specifying the environment name, agent endpoint, API key (optional) and token (optional) in the `config.yaml`.
 
 ```
 aries-cli configuration add --environment=<YOUR_ENV_NAME> --agent-url=<YOUR_AGENT_URL> --api-key=<YOUR_API_KEY> --token=<YOUR_TOKEN>
@@ -76,6 +74,14 @@ aries-cli configuration add --environment=<YOUR_ENV_NAME> --agent-url=<YOUR_AGEN
 
 To use the new environment, simply use the `--environment <ENVIRONMENT>` flag.
 
-The Aries CLI uses the 'default' environment  when no `--environment` flag is given. If you want to use another environment as your default, you can override your current default environment by specifying `--environment= default` in the above command.&#x20;
+The Aries CLI uses the 'default' environment when no `--environment` flag is given. If you want to use another environment as your default, you can override your current default environment by specifying `--environment= default` in the above command.
 
+```yaml
+---
+configurations:
+  <YOUR_ENV_NAME>:
+    endpoint: <YOUR_AGENT_URL>
+    api_key: <YOUR_API_KEY>
+    token: <YOUR_TOKEN>
+```
 
