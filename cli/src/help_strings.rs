@@ -15,7 +15,8 @@ pub enum HelpStrings {
 
     // Configuration
     Configuration,
-    ConfigurationDefault,
+    ConfigurationAdd,
+    ConfigurationAddDefault,
     ConfigurationView,
     ConfigurationInitializeToken,
 
@@ -70,6 +71,10 @@ pub enum HelpStrings {
     // Workflow
     Workflow,
     WorkflowCredentialOffer,
+    WorkflowCredentialOfferConnectionId,
+    WorkflowCredentialOfferNoQr,
+    WorkflowCredentialOfferSelf,
+    WorkflowCredentialOfferTimeout,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -91,7 +96,8 @@ impl HelpStrings {
             HelpStrings::Environment => "Specify your current environment",
 
             HelpStrings::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: aries-cli configuration add --default",
-            HelpStrings::ConfigurationDefault => {
+            HelpStrings::ConfigurationAdd => "Add a new, or overwrite an existing, agent your configuration file",
+            HelpStrings::ConfigurationAddDefault => {
                 "Add the default agent to the configuration (can be combined with --token)"
             }
             HelpStrings::ConfigurationView => "Print your current configuration file",
@@ -151,6 +157,10 @@ impl HelpStrings {
 
             HelpStrings::Workflow => "Automated actions that combine multiple functions",
             HelpStrings::WorkflowCredentialOffer => "Simple credential offer workflow to offer a premade credential to any agent",
+            HelpStrings::WorkflowCredentialOfferConnectionId => "Connection id of the receving party",
+            HelpStrings::WorkflowCredentialOfferNoQr => "Disables printing the qr code",
+            HelpStrings::WorkflowCredentialOfferSelf => "Completes the entire flow with itself",
+            HelpStrings::WorkflowCredentialOfferTimeout=> "Timeout for the entire flow in seconds",
         }
     }
 }
@@ -167,16 +177,16 @@ const HELP_STRING_CLI: &str = "
 
 To begin working with the aries-cli, run the following command:
 
-    $ aries-cli configuration initialize
+    $ aries-cli configuration add --default
 
 This command will initialize the configuration file and makes sure
 that you do not have to pass the --agent-url argument with every call.
 
 Some example commands are the following:
 
-    $ aries-cli connections
+    $ aries-cli connection list
         - fetches all the connections (jq compatible)
-    $ aries-cli connections invite -qr
+    $ aries-cli connection invite -qr
         - create an invitation (as a qr code)
     $ aries-cli features
         - Fetches all the features of the cloudagent

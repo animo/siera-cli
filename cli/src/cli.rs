@@ -13,7 +13,7 @@ use crate::modules::{
 
 #[derive(Parser)]
 #[clap(name = "aries-cli", author, version, about = HelpStrings::Cli)]
-#[clap(arg_required_else_help = true)]
+#[clap(arg_required_else_help = true, disable_help_subcommand = true)]
 pub struct Cli {
     #[clap(long, short='u', help = HelpStrings::AgentURL)]
     pub agent_url: Option<String>,

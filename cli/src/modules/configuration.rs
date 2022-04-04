@@ -18,8 +18,9 @@ pub struct ConfigurationOptions {
 pub enum ConfigurationSubcommands {
     #[clap(about = HelpStrings::ConfigurationView)]
     View,
+    #[clap(about = HelpStrings::ConfigurationAdd)]
     Add {
-        #[clap(short, long, help = HelpStrings::ConfigurationDefault)]
+        #[clap(short, long, help = HelpStrings::ConfigurationAddDefault)]
         default: bool,
 
         #[clap(long, short, help = HelpStrings::Environment, conflicts_with = "default")]

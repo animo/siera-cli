@@ -76,11 +76,12 @@ pub async fn parse_connection_args(
                 println!("{}", response.connection_id);
                 if *qr {
                     info!("Scan this QR code to accept the invitation:\n");
-                    print_qr_code(response.invitation_url).unwrap();
+                    print_qr_code(&response.invitation_url).unwrap();
                 } else {
                     info!("Another agent can use this URL to accept your invitation:\n");
-                    println!("{}", response.invitation_url)
+                    println!("{}", &response.invitation_url);
                 }
+                copy!("{}", response.invitation_url);
             })
         }
         ConnectionSubcommands::Receive { url } => {
