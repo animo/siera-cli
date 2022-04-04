@@ -50,25 +50,17 @@ aries-cli -c credential-definition create -s WVqppUv9X3WyWGrbns5Uia:2:Example:1.
 
 ### List
 
-List all your current connections
+List all your current credential definitions
 
 ```
-aries-cli connection list [OPTIONS]
+aries-cli credential-definition list [OPTIONS]
 ```
 
 #### Available flags
 
-| Alias | Flag       | Description            |
-| ----- | ---------- | ---------------------- |
-| -h    | --help     | Print help information |
-| -i    | --id \<ID> | Get a connection by id |
-
-#### Example usage
-
-Supply a connection ID to get the connection record.
-
-```
-aries-cli connection list --id 851e2d1b-acee-4a71-b798-8d02a8addd09
-```
+| Alias | Flag       | Description                       |
+| ----- | ---------- | --------------------------------- |
+| -h    | --help     | Print help information            |
+| -i    | --id \<ID> | Get a credential definition by id |
 
 ###
