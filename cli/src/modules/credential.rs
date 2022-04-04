@@ -30,11 +30,6 @@ pub enum CredentialSubcommands {
         #[clap(long, short, help = HelpStrings::CredentialsOfferValue)]
         value: Vec<String>,
     },
-    #[clap(about = HelpStrings::CredentialsPropose)]
-    Propose {
-        #[clap(long, short, help = HelpStrings::CredentialsProposeId)]
-        id: String,
-    },
 }
 
 pub async fn parse_credentials_args(
@@ -69,6 +64,5 @@ pub async fn parse_credentials_args(
                 println!("{}", res.credential_exchange_id)
             })
         }
-        CredentialSubcommands::Propose { id: _id } => todo!(),
     }
 }

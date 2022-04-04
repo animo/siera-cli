@@ -43,10 +43,7 @@ pub struct CredentialOfferOptions {
     pub values: Vec<String>,
 }
 
-pub struct SendProposalOptions {}
-
 #[async_trait]
 pub trait CredentialModule {
     async fn send_offer(&self, options: CredentialOfferOptions) -> Result<CredentialOfferResponse>;
-    async fn send_proposal(&self, options: SendProposalOptions) -> Result<Value>;
 }

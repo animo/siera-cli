@@ -1,10 +1,10 @@
 use super::agent::CloudAgentPython;
 use agent::error::Result;
 use agent::modules::credential::{
-    CredentialModule, CredentialOfferOptions, CredentialOfferResponse, SendProposalOptions,
+    CredentialModule, CredentialOfferOptions, CredentialOfferResponse,
 };
 use async_trait::async_trait;
-use serde_json::{json, Value};
+use serde_json::json;
 
 #[async_trait]
 impl CredentialModule for CloudAgentPython {
@@ -29,13 +29,5 @@ impl CredentialModule for CloudAgentPython {
         });
 
         self.cloud_agent.post(url, None, Some(body)).await
-    }
-
-    async fn send_proposal(&self, _options: SendProposalOptions) -> Result<Value> {
-        let _url = self
-            .cloud_agent
-            .create_url(vec!["issue-credential", "send-proposal"])?;
-
-        todo!()
     }
 }
