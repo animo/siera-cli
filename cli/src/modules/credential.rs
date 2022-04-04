@@ -45,7 +45,7 @@ pub async fn parse_credentials_args(
             value,
         } => {
             if key.len() != value.len() {
-                return Err(Error::UnqualAmountKeyValue.into());
+                return Err(Error::UnequalAmountKeyValue.into());
             }
 
             let options = CredentialOfferOptions {
@@ -54,14 +54,14 @@ pub async fn parse_credentials_args(
                 keys: key.iter().map(|k| k.to_string()).collect(),
                 values: value.iter().map(|v| v.to_string()).collect(),
             };
-            agent.send_offer(options).await.map(|res| {
+            agent.send_offer(options).await.map(|cred| {
                 loader.stop();
-                debug!("{}", pretty_stringify_obj(&res));
+                debug!("{}", pretty_stringify_obj(&cred));
                 info!(
                     "{} offered a credential. Credential exchange id: ",
                     "Sucessefully".green()
                 );
-                println!("{}", res.credential_exchange_id)
+                println!("{}", cred.credential_exchange_id)
             })
         }
     }

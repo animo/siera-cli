@@ -86,7 +86,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 env,
                 path
             );
-            Configuration::add(environment.to_owned(), env)?;
+            Configuration::add(environment, env)?;
 
             debug!("{} a new entry to the configuration", "Written".green());
             Ok(())

@@ -8,7 +8,7 @@ use crate::modules::workflow::WorkflowOptions;
 use crate::modules::{
     configuration::ConfigurationOptions, connection::ConnectionOptions,
     credential::CredentialOptions, credential_definition::CredentialDefinitionOptions,
-    feature::FeaturesOptions, message::MessageOptions, schema::SchemaOptions,
+    feature::FeaturesOptions, message::MessageOptions, proof::ProofOptions, schema::SchemaOptions,
 };
 
 #[derive(Parser)]
@@ -53,4 +53,5 @@ pub enum Commands {
     Credential(CredentialOptions),
     Configuration(ConfigurationOptions),
     Automate(WorkflowOptions),
+    Proof(ProofOptions),
 }
