@@ -15,8 +15,7 @@
 * [Credential Definition](features/credential-definitions.md)
 * [Credential](features/credentials.md)
 * [Schema](features/schemas.md)
-* [Features](features/features.md)
-* [Messages](features/messages.md)
+* [Message](features/messages.md)
 * [Environments](features/environments.md)
 
 ## Automations
