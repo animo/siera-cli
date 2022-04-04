@@ -28,12 +28,17 @@ pub enum HelpStrings {
     ConnectionsInviteMultiUse,
     ConnectionsInviteQr,
     ConnectionsInviteToolbox,
+    ConnectionsList,
+    ConnectionsListId,
+    ConnectionsReceive,
+    ConnectionsReceiveUrl,
 
     // Credential Definitions
     CredentialDefinition,
     CredentialDefinitionId,
     CredentialDefinitionCreate,
     CredentialDefinitionCreateSchemaId,
+    CredentialDefinitionList,
 
     // Credentials
     Credentials,
@@ -56,6 +61,7 @@ pub enum HelpStrings {
     // Schema
     Schema,
     SchemaId,
+    SchemaList,
     SchemaCreate,
     SchemaCreateName,
     SchemaCreateVersion,
@@ -105,11 +111,16 @@ impl HelpStrings {
                 "Print a QR code, convenient for use with mobile apps"
             }
             HelpStrings::ConnectionsInviteToolbox => HELP_STRING_CONNECTIONS_INVITE_TOOLBOX,
+            HelpStrings::ConnectionsList => "List all your current connections",
+            HelpStrings::ConnectionsListId => "Get a connection by id",
+            HelpStrings::ConnectionsReceive => "Receive an invitation via url",
+            HelpStrings::ConnectionsReceiveUrl => "The url that contains the invitation",
 
             HelpStrings::CredentialDefinition => "Retrieve or create credential definitions",
             HelpStrings::CredentialDefinitionId => "ID of a credential definition to retrieve",
             HelpStrings::CredentialDefinitionCreate => "Create a new credential definition",
             HelpStrings::CredentialDefinitionCreateSchemaId => "Schema ID to use in the definition",
+            HelpStrings::CredentialDefinitionList => "List all your credential definitions",
 
             HelpStrings::Credentials => "Offer or propose credentials",
             HelpStrings::CredentialsOffer => "Offer a new credential to an existing connection",
@@ -136,6 +147,7 @@ impl HelpStrings {
             HelpStrings::SchemaCreateName => "Name of the schema",
             HelpStrings::SchemaCreateVersion => "Version of of the schema, useful to be able to specify multiple versions of the same schema",
             HelpStrings::SchemaCreateAttributes => "Keys that describe the structure of the schema - for example \"age\". Given in the following format: -a foo -a bar -a baz",
+            HelpStrings::SchemaList => "List all your current schemas",
 
             HelpStrings::Workflow => "Automated actions that combine multiple functions",
             HelpStrings::WorkflowCredentialOffer => "Simple credential offer workflow to offer a premade credential to any agent",

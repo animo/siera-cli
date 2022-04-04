@@ -26,6 +26,7 @@ pub enum CredentialDefinitionSubcommands {
         #[clap(short, long, help = HelpStrings::CredentialDefinitionCreateSchemaId)]
         schema_id: String,
     },
+    #[clap(about = HelpStrings::CredentialDefinitionList)]
     List {
         #[clap(long, short, help = HelpStrings::CredentialDefinitionId)]
         id: Option<String>,

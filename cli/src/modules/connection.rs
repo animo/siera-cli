@@ -37,12 +37,14 @@ pub enum ConnectionSubcommands {
         #[clap(long, short = 'l', help = HelpStrings::ConnectionsInviteAlias)]
         alias: Option<String>,
     },
+    #[clap(about = HelpStrings::ConnectionsReceive)]
     Receive {
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::ConnectionsReceiveUrl)]
         url: String,
     },
+    #[clap(about = HelpStrings::ConnectionsList)]
     List {
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::ConnectionsListId)]
         id: Option<String>,
     },
 }
@@ -52,13 +54,6 @@ pub async fn parse_connection_args(
     agent: impl ConnectionModule,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
-    // if let Some(id) = &options.id {
-    //     return agent.get_by_id(id.to_string()).await.map(|connections| {
-    //         loader.stop();
-    //         copy!("{}", pretty_stringify_obj(&connections));
-    //         println!("{}", pretty_stringify_obj(connections));
-    //     });
-    // }
 
     match &options.commands {
         ConnectionSubcommands::Invite {

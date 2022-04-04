@@ -31,6 +31,7 @@ pub enum SchemaSubcommands {
         #[clap(short, long, help=HelpStrings::SchemaCreateAttributes, required = true)]
         attributes: Vec<String>,
     },
+    #[clap(about = HelpStrings::SchemaList)]
     List {
         #[clap(long, short, help=HelpStrings::SchemaId)]
         id: Option<String>,
