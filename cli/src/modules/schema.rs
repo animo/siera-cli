@@ -28,7 +28,7 @@ pub enum SchemaSubcommands {
         name: String,
         #[clap(short, long, help=HelpStrings::SchemaCreateVersion, default_value = "1.0")]
         version: String,
-        #[clap(short, long, help=HelpStrings::SchemaCreateAttributes)]
+        #[clap(short, long, help=HelpStrings::SchemaCreateAttributes, required = true)]
         attributes: Vec<String>,
     },
     List {
