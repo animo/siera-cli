@@ -29,13 +29,13 @@ aries-cli [OPTIONS] <SUBCOMMAND>
 
 Aries CLI offers the following subcommands:
 
-| Subcommand            | Description                                                                                                                                                  |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| automate              | Automated actions that combine multiple functions                                                                                                            |
-| configuration         | Add agents to your configuration or view your current configuration. To quickly get started, run the following command: aries-cli configuraton add --default |
-| connection            | Retrieve connections or create invitations                                                                                                                   |
-| credential            | Offer or propose credentials                                                                                                                                 |
-| credential-definition | Retrieve or create credential definitions                                                                                                                    |
-| feature               | List all available features                                                                                                                                  |
-| message               | Send a secure message to an exist connection                                                                                                                 |
-| schema                | Retrieve or create schemas                                                                                                                                   |
+| Subcommand                                         | Description                                                                                                                                                  |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [automate](broken-reference)                       | Automated actions that combine multiple functions                                                                                                            |
+| configuration                                      | Add agents to your configuration or view your current configuration. To quickly get started, run the following command: aries-cli configuraton add --default |
+| [connection](connections.md)                       | Retrieve connections or create invitations                                                                                                                   |
+| [credential](credentials.md)                       | Offer or propose credentials                                                                                                                                 |
+| [credential-definition](credential-definitions.md) | Retrieve or create credential definitions                                                                                                                    |
+| feature                                            | List all available features                                                                                                                                  |
+| [message](messages.md)                             | Send a secure message to an exist connection                                                                                                                 |
+| [schema](schemas.md)                               | Retrieve or create schemas                                                                                                                                   |
