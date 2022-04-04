@@ -8,7 +8,7 @@ description: >-
 
 The Aries CLI is a development tool that assists you with your Aries based self-sovereign identity development. 
 
-You can use it for individual actions or to run automations. Whether you have been working with verifiable credentials for years, or are just getting started, the CLI will make your life easier.&#x20;
+The CLI makes it easy to create schemas, definitions and credentials so you can test your Aries application. You can use it both for individual actions or to run automations.&#x20;
 
 {% hint style="info" %}
 Currently, Aries-CLI is on its first release. If you have any feature requests, bugs or recommendations, we'd love to hear them! Open issues or contribute through PRs on our [GitHub](https://github.com/animo/aries-cli) repo.
