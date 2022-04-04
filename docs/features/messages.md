@@ -1,8 +1,8 @@
 ---
-description: Send a secure message to an existing connection
+description: Send a secure message to an exist connection
 ---
 
-# Message
+# Messages
 
 Aries CLI offers the following methods for messages:
 

@@ -1,9 +1,5 @@
 # Environments
 
-The Aries CLI supports environments through the config file.&#x20;
+\*Work in progress\*
 
-* How does it work
-* Adding an environment
-* Using an environment (link to configuration page)
-* removing an environment
-
+See the [configuration guide](../guides/configuration.md) for information on how to set and change environments.&#x20;
