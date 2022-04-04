@@ -1,6 +1,6 @@
-pub mod connections;
+pub mod connection;
+pub mod credential;
 pub mod credential_definition;
-pub mod credentials;
-pub mod features;
+pub mod feature;
 pub mod message;
 pub mod schema;

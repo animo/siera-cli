@@ -6,9 +6,9 @@ use crate::help_strings::HelpStrings;
 
 use crate::modules::workflow::WorkflowOptions;
 use crate::modules::{
-    configuration::ConfigurationOptions, connections::ConnectionOptions,
-    credential_definition::CredentialDefinitionOptions, credentials::CredentialOptions,
-    features::FeaturesOptions, message::MessageOptions, schema::SchemaOptions,
+    configuration::ConfigurationOptions, connection::ConnectionOptions,
+    credential::CredentialOptions, credential_definition::CredentialDefinitionOptions,
+    feature::FeaturesOptions, message::MessageOptions, schema::SchemaOptions,
 };
 
 #[derive(Parser)]
@@ -45,12 +45,12 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    Connections(ConnectionOptions),
-    Features(FeaturesOptions),
-    Schemas(SchemaOptions),
-    CredentialDefinitions(CredentialDefinitionOptions),
+    Connection(ConnectionOptions),
+    Feature(FeaturesOptions),
+    Schema(SchemaOptions),
+    CredentialDefinition(CredentialDefinitionOptions),
     Message(MessageOptions),
-    Credentials(CredentialOptions),
+    Credential(CredentialOptions),
     Configuration(ConfigurationOptions),
     Automate(WorkflowOptions),
 }

@@ -1,4 +1,4 @@
-use agent::modules::credentials::{CredentialsModule, CredentialsOfferOptions};
+use agent::modules::credential::{CredentialModule, CredentialOfferOptions};
 use clap::{Args, Subcommand};
 use log::{debug, info};
 
@@ -39,7 +39,7 @@ pub enum CredentialSubcommands {
 
 pub async fn parse_credentials_args(
     commands: &CredentialSubcommands,
-    agent: impl CredentialsModule,
+    agent: impl CredentialModule,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
     match commands {
@@ -53,7 +53,7 @@ pub async fn parse_credentials_args(
                 return Err(Error::UnqualAmountKeyValue.into());
             }
 
-            let options = CredentialsOfferOptions {
+            let options = CredentialOfferOptions {
                 connection_id: connection_id.to_string(),
                 cred_def_id: cred_def_id.to_string(),
                 keys: key.iter().map(|k| k.to_string()).collect(),

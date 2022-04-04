@@ -1,4 +1,4 @@
-use agent::modules::connections::{
+use agent::modules::connection::{
     ConnectionCreateInvitationOptions, ConnectionModule, ConnectionReceiveInvitationOptions,
 };
 use clap::{Args, Subcommand};
