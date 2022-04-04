@@ -14,22 +14,23 @@ aries-cli connection [OPTIONS] [SUBCOMMAND]
 
 #### Options
 
-| Alias | Flag       | Description            |
-| ----- | ---------- | ---------------------- |
-| -h    | --help     | Print help information |
-| -i    | --id \<ID> | Get a connection by id |
+| Alias | Flag   | Description            |
+| ----- | ------ | ---------------------- |
+| -h    | --help | Print help information |
 
 #### Subcommands
 
 | Command | Description                        |
 | ------- | ---------------------------------- |
-| help    | Print help information             |
 | invite  | Create a new connection invitation |
+| list    | List all your current connections  |
 | receive | Receive an invitation by url       |
 
-### Create an Invitation
+### Invite
 
-Create a new connection invitation.
+Create a new connection invitation
+
+
 
 ```
 aries-cli connection invite [OPTIONS]
@@ -54,7 +55,30 @@ Create an invitation that can be used more than once and is auto accepted. The `
 aries-cli -c connection invite -m -a
 ```
 
-### Receive an invitation
+### List
+
+List all your current connections
+
+```
+aries-cli connection list [OPTIONS]
+```
+
+#### Available flags
+
+| Alias | Flag       | Description            |
+| ----- | ---------- | ---------------------- |
+| -h    | --help     | Print help information |
+| -i    | --id \<ID> | Get a connection by id |
+
+#### Example usage
+
+Supply a connection ID to get the connection record.
+
+```
+aries-cli connection list --id 851e2d1b-acee-4a71-b798-8d02a8addd09
+```
+
+### Receive
 
 Receive an invitation by URL.
 
