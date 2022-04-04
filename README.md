@@ -46,7 +46,7 @@ Heres how to install Aries-CLI using the most popular package managers. For adva
 ### macOS using Brew
 
 ```sh
-echo "Coming soon!"
+brew install aries-cli
 ```
 
 ### Linux using Apt-get
@@ -64,6 +64,7 @@ Write-Output "Coming soon!"
 ### Binaries
 
 See [binaries](https://github.com/animo/aries-cli/releases).
+
 ### Cargo install
 
 ```sh
@@ -118,14 +119,27 @@ aries-cli connections invite --help
 <!-- TODO: Add more details about the actions and features we support -->
 We intend to support multiple versions of the Aries agent. See the CLI help `aries-cli --help` for a list of actions we currently support.
 
-Next we are looking at adding:
-
 | Feature          | Status | Description                                                                           |
 | ---------------- | ------ | ------------------------------------------------------------------------------------- |
-| Mock data        | 🚧      | Generate mock data for large data structures like schemas and credential definitions. |
-| Filters          | 🚧      | Use filters to determine what server output you want returned.                        |
-| execute offer-credential  |   ✅    | Execute sequence of actions to get a credential offer in your wallet.      |
-| Present proof    | 🚧      | Present proofs.                                                                       |
+| Environments        |✅      | Support multiple environments. |
+| Connections          | ✅       | Retrieve connections or create invitations.                        |
+| Schemas  |  ✅     | Retrieve or create schemas.      |
+| Credentials    | ✅       | Offer or propose credentials.                         |
+| ACA-Py 0.7.3 support    | ✅       | ACA-Py 0.7.3 support.                         |
+| Verbosity    | ✅       | Three verbosity levels and error messages.                         |
+| Automation: offer credential mocked    | ✅       | Offer a mocked data credential through an automation.                         |
+| Community agent    | ✅       | Default use with the Animo community agent.                         |
+| Multitenancy    | ✅       | Use a personal agent environment with your personal token.            |
+| Brew install    | ✅       | Brew install.            |
+| Proofs    | ✅       | Proofs.            |
+| Apt-get install    | 🚧       | Apt-get install.            |
+| Chocolaty install    | 🚧       | Chocolaty install.            |
+| Automation: offer credential custom    | 🚧       | Offer a custom data credential through an automation.            |
+| Filters    | 🚧      | Use filters to determine what output you want returned.            |
+| Automation: definitions custom    | 🚧      | Create a schema + credential definition with custom data through an automation.            |
+| Automation: proofs mock    | 🚧       | Present proof with mock data through an automation.            |
+| Automation: proofs custom    | 🚧       | Present proof with custom data through an automation.            |
+
 
 ## Contributing
 
