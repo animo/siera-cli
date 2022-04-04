@@ -12,6 +12,8 @@ aries-cli [OPTIONS] <SUBCOMMAND>
 
 ### Options
 
+The Aries CLI offers the following options.
+
 | Alias | Flag                          | Description                                                                 |
 | ----- | ----------------------------- | --------------------------------------------------------------------------- |
 | `-a`  | `--api-key <API_KEY>`         | This API key will be passed to the agent                                    |
@@ -27,12 +29,12 @@ aries-cli [OPTIONS] <SUBCOMMAND>
 
 ### Subcommands
 
-Aries CLI offers the following subcommands:
+The Aries CLI offers the following subcommands.
 
 | Subcommand                                         | Description                                                                                                                                                    |
 | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [automate](broken-reference)                       | Automated actions that combine multiple functions                                                                                                              |
-| configuration                                      | Add agents to your configuration or view your current configuration. To quickly get started, run the following command: `aries-cli configuraton add --default` |
+| [configuration](../guides/configuration.md)        | Add agents to your configuration or view your current configuration. To quickly get started, run the following command: `aries-cli configuraton add --default` |
 | [connection](connections.md)                       | Retrieve connections or create invitations                                                                                                                     |
 | [credential](credentials.md)                       | Offer or propose credentials                                                                                                                                   |
 | [credential-definition](credential-definitions.md) | Retrieve or create credential definitions                                                                                                                      |
