@@ -61,7 +61,7 @@ impl Configuration {
     }
 }
 
-pub fn get_config_from_path(config_path: &PathBuf) -> Result<Configuration> {
+pub fn get_config_from_path(config_path: &Path) -> Result<Configuration> {
     let out: Result<String> =
         std::fs::read_to_string(config_path).map_err(|_| Error::InvalidConfigurationPath.into());
     serde_yaml::from_str::<Configuration>(&out?)
