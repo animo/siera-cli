@@ -49,13 +49,13 @@ configurations:
         token: <YOUR_TOKEN>
 ```
 
-This new environment contains the endpoint for the agent that handles all of your CLI actions (in this case, the URL of our tenant agent). It also contains a custom token you claimed by connecting your GitHub account. You can now use a subtenant of the Animo community agent to execute all CLI commands.
+This new environment contains the endpoint for the agent that handles all of your CLI actions (in this case, the URL of our tenant agent). It also contains the custom token you claimed by connecting your GitHub account. You can now use a subtenant of the Animo community agent to execute all CLI commands.
 
-The Aries CLI uses the 'default' environment when no `--environment <ENVIRONMENT>` flag is given. Having your own tenant will help a lot with keeping your development process clear, however, if you already have a development agent you might want to consider either adding an environment for it or switching over to it completely.
+The Aries CLI uses the 'default' environment when no `--environment <ENVIRONMENT>` flag is given. Having your own tenant will help a lot with keeping your development process clear. However, if you already have a development agent, you might want to consider either adding an environment for it or switching over to it completely.
 
 ### Additional configuration - use your own agent
 
-The Aries CLI supports using different environments. The initialization command creates the following `config.yaml` configuration file, containing only the default environment that uses the community agent.
+The Aries CLI supports using different [environments](../features/environments.md). The initialization command creates the following `config.yaml` configuration file, containing only the default environment that uses the community agent.
 
 ```yaml
 ---
@@ -85,7 +85,7 @@ configurations:
     token: <YOUR_TOKEN>
 ```
 
-To use the new environment, simply use the `--environment <ENVIRONMENT>` flag.
+To use the new environment, simply use the `--environment <ENVIRONMENT>` flag with each of your commands.
 
 The Aries CLI uses the 'default' environment when no `--environment` flag is given. If you want to use another environment as your default, you can override your current default environment by specifying `--environment= default` in the above command.
 
