@@ -1,24 +1,24 @@
 ---
-description: Send a secure message to an exist connection
+description: Send a secure message to an existing connection
 ---
 
-# Messages
+# Message
 
 Aries CLI offers the following methods for messages:
 
 ### Usage
 
 ```
-aries-cli message --id <ID> --message <MESSAGE>
+aries-cli message --connection-id <ID> --message <MESSAGE>
 ```
 
 #### Options
 
-| Alias | Flag                 | Description                         |
-| ----- | -------------------- | ----------------------------------- |
-| -h    | --help               | Print help information              |
-| -i    | --id \<ID>           | Connection ID to sen the message to |
-| -m    | --message \<MESSAGE> | Contents of the message             |
+| Alias | Flag                   | Description                          |
+| ----- | ---------------------- | ------------------------------------ |
+| `-h`  | `--help`               | Print help information               |
+| `-i`  | `--connection-id <ID>` | Connection ID to send the message to |
+| `-m`  | `--message <MESSAGE>`  | Contents of the message              |
 
 #### Example usage
 
