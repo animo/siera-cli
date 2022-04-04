@@ -15,7 +15,7 @@ pub enum HelpStrings {
 
     // Configuration
     Configuration,
-    ConfigurationInitialize,
+    ConfigurationDefault,
     ConfigurationView,
     ConfigurationInitializeToken,
 
@@ -84,9 +84,9 @@ impl HelpStrings {
             HelpStrings::Config => "Path to your configuration file",
             HelpStrings::Environment => "Specify your current environment",
 
-            HelpStrings::Configuration => "Initialize or view current configuration",
-            HelpStrings::ConfigurationInitialize => {
-                "Initialize a new configuration file with a default environment"
+            HelpStrings::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: aries-cli configuration add --default",
+            HelpStrings::ConfigurationDefault => {
+                "Add the default agent to the configuration (can be combined with --token)"
             }
             HelpStrings::ConfigurationView => "Print your current configuration file",
             HelpStrings::ConfigurationInitializeToken => "Authentication token for a multi tenancy agent",

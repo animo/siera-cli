@@ -138,7 +138,7 @@ fn initialize_agent_from_cli(
 
     let (agent_url, api_key, auth_token) = match config_path {
         Some(cp) => {
-            let configurations = get_config_from_path(cp)?;
+            let configurations = get_config_from_path(&cp)?;
             let configuration = configurations
                 .configurations
                 .get_key_value(&environment)
@@ -154,6 +154,6 @@ fn initialize_agent_from_cli(
         }
     };
 
-    let version = CloudAgentPythonVersion::ZeroSixZero;
+    let version = CloudAgentPythonVersion::ZeroSevenThree;
     CloudAgentPython::new(agent_url, api_key, auth_token, version)
 }

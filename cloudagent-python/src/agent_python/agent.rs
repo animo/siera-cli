@@ -5,8 +5,8 @@ use agent::error::Result;
 /// TODO: How do we want to deal with mulitple versions? Architecture wise.
 #[derive(Debug)]
 pub enum CloudAgentPythonVersion {
-    /// ~0.6.0
-    ZeroSixZero,
+    /// ~0.7.3
+    ZeroSevenThree,
 }
 
 #[derive(Debug)]
