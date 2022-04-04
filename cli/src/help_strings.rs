@@ -137,7 +137,7 @@ impl HelpStrings {
 
             HelpStrings::Features => "List all available features",
 
-            HelpStrings::Message => "Send a secure message to an exist connection",
+            HelpStrings::Message => "Send a secure message to an existing connection",
             HelpStrings::MessageId => "Connection ID to send the message to",
             HelpStrings::MessageMessage => "Contents of the message",
 
