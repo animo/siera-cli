@@ -2,6 +2,26 @@
 
 This simple command will result in a credential offer for a mocked credential that can be accepted immediately by scanning the generated QR code or using the URL.&#x20;
 
+### Usage
+
+```
+aries-cli automate credential-offer
+```
+
+#### Options
+
+| Alias | Flag                              | Description                                             |
+| ----- | --------------------------------- | ------------------------------------------------------- |
+| `-h`  | `--help`                          | Print help information.                                 |
+| `-c`  | `--connection-id <CONNECTION_ID>` | Connection id of the receiving party.                   |
+| `-`n  | `--no-qr`                         | Disables printing the QR code.                          |
+| `-s`  | `--self`                          | Completes the entire flow with itself.                  |
+| `-t`  | `--timeout <TIMEOUT>`             | Timeout for the entire flow in seconds \[default : 60]. |
+
+
+
+#### Example usage
+
 ```
 aries-cli automate credential-offer
 ```
