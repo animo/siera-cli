@@ -16,7 +16,7 @@
 * [Credential](features/credentials.md)
 * [Schema](features/schemas.md)
 * [Message](features/messages.md)
-* [Environments](features/environments.md)
+* [Environment](features/environments.md)
 
 ## Automations
 

@@ -12,11 +12,10 @@ Aries CLI supports automations that combine multiple functions into one single c
 aries-cli automate <SUBCOMMAND>
 ```
 
-### Offer a credential
+### Automation: offer a credential
+
+This simple command will&#x20;
 
 ```
 aries-cli automate credential-offer
 ```
-
-
-
