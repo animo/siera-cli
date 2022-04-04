@@ -14,9 +14,9 @@ aries-cli credential [SUBCOMMAND]
 
 #### Options
 
-| Alias | Flag   | Description            |
-| ----- | ------ | ---------------------- |
-| -h    | --help | Print help information |
+| Alias | Flag     | Description            |
+| ----- | -------- | ---------------------- |
+| `-h`  | `--help` | Print help information |
 
 #### Subcommands
 
