@@ -2,14 +2,14 @@
 description: Offer or propose credentials
 ---
 
-# Credentials
+# Credential
 
 Aries CLI offers the following methods for credentials:
 
 ### Usage
 
 ```
-aries-cli credentials [SUBCOMMAND]
+aries-cli credential [SUBCOMMAND]
 ```
 
 #### Options
@@ -22,18 +22,15 @@ aries-cli credentials [SUBCOMMAND]
 
 | Command | Description                                                             |
 | ------- | ----------------------------------------------------------------------- |
-| help    | Print help information                                                  |
 | offer   | Offer a new credential to an existing connection                        |
 | propose | Not implemented yet: propose a credential that should be offered to you |
 
+### Offer
 
-
-### Offer a credential
-
-Offer a credential
+Offer a new credential to an existing connection
 
 ```
-aries-cli credentials offer [OPTIONS] --connection-id <CONNECTION_ID> --cred-def-id <CRED_DEF_ID>
+aries-cli credential offer [OPTIONS] --connection-id <CONNECTION_ID> --cred-def-id <CRED_DEF_ID>
 ```
 
 #### Available flags
