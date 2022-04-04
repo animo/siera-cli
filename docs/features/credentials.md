@@ -20,10 +20,9 @@ aries-cli credential [SUBCOMMAND]
 
 #### Subcommands
 
-| Command | Description                                                             |
-| ------- | ----------------------------------------------------------------------- |
-| offer   | Offer a new credential to an existing connection                        |
-| propose | Not implemented yet: propose a credential that should be offered to you |
+| Command | Description                                      |
+| ------- | ------------------------------------------------ |
+| offer   | Offer a new credential to an existing connection |
 
 ### Offer
 

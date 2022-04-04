@@ -63,4 +63,3 @@ aries-cli credential-definition list [OPTIONS]
 | -h    | --help     | Print help information            |
 | -i    | --id \<ID> | Get a credential definition by id |
 
-###
