@@ -24,7 +24,7 @@ We do recommend taking a quick look at our [configuration guide](guides/configur
 
 ### Getting started
 
-Curious how you can use the Aries CLI? You can follow these guides to get everything up and running in no time.
+Curious how you can use the Aries CLI? You can follow these [guides](broken-reference/) to get everything up and running in no time.
 
 {% content-ref url="guides/installation.md" %}
 [installation.md](guides/installation.md)

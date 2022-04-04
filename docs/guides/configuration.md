@@ -39,7 +39,7 @@ To use our multitenant agent to set up your own tenant, simply:
 * Connect your GitHub account by following the instructions that pop up.
 * Copy the command that appears and run it in your terminal.
 
-If you've initialized the CLI before, the 'default' environment in your `config.yaml` file will now be overwritten with a new default environment. If you haven't initialized the CLI before, the `config.yaml` will be created with the multitenant default environment.
+The `config.yaml` will now be overwritten (or created if you hadn't initialized yet) with a 'default' environment.
 
 ```yaml
 configurations: 
