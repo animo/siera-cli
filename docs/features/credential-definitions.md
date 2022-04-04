@@ -14,19 +14,18 @@ aries-cli credential-definition [OPTIONS] [SUBCOMMAND]
 
 #### Options
 
-| Alias | Flag       | Description            |
-| ----- | ---------- | ---------------------- |
-| -h    | --help     | Print help information |
-| -i    | --id \<ID> | Get a connection by id |
+| Alias | Flag   | Description            |
+| ----- | ------ | ---------------------- |
+| -h    | --help | Print help information |
 
 #### Subcommands
 
-| Command | Description                        |
-| ------- | ---------------------------------- |
-| help    | Print help information             |
-| create  | Create a new credential definition |
+| Command | Description                          |
+| ------- | ------------------------------------ |
+| create  | Create a new credential definition   |
+| list    | List all your credential definitions |
 
-### Create a credential definition
+### Create&#x20;
 
 Create a new credential definition.
 
@@ -48,3 +47,28 @@ Create a credential definition with a schema ID. The `-c` flag automatically cop
 ```
 aries-cli -c credential-definition create -s WVqppUv9X3WyWGrbns5Uia:2:Example:1.0
 ```
+
+### List
+
+List all your current connections
+
+```
+aries-cli connection list [OPTIONS]
+```
+
+#### Available flags
+
+| Alias | Flag       | Description            |
+| ----- | ---------- | ---------------------- |
+| -h    | --help     | Print help information |
+| -i    | --id \<ID> | Get a connection by id |
+
+#### Example usage
+
+Supply a connection ID to get the connection record.
+
+```
+aries-cli connection list --id 851e2d1b-acee-4a71-b798-8d02a8addd09
+```
+
+###
