@@ -1,8 +1,8 @@
 use crate::error::{Error, Result};
 use agent::modules::{
-    connections::ConnectionModule,
+    connection::ConnectionModule,
+    credential::{CredentialModule, CredentialOfferOptions},
     credential_definition::CredentialDefinitionModule,
-    credentials::{CredentialsModule, CredentialsOfferOptions},
     schema::{SchemaCreateOptions, SchemaModule},
 };
 use colored::*;
@@ -18,7 +18,7 @@ pub struct CredentialOfferWorkflow {
 impl CredentialOfferWorkflow {
     pub async fn execute(
         &self,
-        agent: impl ConnectionModule + CredentialsModule + SchemaModule + CredentialDefinitionModule,
+        agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
     ) -> Result<()> {
         trace!("Starting workflow CredentialOfferWorkflow");
         trace!("{}", self.connection_id);
@@ -54,7 +54,7 @@ impl CredentialOfferWorkflow {
 
         println!("{} the credential...", "Offering".cyan());
         let credential_offer_response = agent
-            .send_offer(CredentialsOfferOptions {
+            .send_offer(CredentialOfferOptions {
                 keys: attribute_keys,
                 values: attribute_values,
                 connection_id: self.connection_id.to_owned(),

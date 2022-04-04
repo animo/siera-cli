@@ -8,12 +8,12 @@ use std::path::PathBuf;
 use crate::cli::{Cli, Commands};
 use crate::error::{Error, Result};
 use crate::modules::configuration::parse_configuration_args;
+use crate::modules::credential::parse_credentials_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
-use crate::modules::credentials::parse_credentials_args;
 use crate::modules::message::parse_message_args;
 use crate::modules::workflow::parse_workflow_args;
 use crate::modules::{
-    connections::parse_connection_args, features::parse_features_args, schema::parse_schema_args,
+    connection::parse_connection_args, feature::parse_features_args, schema::parse_schema_args,
 };
 use crate::utils::config::{get_config_from_path, get_config_path};
 use crate::utils::logger;
@@ -36,7 +36,7 @@ pub async fn register() -> Result<()> {
 
     match &cli.commands {
         Commands::Configuration(options) => parse_configuration_args(options).await,
-        Commands::Schemas(options) => {
+        Commands::Schema(options) => {
             let agent = initialize_agent_from_cli(
                 cli.config,
                 cli.environment,
@@ -46,7 +46,7 @@ pub async fn register() -> Result<()> {
             )?;
             parse_schema_args(options, agent).await
         }
-        Commands::Features(_) => {
+        Commands::Feature(_) => {
             let agent = initialize_agent_from_cli(
                 cli.config,
                 cli.environment,
@@ -66,7 +66,7 @@ pub async fn register() -> Result<()> {
             )?;
             parse_message_args(options, agent).await
         }
-        Commands::CredentialDefinitions(options) => {
+        Commands::CredentialDefinition(options) => {
             let agent = initialize_agent_from_cli(
                 cli.config,
                 cli.environment,
@@ -76,7 +76,7 @@ pub async fn register() -> Result<()> {
             )?;
             parse_credential_definition_args(options, agent).await
         }
-        Commands::Connections(options) => {
+        Commands::Connection(options) => {
             let agent = initialize_agent_from_cli(
                 cli.config,
                 cli.environment,
@@ -86,7 +86,7 @@ pub async fn register() -> Result<()> {
             )?;
             parse_connection_args(options, agent).await
         }
-        Commands::Credentials(options) => {
+        Commands::Credential(options) => {
             let agent = initialize_agent_from_cli(
                 cli.config,
                 cli.environment,
@@ -138,7 +138,7 @@ fn initialize_agent_from_cli(
 
     let (agent_url, api_key, auth_token) = match config_path {
         Some(cp) => {
-            let configurations = get_config_from_path(cp)?;
+            let configurations = get_config_from_path(&cp)?;
             let configuration = configurations
                 .configurations
                 .get_key_value(&environment)
@@ -154,6 +154,6 @@ fn initialize_agent_from_cli(
         }
     };
 
-    let version = CloudAgentPythonVersion::ZeroSixZero;
+    let version = CloudAgentPythonVersion::ZeroSevenThree;
     CloudAgentPython::new(agent_url, api_key, auth_token, version)
 }

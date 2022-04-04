@@ -1,6 +1,6 @@
 use super::agent::CloudAgentPython;
 use agent::error::Result;
-use agent::modules::connections::{
+use agent::modules::connection::{
     Connection, ConnectionCreateInvitationOptions, ConnectionCreateInvitationResponse,
     ConnectionGetAllResponse, ConnectionModule, ConnectionReceiveInvitationOptions,
 };

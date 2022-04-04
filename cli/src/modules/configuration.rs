@@ -1,12 +1,11 @@
-use crate::error;
 use crate::error::Result;
+use crate::error::{self, Error};
 use crate::help_strings::HelpStrings;
-use crate::utils::config::{get_config_path, Configurations};
+use crate::utils::config::{get_config_path, Configuration, Environment};
 use clap::{Args, Subcommand};
 use colored::*;
-use log::{debug, info, trace};
+use log::{debug, info};
 use std::fs;
-use std::path::Path;
 
 #[derive(Args)]
 pub struct ConfigurationOptions {
@@ -17,69 +16,79 @@ pub struct ConfigurationOptions {
 #[derive(Subcommand, Debug)]
 #[clap(about = HelpStrings::Configuration)]
 pub enum ConfigurationSubcommands {
-    #[clap(about = HelpStrings::ConfigurationInitialize)]
-    Initialize {
-        #[clap(short, long, help= HelpStrings::ConfigurationInitializeToken)]
-        token: Option<String>,
-    },
     #[clap(about = HelpStrings::ConfigurationView)]
     View,
+    Add {
+        #[clap(short, long, help = HelpStrings::ConfigurationDefault)]
+        default: bool,
+
+        #[clap(long, short, help = HelpStrings::Environment, conflicts_with = "default")]
+        environment: Option<String>,
+
+        #[clap(long, short='u', help = HelpStrings::AgentURL, conflicts_with = "default")]
+        agent_url: Option<String>,
+
+        #[clap(long, short, help = HelpStrings::ApiKey, conflicts_with = "default")]
+        api_key: Option<String>,
+
+        #[clap(long, short='t', help = HelpStrings::ConfigurationInitializeToken)]
+        token: Option<String>,
+    },
 }
 
 pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
     let config_path = get_config_path()?;
     match &options.commands {
-        ConfigurationSubcommands::Initialize { token } => {
-            initialize(&config_path, token.to_owned())?;
-            println!(
-                "{} configuration file at {}.",
-                "Initialised".cyan(),
-                config_path.display()
-            );
-            Ok(())
-        }
         ConfigurationSubcommands::View => {
             debug!(
                 "Loaded configuration from {}",
                 String::from(config_path.to_str().unwrap()).bold()
             );
-
-            view(&config_path).map_err(|err| {
+            let output = fs::read_to_string(&config_path).map_err(|err| {
                 debug!("Failed to read config file: {}", err);
-                error::Error::CannotReadConfigurationFile.into()
-            })
+                Box::<dyn std::error::Error>::from(error::Error::CannotReadConfigurationFile)
+            })?;
+            println!("Configuration path: {:?}", config_path);
+            println!("{}", output);
+            Ok(())
+        }
+        ConfigurationSubcommands::Add {
+            default,
+            environment,
+            agent_url,
+            api_key,
+            token,
+        } => {
+            if *default {
+                let (environment, configuration) = Configuration::init(token.to_owned());
+                Configuration::add(environment, configuration)?;
+                println!(
+                    "{} the default agent at {}.",
+                    "Added".cyan(),
+                    config_path.display()
+                );
+                return Ok(());
+            }
+            debug!("{} a new entry to the configuration file", "Adding".cyan());
+            let path = get_config_path()?;
+            let endpoint = agent_url.to_owned().ok_or(Error::NoAgentURLSupplied)?;
+            let environment = environment.to_owned().ok_or(Error::NoEnvironmentSupplied)?;
+            let env = Environment {
+                endpoint,
+                api_key: api_key.to_owned(),
+                auth_token: token.to_owned(),
+            };
+            info!(
+                "{} {}, {:#?} to {:#?}",
+                "Writing".cyan(),
+                environment,
+                env,
+                path
+            );
+            Configuration::add(environment.to_owned(), env)?;
+
+            debug!("{} a new entry to the configuration", "Written".green());
+            Ok(())
         }
     }
-}
-
-fn view(path: &Path) -> Result<()> {
-    let output = fs::read_to_string(path)?;
-    info!("{}", output);
-    Ok(())
-}
-
-fn initialize(path: &Path, token: Option<String>) -> Result<()> {
-    // Check if the path exists and stop so we do not override the existing configuration file
-    if path.exists() {
-        return Err(error::Error::ConfigExists(path.to_str().unwrap().into()).into());
-    }
-
-    // Get the directories
-    let prefix = path.parent().unwrap();
-
-    // create all the required directories
-    fs::create_dir_all(prefix)?;
-
-    // Create the configuration file
-    fs::File::create(&path)?;
-
-    // Content
-    let content = serde_yaml::to_string(&Configurations::init(token))?;
-
-    trace!("{} {:#?} to {:#?}", "Writing".cyan(), content, path);
-
-    // Write the default configuration to the file
-    fs::write(path, content)?;
-
-    Ok(())
 }

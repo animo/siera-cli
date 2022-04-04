@@ -1,4 +1,4 @@
-use agent::modules::features::FeaturesModule;
+use agent::modules::feature::FeatureModule;
 use clap::Args;
 use log::debug;
 
@@ -13,7 +13,7 @@ use crate::utils::{
 #[clap(about = HelpStrings::Features)]
 pub struct FeaturesOptions {}
 
-pub async fn parse_features_args(agent: impl FeaturesModule) -> Result<()> {
+pub async fn parse_features_args(agent: impl FeatureModule) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
     agent.discover_features().await.map(|features| {
         loader.stop();
