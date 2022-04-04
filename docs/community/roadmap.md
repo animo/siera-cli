@@ -30,25 +30,12 @@ description: Where we are and where we are heading, let us know what you want to
 
 🚧 Automation: offer credential with custom data.
 
-🚧 Automation: schema definition with mock data.
-
-🚧 Automation: credential definition with mock data.&#x20;
-
 🚧 Filters for output.
 
-🚧  Automation: schema + credential definition with custom data.
+🚧 Automation: schema + credential definition with custom data.
 
 🚧 Automation: present proof with mock data.
 
 🚧 Automation: present proof with custom data.
-
-
-
-
-
-
-
-
-
 
 
