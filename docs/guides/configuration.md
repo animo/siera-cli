@@ -53,7 +53,7 @@ This new environment contains the endpoint for the agent that handles all of you
 
 The Aries CLI uses the 'default' environment when no `--environment <ENVIRONMENT>` flag is given. Having your own tenant will help a lot with keeping your development process clear, however, if you already have a development agent you might want to consider either adding an environment for it or switching over to it completely.
 
-### Additional configuration - using your own agent
+### Additional configuration - use your own agent
 
 The Aries CLI supports using different environments. The initialization command creates the following `config.yaml` configuration file, containing only the default environment that uses the community agent.
 
