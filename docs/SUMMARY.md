@@ -5,7 +5,7 @@
 ## Guides
 
 * [Installation](guides/installation.md)
-* [Configuration](guides/configuration.md)
+* [Set up the Aries CLI](guides/configuration.md)
 * [Using the Aries CLI](guides/using-the-aries-cli.md)
 
 ## Features
@@ -16,7 +16,7 @@
 * [Credential](features/credentials.md)
 * [Schema](features/schemas.md)
 * [Message](features/messages.md)
-* [Environment](features/environments.md)
+* [Configuration](features/environments.md)
 
 ## Automations
 
