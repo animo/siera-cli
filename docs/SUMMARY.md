@@ -11,7 +11,7 @@
 ## Features
 
 * [Introduction](features/introduction.md)
-* [Connections](features/connections.md)
+* [Connection](features/connections.md)
 * [Credential Definitions](features/credential-definitions.md)
 * [Credentials](features/credentials.md)
 * [Schema's](features/schemas.md)
