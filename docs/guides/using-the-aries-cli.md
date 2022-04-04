@@ -29,7 +29,7 @@ But options `--name` and `--attribute` are specific to the subcommand `schema cr
 
 ### Know what to do (--help)
 
-Every subcommand has the option of a `-h` or `--help` flag, where you'll see the usage of that subcommand, a description of the options as well as which options are required.
+Every subcommand has the option of a `-h` or `--help` flag, where you'll see the usage of that subcommand, a description of the options as well as which options are required. We recommend playing around with these and trying commands out as the easiest way to get aquainted with the CLI. &#x20;
 
 
 
