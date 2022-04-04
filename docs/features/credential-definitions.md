@@ -2,14 +2,14 @@
 description: Retrieve or create credential definitions
 ---
 
-# Credential Definitions
+# Credential Definition
 
 Aries CLI offers the following methods for credential definitions:
 
 ### Usage
 
 ```
-aries-cli credential-definitions [OPTIONS] [SUBCOMMAND]
+aries-cli credential-definition [OPTIONS] [SUBCOMMAND]
 ```
 
 #### Options
@@ -25,8 +25,6 @@ aries-cli credential-definitions [OPTIONS] [SUBCOMMAND]
 | ------- | ---------------------------------- |
 | help    | Print help information             |
 | create  | Create a new credential definition |
-
-
 
 ### Create a credential definition
 
@@ -48,5 +46,5 @@ aries-cli credential-definition create --schema-id <SCHEMA_ID>
 Create a credential definition with a schema ID. The `-c` flag automatically copies the created credential definition to your clipboard.
 
 ```
-aries-cli -c credential-definitions create -s WVqppUv9X3WyWGrbns5Uia:2:Example:1.0
+aries-cli -c credential-definition create -s WVqppUv9X3WyWGrbns5Uia:2:Example:1.0
 ```

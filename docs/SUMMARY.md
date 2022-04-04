@@ -12,7 +12,7 @@
 
 * [Introduction](features/introduction.md)
 * [Connection](features/connections.md)
-* [Credential Definitions](features/credential-definitions.md)
+* [Credential Definition](features/credential-definitions.md)
 * [Credentials](features/credentials.md)
 * [Schema's](features/schemas.md)
 * [Features](features/features.md)
