@@ -81,7 +81,7 @@ impl HelpStrings {
             HelpStrings::Copy => "Copy output to your clipboard",
             HelpStrings::Quiet => "Suppresses most output",
             HelpStrings::Verbose => "Print debug logs",
-            HelpStrings::Config => "Path to your configuration file",
+            HelpStrings::Config => "Supply a path to your configuration file to use that instead of the default",
             HelpStrings::Environment => "Specify your current environment",
 
             HelpStrings::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: aries-cli configuration add --default",

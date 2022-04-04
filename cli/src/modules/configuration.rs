@@ -44,10 +44,11 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 "Loaded configuration from {}",
                 String::from(config_path.to_str().unwrap()).bold()
             );
-            let output = fs::read_to_string(config_path).map_err(|err| {
+            let output = fs::read_to_string(&config_path).map_err(|err| {
                 debug!("Failed to read config file: {}", err);
                 Box::<dyn std::error::Error>::from(error::Error::CannotReadConfigurationFile)
             })?;
+            println!("Configuration path: {:?}", config_path);
             println!("{}", output);
             Ok(())
         }
