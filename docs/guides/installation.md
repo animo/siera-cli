@@ -29,7 +29,7 @@ This method of install will **not** update automatically and is therefore not re
 
 ### Installing through binaries
 
-The binaries can be downloaded from the[ <mark style="color:blue;">website</mark>](https://aries-cli.animo.id)`under`the `Get started` dropdown or from the [<mark style="color:blue;">GitHub releases</mark>](https://github.com/animo/aries-cli/releases). This method of install will **not** update automatically and is therefore not recommended if another option is available to you. We have binaries available for:
+The binaries can be downloaded from the[ website](https://aries-cli.animo.id)`under`the `Get started` dropdown or from the [GitHub releases](https://github.com/animo/aries-cli/releases). This method of install will **not** update automatically and is therefore not recommended if another option is available to you. We have binaries available for:
 
 * Windows (aries-cli.exe)
 * macOS (Silicon) (aries-cli-macos-arm)
