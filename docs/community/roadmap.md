@@ -20,13 +20,15 @@ description: Where we are and where we are heading, let us know what you want to
 
 ✅ Community agent support.
 
-✅ Tenant support through multitenant agent + personal token.&#x20;
+✅ Tenant support through multitenant agent + personal token.
 
 ✅ Brew install.
 
-🚧 Apt-get install.
+✅ Proofs
 
-🚧 Chocolaty install.
+🚧 Apt-get installation.
+
+🚧 Chocolaty installation.
 
 🚧 Automation: offer credential with custom data.
 
@@ -37,5 +39,3 @@ description: Where we are and where we are heading, let us know what you want to
 🚧 Automation: present proof with mock data.
 
 🚧 Automation: present proof with custom data.
-
-
