@@ -110,7 +110,6 @@ impl HelpStrings {
             }
             HelpStrings::ConfigurationView => "Print your current configuration file",
             HelpStrings::ConfigurationInitializeToken => "Authentication token for a multi tenancy agent",
-
             HelpStrings::Connections => "Retrieve connections or create invitations",
             HelpStrings::ConnectionsId => "ID of connection to retrieve",
             HelpStrings::ConnectionsInvite => "Create a new connection invitation",
@@ -128,7 +127,7 @@ impl HelpStrings {
             HelpStrings::ConnectionsList => "List all your current connections",
             HelpStrings::ConnectionsListId => "Get a connection by id",
             HelpStrings::ConnectionsReceive => "Receive an invitation via url",
-            HelpStrings::ConnectionsReceiveUrl => "The url that contains the invitation",
+            HelpStrings::ConnectionsReceiveUrl => "The url that contains the invitation, surrounded by quotes",
 
             HelpStrings::CredentialDefinition => "Retrieve or create credential definitions",
             HelpStrings::CredentialDefinitionId => "ID of a credential definition to retrieve",
@@ -167,7 +166,7 @@ impl HelpStrings {
             HelpStrings::ProofRequest => "Request a proof by connection id",
             HelpStrings::ProofRequestName => "Name of the proof request",
             HelpStrings::ProofRequestAttribute => "Attribute required in the proof request. e.g. -a=name -a=lastname",
-            HelpStrings::ProofRequestPredicate => "Predicates required in the proof request (format = name,operator,value). e.g. -p=age,>=,18",
+            HelpStrings::ProofRequestPredicate => "Predicates required in the proof request (format = name,operator,value). e.g. -p=\"age,>=,18\"",
             HelpStrings::ProofRequestConnectionId => "Connection id to send the proof request to",
 
             HelpStrings::Workflow => "Automated actions that combine multiple functions",
