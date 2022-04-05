@@ -1,10 +1,10 @@
 use super::agent::CloudAgentPython;
 use agent::error::Result;
-use agent::modules::features::{DiscoverFeaturesResponse, FeaturesModule};
+use agent::modules::feature::{DiscoverFeaturesResponse, FeatureModule};
 use async_trait::async_trait;
 
 #[async_trait]
-impl FeaturesModule for CloudAgentPython {
+impl FeatureModule for CloudAgentPython {
     async fn discover_features(&self) -> Result<DiscoverFeaturesResponse> {
         let url = self
             .cloud_agent

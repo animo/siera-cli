@@ -6,14 +6,14 @@ use crate::help_strings::HelpStrings;
 
 use crate::modules::workflow::WorkflowOptions;
 use crate::modules::{
-    configuration::ConfigurationOptions, connections::ConnectionOptions,
-    credential_definition::CredentialDefinitionOptions, credentials::CredentialOptions,
-    features::FeaturesOptions, message::MessageOptions, schema::SchemaOptions,
+    configuration::ConfigurationOptions, connection::ConnectionOptions,
+    credential::CredentialOptions, credential_definition::CredentialDefinitionOptions,
+    feature::FeaturesOptions, message::MessageOptions, proof::ProofOptions, schema::SchemaOptions,
 };
 
 #[derive(Parser)]
 #[clap(name = "aries-cli", author, version, about = HelpStrings::Cli)]
-#[clap(arg_required_else_help = true)]
+#[clap(arg_required_else_help = true, disable_help_subcommand = true)]
 pub struct Cli {
     #[clap(long, short='u', help = HelpStrings::AgentURL)]
     pub agent_url: Option<String>,
@@ -33,7 +33,7 @@ pub struct Cli {
     #[clap(long, short = 'o', help = HelpStrings::Config)]
     pub config: Option<PathBuf>,
 
-    #[clap(long, short = 'e', default_value = "default", help = HelpStrings::Environment)]
+    #[clap(long, short, default_value = "default", help = HelpStrings::Environment)]
     pub environment: String,
 
     #[clap(long, short='v', help = HelpStrings::Verbose, parse(from_occurrences), conflicts_with = "quiet")]
@@ -45,12 +45,13 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    Connections(ConnectionOptions),
-    Features(FeaturesOptions),
-    Schemas(SchemaOptions),
-    CredentialDefinitions(CredentialDefinitionOptions),
+    Connection(ConnectionOptions),
+    Feature(FeaturesOptions),
+    Schema(SchemaOptions),
+    CredentialDefinition(CredentialDefinitionOptions),
     Message(MessageOptions),
-    Credentials(CredentialOptions),
+    Credential(CredentialOptions),
     Configuration(ConfigurationOptions),
-    Workflow(WorkflowOptions),
+    Automate(WorkflowOptions),
+    Proof(ProofOptions),
 }

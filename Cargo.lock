@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "agent"
-version = "0.2.0"
+version = "0.1.0"
 dependencies = [
  "async-trait",
  "serde",
@@ -132,7 +132,7 @@ dependencies = [
 
 [[package]]
 name = "cli"
-version = "0.2.0"
+version = "0.1.0"
 dependencies = [
  "agent",
  "base64",
@@ -174,7 +174,7 @@ dependencies = [
 
 [[package]]
 name = "cloudagent-python"
-version = "0.2.0"
+version = "0.1.0"
 dependencies = [
  "agent",
  "async-trait",

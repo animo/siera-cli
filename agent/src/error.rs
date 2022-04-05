@@ -9,6 +9,8 @@ pub enum Error {
     InternalServerError(u16),
     UnreachableUrl,
     HttpServiceUnavailable,
+    UnableToParseOutValue(String),
+    InvalidOperator(String),
 }
 
 impl std::error::Error for Error {}
@@ -24,8 +26,9 @@ impl Display for Error {
             Error::UnknownResponseStatusCode(msg) => write!(f, "Received unknown status code from the server. Agent URL is likely incorrect. If the agent URL is correct, please report this error at https://github.com/animo/aries-cli/issues/new \nAdditional info: {}", msg),
             Error::InternalServerError(status) => write!(f, "Internal Server Error (status code: {})!", status),
             Error::UnreachableUrl => write!(f, "Provided url is unreachable. Is the provided agent URL valid?"),
-            Error::HttpServiceUnavailable => write!(f, "Cloudagent is currently unavailable. Are you sure the agent is online?")
-
+            Error::HttpServiceUnavailable => write!(f, "Cloudagent is currently unavailable. Are you sure the agent is online?"),
+            Error::UnableToParseOutValue(val) => write!(f, "Unable to parse the predicate values from: {}. The following structure is required: (name,operator,value)", val),
+            Error::InvalidOperator(op) => write!(f, "Invalid Operator ({}). \">=\", \"<=\", \"=\", \"<\" and \">\" are allowed.", op)
         }
     }
 }

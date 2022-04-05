@@ -31,7 +31,7 @@ pub struct Protocol {
 }
 
 #[async_trait]
-pub trait FeaturesModule {
+pub trait FeatureModule {
     /// Requests all the features from the cloudagent
     async fn discover_features(&self) -> Result<DiscoverFeaturesResponse>;
 }

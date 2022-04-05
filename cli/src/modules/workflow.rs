@@ -1,12 +1,12 @@
 use crate::copy;
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
-use crate::modules::connections::invite_url_to_object;
+use crate::modules::connection::invite_url_to_object;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr;
-use agent::modules::connections::{ConnectionCreateInvitationOptions, ConnectionModule};
+use agent::modules::connection::{ConnectionCreateInvitationOptions, ConnectionModule};
+use agent::modules::credential::CredentialModule;
 use agent::modules::credential_definition::CredentialDefinitionModule;
-use agent::modules::credentials::CredentialsModule;
 use agent::modules::schema::SchemaModule;
 use clap::{Args, Subcommand};
 use colored::*;
@@ -25,23 +25,23 @@ pub struct WorkflowOptions {
 pub enum WorkflowSubcommands {
     #[clap(about = HelpStrings::WorkflowCredentialOffer )]
     CredentialOffer {
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::WorkflowCredentialOfferConnectionId)]
         connection_id: Option<String>,
 
-        #[clap(long, short)]
-        timeout: Option<u32>,
+        #[clap(long, short, default_value = "60", help = HelpStrings::WorkflowCredentialOfferTimeout)]
+        timeout: u32,
 
-        #[clap(long = "self", short = 's')]
+        #[clap(long = "self", short = 's', help = HelpStrings::WorkflowCredentialOfferSelf)]
         sent_to_self: bool,
 
-        #[clap(long, short)]
+        #[clap(long, short, help = HelpStrings::WorkflowCredentialOfferNoQr )]
         no_qr: bool,
     },
 }
 
 pub async fn parse_workflow_args(
     options: &WorkflowOptions,
-    agent: impl ConnectionModule + CredentialsModule + SchemaModule + CredentialDefinitionModule,
+    agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
 
@@ -61,7 +61,6 @@ pub async fn parse_workflow_args(
                         ..Default::default()
                     })
                     .await?;
-                let limit = timeout.map(|t| t / 1000).unwrap_or(60);
                 if *sent_to_self {
                     let invitation_object = invite_url_to_object(connection.invitation_url)?;
                     agent.receive_invitation(invitation_object).await?;
@@ -92,12 +91,12 @@ pub async fn parse_workflow_args(
                     println!(
                         "{} for the invitation to be accepted. Timeout is {} seconds...",
                         "Waiting".cyan(),
-                        limit
+                        timeout
                     );
                     copy!("{}", connection.invitation_url);
                 }
-                debug!("Looping {} times", limit);
-                for i in 1..=limit {
+                debug!("Looping {} times", timeout);
+                for i in 1..=*timeout {
                     let connection =
                         ConnectionModule::get_by_id(&agent, connection.connection_id.to_owned())
                             .await?;
@@ -111,7 +110,7 @@ pub async fn parse_workflow_args(
                         credential_offer(connection.connection_id, agent).await?;
                         break;
                     }
-                    if i == limit {
+                    if i == *timeout {
                         return Err(Error::InactiveConnection.into());
                     }
                 }
@@ -129,7 +128,7 @@ pub async fn parse_workflow_args(
 
 async fn credential_offer(
     connection_id: String,
-    agent: impl ConnectionModule + CredentialsModule + SchemaModule + CredentialDefinitionModule,
+    agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
 ) -> Result<()> {
     // Mock credential
     let mut attributes: HashMap<String, String> = HashMap::new();

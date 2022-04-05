@@ -1,7 +1,8 @@
 pub mod agent;
-mod connections;
+mod connection;
+mod credential;
 mod credential_definition;
-mod credentials;
-mod features;
+mod feature;
 mod message;
+mod proof;
 mod schema;
