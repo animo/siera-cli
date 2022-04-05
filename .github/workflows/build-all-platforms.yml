@@ -73,7 +73,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            aarch64-apple-darwin-aries-cli
-            linux-aries-cli
-            windows-aries-cli.exe
-            x86_64-apple-darwin-aries-cli
+            aarch64-apple-darwin-aries-cli/aries-cli
+            linux-aries-cli/aries-cli
+            windows-aries-cli.exe/aries-cli.exe
+            x86_64-apple-darwin-aries-cli/aries-cli
