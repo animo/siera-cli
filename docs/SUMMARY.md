@@ -20,7 +20,7 @@
 
 ## Automations
 
-* [Introduction](automations/introduction.md)
+* [Overview](automations/overview.md)
 * [Offer credential](automations/usage.md)
 
 ## Community
