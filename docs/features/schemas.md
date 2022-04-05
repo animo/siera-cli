@@ -4,7 +4,7 @@ description: Retrieve or create schemas
 
 # Schema
 
-Aries CLI offers the following methods for schema's:
+Aries CLI offers the following methods for schemas:
 
 ### Usage
 

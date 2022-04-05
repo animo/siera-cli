@@ -12,7 +12,7 @@ description: >-
 Currently, the Aries CLI supports Brew as a package manager.
 
 ```
-brew install aries-cli
+brew tap animo/aries-cli && brew install aries-cli
 ```
 
 For other systems than macOS we recommend installing with Cargo, or installing through the binaries.
@@ -31,7 +31,6 @@ This method of install will **not** update automatically and is therefore not re
 
 The binaries can be downloaded from the[ website](https://aries-cli.animo.id)`under`the `Get started` dropdown or from the [GitHub releases](https://github.com/animo/aries-cli/releases). This method of install will **not** update automatically and is therefore not recommended if another option is available to you. We have binaries available for:
 
-* Windows (aries-cli.exe)
-* macOS (Silicon) (aries-cli-macos-arm)
-* macOS (Intel) (aries-cli-macos-x86\_64)
-* Linux (aries-cli-linux-x86\_64)
+* Windows (x86\_64)
+* macOS (x86\_64 / arm)
+* Linux (x86\_64)
