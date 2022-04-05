@@ -26,7 +26,7 @@ aries-cli automate credential-offer
 aries-cli automate credential-offer
 ```
 
-First, you will receive a connection invitation in your wallet, after which you will receive the offered credential. The credential is named default and contains several fields and types that will help during development.&#x20;
+First, you will receive a connection invitation in your wallet, after which you will receive the offered credential. The credential is named default and contains several types of attribute.&#x20;
 
 ```json
 {
