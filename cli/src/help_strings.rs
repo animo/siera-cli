@@ -201,7 +201,7 @@ Some example commands are the following:
 
     $ aries-cli connection list
         - fetches all the connections (jq compatible)
-    $ aries-cli connection invite -qr
+    $ aries-cli connection invite --qr
         - create an invitation (as a qr code)
     $ aries-cli features
         - Fetches all the features of the cloudagent
