@@ -2,8 +2,9 @@ name: build-all-platforms
 
 on:
   workflow_dispatch:
-  release:
-    types: [created]
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
   build-macos:
@@ -61,3 +62,18 @@ jobs:
         with:
           name: windows-aries-cli.exe
           path: target/release/aries-cli.exe
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-macos, build-linux, build-windows]
+    steps:
+      - name: Download built binaries
+        uses: actions/download-artifact@v3
+      - run: ls -R
+      - name: Release
+        uses: softprops/action-gh-release@1
+        with:
+          files: |
+            aarch64-apple-darwin-aries-cli
+            linux-aries-cli
+            windows-aries-cli.exe
+            x86_64-apple-darwin-aries-cli
