@@ -36,11 +36,11 @@ aries-cli credential offer [OPTIONS] --connection-id <CONNECTION_ID> --cred-def-
 
 | Alias | Flag                              | Description                                       |
 | ----- | --------------------------------- | ------------------------------------------------- |
-| -h    | --help                            | Print help information                            |
-| -c    | --cred-def-id \<CRED\_DEF\_ID>    | A credential definition to base the credential on |
-| -i    | --connection-id \<CONNECTION\_ID> | Existing connection ID to offer the credential to |
-| -k    | --key \<KEY>                      | An attribute key name                             |
-| -v    | --value \<VALUE>                  | An attribute value                                |
+| `-h`  | `--help`                          | Print help information                            |
+| `-c`  | `--cred-def-id <CRED_DEF_ID>`     | A credential definition to base the credential on |
+| `-i`  | `--connection-id <CONNECTION_ID>` | Existing connection ID to offer the credential to |
+| `-k`  | `--key <KEY>`                     | An attribute key name                             |
+| `-v`  | `--value <VALUE>`                 | An attribute value                                |
 
 #### Example usage
 
