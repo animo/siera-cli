@@ -73,8 +73,7 @@ pub fn get_config_path() -> Result<PathBuf> {
         let home = "C:\\Program Files\\Common Files";
         Ok(Path::new(home).join("aries-cli\\config.yaml"))
     } else if cfg!(unix) {
-        let home = option_env!("HOME").ok_or(Error::HomeNotFound);
-        Ok(Path::new(&home?).join(".config/aries-cli/config.yaml"))
+        Ok(Path::new("$HOME").join(".config/aries-cli/config.yaml"))
     } else {
         Err(Error::OsUnknown.into())
     }
