@@ -73,7 +73,7 @@ aries-cli connection list [OPTIONS]
 Supply a connection ID to get the connection record.
 
 ```
-aries-cli connection list --id "851e2d1b-acee-4a71-b798-8d02a8addd09"
+aries-cli connection list --id 851e2d1b-acee-4a71-b798-8d02a8addd09
 ```
 
 ### Receive
@@ -86,14 +86,14 @@ aries-cli connection receive --url <URL>
 
 #### Available flags
 
-| Alias | Flag     | Description                                   |
-| ----- | -------- | --------------------------------------------- |
-| `-h`  | `--help` | Print help information                        |
-| `-u`  | `--url`  | Receive an invitation with the invitation url |
+| Alias | Flag          | Description                                                    |
+| ----- | ------------- | -------------------------------------------------------------- |
+| `-h`  | `--help`      | Print help information                                         |
+| `-u`  | `--url <URL>` | Receive an invitation with the invitation url, between quotes. |
 
 #### Example usage
 
-Supply an invitation URL to accept.
+Supply an invitation URL to accept. Make sure the URL is between quotes.
 
 ```
 aries-cli connection receive --url "https://didcomm.agent.community.animo.id?c_i=eyJAdHlwZSI6ICJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsICJAaWQiOiAiMjNiOGY0ZDAtNzIyNi00ZmQ0LWEyNDAtMjJkNDgxNTViODBlIiwgInJlY2lwaWVudEtleXMiOiBbIjZZVVU2dnp2b0hTV29OWlRDUGE1eFlYV3kyUGJ5VGREcnVKa0VMRXR4NW9kIl0sICJsYWJlbCI6ICJBbmltbyBDb21tdW5pdHkgQWdlbnQiLCAic2VydmljZUVuZHBvaW50IjogImh0dHBzOi8vZGlkY29tbS5hZ2VudC5jb21tdW5pdHkuYW5pbW8uaWQifQ==" 
