@@ -4,7 +4,7 @@ description: Where we are and where we are heading, let us know what you want to
 
 # Roadmap
 
-You can keep track of issues and PRs by following our [GitHub repo](https://github.com/animo/aries-cli) (make sure to star if you enjoy). Community input it very appreciated, whether through issues/bugs/PRs or by leaving a message in the [Discord](https://discord.gg/vXRVNh3DYD).&#x20;
+You can keep track of issues and PRs by following our [GitHub repo](https://github.com/animo/aries-cli) (make sure to star if you enjoy). Community input it very appreciated, either by [contributing](contributing.md) or by leaving a message in the [Discord](https://discord.gg/vXRVNh3DYD).&#x20;
 
 * ✅ Support multiple environments.
 * ✅ Connections.
