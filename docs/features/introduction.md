@@ -1,8 +1,10 @@
 ---
-description: An overview of all available options and subcommands.
+description: An introduction to all available options and subcommands.
 ---
 
-# Introduction
+# Overview
+
+The Aries CLI was created to assist during practical day-to-day development tasks. Its features and subcommands reflect this.&#x20;
 
 ### Usage
 
