@@ -15,16 +15,17 @@ pub struct ProofOptions {
 }
 
 #[derive(Subcommand, Debug)]
-#[clap(about = HelpStrings::Credentials)]
+#[clap(about = HelpStrings::Proof)]
 pub enum ProofSubcommands {
+    #[clap(about = HelpStrings::ProofRequest)]
     Request {
-        #[clap(short, long)]
+        #[clap(short, long, help = HelpStrings::ProofRequestConnectionId)]
         connection_id: String,
-        #[clap(short, long, default_value = "proof-request")]
+        #[clap(short, long, default_value = "proof-request", help = HelpStrings::ProofRequestName)]
         name: String,
-        #[clap(short, long)]
+        #[clap(short, long, help = HelpStrings::ProofRequestPredicate)]
         predicate: Vec<Predicate>,
-        #[clap(short, long)]
+        #[clap(short, long, help = HelpStrings::ProofRequestAttribute)]
         attribute: Vec<String>,
     },
 }

@@ -32,7 +32,7 @@
 Aries CLI is the most convenient way for self-sovereign identity (SSI) developers to interact with SSI agents.
 
 * 🌐 **Environments** to easily manage configuration for multiple projects and agents
-* 🌟 **Actions and automations** that you can perform against an agent
+* 🌟 **Automations** that you can perform against an agent
 * 💅🏻 **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
 If you are looking for more information about the concepts, example code and tutorials on how to use the CLI we recommend you check out our extensive [docs](https://docs.aries-cli.animo.id/).
@@ -97,6 +97,6 @@ We intend to support multiple versions of the Aries agent. See the CLI help `ari
 ## Contributing
 
 Is there something you'd like to fix or add to the CLI? Great! We 💗 community
-contributions. [Get involved](./docs/contributing.md).
+contributions. [Get involved](https://docs.aries-cli.animo.id/community/contributing).
 
 
