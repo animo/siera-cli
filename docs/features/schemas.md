@@ -35,12 +35,12 @@ aries-cli schema create [OPTIONS] --name <NAME> --attribute <ATTRIBUTE>
 
 #### Available flags
 
-| Alias | Flag                     | Description                                                                                                           |
-| ----- | ------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| -h    | --help                   | Print help information                                                                                                |
-| -n    | --name \<NAME>           | Name of the schema                                                                                                    |
-| -a    | --attribute \<ATTRIBUTE> | Keys that describe the structure of the schema - for example "age". Given in t following format: -a foo -a bar -a baz |
-| -v    | --version \<VERSION>     | Version of of the schema, useful to be able to specify multiple versions of the same schema \[default: 1.0]           |
+| Alias | Flag                      | Description                                                                                                           |
+| ----- | ------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `-h`  | `--help`                  | Print help information                                                                                                |
+| `-n`  | `--name <NAME>`           | Name of the schema                                                                                                    |
+| `-a`  | `--attribute <ATTRIBUTE>` | Keys that describe the structure of the schema - for example "age". Given in t following format: -a foo -a bar -a baz |
+| `-v`  | `--version <VERSION>`     | Version of of the schema, useful to be able to specify multiple versions of the same schema \[default: 1.0]           |
 
 #### Example usage
 

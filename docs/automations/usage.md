@@ -14,7 +14,7 @@ aries-cli automate credential-offer
 | ----- | --------------------------------- | ------------------------------------------------------- |
 | `-h`  | `--help`                          | Print help information.                                 |
 | `-c`  | `--connection-id <CONNECTION_ID>` | Connection id of the receiving party.                   |
-| `-`n  | `--no-qr`                         | Disables printing the QR code.                          |
+| `-n`  | `--no-qr`                         | Disables printing the QR code.                          |
 | `-s`  | `--self`                          | Completes the entire flow with itself.                  |
 | `-t`  | `--timeout <TIMEOUT>`             | Timeout for the entire flow in seconds \[default : 60]. |
 
