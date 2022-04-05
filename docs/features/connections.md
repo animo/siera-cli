@@ -38,14 +38,14 @@ aries-cli connection invite [OPTIONS]
 
 #### Available flags
 
-| Alias | Flag             | Description                                                                                                                                                                                                                      |
-| ----- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| -a    | --auto-accept    | Automatically accept the new connection once they accept this invitation                                                                                                                                                         |
-| -h    | --help           | Print help information                                                                                                                                                                                                           |
-| -l    | --alias \<ALIAS> | The name a new connection will use to identify itself                                                                                                                                                                            |
-| -m    | --multi-use      | This invitation can be used more than once                                                                                                                                                                                       |
-| -q    | --qr             | Print a QR code, convenient for use with mobile apps                                                                                                                                                                             |
-| -t    | --toolbox        | <p>Short-hand to create an invitation for the Aries Toolbox that sets:</p><ul><li>alias="toolbox"</li><li>multi-use="false"</li><li>auto-accept="true"</li></ul><p>and gives admin rights over the invitation to the toolbox</p> |
+| Alias | Flag              | Description                                                                                                                                                                                                                                                             |
+| ----- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-a`  | `--auto-accept`   | Automatically accept the new connection once they accept this invitation                                                                                                                                                                                                |
+| `-h`  | `--help`          | Print help information                                                                                                                                                                                                                                                  |
+| `-l`  | `--alias <ALIAS>` | The name a new connection will use to identify itself                                                                                                                                                                                                                   |
+| `-m`  | `--multi-use`     | This invitation can be used more than once                                                                                                                                                                                                                              |
+| `-q`  | `--qr`            | Print a QR code, convenient for use with mobile apps                                                                                                                                                                                                                    |
+| `-t`  | `--toolbox`       | <p>Short-hand to create an invitation for the Aries Toolbox that sets:</p><ul><li><code>alias="toolbox"</code></li><li><code>multi-use="false"</code></li><li><code>auto-accept="true"</code></li></ul><p>and gives admin rights over the invitation to the toolbox</p> |
 
 #### Example usage
 
@@ -65,10 +65,10 @@ aries-cli connection list [OPTIONS]
 
 #### Available flags
 
-| Alias | Flag       | Description            |
-| ----- | ---------- | ---------------------- |
-| -h    | --help     | Print help information |
-| -i    | --id \<ID> | Get a connection by id |
+| Alias | Flag        | Description            |
+| ----- | ----------- | ---------------------- |
+| `-h`  | `--help`    | Print help information |
+| `-i`  | `--id <ID>` | Get a connection by id |
 
 #### Example usage
 
