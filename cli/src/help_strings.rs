@@ -68,6 +68,14 @@ pub enum HelpStrings {
     SchemaCreateVersion,
     SchemaCreateAttributes,
 
+    // Proof
+    Proof,
+    ProofRequest,
+    ProofRequestName,
+    ProofRequestPredicate,
+    ProofRequestAttribute,
+    ProofRequestConnectionId,
+
     // Workflow
     Workflow,
     WorkflowCredentialOffer,
@@ -128,7 +136,7 @@ impl HelpStrings {
             HelpStrings::CredentialDefinitionCreateSchemaId => "Schema ID to use in the definition",
             HelpStrings::CredentialDefinitionList => "List all your credential definitions",
 
-            HelpStrings::Credentials => "Offer or propose credentials",
+            HelpStrings::Credentials => "Issue Credential V1",
             HelpStrings::CredentialsOffer => "Offer a new credential to an existing connection",
             HelpStrings::CredentialsOfferConnectionId => {
                 "Existing connection ID to offer the credential to"
@@ -154,6 +162,13 @@ impl HelpStrings {
             HelpStrings::SchemaCreateVersion => "Version of of the schema, useful to be able to specify multiple versions of the same schema",
             HelpStrings::SchemaCreateAttributes => "Keys that describe the structure of the schema - for example \"age\". Given in the following format: -a foo -a bar -a baz",
             HelpStrings::SchemaList => "List all your current schemas",
+
+            HelpStrings::Proof => "Present proof V1",
+            HelpStrings::ProofRequest => "Request a proof by connection id",
+            HelpStrings::ProofRequestName => "Name of the proof request",
+            HelpStrings::ProofRequestAttribute => "Attribute required in the proof request. e.g. -a=name -a=lastname",
+            HelpStrings::ProofRequestPredicate => "Predicates required in the proof request (format = name,operator,value). e.g. -p=age,>=,18",
+            HelpStrings::ProofRequestConnectionId => "Connection id to send the proof request to",
 
             HelpStrings::Workflow => "Automated actions that combine multiple functions",
             HelpStrings::WorkflowCredentialOffer => "Simple credential offer automation to offer a premade credential to any agent",
