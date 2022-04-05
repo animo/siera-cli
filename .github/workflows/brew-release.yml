@@ -2,20 +2,18 @@ name: Brew Release
 
 on:
   push:
-  #   tags:
-  #     - 'v*'
-  #   branches: ["main"]
-  # workflow_run:
-  #   workflows: ["build-and-release"]
-  #   branches: [main]
-  #   types: 
-  #     - completed
+    tags:
+      - "v*.*.*"
+  workflow_run:
+    workflows: ["build-and-release"]
+    types: 
+      - completed
 
 jobs:
   release-brew:
     name: release brew
     runs-on: ubuntu-latest
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Get Ruby file
         id: get_ruby_file
