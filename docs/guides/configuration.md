@@ -30,7 +30,7 @@ The config file contains an endpoint for the agent that handles all of your CLI 
 You might find, however, that you want some more advanced configuration in order to avoid the clutter of the community agent (as you will encounter the actions of everyone using it). No worries! In a few easy steps, you can set up your own tenant environment or connect your own agent instead.
 
 {% hint style="info" %}
-The community agent is a single agent, hosted by [Animo Solutions](https://animo.id), that can be used for free by any community member with default setup. It can therefore be reset, or get cluttered with community members connections, schema's and credentials. If you are looking for a more stable environment we recommend setting up the multitenant agent.&#x20;
+The community agent is a single agent, hosted by [Animo Solutions](https://animo.id), that can be used for free by any community member with default setup. It can therefore be reset, or get cluttered with community members connections, schema's and credentials. If you are looking for a more stable environment we recommend setting up the multitenant agent.
 {% endhint %}
 
 ### Advanced configuration - use our multitenant agent
@@ -42,6 +42,12 @@ To use our multitenant agent to set up your own tenant, simply:
 * Choose to [claim your token via the Aries CLI website](https://aries-cli.animo.id).
 * Connect your GitHub account by following the instructions that pop up.
 * Copy the command that appears and run it in your terminal.
+
+The command will look like the one below, with the token filled.&#x20;
+
+```
+aries-cli configuration add --default --token <TOKEN>
+```
 
 If you've initialized the CLI before, the 'default' environment in your `config.yaml` file will now be overwritten with a new default environment. If you haven't initialized the CLI before, the `config.yaml` will be created with the multitenant default environment.
 
@@ -58,7 +64,7 @@ This new environment contains the endpoint for the agent that handles all of you
 The Aries CLI uses the 'default' environment when no `--environment <ENVIRONMENT>` flag is given. Having your own tenant will help a lot with keeping your development process clear. However, if you already have a development agent, you might want to consider either adding an environment for it or switching over to it completely.
 
 {% hint style="info" %}
-The multitenant agent, hosted by [Animo Solutions](https://animo.id), can be used for free by any community member who has claimed a token. The data on your environment is persisted. However, this is a free developer tool, so the chance that the agent is reset completely does exist. Keep an eye on the [Discord](https://discord.gg/vXRVNh3DYD) for scheduled maintanance announcements.&#x20;
+The multitenant agent, hosted by [Animo Solutions](https://animo.id), can be used for free by any community member who has claimed a token. The data on your environment is persisted. However, this is a free developer tool, so the chance that the agent is reset completely does exist. Keep an eye on the [Discord](https://discord.gg/vXRVNh3DYD) for scheduled maintanance announcements.
 {% endhint %}
 
 ### Additional configuration - use your own agent
@@ -96,4 +102,3 @@ configurations:
 To use the new environment, simply use the `--environment <ENVIRONMENT>` flag with each of your commands.
 
 The Aries CLI uses the 'default' environment when no `--environment` flag is given. If you want to use another environment as your default, you can override your current default environment by specifying `--environment= default` in the above command.
-

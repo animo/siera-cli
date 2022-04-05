@@ -11,12 +11,13 @@
 ## Features
 
 * [Overview](features/introduction.md)
+* [Configuration](features/environments.md)
 * [Connection](features/connections.md)
+* [Message](features/messages.md)
+* [Schema](features/schemas.md)
 * [Credential Definition](features/credential-definitions.md)
 * [Credential](features/credentials.md)
-* [Schema](features/schemas.md)
-* [Message](features/messages.md)
-* [Configuration](features/environments.md)
+* [Proof](features/proof.md)
 
 ## Automations
 

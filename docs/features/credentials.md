@@ -49,3 +49,10 @@ Offer a credential to an existing connection. The following command offers a cre
 ```
 aries-cli credentials offer -i d583caa1-0bdd-46f9-98d3-8d0bdd4a6056 -c Ehx3RZSV38pn3MYvxtHhbQ:3:CL:213800:default -k name -v animo
 ```
+
+The key and value flags are index matched and should be used as such. The below command matches key 1..3 to value 1..3.&#x20;
+
+```
+aries-cli credential offer ... -k=key1 -v=value1 -k=key2 -k=key3 -v=value2 -v=value3
+```
+
