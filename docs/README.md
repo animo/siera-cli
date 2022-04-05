@@ -14,7 +14,11 @@ The CLI makes it easy to create schemas, definitions and credentials, so you can
 Currently, the Aries CLI is on its first release. If you have any feature requests, bugs or recommendations, we'd love to hear them! Open issues or contribute through PRs on our [GitHub](https://github.com/animo/aries-cli) repo.
 {% endhint %}
 
+There are three options to get started with the CLI. You can start without any setup with our community agent. You can connect your GitHub and claim a token to get an individual tenant environment using our multitenant agent. Or you can connect your own development agent to the CLI. Both community agents are free to use and hosted by [Animo Solutions](https://animo.id). Follow [this guide](guides/configuration.md) for set up.&#x20;
 
+{% hint style="info" %}
+The Aries CLI is free to use. Both community agents will occasionally have to be reset or need maintenance. Keep an eye on the [Discord](https://discord.gg/vXRVNh3DYD) for announcements and news.&#x20;
+{% endhint %}
 
 ### Quickstart
 
