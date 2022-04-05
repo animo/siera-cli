@@ -2,20 +2,20 @@ name: Brew Release
 
 on:
   push:
-    tags:
-      - 'v*'
-    branches: ["main"]
-  workflow_run:
-    workflows: ["build-and-release"]
-    branches: [main]
-    types: 
-      - completed
+  #   tags:
+  #     - 'v*'
+  #   branches: ["main"]
+  # workflow_run:
+  #   workflows: ["build-and-release"]
+  #   branches: [main]
+  #   types: 
+  #     - completed
 
 jobs:
   release-brew:
     name: release brew
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Get Ruby file
         id: get_ruby_file
@@ -27,9 +27,8 @@ jobs:
           URLS=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq -r '.[] .assets[].browser_download_url' | grep "apple") # two lines with 1 download url each
           URL_ARM=$(echo $URLS | grep -m1 "arm" | awk '{ print $1 }')
           URL_X86=$(echo $URLS | grep -m1 "x86" | awk '{ print $2 }')  
-          SHA_ARM=$(curl --silent $URL_ARM | shasum -a 256  | awk '{ print $1 }')
-          SHA_X86=$(curl --silent $URL_X86 | shasum -a 256  | awk '{ print $1 }')
-          SHA_X86=$(curl --silent $URL_X86 | shasum -a 256  | awk '{ print $1 }')
+          SHA_ARM=$(curl -L --silent $URL_ARM | shasum -a 256  | awk '{ print $1 }')
+          SHA_X86=$(curl -L --silent $URL_X86 | shasum -a 256  | awk '{ print $1 }')
           # replace intel download url 
           sed -i -e "7s|.*|    url \"$URL_X86\"|" aries-cli.rb
           # replace intel sha
