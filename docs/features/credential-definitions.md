@@ -35,10 +35,10 @@ aries-cli credential-definition create --schema-id <SCHEMA_ID>
 
 #### Available flags
 
-| Alias | Flag        | Description                        |
-| ----- | ----------- | ---------------------------------- |
-| -h    | --help      | Print help information             |
-| -s    | --schema-id | Schema ID to use in the definition |
+| Alias | Flag          | Description                        |
+| ----- | ------------- | ---------------------------------- |
+| `-h`  | `--help`      | Print help information             |
+| `-s`  | `--schema-id` | Schema ID to use in the definition |
 
 #### Example usage
 
@@ -58,8 +58,8 @@ aries-cli credential-definition list [OPTIONS]
 
 #### Available flags
 
-| Alias | Flag       | Description                       |
-| ----- | ---------- | --------------------------------- |
-| -h    | --help     | Print help information            |
-| -i    | --id \<ID> | Get a credential definition by id |
+| Alias | Flag        | Description                       |
+| ----- | ----------- | --------------------------------- |
+| `-h`  | `--help`    | Print help information            |
+| `-i`  | `--id <ID>` | Get a credential definition by id |
 
