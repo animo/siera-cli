@@ -51,11 +51,11 @@ Pay extra attention to the usage of `--attribute` and `--predicate`.&#x20;
 With the attribute flag, each attribute is flagged individually.
 
 ```
-aries-cli proof request -c <YOUR_CONNECTION_ID> -a=attribute1 -a=attribute2 -a=attribute3
+aries-cli proof request -c <YOUR_CONNECTION_ID> -a attribute1 -a attribute2 -a attribute3
 ```
 
 With the predicate flag, each predicate as a whole (the name, operator and value together) is flagged individually. The name, operator and value are comma separated and between quotes, resulting in `--predicate "name,operator,value"`.
 
 ```
-aries-cli proof request -c <YOUR_CONNECTION_ID> ... -p= "date,>,20210101" -p= "age,>,21"
+aries-cli proof request -c <YOUR_CONNECTION_ID> ... -p "date,>,20210101" -p "age,>,21"
 ```
