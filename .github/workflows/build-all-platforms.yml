@@ -68,12 +68,16 @@ jobs:
     steps:
       - name: Download built binaries
         uses: actions/download-artifact@v3
-      - run: ls -R
+      - run: |
+          mv aarch64-apple-darwin-aries-cli/aries-cli apple-arm-aries-cli
+          mv x86_64-apple-darwin-aries-cli/aries-cli apple-x86_64-aries-cli
+          mv linux-aries-cli/aries-cli linux-x86_64-aries-cli
+          mv windows-aries-cli.exe/aries-cli.exe windows-x86_64-aries-cli.exe
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            aarch64-apple-darwin-aries-cli/aries-cli
-            linux-aries-cli/aries-cli
-            windows-aries-cli.exe/aries-cli.exe
-            x86_64-apple-darwin-aries-cli/aries-cli
+            apple-arm-aries-cli
+            apple-x86_64-aries-cli
+            linux-x86_64-aries-cli
+            windows-x86_64-aries-cli.exe
