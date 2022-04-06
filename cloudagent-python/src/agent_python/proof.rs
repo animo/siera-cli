@@ -37,7 +37,6 @@ impl ProofModule for CloudAgentPython {
           }
         });
 
-
         self.cloud_agent.post(url, None, Some(body)).await
     }
 }
