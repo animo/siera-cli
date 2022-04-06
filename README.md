@@ -56,12 +56,12 @@ cargo install --git https://github.com/animo/aries-cli
 git clone https://github.com/animo/aries-cli
 cd aries-cli
 
-# Run one of the following commands to build:
+# Run ONE of the following commands to build:
 make build
 
 cargo build --release
 
-# Run one of the following command to add install the aries-cli into your PATH
+# Run ONE of the following commands to add install the aries-cli into your PATH
 make install 
 
 cargo install --path ./cli
