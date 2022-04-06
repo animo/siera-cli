@@ -1,4 +1,7 @@
-default: lint build test
+default: format lint build test
+
+format:
+	cargo fmt
 
 lint:
 	cargo clippy
