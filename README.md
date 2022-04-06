@@ -33,7 +33,7 @@ Aries CLI is the most convenient way for self-sovereign identity (SSI) developer
 
 If you are looking for more information about the concepts, example code and tutorials on how to use the CLI we recommend you check out our extensive [docs](https://docs.aries-cli.animo.id/).
 
-## Getting started
+## Installation
 
 Heres how to install Aries-CLI using the most popular package managers. For advanced installation options, binaries and troubleshooting we recommend checking out the [installation guide](https://docs.aries-cli.animo.id/guides/installation).
 
@@ -48,6 +48,24 @@ brew install aries-cli
 
 ```sh
 cargo install --git https://github.com/animo/aries-cli
+```
+
+### Manual build from source
+
+```sh
+git clone https://github.com/animo/aries-cli
+cd aries-cli
+
+# Run ONE of the following commands to build:
+make build
+
+cargo build --release
+
+# Run ONE of the following commands to add install the aries-cli into your PATH
+make install 
+
+cargo install --path ./cli
+
 ```
 
 ## Quickly getting started
