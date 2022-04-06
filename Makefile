@@ -10,7 +10,7 @@ build:
 	cargo build --release
 
 test: 
-	sh ./tests/run.sh
+	bash ./tests/run.sh
 
 install:
 	cargo install --path ./cli
