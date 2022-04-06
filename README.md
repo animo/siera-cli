@@ -12,13 +12,9 @@
   />
 </p>
 
-
 <h1 align="center" ><b>Aries CLI</b></h1>
 
-
 <h3 align="center">Powered by &nbsp; <img src="./images/animo-logo-dark-background.png#gh-dark-mode-only" height="12px"><img src="./images/animo-logo-light-background.png#gh-light-mode-only" height="12px"></h3><br>
-
-
 
 <p align="center">
 <a href="#getting-started">Getting started</a> &nbsp;|&nbsp;
@@ -31,12 +27,11 @@
 
 Aries CLI is the most convenient way for self-sovereign identity (SSI) developers to interact with SSI agents.
 
-* 🌐 **Environments** to easily manage configuration for multiple projects and agents
-* 🌟 **Automations** that you can perform against an agent
-* 💅🏻 **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
+* **Environments** to easily manage configuration for multiple projects and agents
+* **Automations** that you can perform against an agent
+* **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
 If you are looking for more information about the concepts, example code and tutorials on how to use the CLI we recommend you check out our extensive [docs](https://docs.aries-cli.animo.id/).
-
 
 ## Getting started
 
@@ -45,28 +40,29 @@ Heres how to install Aries-CLI using the most popular package managers. For adva
 ### macOS using Brew
 
 ```sh
-brew tap animo/aries-cli && brew install aries-cli
+brew tap animo/aries-cli 
+brew install aries-cli
 ```
 
 ### Cargo install
 
 ```sh
 cargo install --git https://github.com/animo/aries-cli
-### Setting up your environment
+```
+
+## Quickly getting started
+
+In order to work with the Aries-CLI an agent needs to be configured. With the following command you connect with our community agent and can access all the functionality.
 
 ```sh
 aries-cli configuration add --default
-# > /location/of/the/config/file
 ```
 
 This command will set up the community agent. To set up your own agent or use our multitenant agent to get your own environment, see the [set up guide](https://docs.aries-cli.animo.id/guides/configuration). 
 
-
 If you are getting started with the tool we recommend enabling informational logs by passing the `--verbose` (or `-v`) flag.
 
 To see all actions simply use the `--help` or `-h` flag or see the [feature overview](https://docs.aries-cli.animo.id/features/introduction). 
-
-
 
 ## Roadmap
 
@@ -98,5 +94,3 @@ We intend to support multiple versions of the Aries agent. See the CLI help `ari
 
 Is there something you'd like to fix or add to the CLI? Great! We 💗 community
 contributions. [Get involved](https://docs.aries-cli.animo.id/community/contributing).
-
-
