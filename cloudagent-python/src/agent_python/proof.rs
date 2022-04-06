@@ -31,9 +31,10 @@ impl ProofModule for CloudAgentPython {
           "connection_id": options.connection_id,
           "proof_request": {
             "name": options.name,
+            "version": "1.0",
             "requested_attributes": requested_attributes,
             "requested_predicates": requested_predicates,
-          },
+          }
         });
 
         self.cloud_agent.post(url, None, Some(body)).await
