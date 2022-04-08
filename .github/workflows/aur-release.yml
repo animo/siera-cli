@@ -1,0 +1,57 @@
+name: AUR Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_run:
+    workflows: ["build-and-release"]
+    types: 
+      - completed
+
+jobs:
+  release-brew:
+    name: release brew
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Get PKGBUILD
+        id: get_pkgbuild
+        run: curl -o PKGBUILD https://raw.githubusercontent.com/animo/aries-cli/main/pkg/PKGBUILD
+      - name: Gather data and rewrite ruby file
+        id: gather_data_and_rewrite
+        run: |
+          VERSION=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq '.[-1]' |  jq -r .tag_name)
+          # replace package version
+          sed -i -e "3s|.*|pkgver=\"${VERSION}\" PKGBUILD
+          # create new SRCINFO
+          makepkg --printsrcinfo > .SRCINFO
+      - name: commit to AUR
+        id: commit_aur
+        run: |
+          # get the version
+          VERSION=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq '.[-1]' |  jq -r .tag_name)
+          # get the aur repo
+          git clone ssh://aur@aur.archlinux.org/aries-cli.git
+          # overwrite with the new files
+          cp PKGBUILD aries-cli/PKGBUILD
+          cp .SRCINFO aries-cli/.SRCINFO
+          cd aries-cli
+          # use the rsa key for git
+          echo $AUR_KEY > ~/.ssh/aur
+          # set the ssh config for aur
+          cat >> ~/.ssh/config<<EOF
+
+          Host aur.archlinux.org
+            IdentityFile ~/.ssh/aur
+            User animosolutions
+          EOF
+          # set git username and email
+          git config user.name "animosolutions"
+          git config user.email "contact@animo.id"
+          # commit
+          git commit -am "Release new aries-cli version ${VERSION}"
+          # add the remote
+          git remote add aur ssh://aur@aur.archlinux.org/aries-cli.git
+          # push it
+          git push
