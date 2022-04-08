@@ -19,9 +19,7 @@ configurations:
     token: ~
 ```
 
-{% hint style="warning" %}
-In MS Windows Powershell you need to either run your command prompt application as administrator or allow your current user write access to `C:\Program Files\Common Files\` in order to be able to write a config file to disk. This does not apply when using WSL.&#x20;
-{% endhint %}
+
 
 ### Usage
 
@@ -42,19 +40,21 @@ aries-cli configuration [SUBCOMMAND]
 | add     | Add a new, or overwrite an existing, agent to your configuration file. |
 | view    | Print your current configuration file.                                 |
 
+
+
 ### Add
 
 Add a new, or overwrite an existing, agent to your configuration file.
 
 ```
-aries-cli configuration add [OPTIONS]
+aries-cli configuration add [OPTIONS] 
 ```
 
 #### Available flags
 
 | Alias | Flag                          | Description                                                                  |
 | ----- | ----------------------------- | ---------------------------------------------------------------------------- |
-| `-a`  | --api-key \<API_KEY>          | This API key will be passed to the agent.                                    |
+| `-a`  | --api-key \<API\_KEY>         | This API key will be passed to the agent.                                    |
 | `-d`  | --default                     | Add the default agent to the configuration (can be combined with `--token`). |
 | `-e`  | `--environment <ENVIRONMENT>` | Specify your current environment.                                            |
 | `-h`  | `--help`                      | Print help information.                                                      |
@@ -88,3 +88,6 @@ aries-cli configuration view
 #### Example usage
 
 The command results in a print out of both the configuration path and the `config.yaml` itself.&#x20;
+
+
+
