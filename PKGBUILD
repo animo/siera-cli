@@ -1,4 +1,4 @@
-# Mainainer: Animo Solutions development@animo.id
+# Mainainer: Animo Solutions contact@animo.id
 pkgname="aries-cli"
 pkgver="0.1.0"
 pkgrel="1"
