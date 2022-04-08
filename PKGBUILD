@@ -5,7 +5,7 @@ pkgrel="1"
 pkgdesc="A CLI tool for Aries written in rust"
 arch=(x86_64)
 license=('MIT')
-depends=('sudo' 'libxcb')
+depends=()
 provides=('aries-cli')
 md5sums=()
 
