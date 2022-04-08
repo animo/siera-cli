@@ -10,15 +10,15 @@ on:
       - completed
 
 jobs:
-  release-brew:
-    name: release brew
+  release-aur:
+    name: release aur
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Get PKGBUILD
         id: get_pkgbuild
         run: curl -o PKGBUILD https://raw.githubusercontent.com/animo/aries-cli/main/pkg/PKGBUILD
-      - name: Gather data and rewrite ruby file
+      - name: Gather data and rewrite PKGBUILD file
         id: gather_data_and_rewrite
         run: |
           VERSION=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq '.[-1]' |  jq -r .tag_name)
