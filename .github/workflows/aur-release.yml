@@ -22,8 +22,10 @@ jobs:
         id: gather_data_and_rewrite
         run: |
           VERSION=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq '.[-1]' |  jq -r .tag_name)
+          # strip the v prefix
+          VERSION=${VERSION:1}
           # replace package version
-          sed -i -e "3s|.*|pkgver=\"${VERSION}\" PKGBUILD
+          sed -i '3s|.*|pkgver\='"$VERSION"'|' PKGBUILD
           # create new SRCINFO
           makepkg --printsrcinfo > .SRCINFO
       - name: commit to AUR
