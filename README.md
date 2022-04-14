@@ -68,7 +68,7 @@ cargo install --path ./cli
 
 ```
 
-## Quickly getting started
+## Getting started
 
 In order to work with the Aries-CLI an agent needs to be configured. With the following command you connect with our community agent and can access all the functionality.
 
