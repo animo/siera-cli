@@ -169,7 +169,7 @@ impl HelpStrings {
             HelpStrings::ProofRequestPredicate => "Predicates required in the proof request (format = name,operator,value). e.g. -p=\"age,>=,18\"",
             HelpStrings::ProofRequestConnectionId => "Connection id to send the proof request to",
 
-            HelpStrings::Automation => "Automated actions that combine multiple functions",
+            HelpStrings::Automation => "Run a set of actions against the agent",
             HelpStrings::AutomationCredentialOffer => "Offer a premade credential to an agent",
             HelpStrings::AutomationCredentialOfferConnectionId => "Connection id of the receiving party",
             HelpStrings::AutomationCredentialOfferNoQr => "Do not show a QR code",
