@@ -172,7 +172,7 @@ impl HelpStrings {
             HelpStrings::Automation => "Automated actions that combine multiple functions",
             HelpStrings::AutomationCredentialOffer => "Offer a premade credential to an agent",
             HelpStrings::AutomationCredentialOfferConnectionId => "Connection id of the receiving party",
-            HelpStrings::AutomationCredentialOfferNoQr => "Disables printing the qr code",
+            HelpStrings::AutomationCredentialOfferNoQr => "Do not show a QR code",
             HelpStrings::AutomationCredentialOfferSelf => "Completes the entire flow with itself",
             HelpStrings::AutomationCredentialOfferTimeout=> "Timeout in seconds",
         }
