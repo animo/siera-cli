@@ -1,22 +1,24 @@
 use super::agent::CloudAgentPython;
 use agent::error::Result;
 use agent::modules::credential_definition::{
-    CredentialDefinitionCreateResponse, CredentialDefinitionGetAllResponse,
-    CredentialDefinitionGetByIdResponse, CredentialDefinitionModule,
+    CredentialDefinitionCreateOptions, CredentialDefinitionCreateResponse,
+    CredentialDefinitionGetAllResponse, CredentialDefinitionGetByIdResponse,
+    CredentialDefinitionModule,
 };
 use async_trait::async_trait;
 use serde_json::json;
 
 #[async_trait]
 impl CredentialDefinitionModule for CloudAgentPython {
-    async fn create(&self, schema_id: String) -> Result<CredentialDefinitionCreateResponse> {
+    async fn create(
+        &self,
+        options: CredentialDefinitionCreateOptions,
+    ) -> Result<CredentialDefinitionCreateResponse> {
         let url = self
             .cloud_agent
             .create_url(vec!["credential-definitions"])?;
 
-        let body = json!({
-          "schema_id": schema_id,
-        });
+        let body = json!(options);
 
         self.cloud_agent.post(url, None, Some(body)).await
     }
