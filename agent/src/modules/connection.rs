@@ -4,6 +4,20 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 #[derive(Debug, Default, Serialize, Deserialize)]
+pub struct ConnectionGetAllOptions {
+    pub alias: Option<String>,
+    // TODO: enum
+    pub connection_protocol: Option<String>,
+    pub invitation_key: Option<String>,
+    pub my_did: Option<String>,
+    // TODO: enum
+    pub state: Option<String>,
+    pub their_did: Option<String>,
+    // TODO: enum
+    pub their_role: Option<String>,
+}
+
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct ConnectionCreateInvitationResponse {
     pub connection_id: String,
     pub invitation: Value,
@@ -51,26 +65,6 @@ pub struct Connection {
     pub invitation_msg_id: Option<String>,
 }
 
-#[async_trait]
-pub trait ConnectionModule {
-    /// Gets all the connections
-    async fn get_all(&self) -> Result<ConnectionGetAllResponse>;
-
-    /// Get a connection by id
-    async fn get_by_id(&self, id: String) -> Result<Connection>;
-
-    /// Create an invitation
-    async fn create_invitation(
-        &self,
-        options: ConnectionCreateInvitationOptions,
-    ) -> Result<ConnectionCreateInvitationResponse>;
-
-    async fn receive_invitation(
-        &self,
-        invitation: ConnectionReceiveInvitationOptions,
-    ) -> Result<Connection>;
-}
-
 #[derive(Debug, Default)]
 pub struct ConnectionCreateInvitationOptions {
     pub auto_accept: bool,
@@ -101,4 +95,24 @@ pub struct ConnectionReceiveInvitationOptions {
     pub routing_keys: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub service_endpoint: Option<String>,
+}
+
+#[async_trait]
+pub trait ConnectionModule {
+    /// Gets all the connections
+    async fn get_all(&self, options: ConnectionGetAllOptions) -> Result<ConnectionGetAllResponse>;
+
+    /// Get a connection by id
+    async fn get_by_id(&self, id: String) -> Result<Connection>;
+
+    /// Create an invitation
+    async fn create_invitation(
+        &self,
+        options: ConnectionCreateInvitationOptions,
+    ) -> Result<ConnectionCreateInvitationResponse>;
+
+    async fn receive_invitation(
+        &self,
+        invitation: ConnectionReceiveInvitationOptions,
+    ) -> Result<Connection>;
 }
