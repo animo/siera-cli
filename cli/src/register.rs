@@ -153,7 +153,7 @@ fn initialize_agent_from_cli(
             let configuration = configurations
                 .configurations
                 .get_key_value(&environment)
-                .ok_or(Error::InvalidEnvironment)?;
+                .ok_or(Error::InvalidEnvironment(environment))?;
             let agent_url = agent_url.unwrap_or_else(|| configuration.1.endpoint.to_owned());
             let api_key = api_key.or_else(|| configuration.1.api_key.to_owned());
             let auth_token = auth_token.or_else(|| configuration.1.auth_token.to_owned());

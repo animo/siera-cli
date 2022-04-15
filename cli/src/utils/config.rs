@@ -59,6 +59,21 @@ impl Configuration {
         )?;
         Ok(())
     }
+
+    pub fn remove(environment: String) -> Result<()> {
+        let path = get_config_path()?;
+        let mut current_configuration =
+            get_config_from_path(&path).map_err(|_| Error::EmptyConfiguration)?;
+        current_configuration
+            .configurations
+            .remove(&environment)
+            .ok_or(Error::InvalidEnvironment(environment))?;
+        fs::write(
+            path,
+            serde_yaml::to_string(&current_configuration)?.as_bytes(),
+        )?;
+        Ok(())
+    }
 }
 
 pub fn get_config_from_path(config_path: &Path) -> Result<Configuration> {
