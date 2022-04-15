@@ -170,7 +170,7 @@ impl HelpStrings {
             HelpStrings::ProofRequestConnectionId => "Connection id to send the proof request to",
 
             HelpStrings::Automation => "Automated actions that combine multiple functions",
-            HelpStrings::AutomationCredentialOffer => "Simple credential offer automation to offer a premade credential to any agent",
+            HelpStrings::AutomationCredentialOffer => "Offer a premade credential to an agent",
             HelpStrings::AutomationCredentialOfferConnectionId => "Connection id of the receiving party",
             HelpStrings::AutomationCredentialOfferNoQr => "Disables printing the qr code",
             HelpStrings::AutomationCredentialOfferSelf => "Completes the entire flow with itself",
