@@ -99,14 +99,14 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
         ConfigurationSubcommands::Remove { environment } => {
             debug!(
                 "{} environment {} from the configuration",
-                "Deleting".bold().red(),
-                environment.yellow()
+                "Removing".bold().red(),
+                environment.bold()
             );
             Configuration::remove(environment.to_owned())?;
             println!(
                 "{} {} from the configuration",
-                "Deleted".bold().red(),
-                environment.yellow()
+                "Removed".bold().red(),
+                environment.bold()
             );
             Ok(())
         }
