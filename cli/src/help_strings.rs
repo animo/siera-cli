@@ -41,6 +41,9 @@ pub enum HelpStrings {
     CredentialDefinitionId,
     CredentialDefinitionCreate,
     CredentialDefinitionCreateSchemaId,
+    CredentialDefinitionCreateTag,
+    CredentialDefinitionCreateSupportRevocation,
+    CredentialDefinitionCreateRevocationRegistrySize,
     CredentialDefinitionList,
 
     // Credentials
@@ -137,6 +140,9 @@ impl HelpStrings {
             HelpStrings::CredentialDefinitionId => "ID of a credential definition to retrieve",
             HelpStrings::CredentialDefinitionCreate => "Create a new credential definition",
             HelpStrings::CredentialDefinitionCreateSchemaId => "Schema ID to use in the definition",
+            HelpStrings::CredentialDefinitionCreateTag => "Tag for the credential definition",
+            HelpStrings::CredentialDefinitionCreateSupportRevocation => "Whether the credential definition should support revocation",
+            HelpStrings::CredentialDefinitionCreateRevocationRegistrySize => "The size of the revocation registry",
             HelpStrings::CredentialDefinitionList => "List all your credential definitions",
 
             HelpStrings::Credentials => "Issue Credential V1",

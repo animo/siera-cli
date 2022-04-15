@@ -2,7 +2,7 @@ use crate::error::{Error, Result};
 use agent::modules::{
     connection::ConnectionModule,
     credential::{CredentialModule, CredentialOfferOptions},
-    credential_definition::CredentialDefinitionModule,
+    credential_definition::{CredentialDefinitionCreateOptions, CredentialDefinitionModule},
     schema::{SchemaCreateOptions, SchemaModule},
 };
 use colored::*;
@@ -47,10 +47,14 @@ impl CredentialOfferAutomation {
         )
         .await?;
 
+        let options = CredentialDefinitionCreateOptions {
+            schema_id: schema.schema_id,
+            ..CredentialDefinitionCreateOptions::default()
+        };
+
         println!("{} the credential definition...", "Registering".cyan());
         // Create or fetch the credential definition
-        let credential_definition =
-            CredentialDefinitionModule::create(&agent, schema.schema_id).await?;
+        let credential_definition = CredentialDefinitionModule::create(&agent, options).await?;
 
         println!("{} the credential...", "Offering".cyan());
         let credential_offer_response = agent
