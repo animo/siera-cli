@@ -174,7 +174,7 @@ impl HelpStrings {
             HelpStrings::AutomationCredentialOfferConnectionId => "Connection id of the receiving party",
             HelpStrings::AutomationCredentialOfferNoQr => "Disables printing the qr code",
             HelpStrings::AutomationCredentialOfferSelf => "Completes the entire flow with itself",
-            HelpStrings::AutomationCredentialOfferTimeout=> "Timeout for the entire flow in seconds",
+            HelpStrings::AutomationCredentialOfferTimeout=> "Timeout in seconds",
         }
     }
 }
