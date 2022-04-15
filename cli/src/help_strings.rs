@@ -16,6 +16,8 @@ pub enum HelpStrings {
     // Configuration
     Configuration,
     ConfigurationAdd,
+    ConfigurationRemove,
+    ConfigurationRemoveEnvironment,
     ConfigurationAddDefault,
     ConfigurationView,
     ConfigurationInitializeToken,
@@ -105,6 +107,8 @@ impl HelpStrings {
 
             HelpStrings::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: aries-cli configuration add --default",
             HelpStrings::ConfigurationAdd => "Add a new, or overwrite an existing, agent your configuration file",
+            HelpStrings::ConfigurationRemove => "PERMANENTLY remove an agent from your configuration",
+            HelpStrings::ConfigurationRemoveEnvironment => "Environment to delete",
             HelpStrings::ConfigurationAddDefault => {
                 "Add the default agent to the configuration (can be combined with --token)"
             }

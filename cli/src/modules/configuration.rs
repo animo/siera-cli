@@ -35,6 +35,11 @@ pub enum ConfigurationSubcommands {
         #[clap(long, short='t', help = HelpStrings::ConfigurationInitializeToken)]
         token: Option<String>,
     },
+    #[clap(about = HelpStrings::ConfigurationRemove)]
+    Remove {
+        #[clap(long, short, help = HelpStrings::ConfigurationRemoveEnvironment)]
+        environment: String,
+    },
 }
 
 pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
@@ -89,6 +94,20 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
             Configuration::add(environment, env)?;
 
             debug!("{} a new entry to the configuration", "Written".green());
+            Ok(())
+        }
+        ConfigurationSubcommands::Remove { environment } => {
+            debug!(
+                "{} environment {} from the configuration",
+                "Deleting".bold().red(),
+                environment.yellow()
+            );
+            Configuration::remove(environment.to_owned())?;
+            println!(
+                "{} {} from the configuration",
+                "Deleted".bold().red(),
+                environment.yellow()
+            );
             Ok(())
         }
     }
