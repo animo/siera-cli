@@ -1,3 +1,4 @@
+pub mod automation;
 pub mod configuration;
 pub mod connection;
 pub mod credential;
@@ -6,4 +7,3 @@ pub mod feature;
 pub mod message;
 pub mod proof;
 pub mod schema;
-pub mod workflow;

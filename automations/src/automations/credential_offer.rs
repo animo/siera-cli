@@ -9,18 +9,18 @@ use colored::*;
 use log::trace;
 use std::collections::HashMap;
 
-/// Credential offer workflow which offers an prebuilt credential to a connection
-pub struct CredentialOfferWorkflow {
+/// Credential offer Automation which offers an prebuilt credential to a connection
+pub struct CredentialOfferAutomation {
     pub connection_id: String,
     pub attributes: HashMap<String, String>,
 }
 
-impl CredentialOfferWorkflow {
+impl CredentialOfferAutomation {
     pub async fn execute(
         &self,
         agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
     ) -> Result<()> {
-        trace!("Starting workflow CredentialOfferWorkflow");
+        trace!("Starting automation CredentialOfferAutomation");
         trace!("{}", self.connection_id);
         trace!("{:#?}", self.attributes);
 
@@ -40,7 +40,7 @@ impl CredentialOfferWorkflow {
         let schema = SchemaModule::create(
             &agent,
             SchemaCreateOptions {
-                name: String::from("full-credential-offer-workflow"),
+                name: String::from("full-credential-offer-automation"),
                 attributes: attribute_keys.to_owned(),
                 version: String::from("1.0"),
             },
@@ -62,7 +62,7 @@ impl CredentialOfferWorkflow {
             })
             .await?;
 
-        trace!("Workflow completed and offered a credential");
+        trace!("Automation completed and offered a credential");
         trace!("{:#?}", credential_offer_response);
         Ok(())
     }

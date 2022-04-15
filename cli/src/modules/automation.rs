@@ -8,45 +8,45 @@ use agent::modules::connection::{ConnectionCreateInvitationOptions, ConnectionMo
 use agent::modules::credential::CredentialModule;
 use agent::modules::credential_definition::CredentialDefinitionModule;
 use agent::modules::schema::SchemaModule;
+use automations::automations::credential_offer::CredentialOfferAutomation;
 use clap::{Args, Subcommand};
 use colored::*;
 use log::{debug, trace};
 use std::collections::HashMap;
-use workflow::workflows::credential_offer::CredentialOfferWorkflow;
 
 #[derive(Args)]
-#[clap(about = HelpStrings::Workflow)]
-pub struct WorkflowOptions {
+#[clap(about = HelpStrings::Automation)]
+pub struct AutomationOptions {
     #[clap(subcommand)]
-    pub commands: WorkflowSubcommands,
+    pub commands: AutomationSubcommands,
 }
 
 #[derive(Subcommand, Debug)]
-pub enum WorkflowSubcommands {
-    #[clap(about = HelpStrings::WorkflowCredentialOffer )]
+pub enum AutomationSubcommands {
+    #[clap(about = HelpStrings::AutomationCredentialOffer )]
     CredentialOffer {
-        #[clap(long, short, help = HelpStrings::WorkflowCredentialOfferConnectionId)]
+        #[clap(long, short, help = HelpStrings::AutomationCredentialOfferConnectionId)]
         connection_id: Option<String>,
 
-        #[clap(long, short, default_value = "60", help = HelpStrings::WorkflowCredentialOfferTimeout)]
+        #[clap(long, short, default_value = "60", help = HelpStrings::AutomationCredentialOfferTimeout)]
         timeout: u32,
 
-        #[clap(long = "self", short = 's', help = HelpStrings::WorkflowCredentialOfferSelf)]
+        #[clap(long = "self", short = 's', help = HelpStrings::AutomationCredentialOfferSelf)]
         sent_to_self: bool,
 
-        #[clap(long, short, help = HelpStrings::WorkflowCredentialOfferNoQr )]
+        #[clap(long, short, help = HelpStrings::AutomationCredentialOfferNoQr )]
         no_qr: bool,
     },
 }
 
-pub async fn parse_workflow_args(
-    options: &WorkflowOptions,
+pub async fn parse_automation_args(
+    options: &AutomationOptions,
     agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
 
     match &options.commands {
-        WorkflowSubcommands::CredentialOffer {
+        AutomationSubcommands::CredentialOffer {
             connection_id,
             timeout,
             sent_to_self,
@@ -57,7 +57,7 @@ pub async fn parse_workflow_args(
                 let connection = agent
                     .create_invitation(ConnectionCreateInvitationOptions {
                         auto_accept: true,
-                        alias: Some(String::from("workflow")),
+                        alias: Some(String::from("automation")),
                         ..Default::default()
                     })
                     .await?;
@@ -117,7 +117,7 @@ pub async fn parse_workflow_args(
             }
         },
     };
-    println!("{} executed workflow", "Successfully".green());
+    println!("{} executed automation", "Successfully".green());
     println!(
         "{}: It might take a few seconds for the credential to arrive",
         "Note".cyan()
@@ -145,10 +145,10 @@ async fn credential_offer(
     attributes.insert(String::from("Valid Until"), String::from("20251212"));
     debug!("Mock credential:\n{:#?}", attributes);
 
-    let workflow = CredentialOfferWorkflow {
+    let automation = CredentialOfferAutomation {
         connection_id,
         attributes,
     };
 
-    workflow.execute(agent).await
+    automation.execute(agent).await
 }

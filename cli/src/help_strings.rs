@@ -76,13 +76,13 @@ pub enum HelpStrings {
     ProofRequestAttribute,
     ProofRequestConnectionId,
 
-    // Workflow
-    Workflow,
-    WorkflowCredentialOffer,
-    WorkflowCredentialOfferConnectionId,
-    WorkflowCredentialOfferNoQr,
-    WorkflowCredentialOfferSelf,
-    WorkflowCredentialOfferTimeout,
+    // Automate
+    Automation,
+    AutomationCredentialOffer,
+    AutomationCredentialOfferConnectionId,
+    AutomationCredentialOfferNoQr,
+    AutomationCredentialOfferSelf,
+    AutomationCredentialOfferTimeout,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -169,12 +169,12 @@ impl HelpStrings {
             HelpStrings::ProofRequestPredicate => "Predicates required in the proof request (format = name,operator,value). e.g. -p=\"age,>=,18\"",
             HelpStrings::ProofRequestConnectionId => "Connection id to send the proof request to",
 
-            HelpStrings::Workflow => "Automated actions that combine multiple functions",
-            HelpStrings::WorkflowCredentialOffer => "Simple credential offer automation to offer a premade credential to any agent",
-            HelpStrings::WorkflowCredentialOfferConnectionId => "Connection id of the receiving party",
-            HelpStrings::WorkflowCredentialOfferNoQr => "Disables printing the qr code",
-            HelpStrings::WorkflowCredentialOfferSelf => "Completes the entire flow with itself",
-            HelpStrings::WorkflowCredentialOfferTimeout=> "Timeout for the entire flow in seconds",
+            HelpStrings::Automation => "Automated actions that combine multiple functions",
+            HelpStrings::AutomationCredentialOffer => "Simple credential offer automation to offer a premade credential to any agent",
+            HelpStrings::AutomationCredentialOfferConnectionId => "Connection id of the receiving party",
+            HelpStrings::AutomationCredentialOfferNoQr => "Disables printing the qr code",
+            HelpStrings::AutomationCredentialOfferSelf => "Completes the entire flow with itself",
+            HelpStrings::AutomationCredentialOfferTimeout=> "Timeout for the entire flow in seconds",
         }
     }
 }
