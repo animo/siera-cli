@@ -4,5 +4,5 @@ members = [
   "cloudagent-python",
   "agent",
   "cli",
-  "workflow"
+  "automations"
 ]
