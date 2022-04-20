@@ -1,4 +1,6 @@
-use agent::modules::credential_definition::CredentialDefinitionModule;
+use agent::modules::credential_definition::{
+    CredentialDefinitionCreateOptions, CredentialDefinitionModule,
+};
 use clap::{Args, Subcommand};
 use colored::*;
 use log::{debug, info};
@@ -25,6 +27,15 @@ pub enum CredentialDefinitionSubcommands {
     Create {
         #[clap(short, long, help = HelpStrings::CredentialDefinitionCreateSchemaId)]
         schema_id: String,
+
+        #[clap(short, long, help = HelpStrings::CredentialDefinitionCreateTag)]
+        tag: Option<String>,
+
+        #[clap(short = 'r', long, help = HelpStrings::CredentialDefinitionCreateSupportRevocation)]
+        support_revocation: bool,
+
+        #[clap(short = 'v', long, help = HelpStrings::CredentialDefinitionCreateRevocationRegistrySize)]
+        revocation_registry_size: Option<i32>,
     },
     #[clap(about = HelpStrings::CredentialDefinitionList)]
     List {
@@ -40,8 +51,19 @@ pub async fn parse_credential_definition_args(
     let loader = Loader::start(LoaderVariant::default());
 
     match &options.commands {
-        CredentialDefinitionSubcommands::Create { schema_id } => {
-            agent.create(schema_id.to_string()).await.map(|cred_def| {
+        CredentialDefinitionSubcommands::Create {
+            schema_id,
+            support_revocation,
+            tag,
+            revocation_registry_size,
+        } => {
+            let options = CredentialDefinitionCreateOptions {
+                schema_id: schema_id.to_string(),
+                support_revocation: *support_revocation,
+                tag: tag.as_deref().map(|t| t.to_string()),
+                revocation_registry_size: *revocation_registry_size,
+            };
+            agent.create(options).await.map(|cred_def| {
                 loader.stop();
                 copy!("{}", cred_def.credential_definition_id);
                 info!("{} credential definition with id: ", "Created".green());

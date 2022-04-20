@@ -35,6 +35,11 @@ pub enum ConfigurationSubcommands {
         #[clap(long, short='t', help = HelpStrings::ConfigurationInitializeToken)]
         token: Option<String>,
     },
+    #[clap(about = HelpStrings::ConfigurationRemove)]
+    Remove {
+        #[clap(long, short, help = HelpStrings::ConfigurationRemoveEnvironment)]
+        environment: String,
+    },
 }
 
 pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
@@ -86,9 +91,29 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 env,
                 path
             );
-            Configuration::add(environment, env)?;
+            Configuration::add(environment.clone(), env)?;
+            println!(
+                "{} agent {} at {}.",
+                "Added".cyan(),
+                environment,
+                config_path.display()
+            );
 
             debug!("{} a new entry to the configuration", "Written".green());
+            Ok(())
+        }
+        ConfigurationSubcommands::Remove { environment } => {
+            debug!(
+                "{} environment {} from the configuration",
+                "Removing".bold().red(),
+                environment.bold()
+            );
+            Configuration::remove(environment.to_owned())?;
+            println!(
+                "{} {} from the configuration",
+                "Removed".bold().red(),
+                environment.bold()
+            );
             Ok(())
         }
     }

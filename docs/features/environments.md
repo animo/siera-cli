@@ -19,6 +19,10 @@ configurations:
     token: ~
 ```
 
+{% hint style="warning" %}
+In MS Windows Powershell you need to either run your command prompt application as administrator or allow your current user write access to `C:\Program Files\Common Files\` in order to be able to write a config file to disk. This does not apply when using WSL.&#x20;
+{% endhint %}
+
 ### Usage
 
 ```
@@ -43,7 +47,7 @@ agent-cli configuration [SUBCOMMAND]
 Add a new, or overwrite an existing, agent to your configuration file.
 
 ```
-agent-cli configuration add [OPTIONS]
+aries-cli configuration add [OPTIONS]
 ```
 
 #### Available flags

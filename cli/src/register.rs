@@ -7,12 +7,12 @@ use std::path::PathBuf;
 
 use crate::cli::{Cli, Commands};
 use crate::error::{Error, Result};
+use crate::modules::automation::parse_automation_args;
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential::parse_credentials_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::message::parse_message_args;
 use crate::modules::proof::parse_proof_args;
-use crate::modules::workflow::parse_workflow_args;
 use crate::modules::{
     connection::parse_connection_args, feature::parse_features_args, schema::parse_schema_args,
 };
@@ -115,7 +115,7 @@ pub async fn register() -> Result<()> {
                 cli.api_key,
                 cli.token,
             )?;
-            parse_workflow_args(options, agent).await
+            parse_automation_args(options, agent).await
         }
     }?;
 
@@ -153,7 +153,7 @@ fn initialize_agent_from_cli(
             let configuration = configurations
                 .configurations
                 .get_key_value(&environment)
-                .ok_or(Error::InvalidEnvironment)?;
+                .ok_or(Error::InvalidEnvironment(environment))?;
             let agent_url = agent_url.unwrap_or_else(|| configuration.1.endpoint.to_owned());
             let api_key = api_key.or_else(|| configuration.1.api_key.to_owned());
             let auth_token = auth_token.or_else(|| configuration.1.auth_token.to_owned());
