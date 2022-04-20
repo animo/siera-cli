@@ -4,12 +4,12 @@ description: Retrieve or create schemas
 
 # Schema
 
-Aries CLI offers the following methods for schemas:
+The Agent CLI offers the following methods for schemas:
 
 ### Usage
 
 ```
-aries-cli schema [OPTIONS] [SUBCOMMAND]
+agent-cli schema [OPTIONS] [SUBCOMMAND]
 ```
 
 #### Options
@@ -30,7 +30,7 @@ aries-cli schema [OPTIONS] [SUBCOMMAND]
 Create a new schema.
 
 ```
-aries-cli schema create [OPTIONS] --name <NAME> --attribute <ATTRIBUTE>
+agent-cli schema create [OPTIONS] --name <NAME> --attribute <ATTRIBUTE>
 ```
 
 #### Available flags
@@ -47,5 +47,5 @@ aries-cli schema create [OPTIONS] --name <NAME> --attribute <ATTRIBUTE>
 Create a new schema with the properties `name` and `age`. The `-c` flag automatically copies the ID of the created schema to your clipboard.
 
 ```
-aries-cli -c schema create -n example -a name -a age
+agent-cli -c schema create -n example -a name -a age
 ```

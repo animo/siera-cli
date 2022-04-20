@@ -6,7 +6,7 @@ description: >-
 
 # Contributing
 
-We welcome contributions that to make the CLI better. If you do not have a specific contribution in mind, we encourage you to look for issues labelled as [`good first issue`](https://github.com/animo/aries-cli/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) or look at our [roadmap](roadmap.md).
+We welcome contributions that to make the CLI better. If you do not have a specific contribution in mind, we encourage you to look for issues labelled as [`good first issue`](https://github.com/animo/agent-cli/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) or look at our [roadmap](roadmap.md).
 
 For significant changes, please open an issue first to discuss the proposed changes with the community to avoid re-work.
 
@@ -22,21 +22,21 @@ If you have a fix, go straight to [Getting set up](contributing.md#getting-set-u
 
 If you have something bigger in mind (structural changes, new features) we strongly encourage you to create a new GitHub issue that documents:
 
-* motivate the changes you want to make
-* how you want to make them
+- motivate the changes you want to make
+- how you want to make them
 
 This gives your new idea the best chance to get accepted by the repository maintainers.
 
 ### Getting set up
 
 ```
-git clone https://github.com/animo/aries-cli.git
+git clone https://github.com/animo/agent-cli.git
 ```
 
 Once you have the code locally, you should be able to test out the current source code by running:
 
 ```
-# "cargo run -q --" instead of aries-cli
+# "cargo run -q --" instead of agent-cli
 cargo run -q -- <cmd>
 ```
 

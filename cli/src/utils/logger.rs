@@ -29,7 +29,7 @@ pub fn init(level: LevelFilter, should_copy: bool) {
             .set_time_level(LevelFilter::Debug)
             .set_target_level(LevelFilter::Debug)
             .set_max_level(LevelFilter::Debug)
-            .add_filter_allow(String::from("aries_cli"))
+            .add_filter_allow(String::from("agent_cli"))
             .add_filter_allow(String::from("cloudagent_"))
             .add_filter_allow(String::from("workflow"))
             .build(),

@@ -4,12 +4,12 @@ description: Send a secure message to an existing connection
 
 # Message
 
-Aries CLI offers the following methods for messages:
+The Agent CLI offers the following methods for messages:
 
 ### Usage
 
 ```
-aries-cli message --connection-id <ID> --message <MESSAGE>
+agent-cli message --connection-id <ID> --message <MESSAGE>
 ```
 
 #### Options
@@ -25,5 +25,5 @@ aries-cli message --connection-id <ID> --message <MESSAGE>
 The following commands sends `hello` to an existing connection:
 
 ```
-aries-cli message -i d583caa1-0bdd-46f9-98d3-8d0bdd4a6056 -m hello
+agent-cli message -i d583caa1-0bdd-46f9-98d3-8d0bdd4a6056 -m hello
 ```

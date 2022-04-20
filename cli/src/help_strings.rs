@@ -103,7 +103,7 @@ impl HelpStrings {
             HelpStrings::Config => "Supply a path to your configuration file to use that instead of the default",
             HelpStrings::Environment => "Specify your current environment",
 
-            HelpStrings::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: aries-cli configuration add --default",
+            HelpStrings::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: agent-cli configuration add --default",
             HelpStrings::ConfigurationAdd => "Add a new, or overwrite an existing, agent your configuration file",
             HelpStrings::ConfigurationAddDefault => {
                 "Add the default agent to the configuration (can be combined with --token)"
@@ -187,24 +187,24 @@ const HELP_STRING_CONNECTIONS_INVITE_TOOLBOX: &str =
     and gives admin rights over the invitation to the toolbox";
 
 const HELP_STRING_CLI: &str = "
---- Aries cli ---
+--- Agent cli ---
 
-To begin working with the aries-cli, run the following command:
+To begin working with the agent-cli, run the following command:
 
-    $ aries-cli configuration add --default
+    $ agent-cli configuration add --default
 
 This command will initialize the configuration file and makes sure
 that you do not have to pass the --agent-url argument with every call.
 
 Some example commands are the following:
 
-    $ aries-cli connection list
+    $ agent-cli connection list
         - fetches all the connections (jq compatible)
-    $ aries-cli connection invite --qr
+    $ agent-cli connection invite --qr
         - create an invitation (as a qr code)
-    $ aries-cli features
+    $ agent-cli features
         - Fetches all the features of the cloudagent
-    $ aries-cli schema create --name FOO -a BAR -a BAZ
+    $ agent-cli schema create --name FOO -a BAR -a BAZ
         - Create a new schema with the name as 'FOO' and the attributes as 'BAR' and 'BAZ'
 
 -----------------

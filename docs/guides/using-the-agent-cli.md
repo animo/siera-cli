@@ -1,17 +1,17 @@
 ---
-description: The Aries CLI follows CLI tool conventions to make it easy to use.
+description: The Agent CLI follows CLI tool conventions to make it easy to use.
 ---
 
-# Using the Aries CLI
+# Using the Agent CLI
 
-After [installing](installation.md) the Aries CLI, you can run `aries-cli` in your terminal to see all the options available to you. In this guide, we'll show you how to use the Aries CLI in your development process.
+After [installing](installation.md) the Agent CLI, you can run `agent-cli` in your terminal to see all the options available to you. In this guide, we'll show you how to use the Agent CLI in your development process.
 
 > If you'd rather explore functionality through the CLI yourself, just use the `--help` or `-h` flag on any of the subcommands to see more info.
 
-The Aries CLI distinguishes options and subcommands. Options before the subcommands are global, options after the subcommands are specific to that subcommand.
+The Agent Cli distinguishes options and subcommands. Options before the subcommands are global, options after the subcommands are specific to that subcommand.
 
 ```
-aries-cli [OPTIONS] <SUBCOMMAND>
+agent-cli [OPTIONS] <SUBCOMMAND>
 ```
 
 Each subcommand has their own options and subcommands, you can see which ones by using the `-h` or `--help` flag at any level.
@@ -19,7 +19,7 @@ Each subcommand has their own options and subcommands, you can see which ones by
 For example, if we wanted to create a schema, a command could look something like:
 
 ```
-aries-cli --copy schema create --name "College Degree" --attribute Grade
+agent-cli --copy schema create --name "College Degree" --attribute Grade
 # Output: schema id
 ```
 
@@ -31,11 +31,9 @@ But options `--name` and `--attribute` are specific to the subcommand `schema cr
 
 Every subcommand has the option of a `-h` or `--help` flag, where you'll see the usage of that subcommand, a description of the options as well as which options are required. We recommend playing around with these and trying commands out as the easiest way to get aquainted with the CLI. &#x20;
 
-
-
 ### Know what is happening (--verbose)
 
-We believe that good logging makes for a good CLI user experience, but we also believe a productivity focused tool should not flood the terminal with logging. That is why the Aries CLI uses different log-levels.
+We believe that good logging makes for a good CLI user experience, but we also believe a productivity focused tool should not flood the terminal with logging. That is why the Agent CLI uses different log-levels.
 
 | CLI flags                                 | Rust logger | Description                           |
 | ----------------------------------------- | ----------- | ------------------------------------- |
@@ -45,4 +43,4 @@ We believe that good logging makes for a good CLI user experience, but we also b
 
 This means **by default** we will only log command output, warnings and errors. If you're looking for more info, use the more extensive verbosity levels.
 
-***
+---
