@@ -25,11 +25,11 @@
 
 <!-- Add badges? -->
 
-Agent CLI is the most convenient way for self-sovereign identity (SSI) developers to interact with SSI agents.
+The Agent CLI is the most convenient way for self-sovereign identity (SSI) developers to interact with SSI agents.
 
-* **Environments** to easily manage configuration for multiple projects and agents
-* **Automations** that you can perform against an agent
-* **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
+- **Environments** to easily manage configuration for multiple projects and agents
+- **Automations** that you can perform against an agent
+- **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
 If you are looking for more information about the concepts, example code and tutorials on how to use the CLI we recommend you check out our extensive [docs](https://docs.agent-cli.animo.id/).
 
@@ -40,7 +40,7 @@ Heres how to install the Agent CLI using the most popular package managers. For 
 ### macOS using Brew
 
 ```sh
-brew tap animo/agent-cli 
+brew tap animo/agent-cli
 brew install agent-cli
 ```
 
@@ -62,7 +62,7 @@ make build
 cargo build --release
 
 # Run ONE of the following commands to add install the agent-cli into your PATH
-make install 
+make install
 
 cargo install --path ./cli
 
@@ -76,11 +76,11 @@ In order to work with the Agent CLI an agent needs to be configured. With the fo
 agent-cli configuration add --default
 ```
 
-This command will set up the community agent. To set up your own agent or use our multitenant agent to get your own environment, see the [set up guide](https://docs.agent-cli.animo.id/guides/configuration). 
+This command will set up the community agent. To set up your own agent or use our multitenant agent to get your own environment, see the [set up guide](https://docs.agent-cli.animo.id/guides/configuration).
 
 If you are getting started with the tool we recommend enabling informational logs by passing the `--verbose` (or `-v`) flag.
 
-To see all actions simply use the `--help` or `-h` flag or see the [feature overview](https://docs.agent-cli.animo.id/features/introduction). 
+To see all actions simply use the `--help` or `-h` flag or see the [feature overview](https://docs.agent-cli.animo.id/features/introduction).
 
 ## Roadmap
 
@@ -88,25 +88,24 @@ We intend to support multiple versions of the Aries agent. See the CLI help `age
 
 | Feature                             | Status | Description                                                                     |
 | ----------------------------------- | ------ | ------------------------------------------------------------------------------- |
-| Environments                        | ✅      | Support multiple environments.                                                  |
-| Connections                         | ✅      | Retrieve connections or create invitations.                                     |
-| Schemas                             | ✅      | Retrieve or create schemas.                                                     |
-| Credentials                         | ✅      | Offer or propose credentials.                                                   |
-| ACA-Py 0.7.3 support                | ✅      | ACA-Py 0.7.3 support.                                                           |
-| Verbosity                           | ✅      | Three verbosity levels and error messages.                                      |
-| Automation: offer credential mocked | ✅      | Offer a mocked data credential through an automation.                           |
-| Community agent                     | ✅      | Default use with the Animo community agent.                                     |
-| Multitenancy                        | ✅      | Use a personal agent environment with your personal token.                      |
-| Brew install                        | ✅      | Brew install.                                                                   |
-| Proofs                              | ✅      | Proofs.                                                                         |
-| Apt-get install                     | 🚧      | Apt-get install.                                                                |
-| Chocolaty install                   | 🚧      | Chocolaty install.                                                              |
-| Automation: offer credential custom | 🚧      | Offer a custom data credential through an automation.                           |
-| Filters                             | 🚧      | Use filters to determine what output you want returned.                         |
-| Automation: definitions custom      | 🚧      | Create a schema + credential definition with custom data through an automation. |
-| Automation: proofs mock             | 🚧      | Present proof with mock data through an automation.                             |
-| Automation: proofs custom           | 🚧      | Present proof with custom data through an automation.                           |
-
+| Environments                        | ✅     | Support multiple environments.                                                  |
+| Connections                         | ✅     | Retrieve connections or create invitations.                                     |
+| Schemas                             | ✅     | Retrieve or create schemas.                                                     |
+| Credentials                         | ✅     | Offer or propose credentials.                                                   |
+| ACA-Py 0.7.3 support                | ✅     | ACA-Py 0.7.3 support.                                                           |
+| Verbosity                           | ✅     | Three verbosity levels and error messages.                                      |
+| Automation: offer credential mocked | ✅     | Offer a mocked data credential through an automation.                           |
+| Community agent                     | ✅     | Default use with the Animo community agent.                                     |
+| Multitenancy                        | ✅     | Use a personal agent environment with your personal token.                      |
+| Brew install                        | ✅     | Brew install.                                                                   |
+| Proofs                              | ✅     | Proofs.                                                                         |
+| Apt-get install                     | 🚧     | Apt-get install.                                                                |
+| Chocolaty install                   | 🚧     | Chocolaty install.                                                              |
+| Automation: offer credential custom | 🚧     | Offer a custom data credential through an automation.                           |
+| Filters                             | 🚧     | Use filters to determine what output you want returned.                         |
+| Automation: definitions custom      | 🚧     | Create a schema + credential definition with custom data through an automation. |
+| Automation: proofs mock             | 🚧     | Present proof with mock data through an automation.                             |
+| Automation: proofs custom           | 🚧     | Present proof with custom data through an automation.                           |
 
 ## Contributing
 
