@@ -2,16 +2,32 @@ use super::agent::CloudAgentPython;
 use agent::error::Result;
 use agent::modules::connection::{
     Connection, ConnectionCreateInvitationOptions, ConnectionCreateInvitationResponse,
-    ConnectionGetAllResponse, ConnectionModule, ConnectionReceiveInvitationOptions,
+    ConnectionGetAllOptions, ConnectionGetAllResponse, ConnectionModule,
+    ConnectionReceiveInvitationOptions,
 };
 use async_trait::async_trait;
 use serde_json::json;
 
 #[async_trait]
 impl ConnectionModule for CloudAgentPython {
-    async fn get_all(&self) -> Result<ConnectionGetAllResponse> {
+    async fn get_all(&self, options: ConnectionGetAllOptions) -> Result<ConnectionGetAllResponse> {
         let url = self.cloud_agent.create_url(vec!["connections"])?;
-        self.cloud_agent.get(url, None).await
+        let mut query: Vec<(&str, String)> = vec![];
+
+        // TODO: potential macro
+        options.alias.map(|c| query.push(("alias", c)));
+        options
+            .connection_protocol
+            .map(|c| query.push(("connection_protocol", c)));
+        options
+            .invitation_key
+            .map(|c| query.push(("invite_key", c)));
+        options.my_did.map(|c| query.push(("my_did", c)));
+        options.state.map(|c| query.push(("state", c)));
+        options.their_did.map(|c| query.push(("their_did", c)));
+        options.their_role.map(|c| query.push(("their_role", c)));
+
+        self.cloud_agent.get(url, Some(query)).await
     }
 
     async fn get_by_id(&self, id: String) -> Result<Connection> {
