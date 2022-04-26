@@ -4,12 +4,12 @@ description: Offer or propose credentials
 
 # Credential
 
-Aries CLI offers the following methods for credentials:
+The Agent CLI offers the following methods for credentials:
 
 ### Usage
 
 ```
-aries-cli credential [SUBCOMMAND]
+agent-cli credential [SUBCOMMAND]
 ```
 
 #### Options
@@ -29,7 +29,7 @@ aries-cli credential [SUBCOMMAND]
 Offer a new credential to an existing connection
 
 ```
-aries-cli credential offer [OPTIONS] --connection-id <CONNECTION_ID> --cred-def-id <CRED_DEF_ID>
+agent-cli credential offer [OPTIONS] --connection-id <CONNECTION_ID> --cred-def-id <CRED_DEF_ID>
 ```
 
 #### Available flags
@@ -47,12 +47,11 @@ aries-cli credential offer [OPTIONS] --connection-id <CONNECTION_ID> --cred-def-
 Offer a credential to an existing connection. The following command offers a credential with key `name` and value `animo`.
 
 ```
-aries-cli credentials offer -i d583caa1-0bdd-46f9-98d3-8d0bdd4a6056 -c Ehx3RZSV38pn3MYvxtHhbQ:3:CL:213800:default -k name -v animo
+agent-cli credentials offer -i d583caa1-0bdd-46f9-98d3-8d0bdd4a6056 -c Ehx3RZSV38pn3MYvxtHhbQ:3:CL:213800:default -k name -v animo
 ```
 
 The key and value flags are index matched and should be used as such. The below command matches key 1..3 to value 1..3.&#x20;
 
 ```
-aries-cli credential offer ... -k=key1 -v=value1 -k=key2 -k=key3 -v=value2 -v=value3
+agent-cli credential offer ... -k=key1 -v=value1 -k=key2 -k=key3 -v=value2 -v=value3
 ```
-

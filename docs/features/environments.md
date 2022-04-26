@@ -1,14 +1,14 @@
 ---
-description: The Aries CLI allows you to add and choose environments through subcommands.
+description: The Agent CLI allows you to add and choose environments through subcommands.
 ---
 
 # Configuration
 
 {% hint style="info" %}
-See the guide on how to [set up the Aries CLI](../guides/configuration.md) for more information on how to add and change environments relating to your agent configuration.&#x20;
+See the guide on how to [set up the Agent CLI](../guides/configuration.md) for more information on how to add and change environments relating to your agent configuration.&#x20;
 {% endhint %}
 
-The Aries CLI supports using different environments. An environment consists of an environment name, an agent URL, an API key (optional) and a token (optional). A specific environment to use can be specified in a command using the `--environment <ENVIRONMENT>` option.&#x20;
+The Agent CLI supports using different environments. An environment consists of an environment name, an agent URL, an API key (optional) and a token (optional). A specific environment to use can be specified in a command using the `--environment <ENVIRONMENT>` option.&#x20;
 
 ```yaml
 ---
@@ -26,7 +26,7 @@ In MS Windows Powershell you need to either run your command prompt application 
 ### Usage
 
 ```
-aries-cli configuration [SUBCOMMAND]
+agent-cli configuration [SUBCOMMAND]
 ```
 
 #### Options
@@ -59,24 +59,24 @@ aries-cli configuration add [OPTIONS]
 | `-e`  | `--environment <ENVIRONMENT>` | Specify your current environment.                                            |
 | `-h`  | `--help`                      | Print help information.                                                      |
 | `-t`  | `--token <TOKEN>`             | Authentication token for a multitenancy agent.                               |
-| `-u`  | `--agent-url <AGENT_URL>`     | The Aries agent URL that requests will be sent to.                           |
+| `-u`  | `--agent-url <AGENT_URL>`     | The Agent agent URL that requests will be sent to.                           |
 
 #### Example usage
 
 Add a custom environment to your configuration file.&#x20;
 
 ```
-aries-cli configuration add --environment=<YOUR_ENV_NAME> --agent-url=<YOUR_AGENT_URL> --api-key=<YOUR_API_KEY> --token=<YOUR_TOKEN>
+agent-cli configuration add --environment=<YOUR_ENV_NAME> --agent-url=<YOUR_AGENT_URL> --api-key=<YOUR_API_KEY> --token=<YOUR_TOKEN>
 ```
 
-The Aries CLI uses the 'default' environment when no `--environment` flag is given with commands. If you want to use another environment as your default, you can override your current default environment by specifying `--environment=default` in the above command.
+The Agent CLI uses the 'default' environment when no `--environment` flag is given with commands. If you want to use another environment as your default, you can override your current default environment by specifying `--environment=default` in the above command.
 
 ### View
 
 Print your current configuration file and its path.
 
 ```
-aries-cli configuration view
+agent-cli configuration view
 ```
 
 #### Available flags

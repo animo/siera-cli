@@ -1,13 +1,13 @@
 [package]
 authors = ["Animo Solutions"]
-description = "Aries Agent module"
+description = "Agent module"
 edition = "2021"
-homepage = "https://aries-cli.animo.id"
+homepage = "https://agent-cli.animo.id"
 keywords = ["aries", "cloudagent", "controller", "cli-tool"]
 license = "Apache-2.0"
 name = "agent"
 readme = "../README.md"
-repository = "https://github.com/animo/aries-cli"
+repository = "https://github.com/animo/agent-cli"
 version = "0.1.0"
 
 [dependencies]
