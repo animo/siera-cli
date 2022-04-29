@@ -27,8 +27,8 @@ jobs:
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.architecture }}-aries-cli
-          path: target/${{ matrix.architecture }}/release/aries-cli
+          name: ${{ matrix.architecture }}-agent-cli
+          path: target/${{ matrix.architecture }}/release/agent-cli
   build-linux:
     name: build linux
     runs-on: ubuntu-latest
@@ -45,8 +45,8 @@ jobs:
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: linux-aries-cli
-          path: target/release/aries-cli
+          name: linux-agent-cli
+          path: target/release/agent-cli
   build-windows:
     name: build windows
     runs-on: windows-latest
@@ -60,8 +60,8 @@ jobs:
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: windows-aries-cli.exe
-          path: target/release/aries-cli.exe
+          name: windows-agent-cli.exe
+          path: target/release/agent-cli.exe
   release:
     runs-on: ubuntu-latest
     needs: [build-macos, build-linux, build-windows]
@@ -69,15 +69,15 @@ jobs:
       - name: Download built binaries
         uses: actions/download-artifact@v3
       - run: |
-          mv aarch64-apple-darwin-aries-cli/aries-cli apple-arm-aries-cli
-          mv x86_64-apple-darwin-aries-cli/aries-cli apple-x86_64-aries-cli
-          mv linux-aries-cli/aries-cli linux-x86_64-aries-cli
-          mv windows-aries-cli.exe/aries-cli.exe windows-x86_64-aries-cli.exe
+          mv aarch64-apple-darwin-agent-cli/agent-cli apple-arm-agent-cli
+          mv x86_64-apple-darwin-agent-cli/agent-cli apple-x86_64-agent-cli
+          mv linux-agent-cli/agent-cli linux-x86_64-agent-cli
+          mv windows-agent-cli.exe/agent-cli.exe windows-x86_64-agent-cli.exe
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            apple-arm-aries-cli
-            apple-x86_64-aries-cli
-            linux-x86_64-aries-cli
-            windows-x86_64-aries-cli.exe
+            apple-arm-agent-cli
+            apple-x86_64-agent-cli
+            linux-x86_64-agent-cli
+            windows-x86_64-agent-cli.exe
