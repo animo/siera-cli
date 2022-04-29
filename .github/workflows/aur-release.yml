@@ -1,0 +1,79 @@
+name: AUR Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_run:
+    workflows: ["build-and-release"]
+    types: 
+      - completed
+
+
+jobs:
+  release-aur:
+    name: release aur
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Get PKGBUILD and .SRCINFO
+        id: get_pkgbuild
+        run: |
+          curl -o PKGBUILD https://raw.githubusercontent.com/animo/agent-cli/main/pkg/PKGBUILD
+          curl -o .SRCINFO https://raw.githubusercontent.com/animo/agent-cli/main/pkg/.SRCINFO
+      - name: Gather data and rewrite PKGBUILD file
+        id: gather_data_and_rewrite
+        run: |
+          VERSION=$(curl --silent https://api.github.com/repos/animo/agent-cli/releases | jq '.[0]' |  jq -r .tag_name)
+          # strip the v prefix
+          VERSION=${VERSION:1}
+          # replace package version in PKGBUILD
+          sed -i '3s|.*|pkgver\='"$VERSION"'|' PKGBUILD
+          # replace package version in .SRCINFO
+          sed -i '3s|.*|        pkgver = '$VERSION'|' .SRCINFO
+      - name: commit to AUR
+        id: commit_aur
+        env:
+          AUR_KEY: ${{secrets.AUR_KEY}}
+        run: |
+          # get the version
+          VERSION=$(curl --silent https://api.github.com/repos/animo/agent-cli/releases | jq '.[0]' |  jq -r .tag_name)
+          # create all ssh files/folders
+          mkdir ~/.ssh
+          touch ~/.ssh/aur
+          touch ~/.ssh/known_hosts
+          touch ~/.ssh/authorized_keys
+          # write key from secret to file
+          echo "$AUR_KEY" | base64 -d  > ~/.ssh/aur
+          # tell ssh which key to use via config
+          cat >> ~/.ssh/config<<EOF
+
+          Host aur.archlinux.org
+            IdentityFile ~/.ssh/aur
+            User animosolutions
+          EOF
+          # Set all the permissions for ssh
+          sudo chmod 400 ~/.ssh/aur
+          sudo chmod 700 ~/.ssh
+          sudo chmod 600 ~/.ssh/authorized_keys
+          sudo chmod 600 ~/.ssh/known_hosts
+          # add ssh key to agent
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/aur
+          # Add AUR key to known host
+          ssh-keyscan -t rsa aur.archlinux.org >> ~/.ssh/known_hosts
+          # get the aur repo
+          git clone ssh://aur@aur.archlinux.org/agent-cli.git
+          cd agent-cli
+          # set git username and email
+          git config user.name "animosolutions"
+          git config user.email "contact@animo.id"
+          # overwrite with the new files
+          cp ../PKGBUILD PKGBUILD
+          cp ../.SRCINFO .SRCINFO
+          # commit
+          git commit -am "Release new agent-cli version ${VERSION}" --allow-empty
+          # add the remote
+          git remote add aur ssh://aur@aur.archlinux.org/agent-cli.git
+          # push it
+          git push aur
