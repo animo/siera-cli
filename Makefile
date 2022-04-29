@@ -13,4 +13,4 @@ test:
 	bash ./tests/run.sh
 
 install:
-	cargo install --path ./cli
+	cargo install --path .

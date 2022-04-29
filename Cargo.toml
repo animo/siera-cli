@@ -1,8 +1,41 @@
-[workspace]
-
-members = [
-  "cloudagent-python",
-  "agent",
-  "cli",
-  "automations"
+[package]
+name = "agent-cli"
+version = "0.2.0"
+authors = [
+  "Berend Sliedrecht <berend@animo.id>",
+  "Moritz Schlichting <moritz@animo.id>",
+  "Jean-Louis Leysens <jean-louis@animo.id>",
 ]
+description = "The agent-cli is a toolkit that allows you to interact with a Hyperledger Aries Cloud agent."
+homepage = "https://agent-cli.animo.id"
+documentation = "https://docs.agent-cli.animo.id"
+repository = "https://github.com/animo/agent-cli"
+categories = ["command-line-utilities"]
+license = "Apache-2.0"
+exclude = ["pkg", "Makefile", "example"]
+edition = "2021"
+
+[workspace]
+members = ["crates/*"]
+
+[[bin]]
+path = "crates/cli/src/main.rs"
+name = "agent-cli"
+
+[dependencies]
+agent = { path = "./crates/agent" }
+cloudagent-python = { path = "./crates/cloudagent-python" }
+automations = { path = "./crates/automations" }
+async-trait = "0.1.51"
+serde = { version = "1.0.130", features = ["derive"] }
+serde_json = "1.0.68"
+colored = "2.0.0"
+log = "0.4.14"
+base64 = "0.13.0"
+clap = { version = "3.1.0", features = ["derive"] }
+clipboard = "0.5.0"
+qr2term = "0.2.2"
+serde_yaml = "0.8.23"
+tokio = { version = "1", features = ["full"] }
+simplelog = "0.11.2"
+reqwest = { version = "0.11", features = ["json"] }
