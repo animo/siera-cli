@@ -24,8 +24,6 @@ jobs:
       - name: Gather data and rewrite PKGBUILD file
         id: gather_data_and_rewrite
         run: |
-          # sudo apt-get update 
-          # sudo apt-get upgrade
           VERSION=$(curl --silent https://api.github.com/repos/animo/agent-cli/releases | jq '.[0]' |  jq -r .tag_name)
           # strip the v prefix
           VERSION=${VERSION:1}

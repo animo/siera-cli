@@ -5,7 +5,7 @@ This simple command will result in a credential offer for a mocked credential th
 ### Usage
 
 ```
-aries-cli automate credential-offer
+agent-cli automate credential-offer
 ```
 
 #### Options
@@ -18,27 +18,23 @@ aries-cli automate credential-offer
 | `-s`  | `--self`                          | Completes the entire flow with itself.                  |
 | `-t`  | `--timeout <TIMEOUT>`             | Timeout for the entire flow in seconds \[default : 60]. |
 
-
-
 #### Example usage
 
 ```
-aries-cli automate credential-offer
+agent-cli automate credential-offer
 ```
 
 First, you will receive a connection invitation in your wallet, after which you will receive the offered credential. The credential is named default and contains several types of attribute.&#x20;
 
 ```json
 {
-    "Bank": "qBank New York",
-    "Name": "Joyce Brown",
-    "Valid Until": "20251212",
-    "Card Number": "4537-6696-0666-0146",
-    "City": "New York",
-    "Date Of Birth": "19890321",
-    "Street": "Main Road 207",
-    "Security Code": "063",
+  "Bank": "qBank New York",
+  "Name": "Joyce Brown",
+  "Valid Until": "20251212",
+  "Card Number": "4537-6696-0666-0146",
+  "City": "New York",
+  "Date Of Birth": "19890321",
+  "Street": "Main Road 207",
+  "Security Code": "063"
 }
-
 ```
-

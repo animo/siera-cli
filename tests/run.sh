@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# set -e
-
 ENDPOINT=https://agent.community.animo.id
 
 echo "Some mock tests... Just for input/output parsing"
@@ -57,7 +55,7 @@ credential_definition() {
 credential() {
   echo "--- Credentials ----"
   SCHEMA_ID=`cargo run -q -- -u=$ENDPOINT schema create -n=foo -a=bar -a=baz 2> /dev/null 2> /dev/null`
-  CRED_DEF_ID=`cargo run -q -- -u=$ENDPOINT  credential-definitions create --schema-id=$SCHEMA_ID 2> /dev/null`
+  CRED_DEF_ID=`cargo run -q -- -u=$ENDPOINT  credential-definition create --schema-id=$SCHEMA_ID 2> /dev/null`
   cargo run -q -- -q credential offer --connection-id=FOO --cred-def-id=$CRED_DEF_ID -k=bar -v=B -k=baz -v=C &> /dev/null
   handle_out $? 1 "credential: Offer"
 }
