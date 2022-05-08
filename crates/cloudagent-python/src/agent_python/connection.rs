@@ -13,6 +13,8 @@ impl ConnectionModule for CloudAgentPython {
     async fn get_all(&self, options: ConnectionGetAllOptions) -> Result<ConnectionGetAllResponse> {
         let url = self.cloud_agent.create_url(vec!["connections"])?;
         let mut query: Vec<(&str, String)> = vec![];
+        // fill_query!(options, query)
+        // entry_in_query!(query, field)
 
         // TODO: potential macro
         options.alias.map(|c| query.push(("alias", c)));

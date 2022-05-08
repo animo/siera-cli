@@ -1,20 +1,41 @@
 use std::fmt::{Display, Formatter};
 
+/// User-level errors that can be thrown at runtime
 #[derive(Debug)]
 pub enum Error {
+    /// The cloudagent did not allow the request without proper authorization
     AuthorizationFailed,
+
+    /// The server gave a response that was not expected and therefore not deserializeable
     UnableToParseResponse,
+
+    /// Provided url does not exist
     UrlDoesNotExist,
+
+    /// The server supplied a status code which is not handled accordingly
     UnknownResponseStatusCode(String),
+
+    /// The server responded with a 5xx status code. Not our fault
     InternalServerError(u16),
+
+    /// Supplied url is not reachable
     UnreachableUrl,
+
+    /// Specific handle case for a 5xx status code which means that the cloudagent might be offline
     HttpServiceUnavailable,
+
+    // TODO: why is this here?
+    /// Predicate structure is invalid
     UnableToParseOutValue(String),
+
+    // TODO: why is this here?
+    /// Predicate used an invalid operator
     InvalidOperator(String),
 }
 
 impl std::error::Error for Error {}
 
+/// Generic result type which binds the error to be an instance of the `Error` enum
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 impl Display for Error {

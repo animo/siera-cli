@@ -7,9 +7,11 @@ use serde_json::{json, Value};
 #[async_trait]
 impl MessageModule for CloudAgentPython {
     async fn send_message(&self, options: SendMessageOptions) -> Result<String> {
-        let url = self
-            .cloud_agent
-            .create_url(vec!["connections", &options.id, "send-message"])?;
+        let url = self.cloud_agent.create_url(vec![
+            "connections",
+            &options.connection_id,
+            "send-message",
+        ])?;
 
         let body = json!({
           "content": options.message,

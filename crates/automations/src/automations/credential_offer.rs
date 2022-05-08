@@ -11,11 +11,18 @@ use std::collections::HashMap;
 
 /// Credential offer Automation which offers an prebuilt credential to a connection
 pub struct CredentialOfferAutomation {
+    /// Connection id to which the credential will be send to
     pub connection_id: String,
+    /// Key Value pair of the attributes
     pub attributes: HashMap<String, String>,
 }
 
 impl CredentialOfferAutomation {
+    /// Main executor function
+    /// 1. Create a connection
+    /// 2. Register the schema
+    /// 3. Register the credential definition
+    /// 4. Offer the credentail to the connection id
     pub async fn execute(
         &self,
         agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
