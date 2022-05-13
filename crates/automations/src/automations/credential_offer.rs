@@ -30,7 +30,6 @@ impl CredentialOfferAutomation {
         trace!("Starting automation CredentialOfferAutomation");
         trace!("{}", self.connection_id);
         trace!("{:#?}", self.attributes);
-
         let attribute_keys: Vec<String> = self.attributes.keys().map(|e| e.to_owned()).collect();
         let attribute_values: Vec<String> =
             self.attributes.values().map(|e| e.to_owned()).collect();
