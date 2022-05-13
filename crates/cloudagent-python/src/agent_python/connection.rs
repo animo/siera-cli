@@ -1,4 +1,5 @@
 use super::agent::CloudAgentPython;
+use crate::fill_query;
 use agent::error::Result;
 use agent::modules::connection::{
     Connection, ConnectionCreateInvitationOptions, ConnectionCreateInvitationResponse,
@@ -12,22 +13,18 @@ use serde_json::json;
 impl ConnectionModule for CloudAgentPython {
     async fn get_all(&self, options: ConnectionGetAllOptions) -> Result<ConnectionGetAllResponse> {
         let url = self.cloud_agent.create_url(vec!["connections"])?;
-        let mut query: Vec<(&str, String)> = vec![];
-        // fill_query!(options, query)
-        // entry_in_query!(query, field)
 
-        // TODO: potential macro
-        options.alias.map(|c| query.push(("alias", c)));
-        options
-            .connection_protocol
-            .map(|c| query.push(("connection_protocol", c)));
-        options
-            .invitation_key
-            .map(|c| query.push(("invite_key", c)));
-        options.my_did.map(|c| query.push(("my_did", c)));
-        options.state.map(|c| query.push(("state", c)));
-        options.their_did.map(|c| query.push(("their_did", c)));
-        options.their_role.map(|c| query.push(("their_role", c)));
+        let query = fill_query!(
+            options,
+            query,
+            alias,
+            connection_protocol,
+            invitation_key,
+            my_did,
+            state,
+            their_did,
+            their_role
+        );
 
         self.cloud_agent.get(url, Some(query)).await
     }

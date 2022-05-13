@@ -33,10 +33,8 @@ pub struct CredentialDefinitionCreateResponse {
 /// Response from the cloudagent when requesting a credential definition
 /// by id
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct CredentialDefinitionGetByIdResponse {
     /// The credential definition requested
-    #[serde(rename = "credential_definition")]
     pub credential_definition: CredentialDefinition,
 }
 

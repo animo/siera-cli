@@ -50,7 +50,6 @@ pub struct ConnectionCreateInvitationResponse {
 
 /// Response from the server when all connections are requested
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct ConnectionGetAllResponse {
     /// List of all the connections returned by the cloudagent
     /// these connections are already filtered on
@@ -59,7 +58,6 @@ pub struct ConnectionGetAllResponse {
 
 /// A single connection structure
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct Connection {
     /// Their role in the connection process
     pub their_role: String,

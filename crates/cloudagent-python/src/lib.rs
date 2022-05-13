@@ -13,3 +13,7 @@ pub mod cloud_agent;
 
 /// Simple web bindings for the module to interact with the cloudagent
 mod web;
+
+/// Macro module
+#[macro_use]
+mod macros;

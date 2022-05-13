@@ -6,7 +6,6 @@ use crate::error::Result;
 
 /// Repsonse of the cloudagent for discovering features
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct DiscoverFeaturesResponse {
     /// The query used for the request
     pub query_msg: Value,
@@ -17,7 +16,6 @@ pub struct DiscoverFeaturesResponse {
 
 /// A feature which is in the `Disclosed` structure
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct Disclose {
     /// The type of the request
     #[serde(rename = "@type")]
@@ -33,7 +31,6 @@ pub struct Disclose {
 
 /// A protocol
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct Protocol {
     /// Protocol id
     pub pid: String,

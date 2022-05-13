@@ -61,10 +61,10 @@ impl CloudAgent {
                 let status_code = res.status().as_u16();
                 trace!("Got {} response:\n{:#?}", status_code, res);
                 match status_code {
-                    200..=299 => res
-                        .json()
-                        .await
-                        .map_err(|_| Error::UnableToParseResponse.into()),
+                    200..=299 => res.json().await.map_err(|e| {
+                        println!("{}", e);
+                        Error::UnableToParseResponse.into()
+                    }),
                     // Issue credential message when attributes are not correct
                     400 => Err(res.text().await?.into()),
                     401 => Err(Error::AuthorizationFailed.into()),

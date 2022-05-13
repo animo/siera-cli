@@ -7,7 +7,6 @@ use std::str::FromStr;
 
 /// Response from the cloudagent when a proof request is created
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct ProofRequestResponse {
     /// The state of the proof request
     pub state: String,
