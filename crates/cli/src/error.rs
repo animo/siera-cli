@@ -1,26 +1,62 @@
 use std::fmt::{Display, Formatter};
 
+/// User-level errors that can be thrown at runtime
 #[derive(Debug)]
 pub enum Error {
+    /// Unable to read the configuration file. Might not be initialized
     CannotReadConfigurationFile,
+
+    /// The path to the file does not exist
     InvalidConfigurationPath,
+
+    /// The structure inside the configuration file is invalid
     InvalidConfigurationStructure,
+
+    /// The specified environment does not exist inside the configuration file
     InvalidEnvironment(String),
+
+    /// The connection to which to send something is not in state active
     InactiveConnection,
+
+    /// No agent url was supplied to the command
+    /// Either via the configuration or as an option
     NoAgentURLSupplied,
+
+    /// No environment was supplied while one was required
     NoEnvironmentSupplied,
+
+    /// The invitation is unparseable
     InvalidAgentInvitation,
+
+    /// The key-value pair supplied cannot be indexed matched
+    /// as the lengths differ
     UnequalAmountKeyValue,
+
+    /// The environment variable `$HOME` cannot be found
     HomeNotFound,
+
+    /// Unknown OS detected, we only actively support:
+    /// - Linux
+    /// - MacOS
+    /// - Windows
     OsUnknown,
+
+    /// Atleast one attribute is required when registering a schema
     RequiredAttributes,
+
+    /// The configuration is empty
     EmptyConfiguration,
+
+    /// The compare value supplied cannot be parsed into a number
     PredicateValueNonNumber(String, String),
+
+    /// No subcommand is supplied
     _NoSubcommandSupplied(String),
 }
 
 impl std::error::Error for Error {}
 
+/// Generic result type which binds the error to be an instance of the `Error` enum
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 impl Display for Error {

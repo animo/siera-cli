@@ -1,3 +1,4 @@
+#![allow(clippy::missing_docs_in_private_items)]
 use std::convert::From;
 
 /// Help documentation for CLI commands.

@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use crate::error::Result;
 
 /// Options that are supplied when sending a basic message to another agent
-pub struct SendMessageOptions {
+pub struct SendBasicMessageOptions {
     /// The connection id to which to send the message
     pub connection_id: String,
 
@@ -13,7 +13,7 @@ pub struct SendMessageOptions {
 
 /// Generic cloudagent basic message module
 #[async_trait]
-pub trait MessageModule {
+pub trait BasicMessageModule {
     /// Send a basic message to another agent via the connection id
-    async fn send_message(&self, options: SendMessageOptions) -> Result<String>;
+    async fn send_message(&self, options: SendBasicMessageOptions) -> Result<String>;
 }

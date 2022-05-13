@@ -11,7 +11,7 @@ pub mod credential_definition;
 pub mod feature;
 
 /// Basic Message module for a generic cloudagent
-pub mod message;
+pub mod basic_message;
 
 /// Proof module for a generic cloudagent
 pub mod proof;

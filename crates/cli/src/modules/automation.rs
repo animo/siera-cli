@@ -1,7 +1,7 @@
 use crate::copy;
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
-use crate::modules::connection::invite_url_to_object;
+use crate::modules::connection::invite_url_to_struct;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr;
 use agent::modules::connection::{ConnectionCreateInvitationOptions, ConnectionModule};
@@ -18,6 +18,7 @@ use std::collections::HashMap;
 #[derive(Args)]
 #[clap(about = HelpStrings::Automation)]
 pub struct AutomationOptions {
+    /// All the subcommands of the automation cli
     #[clap(subcommand)]
     pub commands: AutomationSubcommands,
 }
@@ -46,7 +47,7 @@ pub enum AutomationSubcommands {
     },
 }
 
-/// Subcommand automation parser
+/// Subcommand Automation parser
 pub async fn parse_automation_args(
     options: &AutomationOptions,
     agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
@@ -70,7 +71,7 @@ pub async fn parse_automation_args(
                     })
                     .await?;
                 if *sent_to_self {
-                    let invitation_object = invite_url_to_object(connection.invitation_url)?;
+                    let invitation_object = invite_url_to_struct(connection.invitation_url)?;
                     agent.receive_invitation(invitation_object).await?;
                 } else {
                     if !no_qr {
