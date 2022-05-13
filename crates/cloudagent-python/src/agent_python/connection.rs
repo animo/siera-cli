@@ -16,7 +16,6 @@ impl ConnectionModule for CloudAgentPython {
 
         let query = fill_query!(
             options,
-            query,
             alias,
             connection_protocol,
             invitation_key,
