@@ -168,5 +168,7 @@ fn initialize_agent_from_cli(
     };
 
     let version = CloudAgentPythonVersion::ZeroSevenThree;
-    CloudAgentPython::new(agent_url, api_key, auth_token, version)
+    Ok(CloudAgentPython::new(
+        agent_url, api_key, auth_token, version,
+    ))
 }
