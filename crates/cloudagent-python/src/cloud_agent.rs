@@ -15,6 +15,7 @@ pub struct CloudAgent {
 }
 
 impl CloudAgent {
+    /// Create a url based on the base url and a list of paths
     pub fn create_url(&self, paths: Vec<&str>) -> Result<Url> {
         let mut url = Url::parse(&self.endpoint)
             .map_err(|_| Box::new(Error::UnreachableUrl) as Box<dyn std::error::Error>)?;

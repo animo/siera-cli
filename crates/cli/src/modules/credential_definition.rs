@@ -14,36 +14,48 @@ use crate::{
     utils::logger::pretty_stringify_obj,
 };
 
+/// Credential Definition options and flags
 #[derive(Args)]
 #[clap(about = "Retrieve or create credential definitions")]
 pub struct CredentialDefinitionOptions {
+    /// All the subcommands of the credential definition cli
     #[clap(subcommand)]
     pub commands: CredentialDefinitionSubcommands,
 }
 
+/// Credential Definition subcommands
 #[derive(Subcommand, Debug)]
 pub enum CredentialDefinitionSubcommands {
+    /// Create and register a credential definition based on the schema id
     #[clap(about = HelpStrings::CredentialDefinitionCreate)]
     Create {
+        /// The schema id of which to base the credential definition on
         #[clap(short, long, help = HelpStrings::CredentialDefinitionCreateSchemaId)]
         schema_id: String,
 
+        /// The tag used for registering the credential definition
         #[clap(short, long, help = HelpStrings::CredentialDefinitionCreateTag)]
         tag: Option<String>,
 
+        /// Whether the credential definition supports revocation
         #[clap(short = 'r', long, help = HelpStrings::CredentialDefinitionCreateSupportRevocation)]
         support_revocation: bool,
 
+        /// The revocation registry size
         #[clap(short = 'v', long, help = HelpStrings::CredentialDefinitionCreateRevocationRegistrySize)]
         revocation_registry_size: Option<i32>,
     },
+
+    /// List all the credential definitions
     #[clap(about = HelpStrings::CredentialDefinitionList)]
     List {
+        /// List a single credential definition by id
         #[clap(long, short, help = HelpStrings::CredentialDefinitionId)]
         id: Option<String>,
     },
 }
 
+/// Subcommand Credential Definition parser
 pub async fn parse_credential_definition_args(
     options: &CredentialDefinitionOptions,
     agent: impl CredentialDefinitionModule,

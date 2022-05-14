@@ -8,10 +8,10 @@ use std::path::PathBuf;
 use crate::cli::{Cli, Commands};
 use crate::error::{Error, Result};
 use crate::modules::automation::parse_automation_args;
+use crate::modules::basic_message::parse_basic_message_args;
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential::parse_credentials_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
-use crate::modules::message::parse_message_args;
 use crate::modules::proof::parse_proof_args;
 use crate::modules::{
     connection::parse_connection_args, feature::parse_features_args, schema::parse_schema_args,
@@ -19,6 +19,7 @@ use crate::modules::{
 use crate::utils::config::{get_config_from_path, get_config_path};
 use crate::utils::logger;
 
+/// Register the subcommands on the cli
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();
     let level = if cli.quiet {
@@ -65,7 +66,7 @@ pub async fn register() -> Result<()> {
                 cli.api_key,
                 cli.token,
             )?;
-            parse_message_args(options, agent).await
+            parse_basic_message_args(options, agent).await
         }
         Commands::CredentialDefinition(options) => {
             let agent = initialize_agent_from_cli(
@@ -123,6 +124,7 @@ pub async fn register() -> Result<()> {
     Ok(())
 }
 
+/// Initialize any agent from the cli
 fn initialize_agent_from_cli(
     config: Option<PathBuf>,
     environment: String,
@@ -166,5 +168,7 @@ fn initialize_agent_from_cli(
     };
 
     let version = CloudAgentPythonVersion::ZeroSevenThree;
-    CloudAgentPython::new(agent_url, api_key, auth_token, version)
+    Ok(CloudAgentPython::new(
+        agent_url, api_key, auth_token, version,
+    ))
 }

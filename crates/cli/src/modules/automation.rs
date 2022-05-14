@@ -1,7 +1,7 @@
 use crate::copy;
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
-use crate::modules::connection::invite_url_to_object;
+use crate::modules::connection::invite_url_to_struct;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr;
 use agent::modules::connection::{ConnectionCreateInvitationOptions, ConnectionModule};
@@ -14,31 +14,40 @@ use colored::*;
 use log::{debug, trace};
 use std::collections::HashMap;
 
+/// Automation options and flags
 #[derive(Args)]
 #[clap(about = HelpStrings::Automation)]
 pub struct AutomationOptions {
+    /// All the subcommands of the automation cli
     #[clap(subcommand)]
     pub commands: AutomationSubcommands,
 }
 
+/// Automation subcommands
 #[derive(Subcommand, Debug)]
 pub enum AutomationSubcommands {
+    /// Credential offer subcommand which automatically offers a credential
     #[clap(about = HelpStrings::AutomationCredentialOffer )]
     CredentialOffer {
+        /// Connection id to send the credential to
         #[clap(long, short, help = HelpStrings::AutomationCredentialOfferConnectionId)]
         connection_id: Option<String>,
 
+        /// Maximum amount of time it should wait for an established connection
         #[clap(long, short, default_value = "60", help = HelpStrings::AutomationCredentialOfferTimeout)]
         timeout: u32,
 
+        /// Whether it should send the credential to yourself
         #[clap(long = "self", short = 's', help = HelpStrings::AutomationCredentialOfferSelf)]
         sent_to_self: bool,
 
+        /// Whether no qr code should be printed out
         #[clap(long, short, help = HelpStrings::AutomationCredentialOfferNoQr )]
         no_qr: bool,
     },
 }
 
+/// Subcommand Automation parser
 pub async fn parse_automation_args(
     options: &AutomationOptions,
     agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
@@ -62,7 +71,7 @@ pub async fn parse_automation_args(
                     })
                     .await?;
                 if *sent_to_self {
-                    let invitation_object = invite_url_to_object(connection.invitation_url)?;
+                    let invitation_object = invite_url_to_struct(connection.invitation_url)?;
                     agent.receive_invitation(invitation_object).await?;
                 } else {
                     if !no_qr {
@@ -126,6 +135,7 @@ pub async fn parse_automation_args(
     Ok(())
 }
 
+/// Building and offering the credential
 async fn credential_offer(
     connection_id: String,
     agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,

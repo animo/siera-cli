@@ -14,13 +14,18 @@ macro_rules! print_char_with_stop {
 
 /// All the types of loaders
 pub enum LoaderVariant {
+    /// Simple spinner loader that iterates over:
+    /// / - | \
     Spinner,
+    /// Dot loader that just outputs dots over and over
     #[allow(dead_code)]
     Dots,
 }
 
 /// Loader structure
 pub struct Loader {
+    /// Sender of a message channel that send a true when the loader should stop spinning
+    /// We have to do this to get information to the thread where the spinner is spinning
     sender: Sender<bool>,
 }
 
@@ -76,6 +81,8 @@ impl Loader {
         });
     }
 
+    /// Dots loader
+    /// Does not do inplace replacement but just keeps printing dots
     fn loader_dots(receiver: Receiver<bool>) {
         let time_between = 100;
 

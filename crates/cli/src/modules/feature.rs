@@ -9,10 +9,12 @@ use crate::utils::{
     logger::pretty_stringify_obj,
 };
 
+/// Automation options and flags
 #[derive(Args)]
 #[clap(about = HelpStrings::Features)]
 pub struct FeaturesOptions {}
 
+/// Subcommand Feature parser
 pub async fn parse_features_args(agent: impl FeatureModule) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
     agent.discover_features().await.map(|features| {

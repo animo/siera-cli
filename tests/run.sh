@@ -13,7 +13,7 @@ feature() {
 
 message() {
   echo "--- Message ---"
-  cargo run -q -- -q -u=$ENDPOINT  message --id=FOO --message=BAR &> /dev/null
+  cargo run -q -- -q -u=$ENDPOINT  message --connection-id=FOO --message=BAR &> /dev/null
   handle_out $? 1 "Message: Send Message"
 }
 

@@ -5,19 +5,30 @@ use std::path::{Path, PathBuf};
 use crate::error::{Error, Result};
 use serde::{Deserialize, Serialize};
 
+/// Structure for an environment in the configuration
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Environment {
+    /// The agent endpoint
     pub endpoint: String,
+
+    /// The api key that is used for authentication
     pub api_key: Option<String>,
+
+    /// The token which is used for a multi tenancy agent
     pub auth_token: Option<String>,
 }
 
+/// A generic configuration used to store multiple agent configurations
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Configuration {
+    /// The configurations stored in the config file
+    /// key = environment name
+    /// value = environment
     pub configurations: BTreeMap<String, Environment>,
 }
 
 impl Configuration {
+    /// Initialize a configuration with some default options
     pub fn init(token: Option<String>) -> (String, Environment) {
         let environment = Environment {
             // Set the multi tenancy agent when an auth token is provided
@@ -31,7 +42,7 @@ impl Configuration {
         (String::from("default"), environment)
     }
 
-    /// Can do inplace mutation and initialize
+    /// Add a new agent to the configuration or update a current environment
     pub fn add(environment: String, configuration: Environment) -> Result<()> {
         let path = get_config_path()?;
         let mut current_configuration = get_config_from_path(&path).unwrap_or(Configuration {
@@ -60,6 +71,7 @@ impl Configuration {
         Ok(())
     }
 
+    /// Remove an agent from the configuration
     pub fn remove(environment: String) -> Result<()> {
         let path = get_config_path()?;
         let mut current_configuration =
@@ -76,6 +88,8 @@ impl Configuration {
     }
 }
 
+/// Get the confuration file when supplying the path where it is supposed to be
+/// This also parser the file
 pub fn get_config_from_path(config_path: &Path) -> Result<Configuration> {
     let out: Result<String> =
         std::fs::read_to_string(config_path).map_err(|_| Error::InvalidConfigurationPath.into());
@@ -83,6 +97,7 @@ pub fn get_config_from_path(config_path: &Path) -> Result<Configuration> {
         .map_err(|_| Error::InvalidConfigurationStructure.into())
 }
 
+/// Get the default configuration path
 pub fn get_config_path() -> Result<PathBuf> {
     if cfg!(windows) {
         let home = "C:\\Program Files\\Common Files";

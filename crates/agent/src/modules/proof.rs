@@ -5,31 +5,47 @@ use serde::Serialize;
 use serde_json::Value;
 use std::str::FromStr;
 
+/// Response from the cloudagent when a proof request is created
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct ProofRequestResponse {
+    /// The state of the proof request
     pub state: String,
-    #[serde(rename = "presentation_request")]
+
+    /// The presentation request as an object
     pub presentation_request: Value,
-    #[serde(rename = "updated_at")]
+
+    /// The last time the proof request was updated
     pub updated_at: String,
-    #[serde(rename = "connection_id")]
+
+    /// The connection id to which the proof request is send to
     pub connection_id: String,
-    #[serde(rename = "thread_id")]
+
+    /// The thread id that can be used to reference this proof request
     pub thread_id: String,
-    #[serde(rename = "presentation_request_dict")]
+
+    /// A dictionary of the presentation request
     pub presentation_request_dict: Value,
+
+    /// Your role in the proof request flow
     pub role: String,
-    #[serde(rename = "auto_present")]
+
+    /// Whether it should automatically respond in the proof request flow
     pub auto_present: bool,
-    #[serde(rename = "presentation_exchange_id")]
+
+    /// The presentation exhange id that can be used in the other presentation exchange steps
     pub presentation_exchange_id: String,
-    pub trace: bool,
-    #[serde(rename = "created_at")]
+
+    /// When the proof request was created
     pub created_at: String,
+
+    /// Who the initiator was of the proof request
     pub initiator: String,
 }
 
+/// A simple predicate enum
+/// The first string is the name of the key/value pair
+/// The second string is the operator that is used `>=`, `<=`, `=`, `>` or `>`
+/// The third string is the the value that should be evaluated with
 #[derive(Debug)]
 pub struct Predicate(pub String, pub String, pub String);
 
@@ -56,6 +72,7 @@ impl FromStr for Predicate {
     }
 }
 
+/// Simple validation to check if the supplied operator is valid
 fn validate_operator(op: &str) -> Result<()> {
     if vec![">=", "<=", "=", ">", "<"]
         .iter()
@@ -67,14 +84,24 @@ fn validate_operator(op: &str) -> Result<()> {
     Err(Error::InvalidOperator(op.to_owned()).into())
 }
 
+/// Options supplied when a proof request is created
 pub struct ProofRequestOptions {
+    /// The connection id to which the proof request is send to
     pub connection_id: String,
+
+    /// The name of the proof request
     pub name: String,
+
+    /// All the attributes that are requested from the other agent
     pub attributes: Vec<String>,
+
+    /// All the predicates that are requested from the other agent
     pub predicates: Vec<(String, String, i32)>,
 }
 
+/// Generic cloudagent proof module
 #[async_trait]
 pub trait ProofModule {
+    /// Send a proof request via the connection id to another agent
     async fn send_request(&self, options: ProofRequestOptions) -> Result<ProofRequestResponse>;
 }

@@ -16,54 +16,89 @@ use crate::utils::{
     qr::print_qr_code,
 };
 
+/// Connection options and flags
 #[derive(Args)]
 pub struct ConnectionOptions {
+    /// All the subcommands of the connection cli
     #[clap(subcommand)]
     pub commands: ConnectionSubcommands,
 }
 
+/// Connection subcommands
 #[derive(Subcommand, Debug)]
 #[clap(about = HelpStrings::Connections)]
 pub enum ConnectionSubcommands {
+    /// Create an invitation
     #[clap(about = HelpStrings::ConnectionsInvite)]
     Invite {
+        /// Whether it should auto accept your side of the connection flow
         #[clap(long, short, help = HelpStrings::ConnectionsInviteAutoAccept)]
         auto_accept: bool,
+
+        /// Whether it should print a qr code
         #[clap(long, short, help = HelpStrings::ConnectionsInviteQr)]
         qr: bool,
+
+        /// Whether it should create a specific invitation for the toolbox
+        /// this comes with the admin group
         #[clap(long, short, help = HelpStrings::ConnectionsInviteToolbox)]
         toolbox: bool,
+
+        /// Whether the invitation should be reusable
         #[clap(long, short, help = HelpStrings::ConnectionsInviteMultiUse)]
         multi_use: bool,
+
+        /// A custom alias for that specific connection
         #[clap(long, short = 'l', help = HelpStrings::ConnectionsInviteAlias)]
         alias: Option<String>,
     },
+
+    /// Receive an invitation via url
     #[clap(about = HelpStrings::ConnectionsReceive)]
     Receive {
+        /// Invitation url
         #[clap(long, short, help = HelpStrings::ConnectionsReceiveUrl)]
         url: String,
     },
+
+    /// List all connections
     #[clap(about = HelpStrings::ConnectionsList)]
     List {
+        /// Filter on connection id
         #[clap(long, short, help = HelpStrings::ConnectionsListId)]
         id: Option<String>,
+
+        /// Filter on connection alias
         #[clap(long, short, help = HelpStrings::ConnectionsListAlias, conflicts_with = "id")]
         alias: Option<String>,
+
+        /// Filter on connection protocol
         #[clap(long, short, help = HelpStrings::ConnectionsListConnectionProtocol, conflicts_with = "id")]
         connection_protocol: Option<String>,
+
+        /// Filter on invitation key
         #[clap(long, short = 'k', help = HelpStrings::ConnectionsListInvitationKey, conflicts_with = "id")]
         invitation_key: Option<String>,
+
+        /// Filter on your did
         #[clap(long, short, help = HelpStrings::ConnectionsListMyDid, conflicts_with = "id")]
         my_did: Option<String>,
+
+        /// Filter on the state of the connection
         #[clap(long, short, help = HelpStrings::ConnectionsListState, conflicts_with = "id")]
         state: Option<String>,
+
+        /// Filter on their did
         #[clap(long, short = 'd', help = HelpStrings::ConnectionsListTheirDid, conflicts_with = "id")]
         their_did: Option<String>,
+
+        /// Filter on their role
         #[clap(long, short = 'r', help = HelpStrings::ConnectionsListTheirRole, conflicts_with = "id")]
         their_role: Option<String>,
     },
 }
 
+/// Subcommand connection parser
 pub async fn parse_connection_args(
     options: &ConnectionOptions,
     agent: impl ConnectionModule,
@@ -100,7 +135,7 @@ pub async fn parse_connection_args(
             })
         }
         ConnectionSubcommands::Receive { url } => {
-            let invitation = invite_url_to_object(url.to_owned())?;
+            let invitation = invite_url_to_struct(url.to_owned())?;
             agent
                 .receive_invitation(invitation)
                 .await
@@ -145,7 +180,8 @@ pub async fn parse_connection_args(
     }
 }
 
-pub fn invite_url_to_object(url: String) -> Result<ConnectionReceiveInvitationOptions> {
+/// Create an invitation struct from an invitation url
+pub fn invite_url_to_struct(url: String) -> Result<ConnectionReceiveInvitationOptions> {
     // Split the url
     let split_url = url
         .split("c_i=")
