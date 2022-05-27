@@ -6,7 +6,6 @@ use agent::modules::{
     schema::{SchemaCreateOptions, SchemaModule},
 };
 use colored::*;
-use log::trace;
 use std::collections::HashMap;
 
 /// Credential offer Automation which offers an prebuilt credential to a connection
@@ -27,9 +26,9 @@ impl CredentialOfferAutomation {
         &self,
         agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
     ) -> Result<()> {
-        trace!("Starting automation CredentialOfferAutomation");
-        trace!("{}", self.connection_id);
-        trace!("{:#?}", self.attributes);
+        // log_trace!("Starting automation CredentialOfferAutomation");
+        // log_trace!("{}", self.connection_id);
+        // log_trace!("{:#?}", self.attributes);
         let attribute_keys: Vec<String> = self.attributes.keys().map(|e| e.to_owned()).collect();
         let attribute_values: Vec<String> =
             self.attributes.values().map(|e| e.to_owned()).collect();
@@ -72,8 +71,8 @@ impl CredentialOfferAutomation {
             })
             .await?;
 
-        trace!("Automation completed and offered a credential");
-        trace!("{:#?}", credential_offer_response);
+        // trace!("Automation completed and offered a credential");
+        // trace!("{:#?}", credential_offer_response);
         Ok(())
     }
 }

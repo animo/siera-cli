@@ -5,6 +5,9 @@
 
 #![deny(clippy::missing_docs_in_private_items)]
 
+#[macro_use]
+extern crate logger;
+
 /// All of the submodule functionality of an Aries cloudagent Python
 pub mod agent_python;
 

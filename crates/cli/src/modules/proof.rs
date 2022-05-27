@@ -1,12 +1,10 @@
-use crate::copy;
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use crate::utils::logger::pretty_stringify_obj;
 use agent::modules::proof::{Predicate, ProofModule, ProofRequestOptions};
 use clap::{Args, Subcommand};
 use colored::*;
-use log::{debug, info};
+use logger::pretty_stringify_obj;
 
 /// Proof options and flags
 #[derive(Args)]
@@ -74,8 +72,8 @@ pub async fn parse_proof_args(commands: &ProofSubcommands, agent: impl ProofModu
                 .send_request(proof_request_options)
                 .await
                 .map(|proof| {
-                    debug!("{}", pretty_stringify_obj(&proof));
-                    info!(
+                    log_debug!("{}", pretty_stringify_obj(&proof));
+                    log_info!(
                         "{} requested a proof. proof exchange id: ",
                         "Sucessefully".green()
                     );

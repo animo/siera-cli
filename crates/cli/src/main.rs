@@ -4,12 +4,13 @@
 
 #![deny(clippy::missing_docs_in_private_items)]
 
-use colored::*;
-use log::error;
-use register::register;
+/// Access logger macros
+#[macro_use]
+extern crate logger;
 
-/// Temporary logger crate
-extern crate log;
+use colored::*;
+
+use register::register;
 
 /// Module for the whole cli
 mod cli;
@@ -19,9 +20,6 @@ mod error;
 
 /// Module for the help strings printed by the cli
 mod help_strings;
-
-/// Macro module
-mod macros;
 
 /// All of the subcommands split into modules
 mod modules;
@@ -38,7 +36,7 @@ async fn main() {
     match register().await {
         Ok(_) => (),
         Err(e) => {
-            error!("{} {}", "error:".bold().red(), e);
+            log_error!("{} {}", "error:".bold().red(), e);
             std::process::exit(1);
         }
     }

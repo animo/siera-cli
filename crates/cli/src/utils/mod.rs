@@ -1,7 +1,3 @@
-/// Module for all the log implementations
-#[macro_use]
-pub mod logger;
-
 /// Module for interacting with the config
 pub mod config;
 

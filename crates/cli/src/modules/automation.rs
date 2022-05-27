@@ -1,4 +1,3 @@
-use crate::copy;
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::modules::connection::invite_url_to_struct;
@@ -11,7 +10,6 @@ use agent::modules::schema::SchemaModule;
 use automations::automations::credential_offer::CredentialOfferAutomation;
 use clap::{Args, Subcommand};
 use colored::*;
-use log::{debug, trace};
 use std::collections::HashMap;
 
 /// Automation options and flags
@@ -104,13 +102,13 @@ pub async fn parse_automation_args(
                     );
                     copy!("{}", connection.invitation_url);
                 }
-                debug!("Looping {} times", timeout);
+                log_debug!("Looping {} times", timeout);
                 for i in 1..=*timeout {
                     let connection =
                         ConnectionModule::get_by_id(&agent, connection.connection_id.to_owned())
                             .await?;
                     if connection.state != "active" && connection.state != "response" {
-                        trace!(
+                        log_trace!(
                             "Connection state is not active, waiting 1 second then trying again..."
                         );
                         std::thread::sleep(std::time::Duration::from_millis(1000));
@@ -153,7 +151,7 @@ async fn credential_offer(
     );
     attributes.insert(String::from("Security Code"), String::from("063"));
     attributes.insert(String::from("Valid Until"), String::from("20251212"));
-    debug!("Mock credential:\n{:#?}", attributes);
+    log_debug!("Mock credential:\n{:#?}", attributes);
 
     let automation = CredentialOfferAutomation {
         connection_id,

@@ -1,17 +1,10 @@
+use crate::error::{Error, Result};
+use crate::help_strings::HelpStrings;
+use crate::utils::loader::{Loader, LoaderVariant};
 use agent::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
 use colored::*;
-use log::{debug, info};
-
-use crate::{
-    copy,
-    error::{Error, Result},
-    help_strings::HelpStrings,
-    utils::{
-        loader::{Loader, LoaderVariant},
-        logger::pretty_stringify_obj,
-    },
-};
+use logger::pretty_stringify_obj;
 
 /// Schema options and flags
 #[derive(Args)]
@@ -69,8 +62,8 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
                 return Err(Error::RequiredAttributes.into());
             }
             agent.create(options).await.map(|schema| {
-                debug!("{}", pretty_stringify_obj(&schema));
-                info!(
+                log_debug!("{}", pretty_stringify_obj(&schema));
+                log_info!(
                     "{} schema with the following attributes: ",
                     "Created".green(),
                 );
@@ -78,8 +71,8 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
                     .schema
                     .attr_names
                     .into_iter()
-                    .for_each(|name| info!("- {}", name));
-                info!("{}", "Schema id: ".cyan());
+                    .for_each(|name| log_info!("- {}", name));
+                log_info!("{}", "Schema id: ".cyan());
                 println!("{}", schema.schema_id);
                 copy!("{}", schema.schema_id);
             })
@@ -93,7 +86,7 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             None => agent.get_all().await.map(|schemas| {
                 loader.stop();
                 schemas.schema_ids.iter().for_each(|x| println!("{}", x));
-                info!("{} fetched schema IDs", "Successfully".green());
+                log_info!("{} fetched schema IDs", "Successfully".green());
             }),
         },
     }

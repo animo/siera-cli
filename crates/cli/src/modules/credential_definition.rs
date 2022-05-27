@@ -3,16 +3,15 @@ use agent::modules::credential_definition::{
 };
 use clap::{Args, Subcommand};
 use colored::*;
-use log::{debug, info};
 use serde_json::json;
 
 use crate::{
-    copy,
     error::Result,
     help_strings::HelpStrings,
     utils::loader::{Loader, LoaderVariant},
-    utils::logger::pretty_stringify_obj,
 };
+
+use logger::pretty_stringify_obj;
 
 /// Credential Definition options and flags
 #[derive(Args)]
@@ -78,7 +77,7 @@ pub async fn parse_credential_definition_args(
             agent.create(options).await.map(|cred_def| {
                 loader.stop();
                 copy!("{}", cred_def.credential_definition_id);
-                info!("{} credential definition with id: ", "Created".green());
+                log_info!("{} credential definition with id: ", "Created".green());
                 println!("{}", cred_def.credential_definition_id);
             })
         }
@@ -92,7 +91,7 @@ pub async fn parse_credential_definition_args(
                     "tag": cred_def.credential_definition.tag,
                     "ver": cred_def.credential_definition.ver,
                 });
-                debug!("{}", pretty_stringify_obj(cred_def));
+                log_debug!("{}", pretty_stringify_obj(cred_def));
                 copy!("{}", pretty_stringify_obj(&loggable));
                 println!("{}", pretty_stringify_obj(loggable));
             }),
@@ -103,7 +102,7 @@ pub async fn parse_credential_definition_args(
                     .credential_definition_ids
                     .iter()
                     .for_each(|x| println!("{}", x));
-                info!(
+                log_info!(
                     "{} fetched credential definition IDs",
                     "Sucessfully".green()
                 );

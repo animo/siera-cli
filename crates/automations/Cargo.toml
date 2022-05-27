@@ -8,4 +8,3 @@ cloudagent-python = { path = "../cloudagent-python" }
 colored = "2.0.0"
 agent = { path = "../agent" }
 async-trait = "0.1.51"
-log = "0.4.14"
