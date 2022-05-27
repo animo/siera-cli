@@ -4,6 +4,9 @@
 
 #![deny(clippy::missing_docs_in_private_items)]
 
+#[macro_use]
+extern crate logger;
+
 /// Automation module that contains every automation script
 pub mod automations;
 

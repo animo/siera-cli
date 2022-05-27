@@ -1,3 +1,8 @@
+//! Logger for this crate
+//! Only cli bindings for now
+
+#![deny(clippy::missing_docs_in_private_items)]
+
 use clipboard::{ClipboardContext, ClipboardProvider};
 use serde::Serialize;
 use std::sync::RwLock;
@@ -5,6 +10,7 @@ use std::sync::RwLock;
 #[macro_use]
 extern crate lazy_static;
 
+/// Macro module
 #[macro_use]
 pub mod macros;
 

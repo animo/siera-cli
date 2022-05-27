@@ -69,6 +69,7 @@ dependencies = [
  "async-trait",
  "cloudagent-python",
  "colored",
+ "logger",
 ]
 
 [[package]]
