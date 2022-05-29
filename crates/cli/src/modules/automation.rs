@@ -75,27 +75,27 @@ pub async fn parse_automation_args(
                     if !no_qr {
                         qr::print_qr_code(&connection.invitation_url)?;
                     }
-                    println!();
-                    println!();
-                    println!("================");
-                    println!("{}", "Credential offer".bold());
-                    println!("================");
-                    println!();
+                    log!();
+                    log!();
+                    log!("================");
+                    log!("{}", "Credential offer".bold());
+                    log!("================");
+                    log!();
 
-                    println!(
+                    log!(
                         "{} invitation with connection id {}.",
                         "Created".green(),
                         connection.connection_id.bold()
                     );
-                    println!();
-                    println!(
+                    log!();
+                    log!(
                         "{} the QR code to accept the invitation or use this URL:\n\n{}",
                         "Scan".bold(),
                         connection.invitation_url
                     );
-                    println!();
-                    println!();
-                    println!(
+                    log!();
+                    log!();
+                    log!(
                         "{} for the invitation to be accepted. Timeout is {} seconds...",
                         "Waiting".cyan(),
                         timeout
@@ -113,7 +113,7 @@ pub async fn parse_automation_args(
                         );
                         std::thread::sleep(std::time::Duration::from_millis(1000));
                     } else {
-                        println!("Invitation {}!", "accepted".green());
+                        log!("Invitation {}!", "accepted".green());
                         credential_offer(connection.connection_id, agent).await?;
                         break;
                     }
@@ -124,8 +124,8 @@ pub async fn parse_automation_args(
             }
         },
     };
-    println!("{} executed automation", "Successfully".green());
-    println!(
+    log_info!("Successfully executed automation");
+    log!(
         "{}: It might take a few seconds for the credential to arrive",
         "Note".cyan()
     );

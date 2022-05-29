@@ -34,14 +34,14 @@ impl CredentialOfferAutomation {
             self.attributes.values().map(|e| e.to_owned()).collect();
 
         // Check if it as a valid connection
-        println!("{} the connection...", "Fetching".cyan());
+        log!("{} the connection...", "Fetching".cyan());
         let connection = ConnectionModule::get_by_id(&agent, self.connection_id.to_owned()).await?;
         if connection.state != "active" && connection.state != "response" {
             return Err(Error::ConnectionNotReady.into());
         }
 
         // Create or fetch the schema
-        println!("{} the schema...", "Registering".cyan());
+        log!("{} the schema...", "Registering".cyan());
         let schema = SchemaModule::create(
             &agent,
             SchemaCreateOptions {
@@ -57,11 +57,11 @@ impl CredentialOfferAutomation {
             ..CredentialDefinitionCreateOptions::default()
         };
 
-        println!("{} the credential definition...", "Registering".cyan());
+        log!("{} the credential definition...", "Registering".cyan());
         // Create or fetch the credential definition
         let credential_definition = CredentialDefinitionModule::create(&agent, options).await?;
 
-        println!("{} the credential...", "Offering".cyan());
+        log!("{} the credential...", "Offering".cyan());
         let credential_offer_response = agent
             .send_offer(CredentialOfferOptions {
                 keys: attribute_keys,

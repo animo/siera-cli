@@ -556,6 +556,7 @@ name = "logger"
 version = "0.0.0"
 dependencies = [
  "clipboard",
+ "colored",
  "lazy_static",
  "serde",
  "serde_json",

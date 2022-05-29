@@ -73,7 +73,7 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
                     .into_iter()
                     .for_each(|name| log_info!("- {}", name));
                 log_info!("{}", "Schema id: ".cyan());
-                println!("{}", schema.schema_id);
+                log!("{}", schema.schema_id);
                 copy!("{}", schema.schema_id);
             })
         }
@@ -81,12 +81,12 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             Some(i) => agent.get_by_id(i.to_owned()).await.map(|schema| {
                 loader.stop();
                 copy!("{}", pretty_stringify_obj(&schema));
-                println!("{}", pretty_stringify_obj(schema));
+                log!("{}", pretty_stringify_obj(schema));
             }),
             None => agent.get_all().await.map(|schemas| {
                 loader.stop();
-                schemas.schema_ids.iter().for_each(|x| println!("{}", x));
-                log_info!("{} fetched schema IDs", "Successfully".green());
+                schemas.schema_ids.iter().for_each(|x| log!("{}", x));
+                log_info!("Successfully fetched schema IDs");
             }),
         },
     }

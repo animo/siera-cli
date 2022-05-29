@@ -1,6 +1,5 @@
 use clap::Parser;
 use cloudagent_python::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
-use colored::*;
 use std::path::PathBuf;
 
 use crate::cli::{Cli, Commands};
@@ -21,7 +20,7 @@ use logger::LogLevel;
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();
     let level = if cli.quiet {
-        LogLevel::Warn
+        LogLevel::Off
     } else {
         match cli.verbose {
             1 => LogLevel::Info,
@@ -118,7 +117,7 @@ pub async fn register() -> Result<()> {
         }
     }?;
 
-    log_debug!("{} executed command", "Successfully".green());
+    log_info!("Successfully executed command");
     Ok(())
 }
 

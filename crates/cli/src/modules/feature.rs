@@ -17,7 +17,7 @@ pub async fn parse_features_args(agent: impl FeatureModule) -> Result<()> {
         loader.stop();
         log_debug!("{}", pretty_stringify_obj(&features));
         features.disclose.protocols.iter().for_each(|p| {
-            println!("{}", p.pid);
+            log!("{}", p.pid);
         });
     })
 }

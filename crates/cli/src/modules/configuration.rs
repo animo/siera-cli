@@ -68,8 +68,8 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 log_debug!("Failed to read config file: {}", err);
                 Box::<dyn std::error::Error>::from(error::Error::CannotReadConfigurationFile)
             })?;
-            println!("Configuration path: {:?}", config_path);
-            println!("{}", output);
+            log!("Configuration path: {:?}", config_path);
+            log!("{}", output);
             Ok(())
         }
         ConfigurationSubcommands::Add {
@@ -82,9 +82,8 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
             if *default {
                 let (environment, configuration) = Configuration::init(token.to_owned());
                 Configuration::add(environment, configuration)?;
-                println!(
-                    "{} the default agent at {}.",
-                    "Added".cyan(),
+                log_info!(
+                    "Successfully added the default agent at {}.",
                     config_path.display()
                 );
                 return Ok(());
@@ -106,9 +105,8 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 path
             );
             Configuration::add(environment.clone(), env)?;
-            println!(
-                "{} agent {} at {}.",
-                "Added".cyan(),
+            log_info!(
+                "Successfully Added agent {} at {}.",
                 environment,
                 config_path.display()
             );
@@ -123,7 +121,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 environment.bold()
             );
             Configuration::remove(environment.to_owned())?;
-            println!(
+            log!(
                 "{} {} from the configuration",
                 "Removed".bold().red(),
                 environment.bold()

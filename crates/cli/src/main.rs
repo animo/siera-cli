@@ -8,8 +8,6 @@
 #[macro_use]
 extern crate logger;
 
-use colored::*;
-
 use register::register;
 
 /// Module for the whole cli
@@ -36,7 +34,7 @@ async fn main() {
     match register().await {
         Ok(_) => (),
         Err(e) => {
-            log_error!("{} {}", "error:".bold().red(), e);
+            log_error!("{}", e);
             std::process::exit(1);
         }
     }

@@ -61,7 +61,7 @@ impl CloudAgent {
                 log_trace!("Got {} response:\n{:#?}", status_code, res);
                 match status_code {
                     200..=299 => res.json().await.map_err(|e| {
-                        println!("{}", e);
+                        log!("{}", e);
                         Error::UnableToParseResponse.into()
                     }),
                     // Issue credential message when attributes are not correct

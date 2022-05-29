@@ -4,7 +4,9 @@
 #![deny(clippy::missing_docs_in_private_items)]
 
 use clipboard::{ClipboardContext, ClipboardProvider};
+use colored::*;
 use serde::Serialize;
+use std::fmt;
 use std::sync::RwLock;
 
 #[macro_use]
@@ -15,8 +17,11 @@ extern crate lazy_static;
 pub mod macros;
 
 /// Loglevel in the cli
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, PartialOrd)]
 pub enum LogLevel {
+    /// Do not log any additional data
+    Off,
+
     /// Only log errors
     Error,
 
@@ -31,9 +36,20 @@ pub enum LogLevel {
 
     /// Log trace and above
     Trace,
+}
 
-    /// Do not log any additional data
-    Off,
+impl fmt::Display for LogLevel {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let s = match self {
+            LogLevel::Error => "error".bold().red(),
+            LogLevel::Warn => "warn".bold().yellow(),
+            LogLevel::Info => "info".bold().cyan(),
+            LogLevel::Debug => "debug".bold().blue(),
+            LogLevel::Trace => "trace".bold().purple(),
+            LogLevel::Off => "off".green(),
+        };
+        write!(f, "{}", s)
+    }
 }
 
 /// Simple state of the logger

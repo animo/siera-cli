@@ -1,5 +1,4 @@
 /// Copies a string, with formatting, to the systems clipboard
-/// It is unsafe, because it needs to access a global instance of the state
 #[macro_export]
 macro_rules! copy {
     ($($arg:tt)+) => {
@@ -15,13 +14,29 @@ macro_rules! copy {
     };
 }
 
+/// Simple wrapper around println!
+#[macro_export]
+macro_rules! log {
+    ($($arg:tt)*) => {
+            println!($($arg)*);
+    };
+}
+
+/// Generic logger. Should not be used outside of this file
+#[macro_export]
+macro_rules! internal_log {
+    ($level:expr, $($arg:tt)+) => {
+        if crate::logger::STATE.read().unwrap().level >= $level {
+            log!("[{}] {}", $level, format!($($arg)+));
+        }
+    };
+}
+
 /// Simple info logger
 #[macro_export]
 macro_rules! log_info {
     ($($arg:tt)+) => {
-        if crate::logger::STATE.read().unwrap().level == crate::logger::LogLevel::Info {
-            println!($($arg)+);
-        }
+        internal_log!(crate::logger::LogLevel::Info, $($arg)+);
     };
 }
 
@@ -29,9 +44,7 @@ macro_rules! log_info {
 #[macro_export]
 macro_rules! log_debug {
     ($($arg:tt)+) => {
-        if crate::logger::STATE.read().unwrap().level == crate::logger::LogLevel::Debug {
-            println!("[DEBUG]: {}", format!($($arg)+));
-        }
+        internal_log!(crate::logger::LogLevel::Debug, $($arg)+);
     };
 }
 
@@ -39,9 +52,7 @@ macro_rules! log_debug {
 #[macro_export]
 macro_rules! log_trace {
     ($($arg:tt)+) => {
-        if crate::logger::STATE.read().unwrap().level == crate::logger::LogLevel::Trace {
-            println!("[TRACE]: {}", format!($($arg)+));
-        }
+        internal_log!(crate::logger::LogLevel::Trace, $($arg)+);
     };
 }
 
@@ -49,10 +60,7 @@ macro_rules! log_trace {
 #[macro_export]
 macro_rules! log_warn {
     ($($arg:tt)+) => {
-        if crate::logger::STATE.read().unwrap().level == crate::logger::LogLevel::Warn {
-            println!("[TRACE]: {}", format!($($arg)+));
-            println!("[WARN]: {}", format!($($arg)+));
-        }
+        internal_log!(crate::logger::LogLevel::Warn, $($arg)+);
     };
 }
 
@@ -60,8 +68,6 @@ macro_rules! log_warn {
 #[macro_export]
 macro_rules! log_error {
     ($($arg:tt)+) => {
-        if crate::logger::STATE.read().unwrap().level == crate::logger::LogLevel::Error{
-            println!("[ERROR]: {}", format!($($arg)+));
-        }
+        internal_log!(crate::logger::LogLevel::Error, $($arg)+);
     };
 }
