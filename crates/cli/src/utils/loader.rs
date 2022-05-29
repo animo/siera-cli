@@ -50,7 +50,7 @@ impl Loader {
 
     /// Stop the loader instance
     pub fn stop(&self) {
-        eprintln!();
+        elog!("\n");
         self.sender.send(false).unwrap();
     }
 
@@ -58,9 +58,9 @@ impl Loader {
     /// not
     fn print_char(c: impl Into<String>, timeout: u64, inplace: bool) {
         if inplace {
-            eprint!("{}\r", c.into());
+            elog!("{}\r", c.into());
         } else {
-            eprint!("{}", c.into());
+            elog!("{}", c.into());
         }
         io::stdout().flush().unwrap();
         std::thread::sleep(time::Duration::from_millis(timeout));

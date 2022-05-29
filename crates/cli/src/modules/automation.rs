@@ -122,10 +122,7 @@ pub async fn parse_automation_args(
         },
     };
     log_info!("Successfully executed automation");
-    log!(
-        "{}: It might take a few seconds for the credential to arrive",
-        "Note".cyan()
-    );
+    log!("It might take a few seconds for the credential to arrive",);
     loader.stop();
     Ok(())
 }

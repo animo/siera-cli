@@ -14,11 +14,23 @@ macro_rules! copy {
     };
 }
 
-/// Simple wrapper around println!
+/// Simple wrapper around eprint!
+#[macro_export]
+macro_rules! elog {
+    ($($arg:tt)*) => {
+        if crate::logger::STATE.read().unwrap().level != crate::logger::LogLevel::Off {
+            eprintln!($($arg)*);
+        }
+    };
+}
+
+/// Simple wrapper around eprintln!
 #[macro_export]
 macro_rules! log {
     ($($arg:tt)*) => {
+        if crate::logger::STATE.read().unwrap().level != crate::logger::LogLevel::Off {
             println!($($arg)*);
+        }
     };
 }
 

@@ -66,7 +66,7 @@ impl CloudAgent {
                 log_info!("{:#?}", res);
                 match status_code {
                     200..=299 => res.json().await.map_err(|e| {
-                        log!("{}", e);
+                        log_warn!("{}", e);
                         Error::UnableToParseResponse.into()
                     }),
                     // Issue credential message when attributes are not correct
