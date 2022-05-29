@@ -73,6 +73,7 @@ pub async fn parse_automation_args(
                     agent.receive_invitation(invitation_object).await?;
                 } else {
                     if !no_qr {
+                        log!("{} the QR code to accept the invitation", "Scan".bold(),);
                         qr::print_qr_code(&connection.invitation_url)?;
                     }
                     log!();
@@ -88,11 +89,7 @@ pub async fn parse_automation_args(
                         connection.connection_id.bold()
                     );
                     log!();
-                    log!(
-                        "{} the QR code to accept the invitation or use this URL:\n\n{}",
-                        "Scan".bold(),
-                        connection.invitation_url
-                    );
+                    log!("Use this URL:\n\n{}", connection.invitation_url);
                     log!();
                     log!();
                     log!(

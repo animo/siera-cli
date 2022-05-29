@@ -117,7 +117,6 @@ pub async fn register() -> Result<()> {
         }
     }?;
 
-    log_info!("Successfully executed command");
     Ok(())
 }
 

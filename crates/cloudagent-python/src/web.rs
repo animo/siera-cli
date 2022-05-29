@@ -17,7 +17,8 @@ impl CloudAgent {
             None => Client::new().get(url),
         };
 
-        log_trace!("Get request query:\n{:#?}", query);
+        log_trace!("Get request query:");
+        log_trace!("{:#?}", query);
 
         self.send::<T>(client).await
     }
@@ -36,8 +37,10 @@ impl CloudAgent {
             None => client,
         };
 
-        log_trace!("Post request body:\n{:#?}", body);
-        log_trace!("Post request query:\n{:#?}", query);
+        log_trace!("Post request body:");
+        log_trace!("{:#?}", body);
+        log_trace!("Post request query:");
+        log_trace!("{:#?}", query);
 
         self.send::<T>(client).await
     }
@@ -54,11 +57,13 @@ impl CloudAgent {
             None => client,
         };
 
-        log_trace!("About to send request:\n{:#?}", client);
+        log_trace!("About to send request:");
+        log_trace!("{:#?}", client);
         match client.send().await {
             Ok(res) => {
                 let status_code = res.status().as_u16();
-                log_trace!("Got {} response:\n{:#?}", status_code, res);
+                log_info!("Got {} response:", status_code);
+                log_info!("{:#?}", res);
                 match status_code {
                     200..=299 => res.json().await.map_err(|e| {
                         log!("{}", e);
@@ -68,7 +73,6 @@ impl CloudAgent {
                     400 => Err(res.text().await?.into()),
                     401 => Err(Error::AuthorizationFailed.into()),
                     404 => Err(Error::UrlDoesNotExist.into()),
-                    // TODO: This response is quite ugly. Is it only used at cred_def_id?
                     422 => Err(res.text().await?.into()),
                     503 => Err(Error::HttpServiceUnavailable.into()),
                     500..=599 => Err(Error::InternalServerError(res.status().as_u16()).into()),
@@ -76,7 +80,7 @@ impl CloudAgent {
                 }
             }
             Err(e) => {
-                log_trace!("Request failed {}", e);
+                log_warn!("Request failed {}", e);
                 Err(Error::UnreachableUrl.into())
             }
         }
