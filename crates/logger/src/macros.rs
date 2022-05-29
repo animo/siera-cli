@@ -19,12 +19,12 @@ macro_rules! copy {
 macro_rules! elog {
     ($($arg:tt)*) => {
         if crate::logger::STATE.read().unwrap().level != crate::logger::LogLevel::Off {
-            eprintln!($($arg)*);
+            eprint!($($arg)*);
         }
     };
 }
 
-/// Simple wrapper around eprintln!
+/// Simple wrapper around println!
 #[macro_export]
 macro_rules! log {
     ($($arg:tt)*) => {
