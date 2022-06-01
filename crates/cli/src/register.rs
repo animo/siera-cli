@@ -1,8 +1,5 @@
 use clap::Parser;
 use cloudagent_python::agent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
-use colored::*;
-use log::debug;
-use log::LevelFilter;
 use std::path::PathBuf;
 
 use crate::cli::{Cli, Commands};
@@ -17,24 +14,24 @@ use crate::modules::{
     connection::parse_connection_args, feature::parse_features_args, schema::parse_schema_args,
 };
 use crate::utils::config::{get_config_from_path, get_config_path};
-use crate::utils::logger;
+use logger::LogLevel;
 
 /// Register the subcommands on the cli
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();
     let level = if cli.quiet {
-        LevelFilter::Warn
+        LogLevel::Off
     } else {
         match cli.verbose {
-            1 => LevelFilter::Info,
-            2 => LevelFilter::Debug,
-            3.. => LevelFilter::Trace,
-            _ => LevelFilter::Warn,
+            1 => LogLevel::Info,
+            2 => LogLevel::Debug,
+            3.. => LogLevel::Trace,
+            _ => LogLevel::Warn,
         }
     };
     logger::init(level, cli.copy);
 
-    debug!("Parsed CLI options and initialized logger");
+    log_debug!("Parsed CLI options and initialized logger");
 
     match &cli.commands {
         Commands::Configuration(options) => parse_configuration_args(options).await,
@@ -120,7 +117,6 @@ pub async fn register() -> Result<()> {
         }
     }?;
 
-    debug!("{} executed command", "Successfully".green());
     Ok(())
 }
 

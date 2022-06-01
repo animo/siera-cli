@@ -6,7 +6,6 @@ use crate::error::Result;
 
 /// Response structure gotten from the cloudagent when offering a credential
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct CredentialOfferResponse {
     /// Whether it should auto issue the credential
     pub auto_issue: bool,

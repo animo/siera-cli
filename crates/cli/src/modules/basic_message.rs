@@ -3,8 +3,6 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use agent::modules::basic_message::{BasicMessageModule, SendBasicMessageOptions};
 use clap::Args;
-use colored::*;
-use log::info;
 
 /// Basic Message options and flags
 #[derive(Args)]
@@ -31,6 +29,6 @@ pub async fn parse_basic_message_args(
     };
     agent.send_message(send_options).await.map(|msg| {
         loader.stop();
-        info!("{} sent message: {}", "Successfully".green(), msg)
+        log_info!("Successfully sent message: {}", msg)
     })
 }

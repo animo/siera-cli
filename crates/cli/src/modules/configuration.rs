@@ -4,7 +4,6 @@ use crate::help_strings::HelpStrings;
 use crate::utils::config::{get_config_path, Configuration, Environment};
 use clap::{Args, Subcommand};
 use colored::*;
-use log::{debug, info};
 use std::fs;
 
 /// Configuration options and flags
@@ -61,16 +60,16 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
     let config_path = get_config_path()?;
     match &options.commands {
         ConfigurationSubcommands::View => {
-            debug!(
+            log_debug!(
                 "Loaded configuration from {}",
                 String::from(config_path.to_str().unwrap()).bold()
             );
             let output = fs::read_to_string(&config_path).map_err(|err| {
-                debug!("Failed to read config file: {}", err);
+                log_debug!("Failed to read config file: {}", err);
                 Box::<dyn std::error::Error>::from(error::Error::CannotReadConfigurationFile)
             })?;
-            println!("Configuration path: {:?}", config_path);
-            println!("{}", output);
+            log!("Configuration path: {:?}", config_path);
+            log!("{}", output);
             Ok(())
         }
         ConfigurationSubcommands::Add {
@@ -83,14 +82,13 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
             if *default {
                 let (environment, configuration) = Configuration::init(token.to_owned());
                 Configuration::add(environment, configuration)?;
-                println!(
-                    "{} the default agent at {}.",
-                    "Added".cyan(),
+                log_info!(
+                    "Successfully added the default agent at {}.",
                     config_path.display()
                 );
                 return Ok(());
             }
-            debug!("{} a new entry to the configuration file", "Adding".cyan());
+            log_debug!("{} a new entry to the configuration file", "Adding".cyan());
             let path = get_config_path()?;
             let endpoint = agent_url.to_owned().ok_or(Error::NoAgentURLSupplied)?;
             let environment = environment.to_owned().ok_or(Error::NoEnvironmentSupplied)?;
@@ -99,7 +97,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 api_key: api_key.to_owned(),
                 auth_token: token.to_owned(),
             };
-            info!(
+            log_info!(
                 "{} {}, {:#?} to {:#?}",
                 "Writing".cyan(),
                 environment,
@@ -107,24 +105,23 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 path
             );
             Configuration::add(environment.clone(), env)?;
-            println!(
-                "{} agent {} at {}.",
-                "Added".cyan(),
+            log_info!(
+                "Successfully Added agent {} at {}.",
                 environment,
                 config_path.display()
             );
 
-            debug!("{} a new entry to the configuration", "Written".green());
+            log_debug!("{} a new entry to the configuration", "Written".green());
             Ok(())
         }
         ConfigurationSubcommands::Remove { environment } => {
-            debug!(
+            log_debug!(
                 "{} environment {} from the configuration",
                 "Removing".bold().red(),
                 environment.bold()
             );
             Configuration::remove(environment.to_owned())?;
-            println!(
+            log!(
                 "{} {} from the configuration",
                 "Removed".bold().red(),
                 environment.bold()

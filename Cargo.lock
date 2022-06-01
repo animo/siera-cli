@@ -23,13 +23,13 @@ dependencies = [
  "clipboard",
  "cloudagent-python",
  "colored",
- "log",
+ "lazy_static",
+ "logger",
  "qr2term",
  "reqwest",
  "serde",
  "serde_json",
  "serde_yaml",
- "simplelog",
  "tokio",
 ]
 
@@ -69,7 +69,7 @@ dependencies = [
  "async-trait",
  "cloudagent-python",
  "colored",
- "log",
+ "logger",
 ]
 
 [[package]]
@@ -121,19 +121,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "17cc5e6b5ab06331c33589842070416baa137e8b0eb912b008cfd4a78ada7919"
 
 [[package]]
-name = "chrono"
-version = "0.4.19"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "670ad68c9088c2a963aaa298cb369688cf3f9465ce5e2d4ca10e6e0098a1ce73"
-dependencies = [
- "libc",
- "num-integer",
- "num-traits",
- "time",
- "winapi",
-]
-
-[[package]]
 name = "clap"
 version = "3.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -183,12 +170,11 @@ dependencies = [
  "clipboard",
  "cloudagent-python",
  "colored",
- "log",
+ "logger",
  "qr2term",
  "serde",
  "serde_json",
  "serde_yaml",
- "simplelog",
  "tokio",
 ]
 
@@ -220,7 +206,7 @@ version = "0.0.0"
 dependencies = [
  "agent",
  "async-trait",
- "log",
+ "logger",
  "reqwest",
  "serde",
  "serde_json",
@@ -566,6 +552,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "logger"
+version = "0.0.0"
+dependencies = [
+ "clipboard",
+ "colored",
+ "lazy_static",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "malloc_buf"
 version = "0.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -602,7 +599,7 @@ dependencies = [
  "log",
  "miow",
  "ntapi",
- "wasi 0.11.0+wasi-snapshot-preview1",
+ "wasi",
  "winapi",
 ]
 
@@ -640,25 +637,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c28774a7fd2fbb4f0babd8237ce554b73af68021b5f695a3cebd6c59bac0980f"
 dependencies = [
  "winapi",
-]
-
-[[package]]
-name = "num-integer"
-version = "0.1.44"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d2cc698a63b549a70bc047073d2949cce27cd1c7b0a4a862d08a8031bc2801db"
-dependencies = [
- "autocfg",
- "num-traits",
-]
-
-[[package]]
-name = "num-traits"
-version = "0.2.14"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9a64b1ec5cda2586e284722486d802acf1f7dbdc623e2bfc57e65ca1cd099290"
-dependencies = [
- "autocfg",
 ]
 
 [[package]]
@@ -1038,17 +1016,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "simplelog"
-version = "0.11.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c1348164456f72ca0116e4538bdaabb0ddb622c7d9f16387c725af3e96d6001c"
-dependencies = [
- "chrono",
- "log",
- "termcolor",
-]
-
-[[package]]
 name = "slab"
 version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1115,17 +1082,6 @@ name = "textwrap"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b1141d4d61095b28419e22cb0bbf02755f5e54e0526f97f1e3d1d160e60885fb"
-
-[[package]]
-name = "time"
-version = "0.1.44"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6db9e6914ab8b1ae1c260a4ae7a49b6c5611b40328a735b21862567685e73255"
-dependencies = [
- "libc",
- "wasi 0.10.0+wasi-snapshot-preview1",
- "winapi",
-]
 
 [[package]]
 name = "tinyvec"
@@ -1295,12 +1251,6 @@ dependencies = [
  "log",
  "try-lock",
 ]
-
-[[package]]
-name = "wasi"
-version = "0.10.0+wasi-snapshot-preview1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a143597ca7c7793eff794def352d41792a93c481eb1042423ff7ff72ba2c31f"
 
 [[package]]
 name = "wasi"

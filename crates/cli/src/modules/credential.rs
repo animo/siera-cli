@@ -1,14 +1,9 @@
-use agent::modules::credential::{CredentialModule, CredentialOfferOptions};
-use clap::{Args, Subcommand};
-use log::{debug, info};
-
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
-use crate::utils::{
-    loader::{Loader, LoaderVariant},
-    logger::pretty_stringify_obj,
-};
-use colored::*;
+use crate::utils::loader::{Loader, LoaderVariant};
+use agent::modules::credential::{CredentialModule, CredentialOfferOptions};
+use clap::{Args, Subcommand};
+use logger::pretty_stringify_obj;
 
 /// Credential options and flags
 #[derive(Args)]
@@ -70,12 +65,9 @@ pub async fn parse_credentials_args(
             };
             agent.send_offer(options).await.map(|cred| {
                 loader.stop();
-                debug!("{}", pretty_stringify_obj(&cred));
-                info!(
-                    "{} offered a credential. Credential exchange id: ",
-                    "Sucessefully".green()
-                );
-                println!("{}", cred.credential_exchange_id)
+                log_debug!("{}", pretty_stringify_obj(&cred));
+                log_info!("Successefully offered a credential. Credential exchange id: ",);
+                log!("{}", cred.credential_exchange_id)
             })
         }
     }

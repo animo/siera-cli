@@ -1,4 +1,3 @@
-use crate::copy;
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::modules::connection::invite_url_to_struct;
@@ -11,7 +10,6 @@ use agent::modules::schema::SchemaModule;
 use automations::automations::credential_offer::CredentialOfferAutomation;
 use clap::{Args, Subcommand};
 use colored::*;
-use log::{debug, trace};
 use std::collections::HashMap;
 
 /// Automation options and flags
@@ -75,47 +73,44 @@ pub async fn parse_automation_args(
                     agent.receive_invitation(invitation_object).await?;
                 } else {
                     if !no_qr {
+                        log!("{} the QR code to accept the invitation", "Scan".bold(),);
                         qr::print_qr_code(&connection.invitation_url)?;
                     }
-                    println!();
-                    println!();
-                    println!("================");
-                    println!("{}", "Credential offer".bold());
-                    println!("================");
-                    println!();
+                    log!();
+                    log!();
+                    log!("================");
+                    log!("{}", "Credential offer".bold());
+                    log!("================");
+                    log!();
 
-                    println!(
+                    log!(
                         "{} invitation with connection id {}.",
                         "Created".green(),
                         connection.connection_id.bold()
                     );
-                    println!();
-                    println!(
-                        "{} the QR code to accept the invitation or use this URL:\n\n{}",
-                        "Scan".bold(),
-                        connection.invitation_url
-                    );
-                    println!();
-                    println!();
-                    println!(
+                    log!();
+                    log!("Use this URL:\n\n{}", connection.invitation_url);
+                    log!();
+                    log!();
+                    log!(
                         "{} for the invitation to be accepted. Timeout is {} seconds...",
                         "Waiting".cyan(),
                         timeout
                     );
                     copy!("{}", connection.invitation_url);
                 }
-                debug!("Looping {} times", timeout);
+                log_debug!("Looping {} times", timeout);
                 for i in 1..=*timeout {
                     let connection =
                         ConnectionModule::get_by_id(&agent, connection.connection_id.to_owned())
                             .await?;
                     if connection.state != "active" && connection.state != "response" {
-                        trace!(
+                        log_trace!(
                             "Connection state is not active, waiting 1 second then trying again..."
                         );
                         std::thread::sleep(std::time::Duration::from_millis(1000));
                     } else {
-                        println!("Invitation {}!", "accepted".green());
+                        log!("Invitation {}!", "accepted".green());
                         credential_offer(connection.connection_id, agent).await?;
                         break;
                     }
@@ -126,11 +121,8 @@ pub async fn parse_automation_args(
             }
         },
     };
-    println!("{} executed automation", "Successfully".green());
-    println!(
-        "{}: It might take a few seconds for the credential to arrive",
-        "Note".cyan()
-    );
+    log_info!("Successfully executed automation");
+    log!("It might take a few seconds for the credential to arrive",);
     loader.stop();
     Ok(())
 }
@@ -153,7 +145,7 @@ async fn credential_offer(
     );
     attributes.insert(String::from("Security Code"), String::from("063"));
     attributes.insert(String::from("Valid Until"), String::from("20251212"));
-    debug!("Mock credential:\n{:#?}", attributes);
+    log_debug!("Mock credential:\n{:#?}", attributes);
 
     let automation = CredentialOfferAutomation {
         connection_id,
