@@ -62,8 +62,8 @@ impl CloudAgent {
         match client.send().await {
             Ok(res) => {
                 let status_code = res.status().as_u16();
-                log_info!("Got {} response:", status_code);
-                log_info!("{:#?}", res);
+                log_trace!("Got {} response:", status_code);
+                log_trace!("{:#?}", res);
                 match status_code {
                     200..=299 => res.json().await.map_err(|e| {
                         log_warn!("{}", e);
