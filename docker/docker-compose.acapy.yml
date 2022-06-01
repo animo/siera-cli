@@ -47,12 +47,12 @@ services:
 #        --genesis-url 'https://raw.githubusercontent.com/sovrin-foundation/sovrin/master/sovrin/pool_transactions_sandbox_genesis' \
 
   wallet-db:
-    image: vcr-postgresql
+    image: postgres:14.3
     environment:
-      - POSTGRESQL_USER=DB_USER
-      - POSTGRESQL_PASSWORD=DB_PASSWORD
-      - POSTGRESQL_DATABASE=DB_USER
-      - POSTGRESQL_ADMIN_PASSWORD=mysecretpassword
+      - POSTGRES_USER=DB_USER
+      - POSTGRES_PASSWORD=DB_PASSWORD
+      - POSTGRES_DATABASE=DB_USER
+      - POSTGRES_ADMIN_PASSWORD=mysecretpassword
     ports:
       - 5433:5432
     volumes:

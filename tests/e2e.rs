@@ -1,12 +1,21 @@
 #![cfg(test)]
 
-use std::io;
-use std::process::{Command, Output};
+use std::env;
+use speculoos::prelude::*;
+use regex::Regex;
+use std::process::Command;
+
+fn getAgentUrl() -> String {
+  match env::var("AGENT_URL") {
+    Ok(v) => v,
+    Err(_) => String::from("https://agent.community.animo.id"),
+  }
+}
 
 #[test]
 fn smoke() -> () {
-  let result = aries_cli("--version");
-  assert_eq!(version, "agent-cli 0.2.0\n")
+  let re = Regex::new(r"^agent-cli \d\.\d.\d").unwrap();
+  assert_that(&aries_cli("--version")).matches(|v| re.is_match(v))
 }
 
 fn aries_cli(cmd: &str) -> String {
@@ -16,6 +25,6 @@ fn aries_cli(cmd: &str) -> String {
     .arg("--")
     .arg(cmd)
     .output();
-  assert!(result.is_ok(), format!("result of {} was not OK", cmd));
+  assert!(result.is_ok(), "result of {} was not OK", cmd);
   String::from_utf8(result.unwrap().stdout).unwrap()
 }
