@@ -18,7 +18,7 @@ async fn smoke() -> () {
 }
 
 #[tokio::test]
-async fn create_and_list_connections() -> () {
+async fn create_a_connection_and_list_connections() -> () {
     run_test(|agent_cli| {
         let connections = agent_cli.exec(&["connection", "list"]);
         assert_that(&connections).is_equal_to(&String::from("[]"));
@@ -31,7 +31,7 @@ async fn create_and_list_connections() -> () {
 }
 
 #[tokio::test]
-async fn sends_a_message() -> () {
+async fn create_a_connection_and_send_a_message() -> () {
     run_test(|agent_cli| {
         let _ = agent_cli.exec(&["connection", "invite", "--alias", "foo"]);
         let connections_str = agent_cli.exec(&["connection", "list"]);
