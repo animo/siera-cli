@@ -1,6 +1,6 @@
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json::{json, Value};
 use std::env;
 use std::panic;
 use std::process::Command;
@@ -13,7 +13,7 @@ where
     let (agent_cli, wallet_id) = setup().await;
     let result = panic::catch_unwind(|| test(agent_cli));
     teardown(wallet_id).await;
-    assert!(result.is_ok())
+    assert!(result.is_ok(), "Test execution failed")
 }
 
 fn get_agent_url() -> String {
@@ -34,21 +34,19 @@ pub struct CreateWalletResponse {
 /// TODO: Rework this once we have the ability to create a sub-wallet from the CLI.
 /// We should just be using the CLI directly.
 async fn setup() -> (TestAgentCli, String) {
-    let body: Value = serde_json::from_str(
-        r#"{
-             "image_url": "https://aries.ca/images/sample.png",
-             "key_management_mode": "managed",
-             "label": "Alice",
-             "wallet_dispatch_type": "default",
-             "wallet_key": "MySecretKey123",
-             "wallet_name": "MyCoolName",
-             "wallet_type": "indy",
-             "wallet_webhook_urls": [
-                 "http://localhost:8022/webhooks"
-              ]
-          }"#,
-    )
-    .unwrap();
+    let body: Value = json!(
+    {
+         "image_url": "https://aries.ca/images/sample.png",
+         "key_management_mode": "managed",
+         "label": "Alice",
+         "wallet_dispatch_type": "default",
+         "wallet_key": "MySecretKey123",
+         "wallet_name": "MyCoolName",
+         "wallet_type": "indy",
+         "wallet_webhook_urls": [
+             "http://localhost:8022/webhooks"
+          ]
+      });
     let url = format!("{}/multitenancy/wallet", get_agent_url());
     let client = Client::new()
         .post(url)

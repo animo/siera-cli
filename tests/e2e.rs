@@ -1,10 +1,8 @@
 #![cfg(test)]
 
+use agent::modules::connection::Connection;
 use regex::Regex;
 use speculoos::prelude::*;
-
-use agent::modules::connection::Connection;
-
 mod helpers;
 use helpers::run_test;
 
