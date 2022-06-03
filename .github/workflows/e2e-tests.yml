@@ -19,13 +19,6 @@ jobs:
         with:
           command: build
           args: --locked
-      - name: Waiting for acapy to be ready
-        uses: mydea/action-wait-for-api@v1
-        with:
-          url: "http://localhost:8010/connections"
-          expected-status: 200
-          timeout: 60
-          interval: 1
       - name: E2E tests
         run: make e2e-test
 
