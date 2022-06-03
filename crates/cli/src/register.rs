@@ -9,6 +9,7 @@ use crate::modules::basic_message::parse_basic_message_args;
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::credential::parse_credentials_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
+use crate::modules::multitenancy::parse_multitenancy_args;
 use crate::modules::proof::parse_proof_args;
 use crate::modules::{
     connection::parse_connection_args, feature::parse_features_args, schema::parse_schema_args,
@@ -104,6 +105,16 @@ pub async fn register() -> Result<()> {
                 cli.token,
             )?;
             parse_proof_args(&options.commands, agent).await
+        }
+        Commands::Multitenancy(options) => {
+            let agent = initialize_agent_from_cli(
+                cli.config,
+                cli.environment,
+                cli.agent_url,
+                cli.api_key,
+                cli.token,
+            )?;
+            parse_multitenancy_args(options, agent).await
         }
         Commands::Automate(options) => {
             let agent = initialize_agent_from_cli(

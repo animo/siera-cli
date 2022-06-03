@@ -89,6 +89,12 @@ pub enum HelpStrings {
     ProofRequestAttribute,
     ProofRequestConnectionId,
 
+    // Multitenancy
+    Multitenancy,
+    MultitenancyCreate,
+    MultitenancyRemove,
+    MultitenancyRemoveWalletId,
+
     // Automate
     Automation,
     AutomationCredentialOffer,
@@ -200,6 +206,10 @@ impl HelpStrings {
             HelpStrings::AutomationCredentialOfferNoQr => "Do not show a QR code",
             HelpStrings::AutomationCredentialOfferSelf => "Offer a credential to self",
             HelpStrings::AutomationCredentialOfferTimeout=> "Timeout in seconds",
+            HelpStrings::Multitenancy => "foo",
+            HelpStrings::MultitenancyCreate => "foo",
+            HelpStrings::MultitenancyRemove => "foo",
+            HelpStrings::MultitenancyRemoveWalletId => "foo",
         }
     }
 }

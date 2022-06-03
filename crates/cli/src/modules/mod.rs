@@ -24,3 +24,6 @@ pub mod proof;
 
 /// Module for schemas
 pub mod schema;
+
+/// Module for multitenancy
+pub mod multitenancy;

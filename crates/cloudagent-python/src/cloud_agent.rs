@@ -10,7 +10,7 @@ pub struct CloudAgent {
     /// admin Api key for the cloudagent
     pub api_key: Option<String>,
 
-    /// Authorization token for a mutli tenancy agent
+    /// Authorization token for a multi tenancy agent
     pub auth_token: Option<String>,
 }
 
