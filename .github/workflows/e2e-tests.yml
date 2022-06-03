@@ -2,13 +2,12 @@ name: e2e tests
 
 on:
   pull_request:
-    branches: [ main ]
-
+    branches:
+      - main
 
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
-    services:
     steps:
       - uses: actions/checkout@v2
       - name: Start acapy
@@ -18,7 +17,8 @@ jobs:
         with:
           command: build
           args: --release --target ${{ matrix.architecture }} --package cli
-      - uses: mydea/action-wait-for-api@v1
+      - name: Waiting for acapy to be ready
+        uses: mydea/action-wait-for-api@v1
         with:
           url: "http://localhost:8010/connections"
           expected-status: 200
