@@ -18,3 +18,6 @@ pub mod proof;
 
 /// Schema module for a generic cloudagent
 pub mod schema;
+
+/// Multitenancy module for a generic cloudagent
+pub mod multitenancy;

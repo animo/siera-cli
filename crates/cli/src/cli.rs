@@ -5,6 +5,7 @@ use clap::{Parser, Subcommand};
 use crate::help_strings::HelpStrings;
 
 use crate::modules::automation::AutomationOptions;
+use crate::modules::multitenancy::MultitenancyOptions;
 use crate::modules::{
     basic_message::BasicMessageOptions, configuration::ConfigurationOptions,
     connection::ConnectionOptions, credential::CredentialOptions,
@@ -83,4 +84,7 @@ pub enum Commands {
 
     /// Proof subcommands
     Proof(ProofOptions),
+
+    /// Multitenancy subcommnads
+    Multitenancy(MultitenancyOptions),
 }

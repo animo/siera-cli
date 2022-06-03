@@ -21,3 +21,6 @@ mod proof;
 
 /// Module for schemas definitions specific for an Aries cloudagent Python
 mod schema;
+
+/// Module for multitenancy specific for an Aries cloudagent Python
+mod multitenancy;
