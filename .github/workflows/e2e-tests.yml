@@ -1,0 +1,22 @@
+name: e2e tests
+
+on:
+  pull_request:
+    branches: [ main ]
+
+
+jobs:
+  e2e-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Start acapy
+        run: docker-compose -f ./docker/docker-compose.acapy.yml up
+      - name: Build agent-cli
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --target ${{ matrix.architecture }} --package cli
+      - run: make e2e-test
+
+
