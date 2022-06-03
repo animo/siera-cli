@@ -16,7 +16,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --release --target ${{ matrix.architecture }} --package cli
+          args: --release --locked
       - name: Waiting for acapy to be ready
         uses: mydea/action-wait-for-api@v1
         with:
