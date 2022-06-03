@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get update
-      - run: sudo apt-get upgrade
       - run: sudo apt-get install libxcb-shape0-dev libxcb-xfixes0-dev
       - uses: actions/checkout@v2
       - name: Start acapy
@@ -20,8 +19,8 @@ jobs:
         with:
           url: "http://localhost:8010/connections"
           expected-status: 200
-          timeout: 15
-          interval: 10
+          timeout: 60
+          interval: 1
       - name: E2E tests
         run: make e2e-test
 
