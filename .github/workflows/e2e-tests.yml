@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  e2e-test:
+  e2e_test:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get update
