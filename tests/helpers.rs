@@ -19,16 +19,16 @@ fn get_agent_url() -> String {
 }
 
 async fn setup() -> (TestAgentCli, String) {
-    let mut cli = TestAgentCli::new(None);
-    let response_str = cli.exec("multitenancy create");
+    let mut agent_cli = TestAgentCli::new(None);
+    let response_str = agent_cli.exec("multitenancy create");
     let wallet_response: MultitenancyCreateResponse = serde_json::from_str(&response_str).unwrap();
-    cli.scope_to_wallet(wallet_response.token);
-    (cli, wallet_response.wallet_id)
+    agent_cli.scope_to_wallet(wallet_response.token);
+    (agent_cli, wallet_response.wallet_id)
 }
 
-fn teardown(cli: &mut TestAgentCli, wallet_id: String) {
-    cli.unscope_from_wallet();
-    cli.exec(&format!("multitenancy remove --wallet-id={}", &wallet_id));
+fn teardown(agent_cli: &mut TestAgentCli, wallet_id: String) {
+    agent_cli.unscope_from_wallet();
+    agent_cli.exec(&format!("multitenancy remove --wallet-id={}", &wallet_id));
 }
 
 /// A test utility that wraps common args we want to pass to every command
