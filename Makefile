@@ -14,7 +14,7 @@ test:
 
 # It is important that e2e tests are run serially on a single thread
 e2e-test:
-	cargo test -- --test-threads=4
+	cargo test
 
 install:
 	cargo install --path .

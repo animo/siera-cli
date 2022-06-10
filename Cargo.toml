@@ -12,7 +12,7 @@ documentation = "https://docs.agent-cli.animo.id"
 repository = "https://github.com/animo/agent-cli"
 categories = ["command-line-utilities"]
 license = "Apache-2.0"
-exclude = ["pkg", "Makefile", "example", "tests"]
+exclude = ["pkg", "Makefile", "example"]
 edition = "2021"
 
 [workspace]
