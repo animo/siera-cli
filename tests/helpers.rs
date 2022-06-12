@@ -4,9 +4,9 @@ use std::panic;
 use std::process::Command;
 
 /// Helper function which does test set up and teardown
-pub async fn run_test<T>(test: T) -> ()
+pub async fn run_test<T>(test: T)
 where
-    T: FnOnce(&TestAgentCli) -> () + panic::UnwindSafe,
+    T: FnOnce(&TestAgentCli) + panic::UnwindSafe,
 {
     let (mut agent_cli, wallet_id) = setup().await;
     let result = panic::catch_unwind(|| test(&agent_cli));
@@ -20,7 +20,7 @@ fn get_agent_url() -> String {
 
 async fn setup() -> (TestAgentCli, String) {
     let mut agent_cli = TestAgentCli::new(None);
-    let response_str = agent_cli.exec(&["multitenancy", "create"]);
+    let response_str = agent_cli.exec("multitenancy create");
     let wallet_response: MultitenancyCreateResponse = serde_json::from_str(&response_str).unwrap();
     agent_cli.scope_to_wallet(wallet_response.token);
     (agent_cli, wallet_response.wallet_id)
@@ -28,7 +28,7 @@ async fn setup() -> (TestAgentCli, String) {
 
 fn teardown(agent_cli: &mut TestAgentCli, wallet_id: String) {
     agent_cli.unscope_from_wallet();
-    agent_cli.exec(&["multitenancy", "remove", "--wallet-id", &wallet_id]);
+    agent_cli.exec(&format!("multitenancy remove --wallet-id={}", &wallet_id));
 }
 
 /// A test utility that wraps common args we want to pass to every command
@@ -52,17 +52,17 @@ impl TestAgentCli {
         self.wallet_token = None;
     }
 
-    pub fn exec(&self, args: &[&str]) -> String {
+    pub fn exec(&self, command: &str) -> String {
         let agent_url = get_agent_url();
-        let mut agent_args = vec!["--agent-url", &agent_url];
+        let mut agent_args = format!("--agent-url={} ", &agent_url);
         match &self.wallet_token {
-            Some(token) => agent_args.extend(vec!["--token", &token]),
+            Some(token) => agent_args.push_str(&format!("--token={} ", token)),
             None => (),
         }
-        agent_args.extend(&args.to_vec());
+        agent_args.push_str(command);
         let result = Command::new("cargo")
             .args(vec!["run", "--quiet", "--"])
-            .args(&agent_args)
+            .args(&agent_args.split(' ').collect::<Vec<&str>>())
             .output();
         let output = match result {
             Ok(o) => o,
