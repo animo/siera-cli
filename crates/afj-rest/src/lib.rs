@@ -10,7 +10,7 @@ extern crate logger;
 /// All of the submodule functionality of an AFJ REST agent
 pub mod cloudagent;
 
-/// An Aries Framework JavaScript REST structure
+/// An AFJ REST structure
 pub mod agent;
 
 /// Simple web bindings for the module to interact with the cloudagent
