@@ -1,4 +1,4 @@
-default: format lint build test
+default: format lint build e2e-test
 
 format:
 	cargo fmt

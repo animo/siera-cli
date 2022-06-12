@@ -14,16 +14,16 @@ test! { smoke |cli| {
 }}
 
 test! { create_a_connection_and_list_connections |cli| {
-     let connections = agent!(cli, "connection list");
-     assert_that(&connections).is_equal_to("[]".to_owned());
+    let connections = agent!(cli, "connection list");
+    assert_that(&connections).is_equal_to(String::from("[]"));
     agent!(cli, "connection invite");
-     let connections = agent!(cli, "connection list");
-     let connections: Vec<Connection> = serde_json::from_str(&connections).unwrap();
-     assert_that(&connections).has_length(1);
+    let connections = agent!(cli, "connection list");
+    let connections: Vec<Connection> = serde_json::from_str(&connections).unwrap();
+    assert_that(&connections).has_length(1);
 }}
 
 test! { create_connection_and_send_a_message |cli| {
-    let _ = agent!(cli, "connection invite");
+    agent!(cli, "connection invite");
     let connections_str = agent!(cli, "connection list");
     let connection: Vec<Connection> = serde_json::from_str(&connections_str).unwrap();
     let result = agent!(cli, "message --connection-id={} --message={}", connection[0].connection_id, "bar");
