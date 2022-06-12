@@ -1,15 +1,13 @@
+use crate::error::Result;
+use crate::help_strings::HelpStrings;
+use crate::utils::loader::{Loader, LoaderVariant};
+use agent::agent::Agent;
 use agent::modules::credential_definition::{
     CredentialDefinitionCreateOptions, CredentialDefinitionModule,
 };
 use clap::{Args, Subcommand};
 use colored::*;
 use serde_json::json;
-
-use crate::{
-    error::Result,
-    help_strings::HelpStrings,
-    utils::loader::{Loader, LoaderVariant},
-};
 
 use logger::pretty_stringify_obj;
 
@@ -57,7 +55,7 @@ pub enum CredentialDefinitionSubcommands {
 /// Subcommand Credential Definition parser
 pub async fn parse_credential_definition_args(
     options: &CredentialDefinitionOptions,
-    agent: impl CredentialDefinitionModule,
+    agent: Agent<impl CredentialDefinitionModule>,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
 
@@ -74,7 +72,7 @@ pub async fn parse_credential_definition_args(
                 tag: tag.as_deref().map(|t| t.to_string()),
                 revocation_registry_size: *revocation_registry_size,
             };
-            agent.create(options).await.map(|cred_def| {
+            agent.agent.create(options).await.map(|cred_def| {
                 loader.stop();
                 copy!("{}", cred_def.credential_definition_id);
                 log_info!("{} credential definition with id: ", "Created".green());
@@ -82,7 +80,7 @@ pub async fn parse_credential_definition_args(
             })
         }
         CredentialDefinitionSubcommands::List { id } => match id {
-            Some(i) => agent.get_by_id(i.to_owned()).await.map(|cred_def| {
+            Some(i) => agent.agent.get_by_id(i.to_owned()).await.map(|cred_def| {
                 loader.stop();
                 let loggable = json!({
                     "id": cred_def.credential_definition.id,
@@ -96,7 +94,7 @@ pub async fn parse_credential_definition_args(
                 log!("{}", pretty_stringify_obj(loggable));
             }),
 
-            None => agent.get_all().await.map(|cred_defs| {
+            None => agent.agent.get_all().await.map(|cred_defs| {
                 loader.stop();
                 cred_defs
                     .credential_definition_ids

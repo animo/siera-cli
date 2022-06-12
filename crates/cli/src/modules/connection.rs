@@ -1,18 +1,15 @@
+use crate::error::{Error, Result};
+use crate::help_strings::HelpStrings;
+use crate::utils::loader::{Loader, LoaderVariant};
+use crate::utils::qr::print_qr_code;
+use agent::agent::Agent;
 use agent::modules::connection::{
     ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
     ConnectionReceiveInvitationOptions,
 };
 use clap::{Args, Subcommand};
-use colored::*;
-use std::str;
-
-use crate::error::{Error, Result};
-use crate::help_strings::HelpStrings;
-use crate::utils::{
-    loader::{Loader, LoaderVariant},
-    qr::print_qr_code,
-};
 use logger::{copy, pretty_stringify_obj};
+use std::str;
 
 /// Connection options and flags
 #[derive(Args)]
@@ -99,7 +96,7 @@ pub enum ConnectionSubcommands {
 /// Subcommand connection parser
 pub async fn parse_connection_args(
     options: &ConnectionOptions,
-    agent: impl ConnectionModule,
+    agent: Agent<impl ConnectionModule>,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
 
@@ -118,28 +115,33 @@ pub async fn parse_connection_args(
                 qr: *qr,
                 toolbox: *toolbox,
             };
-            agent.create_invitation(options).await.map(|response| {
-                loader.stop();
-                log_info!("{} invite with connection id: ", "Created".green());
-                log!("{}", response.connection_id);
-                if *qr {
-                    log_info!("Scan this QR code to accept the invitation:\n");
-                    print_qr_code(&response.invitation_url).unwrap();
-                } else {
-                    log_info!("Another agent can use this URL to accept your invitation:\n");
-                    log!("{}", &response.invitation_url);
-                }
-                copy!("{}", response.invitation_url);
-            })
+            agent
+                .agent
+                .create_invitation(options)
+                .await
+                .map(|response| {
+                    loader.stop();
+                    log_info!("Created invite with connection id:");
+                    log!("{}", response.connection_id);
+                    if *qr {
+                        log_info!("Scan this QR code to accept the invitation:\n");
+                        print_qr_code(&response.invitation_url).unwrap();
+                    } else {
+                        log_info!("Another agent can use this URL to accept your invitation:\n");
+                        log!("{}", &response.invitation_url);
+                    }
+                    copy!("{}", response.invitation_url);
+                })
         }
         ConnectionSubcommands::Receive { url } => {
             let invitation = invite_url_to_struct(url.to_owned())?;
             agent
+                .agent
                 .receive_invitation(invitation)
                 .await
                 .map(|connection| {
                     log_debug!("{}", pretty_stringify_obj(&connection));
-                    log_info!("{} connection id:", "Fetched".green());
+                    log_info!("Fetched connection id:");
                     log!("{}", connection.connection_id);
                 })
         }
@@ -153,7 +155,7 @@ pub async fn parse_connection_args(
             state,
             their_did,
         } => match id {
-            Some(i) => agent.get_by_id(i.to_owned()).await.map(|connection| {
+            Some(i) => agent.agent.get_by_id(i.to_owned()).await.map(|connection| {
                 loader.stop();
                 copy!("{}", pretty_stringify_obj(&connection));
                 log!("{}", pretty_stringify_obj(connection))
@@ -168,7 +170,7 @@ pub async fn parse_connection_args(
                     connection_protocol: connection_protocol.as_deref().map(|c| c.to_string()),
                     their_role: their_role.as_deref().map(|t| t.to_string()),
                 };
-                agent.get_all(options).await.map(|connections| {
+                agent.agent.get_all(options).await.map(|connections| {
                     loader.stop();
                     copy!("{}", pretty_stringify_obj(&connections.results));
                     log!("{}", pretty_stringify_obj(connections.results))

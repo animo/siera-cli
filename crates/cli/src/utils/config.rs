@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use std::fmt;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -16,6 +17,28 @@ pub struct Environment {
 
     /// The token which is used for a multi tenancy agent
     pub auth_token: Option<String>,
+
+    /// The cloudagent type
+    pub agent: Option<String>,
+}
+
+impl fmt::Display for Environment {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let api_key = match self.api_key {
+            Some(_) => "<secret>",
+            None => "<none>",
+        };
+        let auth_token = match self.auth_token {
+            Some(_) => "<secret>",
+            None => "<none>",
+        };
+
+        write!(
+            f,
+            "(api_key: {}, auth_token: {}, agent: {:?})",
+            api_key, auth_token, self.agent
+        )
+    }
 }
 
 /// A generic configuration used to store multiple agent configurations
@@ -25,6 +48,15 @@ pub struct Configuration {
     /// key = environment name
     /// value = environment
     pub configurations: BTreeMap<String, Environment>,
+}
+
+impl fmt::Display for Configuration {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.configurations
+            .iter()
+            .for_each(|c| write!(f, "({}: {})", c.0, c.1).unwrap());
+        Ok(())
+    }
 }
 
 impl Configuration {
@@ -37,6 +69,7 @@ impl Configuration {
                 None => String::from("https://agent.community.animo.id"),
             },
             api_key: None,
+            agent: Some(String::from("aca-py")),
             auth_token: token,
         };
         (String::from("default"), environment)

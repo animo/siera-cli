@@ -1,6 +1,7 @@
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
+use agent::agent::Agent;
 use agent::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
 use colored::*;
@@ -45,7 +46,10 @@ pub enum SchemaSubcommands {
 }
 
 /// Subcommand Schema parser
-pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule) -> Result<()> {
+pub async fn parse_schema_args(
+    options: &SchemaOptions,
+    agent: Agent<impl SchemaModule>,
+) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
     match &options.commands {
         SchemaSubcommands::Create {
@@ -61,7 +65,7 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             if options.attributes.is_empty() {
                 return Err(Error::RequiredAttributes.into());
             }
-            agent.create(options).await.map(|schema| {
+            agent.agent.create(options).await.map(|schema| {
                 log_debug!("{}", pretty_stringify_obj(&schema));
                 log_info!(
                     "{} schema with the following attributes: ",
@@ -78,12 +82,12 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             })
         }
         SchemaSubcommands::List { id } => match id {
-            Some(i) => agent.get_by_id(i.to_owned()).await.map(|schema| {
+            Some(i) => agent.agent.get_by_id(i.to_owned()).await.map(|schema| {
                 loader.stop();
                 copy!("{}", pretty_stringify_obj(&schema));
                 log!("{}", pretty_stringify_obj(schema));
             }),
-            None => agent.get_all().await.map(|schemas| {
+            None => agent.agent.get_all().await.map(|schemas| {
                 loader.stop();
                 schemas.schema_ids.iter().for_each(|x| log!("{}", x));
                 log_info!("Successfully fetched schema IDs");

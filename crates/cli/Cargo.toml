@@ -4,6 +4,7 @@ version = "0.0.0"
 edition = "2021"
 
 [dependencies]
+afj-rest = { path = "../afj-rest" }
 cloudagent-python = { path = "../cloudagent-python" }
 agent = { path = "../agent" }
 automations = { path = "../automations" }

@@ -1,11 +1,11 @@
-use crate::agent::CloudAgentPython;
+use crate::agent::CloudAgentAfjRest;
 use agent::error::{Error, Result};
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 
 /// Call logic for http calls
-impl CloudAgentPython {
+impl CloudAgentAfjRest {
     /// Builds a get request and calls the sender
     pub async fn get<T: DeserializeOwned>(
         &self,
@@ -37,30 +37,22 @@ impl CloudAgentPython {
             None => client,
         };
 
-        log_trace!("Post request body: {:#?}", body);
-        log_trace!("Post request query: {:#?}", query);
+        log_trace!("Post request body:");
+        log_trace!("{:#?}", body);
+        log_trace!("Post request query:");
+        log_trace!("{:#?}", query);
 
         self.send::<T>(client).await
     }
 
     /// Sends any request
     pub async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> Result<T> {
-        let client = match &self.api_key {
-            Some(a) => client.header("X-API-KEY", a),
-            None => client,
-        };
-
-        let client = match &self.auth_token {
-            Some(t) => client.header("Authorization", format!("Bearer {}", t)),
-            None => client,
-        };
-
         log_trace!("About to send request:");
         log_trace!("{:#?}", client);
         match client.send().await {
             Ok(res) => {
                 let status_code = res.status().as_u16();
-                log_debug!("Got response code {}", status_code);
+                log_trace!("Got {} response:", status_code);
                 log_trace!("{:#?}", res);
                 match status_code {
                     200..=299 => res.json().await.map_err(|e| {

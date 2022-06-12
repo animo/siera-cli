@@ -30,6 +30,10 @@ pub struct Cli {
     #[clap(long, short = 't', help = HelpStrings::ConfigurationInitializeToken)]
     pub token: Option<String>,
 
+    /// The agent type
+    #[clap(long, short = 'f', help = HelpStrings::ConfigurationAgent)]
+    pub agent: Option<String>,
+
     /// Whether specific output should be copied to the clipboard
     #[clap(long, short, help = HelpStrings::Copy)]
     pub copy: bool,
@@ -87,4 +91,23 @@ pub enum Commands {
 
     /// Multitenancy subcommnads
     Multitenancy(MultitenancyOptions),
+}
+
+impl From<Commands> for String {
+    fn from(c: Commands) -> Self {
+        let s = match c {
+            Commands::Automate(_) => "Automate",
+            Commands::Connection(_) => "Connection",
+            Commands::Feature(_) => "Feature",
+            Commands::Schema(_) => "Schema",
+            Commands::CredentialDefinition(_) => "CredentialDefinition",
+            Commands::Message(_) => "Message",
+            Commands::Credential(_) => "Credential",
+            Commands::Configuration(_) => "Configuration",
+            Commands::Proof(_) => "Proof",
+            Commands::Multitenancy(_) => "Multitenancy",
+        };
+
+        Self::from(s)
+    }
 }

@@ -4,6 +4,9 @@
 
 #![deny(clippy::missing_docs_in_private_items)]
 
+/// Cloudagent structures
+pub mod agent;
+
 /// Error module that includes the user-level errors and the result type
 pub mod error;
 

@@ -3,6 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::modules::connection::invite_url_to_struct;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr;
+use agent::agent::Agent;
 use agent::modules::connection::{ConnectionCreateInvitationOptions, ConnectionModule};
 use agent::modules::credential::CredentialModule;
 use agent::modules::credential_definition::CredentialDefinitionModule;
@@ -48,7 +49,9 @@ pub enum AutomationSubcommands {
 /// Subcommand Automation parser
 pub async fn parse_automation_args(
     options: &AutomationOptions,
-    agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
+    agent: Agent<
+        impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
+    >,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
 
@@ -59,9 +62,10 @@ pub async fn parse_automation_args(
             sent_to_self,
             no_qr,
         } => match connection_id {
-            Some(c) => credential_offer(c.to_owned(), agent).await?,
+            Some(c) => credential_offer(c.to_owned(), agent.agent).await?,
             None => {
                 let connection = agent
+                    .agent
                     .create_invitation(ConnectionCreateInvitationOptions {
                         auto_accept: true,
                         alias: Some(String::from("automation")),
@@ -70,7 +74,7 @@ pub async fn parse_automation_args(
                     .await?;
                 if *sent_to_self {
                     let invitation_object = invite_url_to_struct(connection.invitation_url)?;
-                    agent.receive_invitation(invitation_object).await?;
+                    agent.agent.receive_invitation(invitation_object).await?;
                 } else {
                     if !no_qr {
                         log!("{} the QR code to accept the invitation", "Scan".bold(),);
@@ -101,9 +105,11 @@ pub async fn parse_automation_args(
                 }
                 log_debug!("Looping {} times", timeout);
                 for i in 1..=*timeout {
-                    let connection =
-                        ConnectionModule::get_by_id(&agent, connection.connection_id.to_owned())
-                            .await?;
+                    let connection = ConnectionModule::get_by_id(
+                        &agent.agent,
+                        connection.connection_id.to_owned(),
+                    )
+                    .await?;
                     if connection.state != "active" && connection.state != "response" {
                         log_trace!(
                             "Connection state is not active, waiting 1 second then trying again..."
@@ -111,7 +117,7 @@ pub async fn parse_automation_args(
                         std::thread::sleep(std::time::Duration::from_millis(1000));
                     } else {
                         log!("Invitation {}!", "accepted".green());
-                        credential_offer(connection.connection_id, agent).await?;
+                        credential_offer(connection.connection_id, agent.agent).await?;
                         break;
                     }
                     if i == *timeout {

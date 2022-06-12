@@ -7,6 +7,7 @@ pub enum HelpStrings {
     // Top level
     Cli,
     AgentURL,
+    Agent,
     ApiKey,
     Copy,
     Quiet,
@@ -22,6 +23,7 @@ pub enum HelpStrings {
     ConfigurationAddDefault,
     ConfigurationView,
     ConfigurationInitializeToken,
+    ConfigurationAgent,
 
     // Connections
     Connections,
@@ -115,6 +117,7 @@ impl HelpStrings {
         match self {
             HelpStrings::Cli => HELP_STRING_CLI,
             HelpStrings::AgentURL => "The Aries agent URL that requests will be sent to",
+            HelpStrings::Agent => "The type of aries agent",
             HelpStrings::ApiKey => "This API key will be passed to the agent",
             HelpStrings::Copy => "Copy output to your clipboard",
             HelpStrings::Quiet => "Suppresses most output",
@@ -131,6 +134,7 @@ impl HelpStrings {
             }
             HelpStrings::ConfigurationView => "Print your current configuration file",
             HelpStrings::ConfigurationInitializeToken => "Authentication token for a multi tenancy agent",
+            HelpStrings::ConfigurationAgent => "Which agent is being used [default: aca-py]",
             HelpStrings::Connections => "Retrieve connections or create invitations",
             HelpStrings::ConnectionsId => "ID of connection to retrieve",
             HelpStrings::ConnectionsInvite => "Create a new connection invitation",

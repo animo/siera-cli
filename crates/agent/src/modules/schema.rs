@@ -44,7 +44,7 @@ pub struct SchemaContent {
 }
 
 /// Options supplied by the frontend to create a schema
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct SchemaCreateOptions {
     /// The name of the schema
     pub name: String,
