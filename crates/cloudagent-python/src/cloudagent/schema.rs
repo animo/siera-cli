@@ -1,15 +1,20 @@
 use crate::agent::CloudAgentPython;
 use agent::error::Result;
-use agent::modules::schema::{
-    SchemaCreateOptions, SchemaCreateResponse, SchemaGetResponse, SchemaModule,
-    SchemasGetAllResponse,
-};
+use agent::modules::schema::{Schema, SchemaCreateOptions, SchemaModule, SchemasGetAllResponse};
 use async_trait::async_trait;
+use serde::{Deserialize, Serialize};
 use serde_json::json;
+
+/// Reponse from the cloudagent that contains the wrapped schema
+#[derive(Serialize, Deserialize, Debug)]
+struct Response {
+    /// Schema wrapper
+    schema: Schema,
+}
 
 #[async_trait]
 impl SchemaModule for CloudAgentPython {
-    async fn create(&self, options: SchemaCreateOptions) -> Result<SchemaCreateResponse> {
+    async fn create(&self, options: SchemaCreateOptions) -> Result<Schema> {
         let url = self.create_url(vec!["schemas"])?;
 
         let body = json!({
@@ -18,12 +23,12 @@ impl SchemaModule for CloudAgentPython {
           "schema_version": options.version
         });
 
-        self.post(url, None, Some(body)).await
+        Ok(self.post::<Response>(url, None, Some(body)).await?.schema)
     }
 
-    async fn get_by_id(&self, id: String) -> Result<SchemaGetResponse> {
+    async fn get_by_id(&self, id: String) -> Result<Schema> {
         let url = self.create_url(vec!["schemas", &id])?;
-        self.get(url, None).await
+        Ok(self.get::<Response>(url, None).await?.schema)
     }
 
     async fn get_all(&self) -> Result<SchemasGetAllResponse> {

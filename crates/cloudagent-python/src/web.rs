@@ -1,13 +1,15 @@
 use crate::agent::CloudAgentPython;
 use agent::error::{Error, Result};
+use logger::pretty_stringify_obj;
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
+use std::fmt::Debug;
 
 /// Call logic for http calls
 impl CloudAgentPython {
     /// Builds a get request and calls the sender
-    pub async fn get<T: DeserializeOwned>(
+    pub async fn get<T: DeserializeOwned + Debug>(
         &self,
         url: Url,
         query: Option<Vec<(&str, String)>>,
@@ -24,7 +26,7 @@ impl CloudAgentPython {
     }
 
     /// Builds a post request and calls the sender
-    pub async fn post<T: DeserializeOwned>(
+    pub async fn post<T: DeserializeOwned + Debug>(
         &self,
         url: Url,
         query: Option<Vec<(&str, String)>>,
@@ -44,7 +46,7 @@ impl CloudAgentPython {
     }
 
     /// Sends any request
-    pub async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> Result<T> {
+    pub async fn send<T: DeserializeOwned + Debug>(&self, client: RequestBuilder) -> Result<T> {
         let client = match &self.api_key {
             Some(a) => client.header("X-API-KEY", a),
             None => client,
@@ -63,10 +65,14 @@ impl CloudAgentPython {
                 log_debug!("Got response code {}", status_code);
                 log_trace!("{:#?}", res);
                 match status_code {
-                    200..=299 => res.json().await.map_err(|e| {
-                        log_warn!("{}", e);
-                        Error::UnableToParseResponse.into()
-                    }),
+                    200..=299 => {
+                        let parsed: Value = res.json().await.unwrap();
+                        log_debug!("Response: {}", pretty_stringify_obj(&parsed));
+                        serde_json::from_value(parsed).map_err(|e| {
+                            log_warn!("{}", e);
+                            Error::UnableToParseResponse.into()
+                        })
+                    }
                     // Issue credential message when attributes are not correct
                     400 => Err(res.text().await?.into()),
                     401 => Err(Error::AuthorizationFailed.into()),

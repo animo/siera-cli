@@ -72,13 +72,12 @@ pub async fn parse_schema_args(
                     "Created".green(),
                 );
                 schema
-                    .schema
                     .attr_names
                     .into_iter()
                     .for_each(|name| log_info!("- {}", name));
                 log_info!("{}", "Schema id: ".cyan());
-                log!("{}", schema.schema_id);
-                copy!("{}", schema.schema_id);
+                log!("{}", schema.id);
+                copy!("{}", schema.id);
             })
         }
         SchemaSubcommands::List { id } => match id {

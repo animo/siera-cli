@@ -2,37 +2,20 @@ use crate::error::Result;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
-/// Create schema response
+/// Schema response from the ledger
 #[derive(Debug, Deserialize, Serialize)]
-pub struct SchemaCreateResponse {
-    /// Schema metadata
-    pub schema: SchemaContent,
-
-    /// Id of the schema
-    pub schema_id: String,
-}
-
-/// Response from the cloudagent when requesting a schema
-#[derive(Debug, Deserialize, Serialize)]
-pub struct SchemaGetResponse {
-    /// Schema metadata
-    pub schema: SchemaContent,
-}
-
-/// The content of a schema object
-#[derive(Debug, Deserialize, Serialize)]
-pub struct SchemaContent {
+pub struct Schema {
     /// Version of the schema
-    ver: String,
+    pub ver: String,
 
     /// Id of the schema
-    id: String,
+    pub id: String,
 
     /// Name of the schema
-    name: String,
+    pub name: String,
 
     /// Version of the schema
-    version: String,
+    pub version: String,
 
     /// Names of the attributes registered with the schema
     #[serde(rename(deserialize = "attrNames"))]
@@ -40,7 +23,7 @@ pub struct SchemaContent {
 
     /// seqNo as on the ledger that is unique to each schema
     #[serde(rename(deserialize = "seqNo"))]
-    seq_no: Option<i32>,
+    pub seq_no: Option<i32>,
 }
 
 /// Options supplied by the frontend to create a schema
@@ -68,10 +51,10 @@ pub struct SchemasGetAllResponse {
 #[async_trait]
 pub trait SchemaModule {
     /// Create a schema on the ledger
-    async fn create(&self, options: SchemaCreateOptions) -> Result<SchemaCreateResponse>;
+    async fn create(&self, options: SchemaCreateOptions) -> Result<Schema>;
 
     /// Request the schema by the id
-    async fn get_by_id(&self, id: String) -> Result<SchemaGetResponse>;
+    async fn get_by_id(&self, id: String) -> Result<Schema>;
 
     /// Get all the registerd schemas
     async fn get_all(&self) -> Result<SchemasGetAllResponse>;

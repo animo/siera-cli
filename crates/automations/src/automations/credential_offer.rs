@@ -53,7 +53,7 @@ impl CredentialOfferAutomation {
         .await?;
 
         let options = CredentialDefinitionCreateOptions {
-            schema_id: schema.schema_id,
+            schema_id: schema.id,
             ..CredentialDefinitionCreateOptions::default()
         };
 
