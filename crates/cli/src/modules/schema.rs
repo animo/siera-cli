@@ -4,7 +4,6 @@ use crate::utils::loader::{Loader, LoaderVariant};
 use agent::agent::Agent;
 use agent::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
-use colored::*;
 use logger::pretty_stringify_obj;
 
 /// Schema options and flags
@@ -67,15 +66,12 @@ pub async fn parse_schema_args(
             }
             agent.agent.create(options).await.map(|schema| {
                 log_debug!("{}", pretty_stringify_obj(&schema));
-                log_info!(
-                    "{} schema with the following attributes: ",
-                    "Created".green(),
-                );
+                log_info!("Created schema with the following attributes: ",);
                 schema
                     .attr_names
                     .into_iter()
                     .for_each(|name| log_info!("- {}", name));
-                log_info!("{}", "Schema id: ".cyan());
+                log_info!("Schema id:");
                 log!("{}", schema.id);
                 copy!("{}", schema.id);
             })
