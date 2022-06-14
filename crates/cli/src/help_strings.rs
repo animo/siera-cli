@@ -134,7 +134,7 @@ impl HelpStrings {
             }
             HelpStrings::ConfigurationView => "Print your current configuration file",
             HelpStrings::ConfigurationInitializeToken => "Authentication token for a multi tenancy agent",
-            HelpStrings::ConfigurationAgent => "Which agent is being used [default: aca-py]",
+            HelpStrings::ConfigurationAgent => "Type of Aries agent [default: aca-py]",
             HelpStrings::Connections => "Retrieve connections or create invitations",
             HelpStrings::ConnectionsId => "ID of connection to retrieve",
             HelpStrings::ConnectionsInvite => "Create a new connection invitation",
