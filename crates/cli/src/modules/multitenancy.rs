@@ -1,8 +1,6 @@
-use crate::{
-    error::Result,
-    help_strings::HelpStrings,
-    utils::loader::{Loader, LoaderVariant},
-};
+use crate::error::Result;
+use crate::help_strings::HelpStrings;
+use crate::utils::loader::{Loader, LoaderVariant};
 use agent::modules::multitenancy::MultitenancyModule;
 use clap::{Args, Subcommand};
 use logger::pretty_stringify_obj;

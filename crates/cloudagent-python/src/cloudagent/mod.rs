@@ -1,6 +1,3 @@
-/// Agent module
-pub mod agent;
-
 /// Module for basic messages sspecific for an Aries cloudagent Python
 mod basic_message;
 

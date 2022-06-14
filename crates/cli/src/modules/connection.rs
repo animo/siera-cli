@@ -1,18 +1,14 @@
+use crate::error::{Error, Result};
+use crate::help_strings::HelpStrings;
+use crate::utils::loader::{Loader, LoaderVariant};
+use crate::utils::qr::print_qr_code;
 use agent::modules::connection::{
     ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
     ConnectionReceiveInvitationOptions,
 };
 use clap::{Args, Subcommand};
-use colored::*;
-use std::str;
-
-use crate::error::{Error, Result};
-use crate::help_strings::HelpStrings;
-use crate::utils::{
-    loader::{Loader, LoaderVariant},
-    qr::print_qr_code,
-};
 use logger::{copy, pretty_stringify_obj};
+use std::str;
 
 /// Connection options and flags
 #[derive(Args)]
@@ -120,7 +116,7 @@ pub async fn parse_connection_args(
             };
             agent.create_invitation(options).await.map(|response| {
                 loader.stop();
-                log_info!("{} invite with connection id: ", "Created".green());
+                log_info!("Created invite with connection id:");
                 log!("{}", response.connection_id);
                 if *qr {
                     log_info!("Scan this QR code to accept the invitation:\n");
@@ -139,7 +135,7 @@ pub async fn parse_connection_args(
                 .await
                 .map(|connection| {
                     log_debug!("{}", pretty_stringify_obj(&connection));
-                    log_info!("{} connection id:", "Fetched".green());
+                    log_info!("Fetched connection id:");
                     log!("{}", connection.connection_id);
                 })
         }

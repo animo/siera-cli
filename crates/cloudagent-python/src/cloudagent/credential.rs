@@ -1,4 +1,4 @@
-use super::agent::CloudAgentPython;
+use crate::agent::CloudAgentPython;
 use agent::error::Result;
 use agent::modules::credential::{
     CredentialModule, CredentialOfferOptions, CredentialOfferResponse,
@@ -9,9 +9,7 @@ use serde_json::json;
 #[async_trait]
 impl CredentialModule for CloudAgentPython {
     async fn send_offer(&self, options: CredentialOfferOptions) -> Result<CredentialOfferResponse> {
-        let url = self
-            .cloud_agent
-            .create_url(vec!["issue-credential", "send-offer"])?;
+        let url = self.create_url(vec!["issue-credential", "send-offer"])?;
 
         let mut attributes = vec![];
         for (i, key) in options.keys.iter().enumerate() {
@@ -28,6 +26,6 @@ impl CredentialModule for CloudAgentPython {
           },
         });
 
-        self.cloud_agent.post(url, None, Some(body)).await
+        self.post(url, None, Some(body)).await
     }
 }

@@ -47,11 +47,14 @@ pub enum Error {
     /// The configuration is empty
     EmptyConfiguration,
 
+    /// The agent flag was invalid and should be: aca-py or afj
+    InvalidAgent(String),
+
+    /// The subcommand is not registered for the specified agent
+    SubcommandNotRegisteredForAgent(String, &'static str),
+
     /// The compare value supplied cannot be parsed into a number
     PredicateValueNonNumber(String, String),
-
-    /// No subcommand is supplied
-    _NoSubcommandSupplied(String),
 }
 
 impl std::error::Error for Error {}
@@ -70,13 +73,14 @@ impl Display for Error {
             Error::UnequalAmountKeyValue => write!(f, "Supplies keys and values are not equal in size."),
             Error::HomeNotFound => write!(f, "Unable to find home directory."),
             Error::OsUnknown => write!(f, "Unknown operating system. Failed to detect OS as windows or unix."),
-            Error::_NoSubcommandSupplied(subcommand) => write!(f, "No subcommand supplied for {}. Check `agent-cli {} --help for the available options.", subcommand, subcommand),
             Error::RequiredAttributes => write!(f, "Creating a schema requires at least one attribute. Please supply them via the --attributes flag."),
             Error::InvalidConfigurationStructure => write!(f, "Invalid configuration structure. Please make sure you have a valid configuration file."),
             Error::InvalidAgentInvitation => write!(f, "The supplied agent url is incorrect. Make sure it contains the `c_i` query parameter and that the invitation part is correctly base64 encoded."),
             Error::InactiveConnection => write!(f, "The connection was not activated within the specified time. Please try again with a higher --timeout."),
             Error::EmptyConfiguration => write!(f, "Unable to delete from an empty configuration"),
-            Error::PredicateValueNonNumber(name, val) => write!(f, "Predicate value {}, for name {}, is not of type number.", val, name)
+            Error::PredicateValueNonNumber(name, val) => write!(f, "Predicate value {}, for name {}, is not of type number.", val, name),
+            Error::InvalidAgent(agent) => write!(f, "Invalid agent '{}' supplied. Choose one of the following: 'aca-py' or 'afj'. (aca-py is default)", agent),
+            Error::SubcommandNotRegisteredForAgent(subcommand, agent) => write!(f, "Subcommand '{}' is not registered for {}.", subcommand, agent)
         }
     }
 }

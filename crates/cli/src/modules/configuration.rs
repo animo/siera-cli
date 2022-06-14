@@ -38,12 +38,16 @@ pub enum ConfigurationSubcommands {
         agent_url: Option<String>,
 
         /// Api key used for authentication at the agent
-        #[clap(long, short, help = HelpStrings::ApiKey, conflicts_with = "default")]
+        #[clap(long, short='k', help = HelpStrings::ApiKey, conflicts_with = "default")]
         api_key: Option<String>,
 
         /// Multi tenancy token for access to the wallet
         #[clap(long, short='t', help = HelpStrings::ConfigurationInitializeToken)]
         token: Option<String>,
+
+        /// The url of where the agent is located
+        #[clap(long, short='a', help = HelpStrings::Agent, conflicts_with = "default")]
+        agent: Option<String>,
     },
 
     /// Remove an entry in your configuration
@@ -62,13 +66,13 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
         ConfigurationSubcommands::View => {
             log_debug!(
                 "Loaded configuration from {}",
-                String::from(config_path.to_str().unwrap()).bold()
+                config_path.display().to_string().bold()
             );
             let output = fs::read_to_string(&config_path).map_err(|err| {
                 log_debug!("Failed to read config file: {}", err);
                 Box::<dyn std::error::Error>::from(error::Error::CannotReadConfigurationFile)
             })?;
-            log!("Configuration path: {:?}", config_path);
+            log!("Configuration path: {}", config_path.display());
             log!("{}", output);
             Ok(())
         }
@@ -78,6 +82,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
             agent_url,
             api_key,
             token,
+            agent,
         } => {
             if *default {
                 let (environment, configuration) = Configuration::init(token.to_owned());
@@ -88,7 +93,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 );
                 return Ok(());
             }
-            log_debug!("{} a new entry to the configuration file", "Adding".cyan());
+            log_debug!("Adding a new entry to the configuration file");
             let path = get_config_path()?;
             let endpoint = agent_url.to_owned().ok_or(Error::NoAgentURLSupplied)?;
             let environment = environment.to_owned().ok_or(Error::NoEnvironmentSupplied)?;
@@ -96,13 +101,14 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 endpoint,
                 api_key: api_key.to_owned(),
                 auth_token: token.to_owned(),
+                // TODO: this can only be aca-py or afj
+                agent: agent.to_owned(),
             };
             log_info!(
-                "{} {}, {:#?} to {:#?}",
-                "Writing".cyan(),
-                environment,
+                "Writing {}: {} to {}",
+                environment.bold(),
                 env,
-                path
+                path.display()
             );
             Configuration::add(environment.clone(), env)?;
             log_info!(
@@ -111,7 +117,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 config_path.display()
             );
 
-            log_debug!("{} a new entry to the configuration", "Written".green());
+            log_debug!("Written a new entry to the configuration",);
             Ok(())
         }
         ConfigurationSubcommands::Remove { environment } => {

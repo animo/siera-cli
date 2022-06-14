@@ -25,6 +25,7 @@ name = "agent-cli"
 [dependencies]
 agent = { path = "./crates/agent" }
 cloudagent-python = { path = "./crates/cloudagent-python" }
+afj-rest = { path = "./crates/afj-rest" }
 automations = { path = "./crates/automations" }
 async-trait = "0.1.51"
 serde = { version = "1.0.130", features = ["derive"] }

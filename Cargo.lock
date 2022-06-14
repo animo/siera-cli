@@ -3,6 +3,18 @@
 version = 3
 
 [[package]]
+name = "afj-rest"
+version = "0.0.0"
+dependencies = [
+ "agent",
+ "async-trait",
+ "logger",
+ "reqwest",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "agent"
 version = "0.0.0"
 dependencies = [
@@ -15,6 +27,7 @@ dependencies = [
 name = "agent-cli"
 version = "0.2.0"
 dependencies = [
+ "afj-rest",
  "agent",
  "async-trait",
  "automations",
@@ -174,6 +187,7 @@ dependencies = [
 name = "cli"
 version = "0.0.0"
 dependencies = [
+ "afj-rest",
  "agent",
  "automations",
  "base64",

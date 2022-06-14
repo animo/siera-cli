@@ -1,17 +1,14 @@
-use std::collections::BTreeMap;
-
-use super::agent::CloudAgentPython;
+use crate::agent::CloudAgentPython;
 use agent::error::Result;
 use agent::modules::proof::{ProofModule, ProofRequestOptions, ProofRequestResponse};
 use async_trait::async_trait;
 use serde_json::{json, Value};
+use std::collections::BTreeMap;
 
 #[async_trait]
 impl ProofModule for CloudAgentPython {
     async fn send_request(&self, options: ProofRequestOptions) -> Result<ProofRequestResponse> {
-        let url = self
-            .cloud_agent
-            .create_url(vec!["present-proof", "send-request"])?;
+        let url = self.create_url(vec!["present-proof", "send-request"])?;
 
         let mut requested_attributes: BTreeMap<String, Value> = BTreeMap::new();
         let mut requested_predicates: BTreeMap<String, Value> = BTreeMap::new();
@@ -37,6 +34,6 @@ impl ProofModule for CloudAgentPython {
           }
         });
 
-        self.cloud_agent.post(url, None, Some(body)).await
+        self.post(url, None, Some(body)).await
     }
 }
