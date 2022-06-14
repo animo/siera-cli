@@ -1,2 +1,2 @@
-/// Module for schemas definitions specific for an Aries cloudagent Python
+/// Module for schemas definitions specific for an AFJ REST agent
 pub mod schema;

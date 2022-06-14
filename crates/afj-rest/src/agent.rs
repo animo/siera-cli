@@ -1,7 +1,7 @@
 use agent::error::{Error, Result};
 use reqwest::Url;
 
-/// Cloudagent AFJ Agent
+/// AFJ REST agent
 #[derive(Debug)]
 pub struct CloudAgentAfjRest {
     /// base url of the cloudagent
@@ -26,7 +26,7 @@ pub enum CloudAgentAfjRestVersion {
 }
 
 impl CloudAgentAfjRest {
-    /// Create a new instance of an aries cloudagent python
+    /// Create a new instance of an AFJ REST agent
     pub fn new(
         endpoint: String,
         version: CloudAgentAfjRestVersion,
