@@ -1,7 +1,6 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::agent::Agent;
 use agent::modules::feature::FeatureModule;
 use clap::Args;
 use logger::pretty_stringify_obj;
@@ -12,9 +11,9 @@ use logger::pretty_stringify_obj;
 pub struct FeaturesOptions {}
 
 /// Subcommand Feature parser
-pub async fn parse_features_args(agent: Agent<impl FeatureModule>) -> Result<()> {
+pub async fn parse_features_args(agent: impl FeatureModule) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
-    agent.agent.discover_features().await.map(|features| {
+    agent.discover_features().await.map(|features| {
         loader.stop();
         log_debug!("{}", pretty_stringify_obj(&features));
         features.disclose.protocols.iter().for_each(|p| {

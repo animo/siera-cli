@@ -12,7 +12,6 @@ use crate::modules::proof::parse_proof_args;
 use crate::modules::schema::parse_schema_args;
 use crate::utils::config::{get_config_from_path, get_config_path};
 use afj_rest::agent::{CloudAgentAfjRest, CloudAgentAfjRestVersion};
-use agent::agent::Agent;
 use clap::Parser;
 use cloudagent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
 use logger::LogLevel;
@@ -59,8 +58,7 @@ pub async fn register() -> Result<()> {
             match agent.as_str() {
                 "aca-py" => {
                     let version = CloudAgentPythonVersion::ZeroSevenThree;
-                    let agent = CloudAgentPython::new(agent_url, api_key, auth_token);
-                    let agent = Agent::new(agent, version.into());
+                    let agent = CloudAgentPython::new(agent_url, version, api_key, auth_token);
                     // Commands that require the agent
                     match &cli.commands {
                         Commands::Schema(options) => parse_schema_args(options, agent).await,
@@ -93,8 +91,7 @@ pub async fn register() -> Result<()> {
                 }
                 "afj" => {
                     let version = CloudAgentAfjRestVersion::ZeroEightZero;
-                    let agent = CloudAgentAfjRest::new(agent_url, api_key, auth_token);
-                    let agent = Agent::new(agent, version.into());
+                    let agent = CloudAgentAfjRest::new(agent_url, version, api_key, auth_token);
                     match &cli.commands {
                         // TODO: should accept struct that has a field that implements the module
                         Commands::Schema(options) => parse_schema_args(options, agent).await,

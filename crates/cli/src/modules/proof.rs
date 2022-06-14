@@ -1,7 +1,6 @@
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::agent::Agent;
 use agent::modules::proof::{Predicate, ProofModule, ProofRequestOptions};
 use clap::{Args, Subcommand};
 use logger::pretty_stringify_obj;
@@ -41,10 +40,7 @@ pub enum ProofSubcommands {
 }
 
 /// Subcoammnd Proof parser
-pub async fn parse_proof_args(
-    commands: &ProofSubcommands,
-    agent: Agent<impl ProofModule>,
-) -> Result<()> {
+pub async fn parse_proof_args(commands: &ProofSubcommands, agent: impl ProofModule) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
     match commands {
         ProofSubcommands::Request {
@@ -72,7 +68,6 @@ pub async fn parse_proof_args(
                 predicates: predicate?,
             };
             agent
-                .agent
                 .send_request(proof_request_options)
                 .await
                 .map(|proof| {

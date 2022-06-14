@@ -2,7 +2,6 @@ use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr::print_qr_code;
-use agent::agent::Agent;
 use agent::modules::connection::{
     ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
     ConnectionReceiveInvitationOptions,
@@ -96,7 +95,7 @@ pub enum ConnectionSubcommands {
 /// Subcommand connection parser
 pub async fn parse_connection_args(
     options: &ConnectionOptions,
-    agent: Agent<impl ConnectionModule>,
+    agent: impl ConnectionModule,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
 
@@ -115,28 +114,23 @@ pub async fn parse_connection_args(
                 qr: *qr,
                 toolbox: *toolbox,
             };
-            agent
-                .agent
-                .create_invitation(options)
-                .await
-                .map(|response| {
-                    loader.stop();
-                    log_info!("Created invite with connection id:");
-                    log!("{}", response.connection_id);
-                    if *qr {
-                        log_info!("Scan this QR code to accept the invitation:\n");
-                        print_qr_code(&response.invitation_url).unwrap();
-                    } else {
-                        log_info!("Another agent can use this URL to accept your invitation:\n");
-                        log!("{}", &response.invitation_url);
-                    }
-                    copy!("{}", response.invitation_url);
-                })
+            agent.create_invitation(options).await.map(|response| {
+                loader.stop();
+                log_info!("Created invite with connection id:");
+                log!("{}", response.connection_id);
+                if *qr {
+                    log_info!("Scan this QR code to accept the invitation:\n");
+                    print_qr_code(&response.invitation_url).unwrap();
+                } else {
+                    log_info!("Another agent can use this URL to accept your invitation:\n");
+                    log!("{}", &response.invitation_url);
+                }
+                copy!("{}", response.invitation_url);
+            })
         }
         ConnectionSubcommands::Receive { url } => {
             let invitation = invite_url_to_struct(url.to_owned())?;
             agent
-                .agent
                 .receive_invitation(invitation)
                 .await
                 .map(|connection| {
@@ -155,7 +149,7 @@ pub async fn parse_connection_args(
             state,
             their_did,
         } => match id {
-            Some(i) => agent.agent.get_by_id(i.to_owned()).await.map(|connection| {
+            Some(i) => agent.get_by_id(i.to_owned()).await.map(|connection| {
                 loader.stop();
                 copy!("{}", pretty_stringify_obj(&connection));
                 log!("{}", pretty_stringify_obj(connection))
@@ -170,7 +164,7 @@ pub async fn parse_connection_args(
                     connection_protocol: connection_protocol.as_deref().map(|c| c.to_string()),
                     their_role: their_role.as_deref().map(|t| t.to_string()),
                 };
-                agent.agent.get_all(options).await.map(|connections| {
+                agent.get_all(options).await.map(|connections| {
                     loader.stop();
                     copy!("{}", pretty_stringify_obj(&connections.results));
                     log!("{}", pretty_stringify_obj(connections.results))

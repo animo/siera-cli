@@ -1,7 +1,6 @@
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::agent::Agent;
 use agent::modules::credential::{CredentialModule, CredentialOfferOptions};
 use clap::{Args, Subcommand};
 use logger::pretty_stringify_obj;
@@ -44,7 +43,7 @@ pub enum CredentialSubcommands {
 /// Subcommand credentials parser
 pub async fn parse_credentials_args(
     commands: &CredentialSubcommands,
-    agent: Agent<impl CredentialModule>,
+    agent: impl CredentialModule,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
     match commands {
@@ -64,7 +63,7 @@ pub async fn parse_credentials_args(
                 keys: key.iter().map(|k| k.to_string()).collect(),
                 values: value.iter().map(|v| v.to_string()).collect(),
             };
-            agent.agent.send_offer(options).await.map(|cred| {
+            agent.send_offer(options).await.map(|cred| {
                 loader.stop();
                 log_debug!("{}", pretty_stringify_obj(&cred));
                 log_info!("Successefully offered a credential. Credential exchange id: ",);

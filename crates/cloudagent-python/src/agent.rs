@@ -2,7 +2,7 @@ use agent::error::{Error, Result};
 use reqwest::Url;
 
 /// Cloudagent Python Agent
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct CloudAgentPython {
     /// base url of the cloudagent
     pub endpoint: String,
@@ -12,6 +12,9 @@ pub struct CloudAgentPython {
 
     /// Authorization token for a multi tenancy agent
     pub auth_token: Option<String>,
+
+    /// Agent version
+    pub version: CloudAgentPythonVersion,
 }
 
 /// ACA-Py supported versions
@@ -22,21 +25,17 @@ pub enum CloudAgentPythonVersion {
     ZeroSevenThree,
 }
 
-impl From<CloudAgentPythonVersion> for String {
-    fn from(version: CloudAgentPythonVersion) -> Self {
-        let s = match version {
-            CloudAgentPythonVersion::ZeroSevenThree => "0.7.3",
-        };
-
-        Self::from(s)
-    }
-}
-
 impl CloudAgentPython {
     /// Create a new instance of an aries cloudagent python
-    pub fn new(endpoint: String, api_key: Option<String>, auth_token: Option<String>) -> Self {
+    pub fn new(
+        endpoint: String,
+        version: CloudAgentPythonVersion,
+        api_key: Option<String>,
+        auth_token: Option<String>,
+    ) -> Self {
         Self {
             endpoint,
+            version,
             api_key,
             auth_token,
         }

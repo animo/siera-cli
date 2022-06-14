@@ -1,7 +1,6 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::agent::Agent;
 use agent::modules::multitenancy::MultitenancyModule;
 use clap::{Args, Subcommand};
 use logger::pretty_stringify_obj;
@@ -34,18 +33,18 @@ pub enum MultitenancySubcommands {
 /// Subcommand multitenancy parser
 pub async fn parse_multitenancy_args(
     options: &MultitenancyOptions,
-    agent: Agent<impl MultitenancyModule>,
+    agent: impl MultitenancyModule,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
 
     match &options.commands {
-        MultitenancySubcommands::Create {} => agent.agent.create().await.map(|response| {
+        MultitenancySubcommands::Create {} => agent.create().await.map(|response| {
             loader.stop();
             copy!("{}", response.wallet_id);
             log!("{}", pretty_stringify_obj(response));
         }),
         MultitenancySubcommands::Remove { wallet_id } => {
-            agent.agent.remove(wallet_id.to_owned()).await?;
+            agent.remove(wallet_id.to_owned()).await?;
             loader.stop();
             log!("Successfully removed wallet with id: {}", wallet_id);
             Ok(())

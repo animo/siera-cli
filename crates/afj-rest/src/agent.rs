@@ -1,8 +1,8 @@
 use agent::error::{Error, Result};
 use reqwest::Url;
 
-/// Cloudagent Python Agent
-#[derive(Debug, Default)]
+/// Cloudagent AFJ Agent
+#[derive(Debug)]
 pub struct CloudAgentAfjRest {
     /// base url of the cloudagent
     pub endpoint: String,
@@ -12,6 +12,9 @@ pub struct CloudAgentAfjRest {
 
     /// Authorization token for a multi tenancy agent
     pub auth_token: Option<String>,
+
+    /// Agent version
+    pub version: CloudAgentAfjRestVersion,
 }
 
 /// AFJ REST supported versions
@@ -22,21 +25,17 @@ pub enum CloudAgentAfjRestVersion {
     ZeroEightZero,
 }
 
-impl From<CloudAgentAfjRestVersion> for String {
-    fn from(version: CloudAgentAfjRestVersion) -> Self {
-        let s = match version {
-            CloudAgentAfjRestVersion::ZeroEightZero => "0.8.0",
-        };
-
-        Self::from(s)
-    }
-}
-
 impl CloudAgentAfjRest {
     /// Create a new instance of an aries cloudagent python
-    pub fn new(endpoint: String, api_key: Option<String>, auth_token: Option<String>) -> Self {
+    pub fn new(
+        endpoint: String,
+        version: CloudAgentAfjRestVersion,
+        api_key: Option<String>,
+        auth_token: Option<String>,
+    ) -> Self {
         Self {
             endpoint,
+            version,
             api_key,
             auth_token,
         }
