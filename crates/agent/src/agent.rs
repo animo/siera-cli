@@ -1,4 +1,4 @@
-/// Generic Aries cloudagent python structure
+/// Generic Aries cloudagent structure
 #[derive(Debug)]
 pub struct Agent<A> {
     /// Default cloud agent structure
