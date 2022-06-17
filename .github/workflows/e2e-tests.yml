@@ -20,4 +20,4 @@ jobs:
           command: build
           args: --locked
       - name: E2E tests
-        run: make e2e-test
+        run: cargo test
