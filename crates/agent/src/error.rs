@@ -24,6 +24,9 @@ pub enum Error {
     /// Specific handle case for a 5xx status code which means that the cloudagent might be offline
     HttpServiceUnavailable,
 
+    /// Subcommand is not available for this agent
+    CommandNotAvailable(String),
+
     // TODO: why is this here?
     /// Predicate structure is invalid
     UnableToParseOutValue(String),
@@ -49,7 +52,8 @@ impl Display for Error {
             Error::UnreachableUrl => write!(f, "Provided url is unreachable. Is the provided agent URL valid?"),
             Error::HttpServiceUnavailable => write!(f, "Cloudagent is currently unavailable. Are you sure the agent is online?"),
             Error::UnableToParseOutValue(val) => write!(f, "Unable to parse the predicate values from: {}. The following structure is required: (name,operator,value)", val),
-            Error::InvalidOperator(op) => write!(f, "Invalid Operator ({}). \">=\", \"<=\", \"=\", \"<\" and \">\" are allowed.", op)
+            Error::InvalidOperator(op) => write!(f, "Invalid Operator ({}). \">=\", \"<=\", \"=\", \"<\" and \">\" are allowed.", op),
+            Error::CommandNotAvailable(agent) => write!(f, "Agent '{}' does not support this command", agent)
         }
     }
 }
