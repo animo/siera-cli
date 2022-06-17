@@ -122,7 +122,7 @@ pub async fn parse_connection_args(
                     log_info!("Scan this QR code to accept the invitation:\n");
                     print_qr_code(&response.invitation_url).unwrap();
                 } else {
-                    log_info!("Another agent can use this URL to accept your invitation:\n");
+                    log_info!("Another agent can use this URL to accept your invitation:");
                     log!("{}", &response.invitation_url);
                 }
                 copy!("{}", response.invitation_url);

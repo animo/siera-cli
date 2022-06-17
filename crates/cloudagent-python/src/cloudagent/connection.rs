@@ -2,8 +2,8 @@ use crate::agent::CloudAgentPython;
 use crate::fill_query;
 use agent::error::Result;
 use agent::modules::connection::{
-    Connection, ConnectionCreateInvitationOptions, ConnectionCreateInvitationResponse,
-    ConnectionGetAllOptions, ConnectionModule, ConnectionReceiveInvitationOptions,
+    Connection, ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
+    ConnectionReceiveInvitationOptions, Invitation,
 };
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
@@ -46,7 +46,7 @@ impl ConnectionModule for CloudAgentPython {
     async fn create_invitation(
         &self,
         options: ConnectionCreateInvitationOptions,
-    ) -> Result<ConnectionCreateInvitationResponse> {
+    ) -> Result<Invitation> {
         let url = self.create_url(vec!["connections", "create-invitation"])?;
         let mut query: Vec<(&str, String)> = vec![];
         let mut body = None;
@@ -71,8 +71,7 @@ impl ConnectionModule for CloudAgentPython {
                 query.push(("alias", alias.to_string()));
             }
         }
-        self.post::<ConnectionCreateInvitationResponse>(url, Some(query), body)
-            .await
+        self.post::<Invitation>(url, Some(query), body).await
     }
     async fn receive_invitation(
         &self,
