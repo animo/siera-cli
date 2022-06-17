@@ -7,7 +7,10 @@ use agent::modules::connection::{ConnectionCreateInvitationOptions, ConnectionMo
 use agent::modules::credential::CredentialModule;
 use agent::modules::credential_definition::CredentialDefinitionModule;
 use agent::modules::schema::SchemaModule;
-use automations::automations::credential_offer::CredentialOfferAutomation;
+use automations::automations::{
+    create_credential_definition::CreateCredentialDefinition,
+    credential_offer::CredentialOfferAutomation,
+};
 use clap::{Args, Subcommand};
 use colored::*;
 use std::collections::HashMap;
@@ -42,6 +45,22 @@ pub enum AutomationSubcommands {
         /// Whether no qr code should be printed out
         #[clap(long, short, help = HelpStrings::AutomationCredentialOfferNoQr )]
         no_qr: bool,
+    },
+
+    /// Create a credential definition subcommand
+    #[clap(about = HelpStrings::AutomationCreateCredentialDefinition )]
+    CreateCredentialDefinition {
+        /// Name of the schema that the credential definition will be based on
+        #[clap(long, short='n', default_value="agent-cli-schema", help = HelpStrings::AutomationCreateCredentialDefinitionName)]
+        name: String,
+
+        /// Attributes of the schema the credential definition will be based on
+        #[clap(long, short='a', multiple_occurrences(true), help = HelpStrings::AutomationCreateCredentialDefinitionAttributes)]
+        attributes: Vec<String>,
+
+        /// Version of the schema the credential definition will be based on
+        #[clap(long = "version", short = 'v', default_value="1.0", help = HelpStrings::AutomationCreateCredentialDefinitionVersion)]
+        version: String,
     },
 }
 
@@ -118,12 +137,24 @@ pub async fn parse_automation_args(
                         return Err(Error::InactiveConnection.into());
                     }
                 }
+                log_info!("Successfully executed automation");
+                log!("It might take a few seconds for the credential to arrive",);
+                loader.stop();
             }
         },
+        AutomationSubcommands::CreateCredentialDefinition {
+            name,
+            version,
+            attributes,
+        } => {
+            let automation = CreateCredentialDefinition {
+                name: name.to_owned(),
+                version: version.to_owned(),
+                attributes: attributes.to_owned(),
+            };
+            automation.execute(agent).await?;
+        }
     };
-    log_info!("Successfully executed automation");
-    log!("It might take a few seconds for the credential to arrive",);
-    loader.stop();
     Ok(())
 }
 
