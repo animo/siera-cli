@@ -63,7 +63,11 @@ impl CloudAgentAfjRest {
                     400 => Err(res.text().await?.into()),
                     401 => Err(Error::AuthorizationFailed.into()),
                     404 => Err(Error::UrlDoesNotExist.into()),
-                    500..=599 => Err(Error::InternalServerError(res.status().as_u16()).into()),
+                    500..=599 => Err(Error::InternalServerError(
+                        res.status().as_u16(),
+                        res.text().await?,
+                    )
+                    .into()),
                     _ => Err(Error::UnknownResponseStatusCode(res.text().await?).into()),
                 }
             }

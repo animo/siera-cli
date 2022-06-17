@@ -62,14 +62,13 @@ impl ConnectionModule for CloudAgentAfjRest {
         let url = self.create_url(vec!["connections", "receive-invitation"])?;
 
         let body = json!({
-            "@id": invitation.id,
-            "did": invitation.did,
-            "imageUrl": invitation.image_url,
-            "label": invitation.label,
-            "recipientKeys": invitation.recipient_keys,
-            "routingKeys": invitation.routing_keys,
-            "serviceEndpoint": invitation.service_endpoint,
-
+            "invitation": {
+                "label": invitation.label,
+                "did": invitation.did,
+                "recipientKeys": invitation.recipient_keys,
+                "routingKeys": invitation.routing_keys,
+                "serviceEndpoint": invitation.service_endpoint,
+            },
         });
 
         self.post(url, None, Some(body)).await
