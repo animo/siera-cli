@@ -101,6 +101,9 @@ pub async fn register() -> Result<()> {
                         Commands::Connection(options) => {
                             parse_connection_args(options, agent).await
                         }
+                        Commands::Message(options) => {
+                            parse_basic_message_args(options, agent).await
+                        }
                         _ => Err(Error::SubcommandNotRegisteredForAgent(
                             cli.commands.into(),
                             "afj",
