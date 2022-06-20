@@ -19,6 +19,9 @@ pub struct CreateCredentialDefinition {
 }
 
 impl CreateCredentialDefinition {
+    /// Main executor function
+    /// 1. Register the schema
+    /// 2. Register the credential definition
     pub async fn execute(
         &self,
         agent: impl SchemaModule + CredentialDefinitionModule,
