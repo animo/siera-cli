@@ -56,7 +56,10 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt-get upgrade
       - run: sudo apt-get install libssl-dev pkg-config libxcb-shape0-dev libxcb-xfixes0-dev
-      - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cargo-deb cargo-get
       - run: cargo install cargo-deb cargo-get
       - uses: actions/checkout@master
       - run: cargo deb
