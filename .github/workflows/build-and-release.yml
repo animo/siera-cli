@@ -50,20 +50,26 @@ jobs:
   build-debian:
     name: build debian
     runs-on: ubuntu-latest
+    outputs:
+      VERSION: ${{ steps.version.outputs.VERSION}}
     steps:
       - run: sudo apt-get update
       - run: sudo apt-get upgrade
       - run: sudo apt-get install libssl-dev pkg-config libxcb-shape0-dev libxcb-xfixes0-dev
       - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-      - run: cargo install cargo-deb
+      - run: cargo install cargo-deb cargo-get
       - uses: actions/checkout@master
       - run: cargo deb
       - run: ls -R
+      - id: version
+        run: |
+          echo "::set-output name=VERSION::$(cargo get version)"
+          echo "VERSION=$(cargo get version)" >> $GITHUB_ENV
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: linux-agent-cli
-          path: target/x86_64-unknown-linux-musl/debian/agent-cli_0.2.0_amd64.deb
+          name: debian-agent-cli
+          path: target/debian/agent-cli_${{ env.VERSION }}_amd64.deb
   # build-windows:
   #   name: build windows
   #   runs-on: windows-latest
@@ -79,22 +85,17 @@ jobs:
   #       with:
   #         name: windows-agent-cli.exe
   #         path: target/release/agent-cli.exe
-  # release:
-  #   runs-on: ubuntu-latest
-  #   needs: [build-macos, build-linux, build-windows]
-  #   steps:
-  #     - name: Download built binaries
-  #       uses: actions/download-artifact@v3
-  #     - run: |
-  #         mv aarch64-apple-darwin-agent-cli/agent-cli apple-arm-agent-cli
-  #         mv x86_64-apple-darwin-agent-cli/agent-cli apple-x86_64-agent-cli
-  #         mv linux-agent-cli/agent-cli linux-x86_64-agent-cli
-  #         mv windows-agent-cli.exe/agent-cli.exe windows-x86_64-agent-cli.exe
-  #     - name: Release
-  #       uses: softprops/action-gh-release@v1
-  #       with:
-  #         files: |
-  #           apple-arm-agent-cli
-  #           apple-x86_64-agent-cli
-  #           linux-x86_64-agent-cli
-  #           windows-x86_64-agent-cli.exe
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-debian] # [build-macos, build-linux, build-windows]
+    steps:
+      - name: Download built binaries
+        uses: actions/download-artifact@v3
+      - uses: actions/checkout@master
+      - run: ls 
+      - run: ls /home/runner/work/agent-cli/agent-cli/debian-agent-cli
+      - run: mv /home/runner/work/agent-cli/agent-cli/debian-agent-cli/*.deb  agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
