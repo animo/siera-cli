@@ -89,6 +89,7 @@ jobs:
           path: target/release/agent-cli.exe
   release-choco:
     name: release choco
+    needs: [build-windows]
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
