@@ -21,7 +21,7 @@ if VERSION.startswith('v'):
 
 try:
     #  Get the xml from file
-    with open('choco/agent-cli.nuspec', 'r+') as nuspec:
+    with open('agent-cli.nuspec', 'r+') as nuspec:
         xml_file = minidom.parse(nuspec)
 
         # Find version tag

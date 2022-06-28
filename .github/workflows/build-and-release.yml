@@ -67,35 +67,33 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
       - name: get version
         shell: bash
         run: |
           echo "VERSION=$(curl --silent https://api.github.com/repos/animo/agent-cli/releases | jq '.[0]' |  jq -r .tag_name)" >> $GITHUB_ENV
-      - run: |
-          python ./choco/modify_nuspec.py ${{ env.VERSION }}
+      - name: update nuspec
+        shell: bash
+        run: |
+          cd choco
+          python3 modify_nuspec.py ${{ env.VERSION }}
       - name: update choco folder
         shell: bash
         run: |
           cd choco
-          mkdir tools
           cp ../LICENSE tools/LICENSE.txt
           cd tools
           curl -L https://github.com/animo/agent-cli/releases/download/${{ env.VERSION }}/windows-x86_64-agent-cli.exe -o windows-x86_64-agent-cli.exe
           SHA_256=$(sha256sum windows-x86_64-agent-cli.exe | awk '{ print $1 }')
           sed -i -e "3s|.*|\"$SHA_256\"|" VERIFICATION.txt
       - name: update choco folder
-        env:  
-          CHOCO_API_KEY: ${{ secrets.CHOCO_API_KEY }}
         shell: pwsh
         run: |
           cd .\choco
-          choco.exe pack .\agent-cli.nuspec
+          choco pack .\agent-cli.nuspec
+          rm .\modify_nuspec.py
           Get-ChildItem *.nupkg | ren -NewName agent-cli.nupkg
-          choco apikey --key $CHOCO_API_KEY --source https://push.chocolatey.org/
-          choco push agent-cli.nupkg --source https://push.chocolatey.org
+          choco apikey --key ${{ secrets.CHOCO_API_KEY }} --source https://push.chocolatey.org/
+          choco push agent-cli.nupkg --source https://push.chocolatey.org/
   # release:
   #   runs-on: ubuntu-latest
   #   needs: [build-macos, build-linux, build-windows]
