@@ -3,65 +3,65 @@ name: build-and-release
 on:
   workflow_dispatch:
   push:
-    # tags:
-    #   - "v*.*.*"
+    tags:
+      - "v*.*.*"
 
 jobs:
-  # build-macos:
-  #   name: build ${{ matrix.architecture }}
-  #   runs-on: macos-latest
-  #   strategy:
-  #     matrix:
-  #       architecture: [aarch64-apple-darwin, x86_64-apple-darwin]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions-rs/toolchain@v1
-  #       with:
-  #         toolchain: stable
-  #         target: ${{matrix.architecture}}
-  #     - uses: actions-rs/cargo@v1
-  #       with:
-  #         command: build
-  #         args: --release --target ${{ matrix.architecture }} --package cli
-  #     - run: ls -R
-  #     - name: Save library
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: ${{ matrix.architecture }}-agent-cli
-  #         path: target/${{ matrix.architecture }}/release/agent-cli
-  # build-linux:
-  #   name: build linux
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: sudo apt-get update
-  #     - run: sudo apt-get upgrade
-  #     - run: sudo apt-get install libxcb-shape0-dev libxcb-xfixes0-dev
-  #     - uses: actions/checkout@v2
-  #     - uses: actions-rs/cargo@v1
-  #       with:
-  #         command: build
-  #         args: --release --package cli
-  #     - run: ls -R
-  #     - name: Save library
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: linux-agent-cli
-  #         path: target/release/agent-cli
-  # build-windows:
-  #   name: build windows
-  #   runs-on: windows-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions-rs/cargo@v1
-  #       with:
-  #         command: build
-  #         args: --release --package cli
-  #     - run: ls -R
-  #     - name: Save library
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: windows-agent-cli.exe
-  #         path: target/release/agent-cli.exe
+  build-macos:
+    name: build ${{ matrix.architecture }}
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        architecture: [aarch64-apple-darwin, x86_64-apple-darwin]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{matrix.architecture}}
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --target ${{ matrix.architecture }} --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.architecture }}-agent-cli
+          path: target/${{ matrix.architecture }}/release/agent-cli
+  build-linux:
+    name: build linux
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get update
+      - run: sudo apt-get upgrade
+      - run: sudo apt-get install libxcb-shape0-dev libxcb-xfixes0-dev
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-agent-cli
+          path: target/release/agent-cli
+  build-windows:
+    name: build windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --package cli
+      - run: ls -R
+      - name: Save library
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-agent-cli.exe
+          path: target/release/agent-cli.exe
   release-choco:
     name: release choco
     runs-on: windows-latest
@@ -94,22 +94,22 @@ jobs:
           Get-ChildItem *.nupkg | ren -NewName agent-cli.nupkg
           choco apikey --key ${{ secrets.CHOCO_API_KEY }} --source https://push.chocolatey.org/
           choco push agent-cli.nupkg --source https://push.chocolatey.org/
-  # release:
-  #   runs-on: ubuntu-latest
-  #   needs: [build-macos, build-linux, build-windows]
-  #   steps:
-  #     - name: Download built binaries
-  #       uses: actions/download-artifact@v3
-  #     - run: |
-  #         mv aarch64-apple-darwin-agent-cli/agent-cli apple-arm-agent-cli
-  #         mv x86_64-apple-darwin-agent-cli/agent-cli apple-x86_64-agent-cli
-  #         mv linux-agent-cli/agent-cli linux-x86_64-agent-cli
-  #         mv windows-agent-cli.exe/agent-cli.exe windows-x86_64-agent-cli.exe
-  #     - name: Release
-  #       uses: softprops/action-gh-release@v1
-  #       with:
-  #         files: |
-  #           apple-arm-agent-cli
-  #           apple-x86_64-agent-cli
-  #           linux-x86_64-agent-cli
-  #           windows-x86_64-agent-cli.exe
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-macos, build-linux, build-windows]
+    steps:
+      - name: Download built binaries
+        uses: actions/download-artifact@v3
+      - run: |
+          mv aarch64-apple-darwin-agent-cli/agent-cli apple-arm-agent-cli
+          mv x86_64-apple-darwin-agent-cli/agent-cli apple-x86_64-agent-cli
+          mv linux-agent-cli/agent-cli linux-x86_64-agent-cli
+          mv windows-agent-cli.exe/agent-cli.exe windows-x86_64-agent-cli.exe
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            apple-arm-agent-cli
+            apple-x86_64-agent-cli
+            linux-x86_64-agent-cli
+            windows-x86_64-agent-cli.exe
