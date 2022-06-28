@@ -13,7 +13,7 @@ jobs:
       - run: sudo apt-get install libxcb-shape0-dev libxcb-xfixes0-dev
       - uses: actions/checkout@v2
       - name: Start acapy
-        run: docker-compose -f ./docker/docker-compose.acapy.yml up -d
+        run: docker-compose -f ./docker/docker-compose.acapy.min.yml up -d
       - name: Build agent-cli
         uses: actions-rs/cargo@v1
         with:

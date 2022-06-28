@@ -99,11 +99,18 @@ pub enum HelpStrings {
 
     // Automate
     Automation,
+    // Offer a credential
     AutomationCredentialOffer,
     AutomationCredentialOfferConnectionId,
     AutomationCredentialOfferNoQr,
     AutomationCredentialOfferSelf,
     AutomationCredentialOfferTimeout,
+
+    // Create credential definition
+    AutomationCreateCredentialDefinition,
+    AutomationCreateCredentialDefinitionName,
+    AutomationCreateCredentialDefinitionAttributes,
+    AutomationCreateCredentialDefinitionVersion,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -210,6 +217,10 @@ impl HelpStrings {
             HelpStrings::AutomationCredentialOfferNoQr => "Do not show a QR code",
             HelpStrings::AutomationCredentialOfferSelf => "Offer a credential to self",
             HelpStrings::AutomationCredentialOfferTimeout=> "Timeout in seconds",
+            HelpStrings::AutomationCreateCredentialDefinition => "Create a new credential definition",
+            HelpStrings::AutomationCreateCredentialDefinitionName => "Name of the schema the credential definition will be based on",
+            HelpStrings::AutomationCreateCredentialDefinitionAttributes => "Attributes of the schema the credential definition will be based on",
+            HelpStrings::AutomationCreateCredentialDefinitionVersion => "Version of the schema the credential definition will be based on",
             HelpStrings::Multitenancy => "foo",
             HelpStrings::MultitenancyCreate => "foo",
             HelpStrings::MultitenancyRemove => "foo",
