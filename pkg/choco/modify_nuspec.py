@@ -40,5 +40,3 @@ except Exception as e:
     print("Failed to update .nuspec file\n")
     print(f"{e!r}")
     exit(0)
-
-

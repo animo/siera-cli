@@ -99,13 +99,13 @@ jobs:
       - name: update nuspec
         shell: bash
         run: |
-          cd choco
+          cd pkg/choco
           python3 modify_nuspec.py ${{ env.VERSION }}
       - name: update choco folder
         shell: bash
         run: |
-          cd choco
-          cp ../LICENSE tools/LICENSE.txt
+          cd pkg/choco
+          cp ../../LICENSE tools/LICENSE.txt
           cd tools
           curl -L https://github.com/animo/agent-cli/releases/download/${{ env.VERSION }}/windows-x86_64-agent-cli.exe -o windows-x86_64-agent-cli.exe
           SHA_256=$(sha256sum windows-x86_64-agent-cli.exe | awk '{ print $1 }')
@@ -113,7 +113,7 @@ jobs:
       - name: update choco folder
         shell: pwsh
         run: |
-          cd .\choco
+          cd .\pkg\choco
           choco pack .\agent-cli.nuspec
           Get-ChildItem *.nupkg | ren -NewName agent-cli.nupkg
           choco apikey --key ${{ secrets.CHOCO_API_KEY }} --source https://push.chocolatey.org/
