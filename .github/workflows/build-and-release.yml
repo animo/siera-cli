@@ -70,7 +70,7 @@ jobs:
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: debian-agent-cli
+          name: agent-cli.deb
           path: target/debian/agent-cli_${{ env.VERSION }}_amd64.deb
   build-windows:
     name: build windows
@@ -97,7 +97,7 @@ jobs:
           mv aarch64-apple-darwin-agent-cli/agent-cli apple-arm-agent-cli
           mv x86_64-apple-darwin-agent-cli/agent-cli apple-x86_64-agent-cli
           mv linux-agent-cli/agent-cli linux-x86_64-agent-cli
-          mv debian-agent-cli/agent-cli agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
+          mv agent-cli.deb agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
           mv windows-agent-cli.exe/agent-cli.exe windows-x86_64-agent-cli.exe
       - name: Release
         uses: softprops/action-gh-release@v1
