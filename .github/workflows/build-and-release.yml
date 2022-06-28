@@ -87,6 +87,37 @@ jobs:
         with:
           name: windows-agent-cli.exe
           path: target/release/agent-cli.exe
+  release-choco:
+    name: release choco
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: get version
+        shell: bash
+        run: |
+          echo "VERSION=$(curl --silent https://api.github.com/repos/animo/agent-cli/releases | jq '.[0]' |  jq -r .tag_name)" >> $GITHUB_ENV
+      - name: update nuspec
+        shell: bash
+        run: |
+          cd pkg/choco
+          python3 modify_nuspec.py ${{ env.VERSION }}
+      - name: update choco folder
+        shell: bash
+        run: |
+          cd pkg/choco
+          cp ../../LICENSE tools/LICENSE.txt
+          cd tools
+          curl -L https://github.com/animo/agent-cli/releases/download/${{ env.VERSION }}/windows-x86_64-agent-cli.exe -o windows-x86_64-agent-cli.exe
+          SHA_256=$(sha256sum windows-x86_64-agent-cli.exe | awk '{ print $1 }')
+          sed -i -e "3s|.*|\"$SHA_256\"|" VERIFICATION.txt
+      - name: update choco folder
+        shell: pwsh
+        run: |
+          cd .\pkg\choco
+          choco pack .\agent-cli.nuspec
+          Get-ChildItem *.nupkg | ren -NewName agent-cli.nupkg
+          choco apikey --key ${{ secrets.CHOCO_API_KEY }} --source https://push.chocolatey.org/
+          choco push agent-cli.nupkg --source https://push.chocolatey.org/
   release:
     runs-on: ubuntu-latest
     needs: [build-macos, build-linux, build-debian, build-windows]
