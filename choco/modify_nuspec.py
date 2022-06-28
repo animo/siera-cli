@@ -4,10 +4,10 @@
 required for the chocolatey release"""
 
 from xml.dom import minidom
-import os
+import sys
 
 # Get version to be set for agent-cli release from env
-VERSION = os.getenv('VERSION', None)
+VERSION = sys.argv[1]
 
 if not VERSION:
     print('Failed to get version for agent-cli from system\n')
@@ -21,7 +21,7 @@ if VERSION.startswith('v'):
 
 try:
     #  Get the xml from file
-    with open('agent-cli.nuspec', 'r+') as nuspec:
+    with open('choco/agent-cli.nuspec', 'r+') as nuspec:
         xml_file = minidom.parse(nuspec)
 
         # Find version tag
