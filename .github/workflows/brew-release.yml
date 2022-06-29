@@ -18,8 +18,8 @@ jobs:
       - name: Gather data and rewrite ruby file
         id: gather_data_and_rewrite
         run: |
-          VERSION=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq '.[-1]' |  jq -r .tag_name)
-          URLS=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq -r '.[] .assets[].browser_download_url' | grep "apple") # two lines with 1 download url each
+          VERSION=$(curl -L --silent https://api.github.com/repos/animo/aries-cli/releases | jq '.[-1]' |  jq -r .tag_name)
+          URLS=$(curl -L --silent https://api.github.com/repos/animo/aries-cli/releases | jq -r '.[] .assets[].browser_download_url' | grep "apple") # two lines with 1 download url each
           URL_ARM=$(echo $URLS | grep -m1 "arm" | awk '{ print $1 }')
           URL_X86=$(echo $URLS | grep -m1 "x86" | awk '{ print $2 }')  
           SHA_ARM=$(curl -L --silent $URL_ARM | shasum -a 256  | awk '{ print $1 }')
