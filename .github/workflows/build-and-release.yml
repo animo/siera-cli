@@ -94,18 +94,10 @@ jobs:
       - name: Download built binaries
         uses: actions/download-artifact@v3
       - run: |
-          # mv aarch64-apple-darwin-agent-cli/agent-cli apple-arm-agent-cli
-          # mv x86_64-apple-darwin-agent-cli/agent-cli apple-x86_64-agent-cli
-          # mv linux-agent-cli/agent-cli linux-x86_64-agent-cli
-          mv agent-cli.deb agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
-          ls -R
-          # mv windows-agent-cli.exe/agent-cli.exe windows-x86_64-agent-cli.exe
+          mv agent-cli.deb/agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
+          ls -al
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            # apple-arm-agent-cli
-            # apple-x86_64-agent-cli
-            # linux-x86_64-agent-cli
             agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
-            # windows-x86_64-agent-cli.exe
