@@ -53,16 +53,16 @@ jobs:
     outputs:
       VERSION: ${{ steps.version.outputs.VERSION}}
     steps:
-      - run: sudo apt-get update
-      - run: sudo apt-get upgrade
-      - run: sudo apt-get install libssl-dev pkg-config libxcb-shape0-dev libxcb-xfixes0-dev
-      - uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: cargo-deb cargo-get
-      - run: cargo install cargo-deb cargo-get
-      - uses: actions/checkout@master
-      - run: cargo deb
+      # - run: sudo apt-get update
+      # - run: sudo apt-get upgrade
+      # - run: sudo apt-get install libssl-dev pkg-config libxcb-shape0-dev libxcb-xfixes0-dev
+      # - uses: actions-rs/cargo@v1
+      #   with:
+      #     command: install
+      #     args: cargo-deb cargo-get
+      # - run: cargo install cargo-deb cargo-get
+      # - uses: actions/checkout@master
+      # - run: cargo deb
       - id: version
         run: |
           echo "::set-output name=VERSION::$(cargo get version)"
