@@ -5,6 +5,9 @@ on:
     workflows: ["build-and-release"]
     types: 
       - completed
+  workflow_dispatch:
+    branch: main
+    if: "contains(github.event.commits[0].message, '[release:choco]')"
 
 
 jobs:
