@@ -11,7 +11,7 @@ jobs:
   release-brew:
     name: release brew
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || contains(github.event.commits[0].message, '[release:brew]') }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Get Ruby file
         id: get_ruby_file
