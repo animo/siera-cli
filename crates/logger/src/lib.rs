@@ -46,12 +46,12 @@ pub enum LogLevel {
 impl fmt::Display for LogLevel {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let s = match self {
-            LogLevel::Error => "error".bold().red(),
-            LogLevel::Warn => "warn".bold().yellow(),
-            LogLevel::Info => "info".bold().cyan(),
-            LogLevel::Debug => "debug".bold().blue(),
-            LogLevel::Trace => "trace".bold().purple(),
-            LogLevel::Off => "off".green(),
+            Self::Error => "error".bold().red(),
+            Self::Warn => "warn".bold().yellow(),
+            Self::Info => "info".bold().cyan(),
+            Self::Debug => "debug".bold().blue(),
+            Self::Trace => "trace".bold().purple(),
+            Self::Off => "off".green(),
         };
         write!(f, "{}", s)
     }
@@ -125,5 +125,5 @@ pub fn pretty_stringify_obj(obj: impl Serialize) -> String {
 /// When the clipoard provider could not be found
 pub fn copy_to_clipboard(string: impl AsRef<str>) {
     let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
-    ctx.set_contents(string.as_ref().to_string()).unwrap();
+    ctx.set_contents(string.as_ref().to_owned()).unwrap();
 }

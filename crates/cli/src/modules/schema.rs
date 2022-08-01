@@ -53,8 +53,8 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             attribute,
         } => {
             let options = SchemaCreateOptions {
-                name: name.to_string(),
-                version: version.to_string(),
+                name: name.to_owned(),
+                version: version.to_owned(),
                 attributes: attribute.to_vec(),
             };
             if options.attributes.is_empty() {

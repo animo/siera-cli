@@ -108,7 +108,7 @@ pub async fn parse_connection_args(
             alias,
         } => {
             let options = ConnectionCreateInvitationOptions {
-                alias: alias.as_deref().map(|a| a.to_string()),
+                alias: alias.as_deref().map(|a| a.to_owned()),
                 auto_accept: *auto_accept,
                 multi_use: *multi_use,
                 qr: *qr,

@@ -58,7 +58,7 @@ impl ConnectionModule for CloudAgentPython {
                 query.push(("auto_accept", true.to_string()));
             }
             if let Some(alias) = &options.alias {
-                query.push(("alias", alias.to_string()));
+                query.push(("alias", alias.clone()));
             }
             None
         };
