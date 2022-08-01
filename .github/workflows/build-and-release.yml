@@ -22,7 +22,7 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --release --target ${{ matrix.architecture }} --package cli
+          args: --release --target ${{ matrix.architecture }}
       - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
@@ -40,7 +40,7 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --release --package cli
+          args: --release
       - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
@@ -80,12 +80,12 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --release --package cli
+          args: --release
       - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: windows-agent-cli.exe
+          name: windows-agent-cli
           path: target/release/agent-cli.exe
   release:
     runs-on: ubuntu-latest
@@ -97,8 +97,8 @@ jobs:
           mv aarch64-apple-darwin-agent-cli/agent-cli apple-arm-agent-cli
           mv x86_64-apple-darwin-agent-cli/agent-cli apple-x86_64-agent-cli
           mv linux-agent-cli/agent-cli linux-x86_64-agent-cli
-          mv debian-agent-cli/agent-cli agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
-          mv windows-agent-cli.exe/agent-cli.exe windows-x86_64-agent-cli.exe
+          mv debian-agent-cli/agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
+          mv windows-agent-cli/agent-cli.exe windows-x86_64-agent-cli.exe
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
