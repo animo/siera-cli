@@ -68,6 +68,10 @@ impl CloudAgentPython {
                     200..=299 => {
                         let parsed: Value = res.json().await.unwrap();
                         log_debug!("Response: {}", pretty_stringify_obj(&parsed));
+                        let parsed = match parsed.as_str() {
+                            Some(_) => parsed,
+                            None => serde_json::json!(()),
+                        };
                         serde_json::from_value(parsed).map_err(|e| {
                             log_warn!("{}", e);
                             Error::UnableToParseResponse.into()
