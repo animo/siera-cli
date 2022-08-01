@@ -62,7 +62,7 @@ impl TestAgentCli {
         agent_args.push_str(command);
         let result = Command::new("cargo")
             .args(["run", "--quiet", "--"])
-            .args(&agent_args.split(' ').collect::<[&str]>())
+            .args(agent_args.split(' ').collect::<Vec<&str>>())
             .output();
         let output = match result {
             Ok(o) => o,
