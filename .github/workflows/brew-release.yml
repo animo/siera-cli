@@ -5,41 +5,42 @@ on:
     workflows: ["build-and-release"]
     types: 
       - completed
+  workflow_dispatch:
 
 jobs:
   release-brew:
     name: release brew
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Get Ruby file
         id: get_ruby_file
-        run: curl -o aries-cli.rb https://raw.githubusercontent.com/animo/homebrew-aries-cli/main/Formula/aries-cli.rb
+        run: curl -o agent-cli.rb https://raw.githubusercontent.com/animo/homebrew-agent-cli/main/Formula/agent-cli.rb
       - name: Gather data and rewrite ruby file
         id: gather_data_and_rewrite
         run: |
-          VERSION=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq '.[-1]' |  jq -r .tag_name)
-          URLS=$(curl --silent https://api.github.com/repos/animo/aries-cli/releases | jq -r '.[] .assets[].browser_download_url' | grep "apple") # two lines with 1 download url each
+          VERSION=$(curl -L --silent https://api.github.com/repos/animo/agent-cli/releases | jq '.[-1]' |  jq -r .tag_name)
+          URLS=$(curl -L --silent https://api.github.com/repos/animo/agent-cli/releases | jq -r '.[] .assets[].browser_download_url' | grep "apple") # two lines with 1 download url each
           URL_ARM=$(echo $URLS | grep -m1 "arm" | awk '{ print $1 }')
           URL_X86=$(echo $URLS | grep -m1 "x86" | awk '{ print $2 }')  
           SHA_ARM=$(curl -L --silent $URL_ARM | shasum -a 256  | awk '{ print $1 }')
           SHA_X86=$(curl -L --silent $URL_X86 | shasum -a 256  | awk '{ print $1 }')
           # replace intel download url 
-          sed -i -e "7s|.*|    url \"$URL_X86\"|" aries-cli.rb
+          sed -i -e "7s|.*|    url \"$URL_X86\"|" agent-cli.rb
           # replace intel sha
-          sed -i -e "8s|.*|    sha256 \"$SHA_X86\"|" aries-cli.rb
+          sed -i -e "8s|.*|    sha256 \"$SHA_X86\"|" agent-cli.rb
           # replace arm download url 
-          sed -i -e "12s|.*|    url \"$URL_ARM\"|" aries-cli.rb
+          sed -i -e "12s|.*|    url \"$URL_ARM\"|" agent-cli.rb
           # replace arm sha
-          sed -i -e "13s|.*|    sha256 \"$SHA_ARM\"|" aries-cli.rb
+          sed -i -e "13s|.*|    sha256 \"$SHA_ARM\"|" agent-cli.rb
       - name: Push file to homebrew repo
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
         with:
-          source_file: './aries-cli.rb'
-          destination_repo: 'animo/homebrew-aries-cli'
+          source_file: './agent-cli.rb'
+          destination_repo: 'animo/homebrew-agent-cli'
           destination_folder: 'Formula'
           user_email: 'contact@animo.id'
           user_name: 'animo-bot'
-          commit_message: 'A new aries-cli version has been released to homebrew'
+          commit_message: 'A new agent-cli version has been released to homebrew'
