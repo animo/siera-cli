@@ -64,7 +64,7 @@ impl FromStr for Predicate {
             .ok_or_else(|| Error::UnableToParseOutValue(s.to_owned()))?;
 
         validate_operator(operator).map_err(|_| Error::InvalidOperator(operator.to_string()))?;
-        Ok(Predicate(
+        Ok(Self(
             name.to_string(),
             operator.to_string(),
             value.to_string(),

@@ -2,7 +2,12 @@
 //! a minimal wrapper and does not do a lot of conversion and just sends it back to any frontend
 //! which relies on this.
 
-#![deny(clippy::missing_docs_in_private_items)]
+#![deny(
+    clippy::all,
+    clippy::pedantic,
+    clippy::nursery,
+    clippy::missing_docs_in_private_items
+)]
 
 #[macro_use]
 extern crate logger;

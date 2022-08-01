@@ -65,9 +65,16 @@ pub enum AutomationSubcommands {
 }
 
 /// Subcommand Automation parser
+/// TODO: this should not take an agent. This means we need every feature for every automation and
+/// not a single one
 pub async fn parse_automation_args(
     options: &AutomationOptions,
-    agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
+    agent: impl ConnectionModule
+        + CredentialModule
+        + SchemaModule
+        + CredentialDefinitionModule
+        + Send
+        + Sync,
 ) -> Result<()> {
     let loader = Loader::start(LoaderVariant::default());
 
@@ -161,7 +168,12 @@ pub async fn parse_automation_args(
 /// Building and offering the credential
 async fn credential_offer(
     connection_id: String,
-    agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
+    agent: impl ConnectionModule
+        + CredentialModule
+        + SchemaModule
+        + CredentialDefinitionModule
+        + Send
+        + Sync,
 ) -> Result<()> {
     // Mock credential
     let mut attributes: HashMap<String, String> = HashMap::new();

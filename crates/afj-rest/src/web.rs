@@ -7,6 +7,10 @@ use serde_json::Value;
 /// Call logic for http calls
 impl CloudAgentAfjRest {
     /// Builds a get request and calls the sender
+    ///
+    /// # Errors
+    ///
+    /// When it could not fulfill a GET request
     pub async fn get<T: DeserializeOwned>(
         &self,
         url: Url,
@@ -24,6 +28,10 @@ impl CloudAgentAfjRest {
     }
 
     /// Builds a post request and calls the sender
+    ///
+    /// # Errors
+    ///
+    /// When it could not fulfill a POST request
     pub async fn post<T: DeserializeOwned>(
         &self,
         url: Url,
@@ -32,8 +40,8 @@ impl CloudAgentAfjRest {
     ) -> Result<T> {
         let client = Client::new().post(url).query(&query);
 
-        let client = match &body {
-            Some(b) => client.json(&b),
+        let client = match body {
+            Some(ref b) => client.json(b),
             None => client,
         };
 
@@ -46,6 +54,10 @@ impl CloudAgentAfjRest {
     }
 
     /// Sends any request
+    ///
+    /// # Errors
+    ///
+    /// When it could not fulfill the given request
     pub async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> Result<T> {
         log_trace!("About to send request:");
         log_trace!("{:#?}", client);

@@ -2,7 +2,7 @@ use agent::modules::credential_definition::CredentialDefinitionCreateOptions;
 use agent::modules::credential_definition::CredentialDefinitionModule;
 use agent::modules::schema::{SchemaCreateOptions, SchemaModule};
 
-use colored::*;
+use colored::Colorize;
 
 use crate::error::Result;
 
@@ -22,16 +22,21 @@ impl CreateCredentialDefinition {
     /// Main executor function
     /// 1. Register the schema
     /// 2. Register the credential definition
+    ///
+    /// # Errors
+    ///
+    /// - When the schema could not be created
+    /// - When the credential definition could not be registered
     pub async fn execute(
         &self,
-        agent: impl SchemaModule + CredentialDefinitionModule,
+        agent: impl SchemaModule + CredentialDefinitionModule + Send + Sync,
     ) -> Result<()> {
         let schema = SchemaModule::create(
             &agent,
             SchemaCreateOptions {
-                attributes: self.attributes.to_owned(),
-                name: self.name.to_owned(),
-                version: self.version.to_owned(),
+                attributes: self.attributes.clone(),
+                name: self.name.clone(),
+                version: self.version.clone(),
             },
         )
         .await?;

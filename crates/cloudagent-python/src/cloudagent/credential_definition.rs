@@ -14,7 +14,7 @@ impl CredentialDefinitionModule for CloudAgentPython {
         &self,
         options: CredentialDefinitionCreateOptions,
     ) -> Result<CredentialDefinitionCreateResponse> {
-        let url = self.create_url(vec!["credential-definitions"])?;
+        let url = self.create_url(&["credential-definitions"])?;
 
         let body = json!(options);
 
@@ -22,12 +22,12 @@ impl CredentialDefinitionModule for CloudAgentPython {
     }
 
     async fn get_by_id(&self, id: String) -> Result<CredentialDefinitionGetByIdResponse> {
-        let url = self.create_url(vec!["credential-definitions", &id])?;
+        let url = self.create_url(&["credential-definitions", &id])?;
         self.get(url, None).await
     }
 
     async fn get_all(&self) -> Result<CredentialDefinitionGetAllResponse> {
-        let url = self.create_url(vec!["credential-definitions", "created"])?;
+        let url = self.create_url(&["credential-definitions", "created"])?;
         self.get(url, None).await
     }
 }

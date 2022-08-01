@@ -9,7 +9,7 @@ use serde_json::json;
 #[async_trait]
 impl CredentialModule for CloudAgentPython {
     async fn send_offer(&self, options: CredentialOfferOptions) -> Result<CredentialOfferResponse> {
-        let url = self.create_url(vec!["issue-credential", "send-offer"])?;
+        let url = self.create_url(&["issue-credential", "send-offer"])?;
 
         let mut attributes = vec![];
         for (i, key) in options.keys.iter().enumerate() {
