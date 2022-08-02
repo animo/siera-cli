@@ -130,16 +130,19 @@ pub async fn parse_automation_args(
                     let connection =
                         ConnectionModule::get_by_id(&agent, connection.connection_id.to_owned())
                             .await?;
-                    if connection.state != "active" && connection.state != "response" {
-                        log_trace!(
-                            "Connection state is not active, waiting 1 second then trying again..."
-                        );
-                        std::thread::sleep(std::time::Duration::from_millis(1000));
-                    } else {
-                        log!("Invitation {}!", "accepted".green());
-                        credential_offer(connection.connection_id, agent).await?;
-                        break;
-                    }
+                    match connection.state.as_str() {
+                        "active" | "response" => {
+                            log!("Invitation {}!", "accepted".green());
+                            credential_offer(connection.connection_id, agent).await?;
+                            break;
+                        }
+                        _ => {
+                            log_trace!(
+                                "Connection state is not active, waiting 1 second then trying again..."
+                            );
+                            std::thread::sleep(std::time::Duration::from_secs(1));
+                        }
+                    };
                     if i == *timeout {
                         return Err(Error::InactiveConnection.into());
                     }
@@ -155,11 +158,11 @@ pub async fn parse_automation_args(
             attributes,
         } => {
             let automation = CreateCredentialDefinition {
-                name: name.to_owned(),
-                version: version.to_owned(),
-                attributes: attributes.to_owned(),
+                name,
+                version,
+                attributes: attributes.iter().map(|a| a.as_str()).collect(),
             };
-            automation.execute(agent).await?;
+            automation.execute(&agent).await?;
         }
     };
     Ok(())
