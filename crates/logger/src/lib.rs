@@ -4,7 +4,7 @@
 #![deny(clippy::missing_docs_in_private_items)]
 
 use clipboard::{ClipboardContext, ClipboardProvider};
-use colored::*;
+use colored::Colorize;
 use serde::Serialize;
 use std::fmt;
 use std::sync::RwLock;
@@ -41,12 +41,12 @@ pub enum LogLevel {
 impl fmt::Display for LogLevel {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let s = match self {
-            LogLevel::Error => "error".bold().red(),
-            LogLevel::Warn => "warn".bold().yellow(),
-            LogLevel::Info => "info".bold().cyan(),
-            LogLevel::Debug => "debug".bold().blue(),
-            LogLevel::Trace => "trace".bold().purple(),
-            LogLevel::Off => "off".green(),
+            Self::Error => "error".bold().red(),
+            Self::Warn => "warn".bold().yellow(),
+            Self::Info => "info".bold().cyan(),
+            Self::Debug => "debug".bold().blue(),
+            Self::Trace => "trace".bold().purple(),
+            Self::Off => "off".green(),
         };
         write!(f, "{}", s)
     }
@@ -66,7 +66,8 @@ pub struct LoggerState {
 
 impl LoggerState {
     /// Initialize the logger state
-    pub fn new(init: bool, should_copy: bool, log_level: LogLevel) -> Self {
+    #[must_use]
+    pub const fn new(init: bool, should_copy: bool, log_level: LogLevel) -> Self {
         Self {
             init,
             should_copy,
@@ -81,10 +82,15 @@ lazy_static! {
 }
 
 /// Initialize the logger
+///
+/// # Panics
+///
+/// When the logger is already initialized
 pub fn init(level: LogLevel, should_copy: bool) {
-    if STATE.read().unwrap().init {
-        panic!("Logger should only be initialized once!");
-    }
+    assert!(
+        !STATE.read().unwrap().init,
+        "Logger should only be initialized once!"
+    );
 
     let mut state = STATE.write().unwrap();
     state.init = true;
@@ -93,6 +99,10 @@ pub fn init(level: LogLevel, should_copy: bool) {
 }
 
 /// Prettify any string that implements Serialize
+///
+/// # Panics
+///
+/// When the object could not be serialized
 pub fn pretty_stringify_obj(obj: impl Serialize) -> String {
     let buf = Vec::new();
     let formatter = serde_json::ser::PrettyFormatter::with_indent(b"  ");
@@ -104,7 +114,11 @@ pub fn pretty_stringify_obj(obj: impl Serialize) -> String {
 }
 
 /// Copy any output to the clipboard in an OS agnostic way
+///
+/// # Panics
+///
+/// When the clipoard provider could not be found
 pub fn copy_to_clipboard(string: impl AsRef<str>) {
     let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
-    ctx.set_contents(string.as_ref().to_string()).unwrap();
+    ctx.set_contents(string.as_ref().to_owned()).unwrap();
 }
