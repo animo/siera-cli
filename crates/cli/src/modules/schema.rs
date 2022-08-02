@@ -44,8 +44,11 @@ pub enum SchemaSubcommands {
 }
 
 /// Subcommand Schema parser
-pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::default());
+pub async fn parse_schema_args(
+    options: &SchemaOptions,
+    agent: impl SchemaModule + Send + Sync,
+) -> Result<()> {
+    let loader = Loader::start(&LoaderVariant::default());
     match &options.commands {
         SchemaSubcommands::Create {
             name,
@@ -53,9 +56,9 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             attribute,
         } => {
             let options = SchemaCreateOptions {
-                name: name.to_owned(),
-                version: version.to_owned(),
-                attributes: attribute.to_vec(),
+                name: name.clone(),
+                version: version.clone(),
+                attributes: attribute.clone(),
             };
             if options.attributes.is_empty() {
                 return Err(Error::RequiredAttributes.into());
@@ -73,7 +76,7 @@ pub async fn parse_schema_args(options: &SchemaOptions, agent: impl SchemaModule
             })
         }
         SchemaSubcommands::List { id } => match id {
-            Some(i) => agent.get_by_id(i.to_owned()).await.map(|schema| {
+            Some(i) => agent.get_by_id(i.clone()).await.map(|schema| {
                 loader.stop();
                 copy!("{}", pretty_stringify_obj(&schema));
                 log!("{}", pretty_stringify_obj(schema));

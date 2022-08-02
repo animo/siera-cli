@@ -23,7 +23,6 @@ pub enum HelpStrings {
     ConfigurationAddDefault,
     ConfigurationView,
     ConfigurationInitializeToken,
-    ConfigurationAgent,
 
     // Connections
     Connections,
@@ -107,7 +106,6 @@ pub enum HelpStrings {
     AutomationCredentialOfferTimeout,
 
     // Create credential definition
-    AutomationCreateCredentialDefinition,
     AutomationCreateCredentialDefinitionName,
     AutomationCreateCredentialDefinitionAttributes,
     AutomationCreateCredentialDefinitionVersion,
@@ -120,111 +118,109 @@ impl From<HelpStrings> for Option<&str> {
 }
 
 impl HelpStrings {
-    fn as_str(&self) -> &'static str {
+    const fn as_str(&self) -> &'static str {
         match self {
-            HelpStrings::Cli => HELP_STRING_CLI,
-            HelpStrings::AgentURL => "The Aries agent URL that requests will be sent to",
-            HelpStrings::Agent => "Type of Aries agent (aca-py or afj) [default: aca-py]",
-            HelpStrings::ApiKey => "This API key will be passed to the agent",
-            HelpStrings::Copy => "Copy output to your clipboard",
-            HelpStrings::Quiet => "Suppresses most output",
-            HelpStrings::Verbose => "Print debug logs",
-            HelpStrings::Config => "Supply a path to your configuration file to use that instead of the default",
-            HelpStrings::Environment => "Specify your current environment",
+            Self::Cli => HELP_STRING_CLI,
+            Self::AgentURL => "The Aries agent URL that requests will be sent to",
+            Self::Agent => "Type of Aries agent (aca-py or afj) [default: aca-py]",
+            Self::ApiKey => "This API key will be passed to the agent",
+            Self::Copy => "Copy output to your clipboard",
+            Self::Quiet => "Suppresses most output",
+            Self::Verbose => "Print debug logs",
+            Self::Config => "Supply a path to your configuration file to use that instead of the default",
+            Self::Environment => "Specify your current environment",
 
-            HelpStrings::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: agent-cli configuration add --default",
-            HelpStrings::ConfigurationAdd => "Add a new, or overwrite an existing, agent your configuration file",
-            HelpStrings::ConfigurationRemove => "PERMANENTLY remove an agent from your configuration",
-            HelpStrings::ConfigurationRemoveEnvironment => "Environment to delete",
-            HelpStrings::ConfigurationAddDefault => {
+            Self::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: agent-cli configuration add --default",
+            Self::ConfigurationAdd => "Add a new, or overwrite an existing, agent your configuration file",
+            Self::ConfigurationRemove => "PERMANENTLY remove an agent from your configuration",
+            Self::ConfigurationRemoveEnvironment => "Environment to delete",
+            Self::ConfigurationAddDefault => {
                 "Add the default agent to the configuration (can be combined with --token)"
             }
-            HelpStrings::ConfigurationView => "Print your current configuration file",
-            HelpStrings::ConfigurationInitializeToken => "Authentication token for a multi tenancy agent",
-            HelpStrings::ConfigurationAgent => "Type of Aries agent (aca-py or afj) [default: aca-py]",
-            HelpStrings::Connections => "Retrieve connections or create invitations",
-            HelpStrings::ConnectionsId => "ID of connection to retrieve",
-            HelpStrings::ConnectionsInvite => "Create a new connection invitation",
-            HelpStrings::ConnectionsInviteAlias => {
+            Self::ConfigurationView => "Print your current configuration file",
+            Self::ConfigurationInitializeToken => "Authentication token for a multi tenancy agent",
+            Self::Connections => "Retrieve connections or create invitations",
+            Self::ConnectionsId => "ID of connection to retrieve",
+            Self::ConnectionsInvite => "Create a new connection invitation",
+            Self::ConnectionsInviteAlias => {
                 "The name a new connection will use to identify itself"
             }
-            HelpStrings::ConnectionsInviteAutoAccept => {
+            Self::ConnectionsInviteAutoAccept => {
                 "Automatically accept the new connection once they accept this invitation"
             }
-            HelpStrings::ConnectionsInviteMultiUse => "This invitation can be used more than once",
-            HelpStrings::ConnectionsInviteQr => {
+            Self::ConnectionsInviteMultiUse => "This invitation can be used more than once",
+            Self::ConnectionsInviteQr => {
                 "Print a QR code, convenient for use with mobile apps"
             }
-            HelpStrings::ConnectionsInviteToolbox => HELP_STRING_CONNECTIONS_INVITE_TOOLBOX,
-            HelpStrings::ConnectionsList => "List all your current connections",
-            HelpStrings::ConnectionsListId => "Get a connection by id",
-            HelpStrings::ConnectionsListAlias => "Filter connections on the `alias` property",
-            HelpStrings::ConnectionsListConnectionProtocol => "Filter connections on the `connection_protocol` property",
-            HelpStrings::ConnectionsListInvitationKey => "Filter connections on the `invitation_key` property",
-            HelpStrings::ConnectionsListMyDid => "Filter connections on the `my_did` property",
-            HelpStrings::ConnectionsListState => "Filter connections on the `state` property",
-            HelpStrings::ConnectionsListTheirDid => "Filter connections on the `their_did` property",
-            HelpStrings::ConnectionsListTheirRole => "Filter connections on the `their_role` property",
-            HelpStrings::ConnectionsReceive => "Receive an invitation via url",
-            HelpStrings::ConnectionsReceiveUrl => "The url that contains the invitation, surrounded by quotes",
+            Self::ConnectionsInviteToolbox => HELP_STRING_CONNECTIONS_INVITE_TOOLBOX,
+            Self::ConnectionsList => "List all your current connections",
+            Self::ConnectionsListId => "Get a connection by id",
+            Self::ConnectionsListAlias => "Filter connections on the `alias` property",
+            Self::ConnectionsListConnectionProtocol => "Filter connections on the `connection_protocol` property",
+            Self::ConnectionsListInvitationKey => "Filter connections on the `invitation_key` property",
+            Self::ConnectionsListMyDid => "Filter connections on the `my_did` property",
+            Self::ConnectionsListState => "Filter connections on the `state` property",
+            Self::ConnectionsListTheirDid => "Filter connections on the `their_did` property",
+            Self::ConnectionsListTheirRole => "Filter connections on the `their_role` property",
+            Self::ConnectionsReceive => "Receive an invitation via url",
+            Self::ConnectionsReceiveUrl => "The url that contains the invitation, surrounded by quotes",
 
-            HelpStrings::CredentialDefinition => "Retrieve or create credential definitions",
-            HelpStrings::CredentialDefinitionId => "ID of a credential definition to retrieve",
-            HelpStrings::CredentialDefinitionCreate => "Create a new credential definition",
-            HelpStrings::CredentialDefinitionCreateSchemaId => "Schema ID to use in the definition",
-            HelpStrings::CredentialDefinitionCreateTag => "Tag for the credential definition",
-            HelpStrings::CredentialDefinitionCreateSupportRevocation => "Whether the credential definition should support revocation",
-            HelpStrings::CredentialDefinitionCreateRevocationRegistrySize => "The size of the revocation registry",
-            HelpStrings::CredentialDefinitionList => "List all your credential definitions",
+            Self::CredentialDefinition => "Retrieve or create credential definitions",
+            Self::CredentialDefinitionId => "ID of a credential definition to retrieve",
+            Self::CredentialDefinitionCreate => "Create a new credential definition",
+            Self::CredentialDefinitionCreateSchemaId => "Schema ID to use in the definition",
+            Self::CredentialDefinitionCreateTag => "Tag for the credential definition",
+            Self::CredentialDefinitionCreateSupportRevocation => "Whether the credential definition should support revocation",
+            Self::CredentialDefinitionCreateRevocationRegistrySize => "The size of the revocation registry",
+            Self::CredentialDefinitionList => "List all your credential definitions",
 
-            HelpStrings::Credentials => "Issue Credential V1",
-            HelpStrings::CredentialsOffer => "Offer a new credential to an existing connection",
-            HelpStrings::CredentialsOfferConnectionId => {
+            Self::Credentials => "Issue Credential V1",
+            Self::CredentialsOffer => "Offer a new credential to an existing connection",
+            Self::CredentialsOfferConnectionId => {
                 "Existing connection ID to offer the credential to"
             }
-            HelpStrings::CredentialsOfferCredentialDefinitionId => {
+            Self::CredentialsOfferCredentialDefinitionId => {
                 "A credential definition to base the credential on"
             }
-            HelpStrings::CredentialsOfferKey => "An attribute key name",
-            HelpStrings::CredentialsOfferValue => "An attribute value",
-            HelpStrings::CredentialsPropose => "Not implemented yet: propose a credential that should be offered to you",
-            HelpStrings::CredentialsProposeId => "Not implemented yet: connection ID to send proposal to",
+            Self::CredentialsOfferKey => "An attribute key name",
+            Self::CredentialsOfferValue => "An attribute value",
+            Self::CredentialsPropose => "Not implemented yet: propose a credential that should be offered to you",
+            Self::CredentialsProposeId => "Not implemented yet: connection ID to send proposal to",
 
-            HelpStrings::Features => "List all available features",
+            Self::Features => "List all available features",
 
-            HelpStrings::Message => "Send a secure message to an existing connection",
-            HelpStrings::MessageId => "Connection ID to send the message to",
-            HelpStrings::MessageMessage => "Contents of the message",
+            Self::Message => "Send a secure message to an existing connection",
+            Self::MessageId => "Connection ID to send the message to",
+            Self::MessageMessage => "Contents of the message",
 
-            HelpStrings::Schema => "Retrieve or create schemas",
-            HelpStrings::SchemaId => "ID of the schema to retrieve",
-            HelpStrings::SchemaCreate => "Create a new schema",
-            HelpStrings::SchemaCreateName => "Name of the schema",
-            HelpStrings::SchemaCreateVersion => "Version of of the schema, useful to be able to specify multiple versions of the same schema",
-            HelpStrings::SchemaCreateAttributes => "Keys that describe the structure of the schema - for example \"age\". Given in the following format: -a foo -a bar -a baz",
-            HelpStrings::SchemaList => "List all your current schemas",
+            Self::Schema => "Retrieve or create schemas",
+            Self::SchemaId => "ID of the schema to retrieve",
+            Self::SchemaCreate => "Create a new schema",
+            Self::SchemaCreateName => "Name of the schema",
+            Self::SchemaCreateVersion => "Version of of the schema, useful to be able to specify multiple versions of the same schema",
+            Self::SchemaCreateAttributes => "Keys that describe the structure of the schema - for example \"age\". Given in the following format: -a foo -a bar -a baz",
+            Self::SchemaList => "List all your current schemas",
 
-            HelpStrings::Proof => "Present proof V1",
-            HelpStrings::ProofRequest => "Request a proof by connection id",
-            HelpStrings::ProofRequestName => "Name of the proof request",
-            HelpStrings::ProofRequestAttribute => "Attribute required in the proof request. e.g. -a=name -a=lastname",
-            HelpStrings::ProofRequestPredicate => "Predicates required in the proof request (format = name,operator,value). e.g. -p=\"age,>=,18\"",
-            HelpStrings::ProofRequestConnectionId => "Connection id to send the proof request to",
+            Self::Proof => "Present proof V1",
+            Self::ProofRequest => "Request a proof by connection id",
+            Self::ProofRequestName => "Name of the proof request",
+            Self::ProofRequestAttribute => "Attribute required in the proof request. e.g. -a=name -a=lastname",
+            Self::ProofRequestPredicate => "Predicates required in the proof request (format = name,operator,value). e.g. -p=\"age,>=,18\"",
+            Self::ProofRequestConnectionId => "Connection id to send the proof request to",
 
-            HelpStrings::Automation => "Run a set of actions against the agent",
-            HelpStrings::AutomationCredentialOffer => "Offer a premade credential to an agent",
-            HelpStrings::AutomationCredentialOfferConnectionId => "Connection id of the receiving party",
-            HelpStrings::AutomationCredentialOfferNoQr => "Do not show a QR code",
-            HelpStrings::AutomationCredentialOfferSelf => "Offer a credential to self",
-            HelpStrings::AutomationCredentialOfferTimeout=> "Timeout in seconds",
-            HelpStrings::AutomationCreateCredentialDefinition => "Create a new credential definition",
-            HelpStrings::AutomationCreateCredentialDefinitionName => "Name of the schema the credential definition will be based on",
-            HelpStrings::AutomationCreateCredentialDefinitionAttributes => "Attributes of the schema the credential definition will be based on",
-            HelpStrings::AutomationCreateCredentialDefinitionVersion => "Version of the schema the credential definition will be based on",
-            HelpStrings::Multitenancy => "foo",
-            HelpStrings::MultitenancyCreate => "foo",
-            HelpStrings::MultitenancyRemove => "foo",
-            HelpStrings::MultitenancyRemoveWalletId => "foo",
+            Self::Automation => "Run a set of actions against the agent",
+            Self::AutomationCredentialOffer => "Offer a premade credential to an agent",
+            Self::AutomationCredentialOfferConnectionId => "Connection id of the receiving party",
+            Self::AutomationCredentialOfferNoQr => "Do not show a QR code",
+            Self::AutomationCredentialOfferSelf => "Offer a credential to self",
+            Self::AutomationCredentialOfferTimeout=> "Timeout in seconds",
+            Self::AutomationCreateCredentialDefinitionName => "Name of the schema the credential definition will be based on",
+            Self::AutomationCreateCredentialDefinitionAttributes => "Attributes of the schema the credential definition will be based on",
+            Self::AutomationCreateCredentialDefinitionVersion => "Version of the schema the credential definition will be based on",
+            Self::Multitenancy => "Manage multiple agents",
+            Self::MultitenancyCreate => "Create a new sub agent",
+            Self::MultitenancyRemove => "Remove a sub agent",
+            Self::MultitenancyRemoveWalletId => "Remove the wallet by id of a sub agent",
         }
     }
 }

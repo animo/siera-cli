@@ -1,12 +1,7 @@
 //! Logger for this crate
 //! Only cli bindings for now
 
-#![deny(
-    clippy::all,
-    clippy::pedantic,
-    clippy::nursery,
-    clippy::missing_docs_in_private_items
-)]
+#![deny(clippy::missing_docs_in_private_items)]
 
 use clipboard::{ClipboardContext, ClipboardProvider};
 use colored::Colorize;

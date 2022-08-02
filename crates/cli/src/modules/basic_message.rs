@@ -20,15 +20,15 @@ pub struct BasicMessageOptions {
 /// Subcommand Basic Message parser
 pub async fn parse_basic_message_args(
     options: &BasicMessageOptions,
-    agent: impl BasicMessageModule,
+    agent: impl BasicMessageModule + Send + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
     let send_options = SendBasicMessageOptions {
-        connection_id: options.connection_id.to_owned(),
-        message: options.message.to_owned(),
+        connection_id: options.connection_id.clone(),
+        message: options.message.clone(),
     };
     agent.send_message(send_options).await.map(|msg| {
         loader.stop();
-        log_info!("Successfully sent message: {}", msg)
+        log_info!("Successfully sent message: {}", msg);
     })
 }

@@ -2,13 +2,7 @@
 //! includes scripts like automatically create a connection, register the
 //! schema and credential definition and issue the credential afterwards.
 
-#![deny(
-    clippy::all,
-    clippy::pedantic,
-    clippy::nursery,
-    clippy::missing_docs_in_private_items
-)]
-#![allow(clippy::module_name_repetitions)]
+#![deny(clippy::missing_docs_in_private_items)]
 
 #[macro_use]
 extern crate logger;

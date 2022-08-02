@@ -31,7 +31,7 @@ pub struct Cli {
     pub token: Option<String>,
 
     /// The agent type
-    #[clap(long, short = 'f', help = HelpStrings::ConfigurationAgent)]
+    #[clap(long, short = 'f', help = HelpStrings::Agent)]
     pub agent: Option<String>,
 
     /// Whether specific output should be copied to the clipboard

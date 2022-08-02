@@ -12,7 +12,7 @@ use automations::automations::{
     credential_offer::CredentialOfferAutomation,
 };
 use clap::{Args, Subcommand};
-use colored::*;
+use colored::Colorize;
 use std::collections::HashMap;
 
 /// Automation options and flags
@@ -48,7 +48,7 @@ pub enum AutomationSubcommands {
     },
 
     /// Create a credential definition subcommand
-    #[clap(about = HelpStrings::AutomationCreateCredentialDefinition )]
+    #[clap(about = HelpStrings::CredentialDefinitionCreate)]
     CreateCredentialDefinition {
         /// Name of the schema that the credential definition will be based on
         #[clap(long, short='n', default_value="agent-cli-schema", help = HelpStrings::AutomationCreateCredentialDefinitionName)]
@@ -76,7 +76,7 @@ pub async fn parse_automation_args(
         + Send
         + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         AutomationSubcommands::CredentialOffer {
@@ -85,7 +85,7 @@ pub async fn parse_automation_args(
             sent_to_self,
             no_qr,
         } => match connection_id {
-            Some(c) => credential_offer(c.to_owned(), agent).await?,
+            Some(c) => credential_offer(c.clone(), agent).await?,
             None => {
                 let connection = agent
                     .create_invitation(ConnectionCreateInvitationOptions {
@@ -128,7 +128,7 @@ pub async fn parse_automation_args(
                 log_debug!("Looping {} times", timeout);
                 for i in 1..=*timeout {
                     let connection =
-                        ConnectionModule::get_by_id(&agent, connection.connection_id.to_owned())
+                        ConnectionModule::get_by_id(&agent, connection.connection_id.clone())
                             .await?;
                     match connection.state.as_str() {
                         "active" | "response" => {
@@ -160,7 +160,7 @@ pub async fn parse_automation_args(
             let automation = CreateCredentialDefinition {
                 name,
                 version,
-                attributes: attributes.iter().map(|a| a.as_str()).collect(),
+                attributes: attributes.iter().map(std::string::String::as_str).collect(),
             };
             automation.execute(&agent).await?;
         }

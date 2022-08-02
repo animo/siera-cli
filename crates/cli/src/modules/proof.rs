@@ -40,8 +40,11 @@ pub enum ProofSubcommands {
 }
 
 /// Subcoammnd Proof parser
-pub async fn parse_proof_args(commands: &ProofSubcommands, agent: impl ProofModule) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::default());
+pub async fn parse_proof_args(
+    commands: &ProofSubcommands,
+    agent: impl ProofModule + Send + Sync,
+) -> Result<()> {
+    let loader = Loader::start(&LoaderVariant::default());
     match commands {
         ProofSubcommands::Request {
             connection_id,
@@ -49,23 +52,23 @@ pub async fn parse_proof_args(commands: &ProofSubcommands, agent: impl ProofModu
             predicate,
             name,
         } => {
-            let predicate: Result<Vec<(String, String, i32)>> = predicate
+            let predicates: Vec<(String, String, i32)> = predicate
                 .iter()
                 .map(|p| {
-                    Ok((
-                        p.0.to_owned(),
-                        p.1.to_owned(),
-                        p.2.parse::<i32>().map_err(|_| {
-                            Error::PredicateValueNonNumber(p.0.to_owned(), p.2.to_owned())
-                        })?,
-                    ))
+                    (
+                        p.0.clone(),
+                        p.1.clone(),
+                        p.2.parse::<i32>()
+                            .map_err(|_| Error::PredicateValueNonNumber(p.0.clone(), p.2.clone()))
+                            .unwrap(),
+                    )
                 })
                 .collect();
             let proof_request_options = ProofRequestOptions {
-                connection_id: connection_id.to_owned(),
-                name: name.to_owned(),
-                attributes: attribute.to_vec(),
-                predicates: predicate?,
+                connection_id: connection_id.clone(),
+                name: name.clone(),
+                attributes: attribute.clone(),
+                predicates,
             };
             agent
                 .send_request(proof_request_options)

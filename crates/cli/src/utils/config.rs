@@ -78,7 +78,7 @@ impl Configuration {
     /// Add a new agent to the configuration or update a current environment
     pub fn add(environment: String, configuration: Environment) -> Result<()> {
         let path = get_config_path()?;
-        let mut current_configuration = get_config_from_path(&path).unwrap_or(Configuration {
+        let mut current_configuration = get_config_from_path(&path).unwrap_or(Self {
             configurations: BTreeMap::new(),
         });
         current_configuration

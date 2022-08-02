@@ -37,7 +37,11 @@ impl<'a> CreateCredentialDefinition<'a> {
             SchemaCreateOptions {
                 name: self.name.to_owned(),
                 version: self.version.to_owned(),
-                attributes: self.attributes.iter().map(|a| a.to_string()).collect(),
+                attributes: self
+                    .attributes
+                    .iter()
+                    .map(std::string::ToString::to_string)
+                    .collect(),
             },
         )
         .await?;

@@ -43,7 +43,11 @@ impl CredentialOfferAutomation {
         log_trace!("Starting automation CredentialOfferAutomation");
         log_trace!("{}", self.connection_id);
         log_trace!("{:#?}", self.attributes);
-        let attribute_keys: Vec<&str> = self.attributes.keys().map(|a| a.as_str()).collect();
+        let attribute_keys: Vec<&str> = self
+            .attributes
+            .keys()
+            .map(std::string::String::as_str)
+            .collect();
         let attribute_values: Vec<String> = self.attributes.values().cloned().collect();
 
         // Check if it as a valid connection
@@ -55,7 +59,7 @@ impl CredentialOfferAutomation {
 
         let create_credential_definition = CreateCredentialDefinition {
             version: "1.0",
-            attributes: attribute_keys.to_owned(),
+            attributes: attribute_keys.clone(),
             name: "full-credential-offer-automation",
         };
 
