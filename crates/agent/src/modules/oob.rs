@@ -99,9 +99,9 @@ pub struct OobConnectionCreateInvitationOptions {
     pub alias: Option<String>,
 }
 
-// Skip validation and just pass the object - validation happens on aca-py
-// We can possibly validate this here as well later.
-// Generic OOB invitation to receive
+/// Skip validation and just pass the object - validation happens on aca-py
+/// We can possibly validate this here as well later.
+/// Generic OOB invitation to receive
 pub type OobConnectionReceiveInvitationOptions = Value;
 
 /// Generic cloudagent oob module
