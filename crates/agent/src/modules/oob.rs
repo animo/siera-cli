@@ -99,23 +99,10 @@ pub struct OobConnectionCreateInvitationOptions {
     pub alias: Option<String>,
 }
 
-/// Options for receiving an invitation
-#[derive(Debug, Serialize, Deserialize)]
-pub struct OobConnectionReceiveInvitationOptions {
-    /// Id of the connection
-    #[serde(rename = "@id")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,
-
-    /// Did used for the connection
-    pub handshake_protocols: Box<[String]>,
-
-    pub services: Value,
-
-    /// Label used for the connection
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub label: Option<String>,
-}
+// Skip validation and just pass the object - validation happens on aca-py
+// We can possibly validate this here as well later.
+// Generic OOB invitation to receive
+pub type OobConnectionReceiveInvitationOptions = Value;
 
 /// Generic cloudagent oob module
 #[async_trait]
