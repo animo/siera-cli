@@ -21,11 +21,7 @@ impl OobModule for CloudAgentPython {
             query.push(("multi_use", false.to_string()));
             query.push(("auto_accept", true.to_string()));
             query.push(("alias", String::from("toolbox")));
-            Some(json!({
-                "handshake_protocols": [
-                    "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/didexchange/1.0",
-                ] 
-            }))
+            None
         } else {
             if options.multi_use {
                 query.push(("multi_use", true.to_string()));
@@ -36,17 +32,10 @@ impl OobModule for CloudAgentPython {
             if let Some(alias) = &options.alias {
                 query.push(("alias", alias.clone()));
             }
-            if let Some(handshake_protocol) = &options.handshake_protocol {
-                query.push(("handshake_protocols", json!({
-                "handshake_protocols": [
-                    handshake_protocol.clone(),
-                ] 
-                }).to_string() ));
-            }
             Some(json!({
                 "handshake_protocols": [
-                    "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/didexchange/1.0",
-                ] 
+                    options.handshake_protocol,
+                ]
             }))
         };
 

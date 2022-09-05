@@ -43,8 +43,8 @@ pub enum OobSubcommands {
         multi_use: bool,
 
         /// A custom alias for that specific Oob
-        #[clap(long, short = 'p', help = HelpStrings::OobHandshakeProtocol)]
-        handshake_protocol: Option<String>,
+        #[clap(long, short = 'p', help = HelpStrings::OobHandshakeProtocol, default_value="did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/didexchange/1.0")]
+        handshake_protocol: String,
 
         /// A custom alias for that specific Oob
         #[clap(long, short = 'l', help = HelpStrings::OobInviteAlias)]
@@ -78,7 +78,7 @@ pub async fn parse_oob_args(
         } => {
             let options = OobConnectionCreateInvitationOptions  {
                 alias: alias.as_deref().map(std::borrow::ToOwned::to_owned),
-                handshake_protocol: handshake_protocol.as_deref().map(std::borrow::ToOwned::to_owned),
+                handshake_protocol: handshake_protocol.clone(),
                 auto_accept: *auto_accept,
                 multi_use: *multi_use,
                 qr: *qr,
@@ -87,7 +87,7 @@ pub async fn parse_oob_args(
             agent.create_invitation(options).await.map(|response| {
                 loader.stop();
                 log_info!("Created invite with invitation msg id:");
-                log!("{}", response.invi_msg_id);
+                log!("{}", response.invitation_message_id);
                 if *qr {
                     log_info!("Scan this QR code to accept the invitation:\n");
                     print_qr_code(&response.invitation_url).unwrap();
@@ -139,7 +139,6 @@ pub fn invite_url_to_struct(url: impl AsRef<str>) -> Result<OobConnectionReceive
 
     // Convert the vec to a valid string
     let decoded_str = str::from_utf8(&decoded)?;
-    print!("{decoded_str}");
 
     // Convert the string to an invitation object
     serde_json::from_str(decoded_str).map_err(std::convert::Into::into)
