@@ -101,10 +101,6 @@ pub struct OobConnectionCreateInvitationOptions {
 
 /// Options for receiving an invitation
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-// Every field is optional here as there are some collisions between, for example, did and
-// routing_key. We rely on the cloudagent for error handling these collisions
-// Sadly we cannot skip serializing on the whole struct, we must specify it for each element
 pub struct OobConnectionReceiveInvitationOptions {
     /// Id of the connection
     #[serde(rename = "@id")]
@@ -112,28 +108,13 @@ pub struct OobConnectionReceiveInvitationOptions {
     pub id: Option<String>,
 
     /// Did used for the connection
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub did: Option<String>,
+    pub handshake_protocols: Box<[String]>,
 
-    /// Url to an image that can be used as an avatar
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub image_url: Option<String>,
+    pub services: Value,
 
     /// Label used for the connection
     #[serde(skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
-
-    /// Keys used by the recipient
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub recipient_keys: Option<Vec<String>>,
-
-    /// Routing keys used
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub routing_keys: Option<Vec<String>>,
-
-    /// Service endpoint to call
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub service_endpoint: Option<String>,
 }
 
 /// Generic cloudagent oob module

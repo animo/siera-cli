@@ -117,7 +117,7 @@ pub fn invite_url_to_struct(url: impl AsRef<str>) -> Result<OobConnectionReceive
     // Split the url
     let split_url = url
         .as_ref()
-        .split("c_i=")
+        .split("oob=")
         .map(std::borrow::ToOwned::to_owned)
         .collect::<Vec<String>>();
 
@@ -139,6 +139,7 @@ pub fn invite_url_to_struct(url: impl AsRef<str>) -> Result<OobConnectionReceive
 
     // Convert the vec to a valid string
     let decoded_str = str::from_utf8(&decoded)?;
+    print!("{decoded_str}");
 
     // Convert the string to an invitation object
     serde_json::from_str(decoded_str).map_err(std::convert::Into::into)
