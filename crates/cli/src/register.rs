@@ -4,6 +4,7 @@ use crate::modules::automation::parse_automation_args;
 use crate::modules::basic_message::parse_basic_message_args;
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::connection::parse_connection_args;
+use crate::modules::oob::parse_oob_args;
 use crate::modules::credential::parse_credentials_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::feature::parse_features_args;
@@ -67,6 +68,7 @@ pub async fn register() -> Result<()> {
                     Commands::CredentialDefinition(options) => {
                         parse_credential_definition_args(options, agent).await
                     }
+                    Commands::Oob(options) => parse_oob_args(options, agent).await,
                     Commands::Connection(options) => parse_connection_args(options, agent).await,
                     Commands::Credential(options) => {
                         parse_credentials_args(&options.commands, agent).await

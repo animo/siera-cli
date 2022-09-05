@@ -4,6 +4,8 @@ mod basic_message;
 /// Module for connections specific for an Aries cloudagent Python
 mod connection;
 
+/// Module for Oob for an Aries cloudagent Python
+mod oob;
 /// Module for credentials specific for an Aries cloudagent Python
 mod credential;
 

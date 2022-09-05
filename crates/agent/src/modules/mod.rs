@@ -13,6 +13,9 @@ pub mod feature;
 /// Basic Message module for a generic cloudagent
 pub mod basic_message;
 
+/// OOB module for aca-py
+pub mod oob;
+
 /// Proof module for a generic cloudagent
 pub mod proof;
 
