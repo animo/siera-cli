@@ -7,6 +7,9 @@ pub mod basic_message;
 /// Module for configuration manipulation
 pub mod configuration;
 
+/// Module for oob
+pub mod oob;
+
 /// Module for connections
 pub mod connection;
 

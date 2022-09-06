@@ -9,6 +9,7 @@ use crate::modules::multitenancy::MultitenancyOptions;
 use crate::modules::{
     basic_message::BasicMessageOptions, configuration::ConfigurationOptions,
     connection::ConnectionOptions, credential::CredentialOptions,
+    oob::OobOptions,
     credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions,
     proof::ProofOptions, schema::SchemaOptions,
 };
@@ -64,6 +65,9 @@ pub struct Cli {
 pub enum Commands {
     /// Connection subcommands
     Connection(ConnectionOptions),
+    
+    /// Oob subcommands
+    Oob(OobOptions),
 
     /// Feature subcommands
     Feature(FeaturesOptions),
@@ -80,7 +84,7 @@ pub enum Commands {
     /// Credential subcommands
     Credential(CredentialOptions),
 
-    /// Confguration subcommands
+    /// Configuration subcommands
     Configuration(ConfigurationOptions),
 
     /// Automation subcommands
@@ -89,7 +93,7 @@ pub enum Commands {
     /// Proof subcommands
     Proof(ProofOptions),
 
-    /// Multitenancy subcommnads
+    /// Multitenancy subcommands
     Multitenancy(MultitenancyOptions),
 }
 
@@ -98,6 +102,7 @@ impl From<Commands> for String {
         let s = match c {
             Commands::Automate(_) => "Automate",
             Commands::Connection(_) => "Connection",
+            Commands::Oob(_) => "Oob",
             Commands::Feature(_) => "Feature",
             Commands::Schema(_) => "Schema",
             Commands::CredentialDefinition(_) => "CredentialDefinition",

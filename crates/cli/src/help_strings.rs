@@ -24,6 +24,21 @@ pub enum HelpStrings {
     ConfigurationView,
     ConfigurationInitializeToken,
 
+    // OOB
+    OobConnection,
+    OobHandshakeProtocol,
+    OobCreateInvitation,
+    OobReceiveInvitation,
+    OobReceiveUrl,
+    OobInvite,
+    OobReceive,
+    Oob,
+    OobInviteAlias,
+    OobInviteMultiUse,
+    OobInviteToolbox,
+    OobInviteQr,
+    OobInviteAutoAccept,
+    
     // Connections
     Connections,
     ConnectionsId,
@@ -139,9 +154,28 @@ impl HelpStrings {
             }
             Self::ConfigurationView => "Print your current configuration file",
             Self::ConfigurationInitializeToken => "Authentication token for a multi tenancy agent",
+            Self::OobConnection => "Retrieve oob connections or create oob invitations",
+            Self::OobHandshakeProtocol => "The handshake protocol to use. Defaults to did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/didexchange/1.0",
+            Self::OobReceiveInvitation => "Receive an oob invitation via url",
+            Self::OobCreateInvitation => "Create an oob invitation",
+            Self::Oob => "Retrieve oob connections or create oob invitations",
+            Self::OobInvite => "Create an Oob connection invite",
+            Self::OobInviteAlias => {
+                "The name a new oob connection will use to identify itself"
+            }
+            Self::OobInviteAutoAccept => {
+                "Automatically accept the new oob connection once they accept this invitation"
+            }
+            Self::OobInviteMultiUse => "This oob invitation can be used more than once",
+            Self::OobReceiveUrl => "The url that contains the invitation, surrounded by quotes",
+            Self::OobReceive => "Receive an oob invitation via url",
+            Self::OobInviteQr => {
+                "Print a QR code, convenient for use with mobile apps"
+            }
             Self::Connections => "Retrieve connections or create invitations",
             Self::ConnectionsId => "ID of connection to retrieve",
             Self::ConnectionsInvite => "Create a new connection invitation",
+            Self::OobInviteToolbox => HELP_STRING_CONNECTIONS_INVITE_TOOLBOX,
             Self::ConnectionsInviteAlias => {
                 "The name a new connection will use to identify itself"
             }
