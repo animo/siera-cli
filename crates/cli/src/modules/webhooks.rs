@@ -1,10 +1,11 @@
-use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
-use crate::utils::loader::{Loader, LoaderVariant};
-use webhooks::listen;
 use clap::{Args, Subcommand};
 use std::str;
-use crate::utils::config::{get_config_from_path, get_config_path};
+use tungstenite::{connect, Message};
+use url::Url;
+use serde_json::{from_str, to_string_pretty, Value};
+use colored::Colorize;
+
 
 /// Webhooks options and flags
 #[derive(Args)]
@@ -19,48 +20,41 @@ pub struct WebhooksOptions {
 #[derive(Subcommand, Debug)]
 #[clap(about = HelpStrings::Webhooks)]
 pub enum WebhooksSubcommands {
-
     /// Listen for webhooks on provided url
     #[clap(about = HelpStrings::Webhooks)]
-    Listen {
-        /// Specifying the environment to use
-        #[clap(long, short= 'e', help = HelpStrings::WebhooksEnvironment)]
-        environment: Option<String>
-    },
+    Listen {},
 }
 
-/// Subcommand Webhooks parser
-pub async fn parse_webhooks_args(
-    options: &WebhooksOptions,
-) -> Result<()> {
-    let loader = Loader::start(&LoaderVariant::default());
+/// Listen to webhooks for an agentURL
+pub fn listen(agent_url: String) -> ! {
+    // TODO: filter by/listen to by topic
+    let stripped_agent_url = match &agent_url {
+        s if s.starts_with("http://") => &s[7..], 
+        s if s.starts_with("https://") => &s[8..],
+        s => s,
+    };
 
-    match &options.commands {
-        WebhooksSubcommands::Listen {
-            environment
-        } => {
-            let env = 
-            environment.as_deref().unwrap_or("default");
-            let config_path = match get_config_path() {
-                Ok(c) => {
-                    if c.exists() {
-                        Some(c)
-                    } else {
-                        None
-                    }
-                }
-                Err(_) => None,
-            }.unwrap();
-            let config = match get_config_from_path(&config_path) {
-                Ok(c) => Some(c),
-                Err(_) => None,
-            }.unwrap();
-
-            let env_config = config.configurations.get_key_value(env).ok_or_else(|| Error::InvalidEnvironment(env.into())).unwrap();
-            let agent_url = env_config.1.endpoint.clone();
-
-            loader.stop();
-            listen(agent_url);
-        }
+    let listen_url = format!("wss://{}/ws", stripped_agent_url);
+    log!("Listening on {}\n", listen_url);
+    
+    let (mut socket, _response) = match connect(Url::parse(&listen_url).unwrap()) {
+        Ok((socket, _response)) => (socket, _response),
+        Err(e) => {log!("{}", e); unreachable!()}
+    };
+    
+    // Loop forever, parse message to stdout
+    loop {
+        // TODO: Replace with error string from enum
+        let msg = match socket.read_message() {
+            Ok(m) => m,
+            Err(e) => {log!("{}", e); unreachable!()}
+        };
+        let msg = match msg {
+            Message::Text(s) => { s }
+            _ => { unreachable!() }
+        };
+        // TODO: Replace with error string from enum
+        let parsed: Value = from_str(&msg).expect("Can't parse to JSON");
+        log!("{}{}\n", ("Received hook:\n").yellow(), to_string_pretty(&parsed).unwrap());
     }
 }

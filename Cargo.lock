@@ -48,7 +48,6 @@ dependencies = [
  "tokio",
  "tungstenite",
  "url",
- "webhooks",
 ]
 
 [[package]]
@@ -219,7 +218,8 @@ dependencies = [
  "serde_json",
  "serde_yaml",
  "tokio",
- "webhooks",
+ "tungstenite",
+ "url",
 ]
 
 [[package]]
@@ -1670,17 +1670,6 @@ checksum = "7b17e741662c70c8bd24ac5c5b18de314a2c26c32bf8346ee1e6f53de919c283"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
-]
-
-[[package]]
-name = "webhooks"
-version = "0.1.0"
-dependencies = [
- "colored",
- "serde",
- "serde_json",
- "tungstenite",
- "url",
 ]
 
 [[package]]
