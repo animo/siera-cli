@@ -37,9 +37,9 @@ pub async fn parse_webhooks_args(
     match &options.commands {
         WebhooksSubcommands::Listen {
             url,
-        } => Ok({
+        } => {
             loader.stop();
             listen(url);
-        })
+        }
     }
 }

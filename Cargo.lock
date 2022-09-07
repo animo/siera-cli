@@ -1676,6 +1676,7 @@ dependencies = [
 name = "webhooks"
 version = "0.1.0"
 dependencies = [
+ "colored",
  "serde",
  "serde_json",
  "tungstenite",
