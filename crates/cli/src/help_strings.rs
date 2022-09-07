@@ -24,6 +24,10 @@ pub enum HelpStrings {
     ConfigurationView,
     ConfigurationInitializeToken,
 
+    // Webhooks
+    Webhooks,
+    WebhooksUrl,
+    
     // OOB
     OobConnection,
     OobHandshakeProtocol,
@@ -145,6 +149,8 @@ impl HelpStrings {
             Self::Config => "Supply a path to your configuration file to use that instead of the default",
             Self::Environment => "Specify your current environment",
 
+            Self::Webhooks => "Listen to webhooks",
+            Self::WebhooksUrl => "The url to listen to webhooks",
             Self::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: agent-cli configuration add --default",
             Self::ConfigurationAdd => "Add a new, or overwrite an existing, agent your configuration file",
             Self::ConfigurationRemove => "PERMANENTLY remove an agent from your configuration",

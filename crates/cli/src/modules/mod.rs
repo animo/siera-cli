@@ -30,3 +30,6 @@ pub mod schema;
 
 /// Module for multitenancy
 pub mod multitenancy;
+
+/// Module for webhooks
+pub mod webhooks;
