@@ -20,10 +20,6 @@ use crate::modules::{
 #[clap(name = "agent-cli", author, version, about = HelpStrings::Cli)]
 #[clap(arg_required_else_help = true, disable_help_subcommand = true)]
 pub struct Cli {
-    /// The websocket url used for commandos
-    #[clap(long, short='w', help = HelpStrings::WebhooksUrl)]
-    pub websocket_url: Option<String>,
-
     /// The agent url used for commandos
     #[clap(long, short='u', help = HelpStrings::AgentURL)]
     pub agent_url: Option<String>,

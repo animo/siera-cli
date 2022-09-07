@@ -26,7 +26,7 @@ pub enum HelpStrings {
 
     // Webhooks
     Webhooks,
-    WebhooksUrl,
+    WebhooksEnvironment,
     
     // OOB
     OobConnection,
@@ -150,7 +150,7 @@ impl HelpStrings {
             Self::Environment => "Specify your current environment",
 
             Self::Webhooks => "Listen to webhooks",
-            Self::WebhooksUrl => "The url to listen to webhooks",
+            Self::WebhooksEnvironment => "The environment from the config to use for listening to webhooks",
             Self::Configuration => "Add agents to your configuration or view your current configuration. To quickly get started run the following command: agent-cli configuration add --default",
             Self::ConfigurationAdd => "Add a new, or overwrite an existing, agent your configuration file",
             Self::ConfigurationRemove => "PERMANENTLY remove an agent from your configuration",
