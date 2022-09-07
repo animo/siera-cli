@@ -10,6 +10,7 @@ use crate::modules::{
     basic_message::BasicMessageOptions, configuration::ConfigurationOptions,
     connection::ConnectionOptions, credential::CredentialOptions,
     oob::OobOptions,
+    webhooks::WebhooksOptions,
     credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions,
     proof::ProofOptions, schema::SchemaOptions,
 };
@@ -19,6 +20,10 @@ use crate::modules::{
 #[clap(name = "agent-cli", author, version, about = HelpStrings::Cli)]
 #[clap(arg_required_else_help = true, disable_help_subcommand = true)]
 pub struct Cli {
+    /// The websocket url used for commandos
+    #[clap(long, short='w', help = HelpStrings::WebhooksUrl)]
+    pub websocket_url: Option<String>,
+
     /// The agent url used for commandos
     #[clap(long, short='u', help = HelpStrings::AgentURL)]
     pub agent_url: Option<String>,
@@ -66,6 +71,9 @@ pub enum Commands {
     /// Connection subcommands
     Connection(ConnectionOptions),
     
+    /// Webhooks subcommands
+    Webhooks(WebhooksOptions),
+    
     /// Oob subcommands
     Oob(OobOptions),
 
@@ -102,6 +110,7 @@ impl From<Commands> for String {
         let s = match c {
             Commands::Automate(_) => "Automate",
             Commands::Connection(_) => "Connection",
+            Commands::Webhooks(_) => "Webhooks",
             Commands::Oob(_) => "Oob",
             Commands::Feature(_) => "Feature",
             Commands::Schema(_) => "Schema",

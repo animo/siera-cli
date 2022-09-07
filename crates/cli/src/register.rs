@@ -5,6 +5,7 @@ use crate::modules::basic_message::parse_basic_message_args;
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::connection::parse_connection_args;
 use crate::modules::oob::parse_oob_args;
+use crate::modules::webhooks::parse_webhooks_args;
 use crate::modules::credential::parse_credentials_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::feature::parse_features_args;
@@ -64,6 +65,7 @@ pub async fn register() -> Result<()> {
                 match &cli.commands {
                     Commands::Schema(options) => parse_schema_args(options, agent).await,
                     Commands::Feature(_) => parse_features_args(agent).await,
+                    Commands::Webhooks(options) => parse_webhooks_args(options).await,
                     Commands::Message(options) => parse_basic_message_args(options, agent).await,
                     Commands::CredentialDefinition(options) => {
                         parse_credential_definition_args(options, agent).await
