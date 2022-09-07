@@ -1,31 +1,32 @@
-use tungstenite::{connect};
+use tungstenite::{connect, Message};
 use url::Url;
-use serde_json::{from_str, to_string_pretty};
+use serde_json::{from_str, to_string_pretty, Value};
 use colored::Colorize;
 
 
-pub fn listen(url: &Option<String>) -> ! {
+pub fn listen(agent_url: String) -> ! {
     // TODO: filter by/listen to by topic
-    // TODO: Dont parse the url from args but derive it from the agent url in config
-    let listen_url = 
-        match url.as_deref() {
-            Some(u) => u,
-            None => "wss://agent.community.animo.id/ws",
-        };
+    let stripped_agent_url = match &agent_url {
+        s if s.starts_with("http://") => &s[7..], 
+        s if s.starts_with("https://") => &s[8..],
+        s => s,
+    };
+
+    let listen_url = format!("wss://{}/ws", stripped_agent_url);
+    println!("Listening on {}\n", listen_url);
     
-    let (mut socket, _response) = connect(Url::parse(listen_url).unwrap()).expect("Can't connect to websocket");    // Write a message containing "Hello, Test!" to the server
+    let (mut socket, _response) = connect(Url::parse(&listen_url).unwrap()).expect("Can't connect to websocket");    // Write a message containing "Hello, Test!" to the server
     
-    // TODO: Pretty print and potentially transform to some relevant only fields output
-    // Loop forever, handling parsing each message
+    // Loop forever, parse message to stdout
     loop {
         // TODO: Replace with error string from enum
         let msg = socket.read_message().expect("Error reading message");
         let msg = match msg {
-            tungstenite::Message::Text(s) => { s }
+            Message::Text(s) => { s }
             _ => { panic!() }
         };
         // TODO: Replace with error string from enum
-        let parsed: serde_json::Value = from_str(&msg).expect("Can't parse to JSON");
-        println!("{}{}", format!("Received hook:\n").yellow(), to_string_pretty(&parsed).unwrap());
+        let parsed: Value = from_str(&msg).expect("Can't parse to JSON");
+        println!("{}{}", ("Received hook:\n").yellow(), to_string_pretty(&parsed).unwrap());
     }
 }
