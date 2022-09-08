@@ -65,7 +65,7 @@ pub async fn register() -> Result<()> {
                 match &cli.commands {
                     Commands::Schema(options) => parse_schema_args(options, agent).await,
                     Commands::Feature(_) => parse_features_args(agent).await,
-                    Commands::Webhooks(_) => {listen(agent.endpoint)},
+                    Commands::Webhooks(_) => {listen(agent)},
                     Commands::Message(options) => parse_basic_message_args(options, agent).await,
                     Commands::CredentialDefinition(options) => {
                         parse_credential_definition_args(options, agent).await
