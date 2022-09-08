@@ -1,10 +1,10 @@
-use crate::help_strings::HelpStrings;
+use crate::{help_strings::HelpStrings, error::Error};
 use clap::{Args, Subcommand};
+use cloudagent_python::agent::CloudAgentPython;
 use std::str;
-use tungstenite::{connect, Message};
+use tungstenite::{connect};
 use url::Url;
-use serde_json::{from_str, to_string_pretty, Value};
-use colored::Colorize;
+use serde_json::{to_string_pretty};
 
 
 /// Webhooks options and flags
@@ -26,35 +26,26 @@ pub enum WebhooksSubcommands {
 }
 
 /// Listen to webhooks for an agentURL
-pub fn listen(agent_url: String) -> ! {
+pub fn listen(agent: CloudAgentPython) -> Result<()> {
     // TODO: filter by/listen to by topic
-    let stripped_agent_url = match &agent_url {
+    let stripped_agent_url = match &agent.endpoint {
         s if s.starts_with("http://") => &s[7..], 
         s if s.starts_with("https://") => &s[8..],
-        s => s,
+        s => return Err(Error::InvalidAgentUrl(s.into())),
     };
 
     let listen_url = format!("wss://{}/ws", stripped_agent_url);
     log!("Listening on {}\n", listen_url);
     
-    let (mut socket, _response) = match connect(Url::parse(&listen_url).unwrap()) {
-        Ok((socket, _response)) => (socket, _response),
-        Err(e) => {log!("{}", e); unreachable!()}
-    };
+    let (mut socket, _response) = connect({
+        let input: &str = &listen_url;
+        Url::options().parse(input).unwrap()
+    })?;
     
     // Loop forever, parse message to stdout
     loop {
-        // TODO: Replace with error string from enum
-        let msg = match socket.read_message() {
-            Ok(m) => m,
-            Err(e) => {log!("{}", e); unreachable!()}
-        };
-        let msg = match msg {
-            Message::Text(s) => { s }
-            _ => { unreachable!() }
-        };
-        // TODO: Replace with error string from enum
-        let parsed: Value = from_str(&msg).expect("Can't parse to JSON");
-        log!("{}{}\n", ("Received hook:\n").yellow(), to_string_pretty(&parsed).unwrap());
+        let msg = socket.connect()?;
+        log!("Received hook:\n");
+        log!("{:?}", to_string_pretty(&msg));
     }
 }
