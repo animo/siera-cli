@@ -46,7 +46,6 @@ dependencies = [
  "serde_yaml",
  "speculoos",
  "tokio",
- "tungstenite",
  "url",
 ]
 
@@ -218,8 +217,6 @@ dependencies = [
  "serde_json",
  "serde_yaml",
  "tokio",
- "tungstenite",
- "url",
 ]
 
 [[package]]
@@ -254,6 +251,7 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "tungstenite",
 ]
 
 [[package]]

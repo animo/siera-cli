@@ -6,7 +6,7 @@ use serde_json::Value;
 use std::str::FromStr;
 
 /// Response from the cloudagent when a proof request is created
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct ProofRequestResponse {
     /// The state of the proof request
     pub state: String,

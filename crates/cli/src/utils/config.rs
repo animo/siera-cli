@@ -136,10 +136,7 @@ pub fn get_config_path() -> Result<PathBuf> {
         let home = "C:\\Program Files\\Common Files";
         Ok(Path::new(home).join("agent-cli\\config.yaml"))
     } else if cfg!(unix) {
-        let home = match std::env::var("HOME") {
-            Ok(h) => Ok(h),
-            Err(_) => Err(Error::HomeNotFound),
-        };
+        let home = std::env::var("HOME").map_or(Err(Error::HomeNotFound), Ok);
         Ok(Path::new(&home?).join(".config/agent-cli/config.yaml"))
     } else {
         Err(Error::OsUnknown.into())

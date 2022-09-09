@@ -6,7 +6,7 @@ use serde::Serialize;
 use serde_json::Value;
 
 /// Response of the `create` endpoint on the multitenancy module
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct MultitenancyCreateResponse {
     /// Timestamp of when the subwallet was created
     pub created_at: String,

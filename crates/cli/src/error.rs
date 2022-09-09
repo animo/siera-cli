@@ -15,9 +15,6 @@ pub enum Error {
     /// The specified environment does not exist inside the configuration file
     InvalidEnvironment(String),
 
-    /// The specified environment does not exist inside the configuration file
-    InvalidAgentUrl(String),
-
     /// The connection to which to send something is not in state active
     InactiveConnection,
 
@@ -71,7 +68,6 @@ impl Display for Error {
             Self::CannotReadConfigurationFile => write!(f, "Cannot not read configuration file. Try initializing first using: `agent-cli configuration add --default`."),
             Self::InvalidConfigurationPath => write!(f, "Invalid configuration path."),
             Self::InvalidEnvironment(env) => write!(f, "The environment {} does not exist.", env),
-            Self::InvalidAgentUrl(url) => write!(f, "The provided agent url {} is invalid", url),
             Self::NoAgentURLSupplied => write!(f, "No agent URL supplied. Supply an agent URL either via `--agent-url` or see `aries-cli configuration --help` to learn about setting up an environment."),
             Self::NoEnvironmentSupplied => write!(f, "No Environment supplied. Supply the environment either via `--environment` or see `aries-cli configuration --help` to learn about setting up an environment."),
             Self::UnequalAmountKeyValue => write!(f, "Supplies keys and values are not equal in size."),

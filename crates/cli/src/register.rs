@@ -4,14 +4,14 @@ use crate::modules::automation::parse_automation_args;
 use crate::modules::basic_message::parse_basic_message_args;
 use crate::modules::configuration::parse_configuration_args;
 use crate::modules::connection::parse_connection_args;
-use crate::modules::oob::parse_oob_args;
 use crate::modules::credential::parse_credentials_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::feature::parse_features_args;
 use crate::modules::multitenancy::parse_multitenancy_args;
+use crate::modules::oob::parse_oob_args;
 use crate::modules::proof::parse_proof_args;
 use crate::modules::schema::parse_schema_args;
-use crate::modules::webhooks::listen;
+use crate::modules::webhooks::parse_webhooks_args;
 use crate::utils::config::{get_config_from_path, get_config_path};
 use afj_rest::agent::{CloudAgentAfjRest, CloudAgentAfjRestVersion};
 use clap::Parser;
@@ -65,7 +65,7 @@ pub async fn register() -> Result<()> {
                 match &cli.commands {
                     Commands::Schema(options) => parse_schema_args(options, agent).await,
                     Commands::Feature(_) => parse_features_args(agent).await,
-                    Commands::Webhooks(_) => {listen(agent)},
+                    Commands::Webhooks(_) => parse_webhooks_args(agent).await,
                     Commands::Message(options) => parse_basic_message_args(options, agent).await,
                     Commands::CredentialDefinition(options) => {
                         parse_credential_definition_args(options, agent).await
@@ -112,40 +112,28 @@ fn transform_agent_data(
     api_key: Option<String>,
     auth_token: Option<String>,
 ) -> Result<(String, Option<String>, Option<String>, String)> {
-    let config_path = match config {
-        Some(c) => Some(c),
-        None => {
+    let config_path = config.map_or_else(
+        || {
             let config = get_config_path();
-            match config {
-                Ok(c) => {
-                    if c.exists() {
-                        Some(c)
-                    } else {
-                        None
-                    }
-                }
-                Err(_) => None,
-            }
-        }
-    };
+            config.map_or(None, |c| if c.exists() { Some(c) } else { None })
+        },
+        Some,
+    );
 
-    let (agent_url, api_key, auth_token, agent) = match config_path {
-        Some(cp) => {
-            let configurations = get_config_from_path(&cp)?;
-            let configuration = configurations
-                .configurations
-                .get_key_value(&environment)
-                .ok_or(Error::InvalidEnvironment(environment))?;
-            let agent_url = agent_url.unwrap_or_else(|| configuration.1.endpoint.clone());
-            let api_key = api_key.or_else(|| configuration.1.api_key.clone());
-            let auth_token = auth_token.or_else(|| configuration.1.auth_token.clone());
-            let agent = agent.or_else(|| configuration.1.agent.clone());
-            (agent_url, api_key, auth_token, agent)
-        }
-        None => {
-            let agent_url = agent_url.ok_or(Error::NoAgentURLSupplied)?;
-            (agent_url, api_key, auth_token, agent)
-        }
+    let (agent_url, api_key, auth_token, agent) = if let Some(cp) = config_path {
+        let configurations = get_config_from_path(&cp)?;
+        let configuration = configurations
+            .configurations
+            .get_key_value(&environment)
+            .ok_or(Error::InvalidEnvironment(environment))?;
+        let agent_url = agent_url.unwrap_or_else(|| configuration.1.endpoint.clone());
+        let api_key = api_key.or_else(|| configuration.1.api_key.clone());
+        let auth_token = auth_token.or_else(|| configuration.1.auth_token.clone());
+        let agent = agent.or_else(|| configuration.1.agent.clone());
+        (agent_url, api_key, auth_token, agent)
+    } else {
+        let agent_url = agent_url.ok_or(Error::NoAgentURLSupplied)?;
+        (agent_url, api_key, auth_token, agent)
     };
 
     let agent = agent.or_else(|| Some(String::from("aca-py")));
