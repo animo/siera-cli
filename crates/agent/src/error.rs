@@ -6,6 +6,9 @@ pub enum Error {
     /// The cloudagent did not allow the request without proper authorization
     AuthorizationFailed,
 
+    /// The specified environment does not exist inside the configuration file
+    InvalidAgentUrl(String),
+
     /// The server gave a response that was not expected and therefore not deserializeable
     UnableToParseResponse,
 
@@ -44,6 +47,7 @@ impl Display for Error {
             Self::AuthorizationFailed => write!(f, "Failed to authorize. Api-key or authorization token is either wrong or missing."),
             Self::UnableToParseResponse => write!(f, "Unable to parse the response from the server. Is the cloudagent the correct version?"),
             Self::UrlDoesNotExist => write!(f, "Path does not exist on agent URL. This can happen when querying by id and the id is not valid or when attempting to use a feature that is not supported on the cloudagent."),
+            Self::InvalidAgentUrl(url) => write!(f, "The provided agent url {} is invalid", url),
             Self::UnknownResponseStatusCode(msg) => write!(f, "Received unknown status code from the server. Agent URL is likely incorrect. If the agent URL is correct, please report this error at https://github.com/animo/agent-cli/issues/new \nAdditional info: {}", msg),
             Self::InternalServerError(status) => write!(f, "Internal Server Error (status code: {})!", status),
             Self::UnreachableUrl => write!(f, "Provided url is unreachable. Is the provided agent URL valid?"),

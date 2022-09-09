@@ -9,10 +9,8 @@ use crate::modules::multitenancy::MultitenancyOptions;
 use crate::modules::{
     basic_message::BasicMessageOptions, configuration::ConfigurationOptions,
     connection::ConnectionOptions, credential::CredentialOptions,
-    oob::OobOptions,
-    webhooks::WebhooksOptions,
-    credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions,
-    proof::ProofOptions, schema::SchemaOptions,
+    credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions, oob::OobOptions,
+    proof::ProofOptions, schema::SchemaOptions, webhooks::WebhooksOptions,
 };
 
 /// Main command with options, flags and subcommands
@@ -66,10 +64,10 @@ pub struct Cli {
 pub enum Commands {
     /// Connection subcommands
     Connection(ConnectionOptions),
-    
+
     /// Webhooks subcommands
     Webhooks(WebhooksOptions),
-    
+
     /// Oob subcommands
     Oob(OobOptions),
 

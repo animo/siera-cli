@@ -3,8 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr::print_qr_code;
 use agent::modules::oob::{
-    OobConnectionCreateInvitationOptions,
-    OobConnectionReceiveInvitationOptions, OobModule
+    OobConnectionCreateInvitationOptions, OobConnectionReceiveInvitationOptions, OobModule,
 };
 use clap::{Args, Subcommand};
 use logger::{copy, pretty_stringify_obj};
@@ -32,11 +31,6 @@ pub enum OobSubcommands {
         /// Whether it should print a qr code
         #[clap(long, short, help = HelpStrings::OobInviteQr)]
         qr: bool,
-
-        /// Whether it should create a specific invitation for the toolbox
-        /// this comes with the admin group
-        #[clap(long, short, help = HelpStrings::OobInviteToolbox)]
-        toolbox: bool,
 
         /// Whether the invitation should be reusable
         #[clap(long, short, help = HelpStrings::OobInviteMultiUse)]
@@ -71,18 +65,16 @@ pub async fn parse_oob_args(
         OobSubcommands::Invite {
             auto_accept,
             qr,
-            toolbox,
             multi_use,
             handshake_protocol,
             alias,
         } => {
-            let options = OobConnectionCreateInvitationOptions  {
+            let options = OobConnectionCreateInvitationOptions {
                 alias: alias.as_deref().map(std::borrow::ToOwned::to_owned),
                 handshake_protocol: handshake_protocol.clone(),
                 auto_accept: *auto_accept,
                 multi_use: *multi_use,
                 qr: *qr,
-                toolbox: *toolbox,
             };
             agent.create_invitation(options).await.map(|response| {
                 loader.stop();

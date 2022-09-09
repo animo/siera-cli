@@ -2,8 +2,7 @@ use crate::agent::CloudAgentPython;
 use agent::error::Result;
 use agent::modules::oob::{
     OobConnection, OobConnectionCreateInvitationOptions, OobConnectionCreateInvitationResponse,
-    OobModule,
-    OobConnectionReceiveInvitationOptions,
+    OobConnectionReceiveInvitationOptions, OobModule,
 };
 use async_trait::async_trait;
 use serde_json::json;
@@ -17,27 +16,21 @@ impl OobModule for CloudAgentPython {
         let url = self.create_url(&["out-of-band", "create-invitation"])?;
         let mut query: Vec<(&str, String)> = vec![];
 
-        let body = if options.toolbox {
-            query.push(("multi_use", false.to_string()));
+        if options.multi_use {
+            query.push(("multi_use", true.to_string()));
+        }
+        if options.auto_accept {
             query.push(("auto_accept", true.to_string()));
-            query.push(("alias", String::from("toolbox")));
-            None
-        } else {
-            if options.multi_use {
-                query.push(("multi_use", true.to_string()));
-            }
-            if options.auto_accept {
-                query.push(("auto_accept", true.to_string()));
-            }
-            if let Some(alias) = &options.alias {
-                query.push(("alias", alias.clone()));
-            }
-            Some(json!({
-                "handshake_protocols": [
-                    options.handshake_protocol,
-                ]
-            }))
-        };
+        }
+        if let Some(alias) = &options.alias {
+            query.push(("alias", alias.clone()));
+        }
+
+        let body = Some(json!({
+            "handshake_protocols": [
+                options.handshake_protocol,
+            ]
+        }));
 
         self.post::<OobConnectionCreateInvitationResponse>(url, Some(query), body)
             .await
