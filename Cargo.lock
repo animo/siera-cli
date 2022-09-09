@@ -46,7 +46,6 @@ dependencies = [
  "serde_yaml",
  "speculoos",
  "tokio",
- "url",
 ]
 
 [[package]]
