@@ -64,15 +64,15 @@ impl TestAgentCli {
             .args(["run", "--quiet", "--"])
             .args(agent_args.split(' ').collect::<Vec<&str>>())
             .output();
-        let output = match result {
-            Ok(o) => o,
-            Err(e) => panic!("Command failed \"{:?}\" with \"{}\"", &agent_args, e),
-        };
+        let output = result
+            .map_err(|e| format!("Command failed \"{:?}\" with \"{}\"", &agent_args, e))
+            .unwrap();
         if !output.status.success() {
             println!();
             println!("=============================");
             println!("Command failed: {:?}", &agent_args);
-            println!("{}", String::from_utf8_lossy(&output.stderr));
+            println!("[STDERR]: {}", String::from_utf8_lossy(&output.stderr));
+            println!("[STDOUT]: {}", String::from_utf8_lossy(&output.stdout));
             println!("=============================");
             println!();
             panic!("Test failed!");

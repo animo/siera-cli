@@ -27,8 +27,8 @@ pub async fn parse_basic_message_args(
         connection_id: options.connection_id.clone(),
         message: options.message.clone(),
     };
-    agent.send_message(send_options).await.map(|msg| {
+    agent.send_message(send_options).await.map(|_| {
         loader.stop();
-        log_info!("Successfully sent message: {}", msg);
+        log!("Successfully sent message")
     })
 }

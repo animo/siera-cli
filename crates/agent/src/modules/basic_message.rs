@@ -1,6 +1,5 @@
-use async_trait::async_trait;
-
 use crate::error::Result;
+use async_trait::async_trait;
 
 /// Options that are supplied when sending a basic message to another agent
 pub struct SendBasicMessageOptions {
@@ -15,5 +14,5 @@ pub struct SendBasicMessageOptions {
 #[async_trait]
 pub trait BasicMessageModule {
     /// Send a basic message to another agent via the connection id
-    async fn send_message(&self, options: SendBasicMessageOptions) -> Result<String>;
+    async fn send_message(&self, options: SendBasicMessageOptions) -> Result<()>;
 }

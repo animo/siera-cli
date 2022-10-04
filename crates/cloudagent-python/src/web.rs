@@ -80,6 +80,11 @@ impl CloudAgentPython {
                     200..=299 => {
                         let parsed: Value = res.json().await?;
                         log_debug!("Response: {}", pretty_stringify_obj(&parsed));
+                        let parsed = if parsed.is_null() {
+                            serde_json::json!(())
+                        } else {
+                            parsed
+                        };
                         serde_json::from_value(parsed).map_err(|e| {
                             log_warn!("{}", e);
                             Error::UnableToParseResponse.into()
@@ -91,7 +96,11 @@ impl CloudAgentPython {
                     404 => Err(Error::UrlDoesNotExist.into()),
                     422 => Err(res.text().await?.into()),
                     503 => Err(Error::HttpServiceUnavailable.into()),
-                    500..=599 => Err(Error::InternalServerError(res.status().as_u16()).into()),
+                    500..=599 => Err(Error::InternalServerError(
+                        res.status().as_u16(),
+                        res.text().await?,
+                    )
+                    .into()),
                     _ => Err(Error::UnknownResponseStatusCode(res.text().await?).into()),
                 }
             }

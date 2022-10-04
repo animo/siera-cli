@@ -65,12 +65,10 @@ pub async fn register() -> Result<()> {
                 match &cli.commands {
                     Commands::Schema(options) => parse_schema_args(options, agent).await,
                     Commands::Feature(_) => parse_features_args(agent).await,
-                    Commands::Webhook(_) => parse_webhook_args(agent).await,
                     Commands::Message(options) => parse_basic_message_args(options, agent).await,
                     Commands::CredentialDefinition(options) => {
                         parse_credential_definition_args(options, agent).await
                     }
-                    Commands::Oob(options) => parse_oob_args(options, agent).await,
                     Commands::Connection(options) => parse_connection_args(options, agent).await,
                     Commands::Credential(options) => {
                         parse_credentials_args(&options.commands, agent).await
@@ -79,12 +77,13 @@ pub async fn register() -> Result<()> {
                     Commands::Multitenancy(options) => {
                         parse_multitenancy_args(options, agent).await
                     }
+                    Commands::Oob(options) => parse_oob_args(options, agent).await,
+                    Commands::Webhook(_) => parse_webhook_args(agent).await,
                     Commands::Automate(options) => parse_automation_args(options, agent).await,
-                    Commands::Configuration(_) => Err(Error::SubcommandNotRegisteredForAgent(
-                        cli.commands.into(),
-                        "aca-py",
-                    )
-                    .into()),
+                    _ => Err(
+                        Error::SubcommandNotRegisteredForAgent(cli.commands.into(), "aca-py")
+                            .into(),
+                    ),
                 }
             }
             "afj" => {
@@ -93,6 +92,11 @@ pub async fn register() -> Result<()> {
                 match &cli.commands {
                     // TODO: should accept struct that has a field that implements the module
                     Commands::Schema(options) => parse_schema_args(options, agent).await,
+                    Commands::CredentialDefinition(options) => {
+                        parse_credential_definition_args(options, agent).await
+                    }
+                    Commands::Connection(options) => parse_connection_args(options, agent).await,
+                    Commands::Message(options) => parse_basic_message_args(options, agent).await,
                     _ => Err(
                         Error::SubcommandNotRegisteredForAgent(cli.commands.into(), "afj").into(),
                     ),
