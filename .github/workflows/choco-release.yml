@@ -17,7 +17,7 @@ jobs:
       - name: get version
         shell: bash
         run: |
-          echo "VERSION=$(curl --silent https://api.github.com/repos/animo/agent-cli/releases | jq '.[0]' |  jq -r .tag_name)" >> $GITHUB_ENV
+          echo "VERSION=$(curl --silent https://api.github.com/repos/animo/siera/releases | jq '.[0]' |  jq -r .tag_name)" >> $GITHUB_ENV
       - name: update nuspec
         shell: bash
         run: |
@@ -29,14 +29,14 @@ jobs:
           cd pkg/choco
           cp ../../LICENSE tools/LICENSE.txt
           cd tools
-          curl -L https://github.com/animo/agent-cli/releases/download/${{ env.VERSION }}/windows-x86_64-agent-cli.exe -o windows-x86_64-agent-cli.exe
-          SHA_256=$(sha256sum windows-x86_64-agent-cli.exe | awk '{ print $1 }')
+          curl -L https://github.com/animo/siera/releases/download/${{ env.VERSION }}/windows-x86_64-siera.exe -o windows-x86_64-siera.exe
+          SHA_256=$(sha256sum windows-x86_64-siera.exe | awk '{ print $1 }')
           sed -i -e "3s|.*|\"$SHA_256\"|" VERIFICATION.txt
       - name: update choco folder
         shell: pwsh
         run: |
           cd .\pkg\choco
-          choco pack .\agent-cli.nuspec
-          Get-ChildItem *.nupkg | ren -NewName agent-cli.nupkg
+          choco pack .\siera.nuspec
+          Get-ChildItem *.nupkg | ren -NewName siera.nupkg
           choco apikey --key ${{ secrets.CHOCO_API_KEY }} --source https://push.chocolatey.org/
-          choco push agent-cli.nupkg --source https://push.chocolatey.org/
+          choco push siera.nupkg --source https://push.chocolatey.org/

@@ -6,7 +6,7 @@ description: >-
 
 # Contributing
 
-We welcome contributions that to make the CLI better. If you do not have a specific contribution in mind, we encourage you to look for issues labelled as [`good first issue`](https://github.com/animo/agent-cli/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) or look at our [roadmap](roadmap.md).
+We welcome contributions that to make the CLI better. If you do not have a specific contribution in mind, we encourage you to look for issues labelled as [`good first issue`](https://github.com/animo/siera/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) or look at our [roadmap](roadmap.md).
 
 For significant changes, please open an issue first to discuss the proposed changes with the community to avoid re-work.
 
@@ -30,13 +30,12 @@ This gives your new idea the best chance to get accepted by the repository maint
 ### Getting set up
 
 ```
-git clone https://github.com/animo/agent-cli.git
+git clone https://github.com/animo/siera.git
 ```
 
 Once you have the code locally, you should be able to test out the current source code by running:
 
 ```
-# "cargo run -q --" instead of agent-cli
 cargo run -q -- <cmd>
 ```
 

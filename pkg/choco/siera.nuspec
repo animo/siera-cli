@@ -1,10 +1,10 @@
 <?xml version="1.0" ?><package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
-    <id>agent-cli</id>
+    <id>siera</id>
     <version>0.0.0</version>
-    <title>agent-cli</title>
+    <title>siera</title>
     <authors>Animo Solutions</authors>
-    <projectUrl>https://github.com/animo/agent-cli</projectUrl>
+    <projectUrl>https://github.com/animo/siera</projectUrl>
     <tags>cli rust aries</tags>
     <summary>Command Line Interface tool to interact with an Aries agent </summary>
     <description>Command Line Interface tool to interact with an Aries agent </description>

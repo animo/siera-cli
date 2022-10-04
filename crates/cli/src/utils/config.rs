@@ -134,10 +134,10 @@ pub fn get_config_from_path(config_path: &Path) -> Result<Configuration> {
 pub fn get_config_path() -> Result<PathBuf> {
     if cfg!(windows) {
         let home = "C:\\Program Files\\Common Files";
-        Ok(Path::new(home).join("agent-cli\\config.yaml"))
+        Ok(Path::new(home).join("siera\\config.yaml"))
     } else if cfg!(unix) {
         let home = std::env::var("HOME").map_or(Err(Error::HomeNotFound), Ok);
-        Ok(Path::new(&home?).join(".config/agent-cli/config.yaml"))
+        Ok(Path::new(&home?).join(".config/siera/config.yaml"))
     } else {
         Err(Error::OsUnknown.into())
     }

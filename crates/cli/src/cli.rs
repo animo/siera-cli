@@ -15,7 +15,7 @@ use crate::modules::{
 
 /// Main command with options, flags and subcommands
 #[derive(Parser)]
-#[clap(name = "agent-cli", author, version, about = HelpStrings::Cli)]
+#[clap(name = "siera", author, version, about = HelpStrings::Cli)]
 #[clap(arg_required_else_help = true, disable_help_subcommand = true)]
 pub struct Cli {
     /// The agent url used for commandos

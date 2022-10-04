@@ -16,12 +16,12 @@ jobs:
       - name: Get PKGBUILD and .SRCINFO
         id: get_pkgbuild
         run: |
-          curl -o PKGBUILD https://raw.githubusercontent.com/animo/agent-cli/main/pkg/PKGBUILD
-          curl -o .SRCINFO https://raw.githubusercontent.com/animo/agent-cli/main/pkg/.SRCINFO
+          curl -o PKGBUILD https://raw.githubusercontent.com/animo/siera/main/pkg/PKGBUILD
+          curl -o .SRCINFO https://raw.githubusercontent.com/animo/siera/main/pkg/.SRCINFO
       - name: Gather data and rewrite PKGBUILD file
         id: gather_data_and_rewrite
         run: |
-          VERSION=$(curl --silent https://api.github.com/repos/animo/agent-cli/releases | jq '.[0]' |  jq -r .tag_name)
+          VERSION=$(curl --silent https://api.github.com/repos/animo/siera/releases | jq '.[0]' |  jq -r .tag_name)
           # strip the v prefix
           VERSION=${VERSION:1}
           # replace package version in PKGBUILD
@@ -34,7 +34,7 @@ jobs:
           AUR_KEY: ${{secrets.AUR_KEY}}
         run: |
           # get the version
-          VERSION=$(curl --silent https://api.github.com/repos/animo/agent-cli/releases | jq '.[0]' |  jq -r .tag_name)
+          VERSION=$(curl --silent https://api.github.com/repos/animo/siera/releases | jq '.[0]' |  jq -r .tag_name)
           # create all ssh files/folders
           mkdir ~/.ssh
           touch ~/.ssh/aur
@@ -60,8 +60,8 @@ jobs:
           # Add AUR key to known host
           ssh-keyscan -t rsa aur.archlinux.org >> ~/.ssh/known_hosts
           # get the aur repo
-          git clone ssh://aur@aur.archlinux.org/agent-cli.git
-          cd agent-cli
+          git clone ssh://aur@aur.archlinux.org/siera.git
+          cd siera
           # set git username and email
           git config user.name "animosolutions"
           git config user.email "contact@animo.id"
@@ -69,8 +69,8 @@ jobs:
           cp ../PKGBUILD PKGBUILD
           cp ../.SRCINFO .SRCINFO
           # commit
-          git commit -am "Release new agent-cli version ${VERSION}" --allow-empty
+          git commit -am "Release new siera version ${VERSION}" --allow-empty
           # add the remote
-          git remote add aur ssh://aur@aur.archlinux.org/agent-cli.git
+          git remote add aur ssh://aur@aur.archlinux.org/siera.git
           # push it
           git push aur

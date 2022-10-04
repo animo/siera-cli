@@ -65,7 +65,7 @@ pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::CannotReadConfigurationFile => write!(f, "Cannot not read configuration file. Try initializing first using: `agent-cli configuration add --default`."),
+            Self::CannotReadConfigurationFile => write!(f, "Cannot not read configuration file. Try initializing first using: `siera configuration add --default`."),
             Self::InvalidConfigurationPath => write!(f, "Invalid configuration path."),
             Self::InvalidEnvironment(env) => write!(f, "The environment {} does not exist.", env),
             Self::NoAgentURLSupplied => write!(f, "No agent URL supplied. Supply an agent URL either via `--agent-url` or see `aries-cli configuration --help` to learn about setting up an environment."),

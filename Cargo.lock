@@ -24,31 +24,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "agent-cli"
-version = "0.3.0"
-dependencies = [
- "afj-rest",
- "agent",
- "async-trait",
- "automations",
- "base64",
- "clap",
- "clipboard",
- "cloudagent-python",
- "colored",
- "lazy_static",
- "logger",
- "qr2term",
- "regex",
- "reqwest",
- "serde",
- "serde_json",
- "serde_yaml",
- "speculoos",
- "tokio",
-]
-
-[[package]]
 name = "aho-corasick"
 version = "0.7.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1257,6 +1232,31 @@ dependencies = [
  "cfg-if",
  "cpufeatures",
  "digest",
+]
+
+[[package]]
+name = "siera"
+version = "0.3.0"
+dependencies = [
+ "afj-rest",
+ "agent",
+ "async-trait",
+ "automations",
+ "base64",
+ "clap",
+ "clipboard",
+ "cloudagent-python",
+ "colored",
+ "lazy_static",
+ "logger",
+ "qr2term",
+ "regex",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "speculoos",
+ "tokio",
 ]
 
 [[package]]

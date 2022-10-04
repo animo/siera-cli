@@ -1,17 +1,17 @@
 ---
-description: The Agent CLI follows CLI tool conventions to make it easy to use.
+description: Siera follows CLI tool conventions to make it easy to use.
 ---
 
-# Using the Agent CLI
+# Using Siera
 
-After [installing](installation.md) the Agent CLI, you can run `agent-cli` in your terminal to see all the options available to you. In this guide, we'll show you how to use the Agent CLI in your development process.
+After [installing](installation.md) Siera, you can run `siera` in your terminal to see all the options available to you. In this guide, we'll show you how to use Siera in your development process.
 
 > If you'd rather explore functionality through the CLI yourself, just use the `--help` or `-h` flag on any of the subcommands to see more info.
 
-The Agent Cli distinguishes options and subcommands. Options before the subcommands are global, options after the subcommands are specific to that subcommand.
+Siera distinguishes options and subcommands. Options before the subcommands are global, options after the subcommands are specific to that subcommand.
 
 ```
-agent-cli [OPTIONS] <SUBCOMMAND>
+siera [OPTIONS] <SUBCOMMAND>
 ```
 
 Each subcommand has their own options and subcommands, you can see which ones by using the `-h` or `--help` flag at any level.
@@ -19,7 +19,7 @@ Each subcommand has their own options and subcommands, you can see which ones by
 For example, if we wanted to create a schema, a command could look something like:
 
 ```
-agent-cli --copy schema create --name "College Degree" --attribute Grade
+siera --copy schema create --name "College Degree" --attribute Grade
 # Output: schema id
 ```
 
@@ -33,7 +33,7 @@ Every subcommand has the option of a `-h` or `--help` flag, where you'll see the
 
 ### Know what is happening (--verbose)
 
-We believe that good logging makes for a good CLI user experience, but we also believe a productivity focused tool should not flood the terminal with logging. That is why the Agent CLI uses different log-levels.
+We believe that good logging makes for a good CLI user experience, but we also believe a productivity focused tool should not flood the terminal with logging. That is why Siera uses different log-levels.
 
 | CLI flags                                 | Rust logger | Description                           |
 | ----------------------------------------- | ----------- | ------------------------------------- |

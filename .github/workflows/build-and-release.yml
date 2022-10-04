@@ -27,8 +27,8 @@ jobs:
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.architecture }}-agent-cli
-          path: target/${{ matrix.architecture }}/release/agent-cli
+          name: ${{ matrix.architecture }}-siera
+          path: target/${{ matrix.architecture }}/release/siera
   build-linux:
     name: build linux
     runs-on: ubuntu-latest
@@ -45,8 +45,8 @@ jobs:
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: linux-agent-cli
-          path: target/release/agent-cli
+          name: linux-siera
+          path: target/release/siera
   build-debian:
     name: build debian
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: debian-agent-cli
+          name: debian-siera
           path: target/debian/agent-cli_${{ env.VERSION }}_amd64.deb
   build-windows:
     name: build windows
@@ -85,8 +85,8 @@ jobs:
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
-          name: windows-agent-cli
-          path: target/release/agent-cli.exe
+          name: windows-siera
+          path: target/release/siera.exe
   release:
     runs-on: ubuntu-latest
     needs: [build-macos, build-linux, build-debian, build-windows]
@@ -94,17 +94,17 @@ jobs:
       - name: Download built binaries
         uses: actions/download-artifact@v3
       - run: |
-          mv aarch64-apple-darwin-agent-cli/agent-cli apple-arm-agent-cli
-          mv x86_64-apple-darwin-agent-cli/agent-cli apple-x86_64-agent-cli
-          mv linux-agent-cli/agent-cli linux-x86_64-agent-cli
-          mv debian-agent-cli/agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
-          mv windows-agent-cli/agent-cli.exe windows-x86_64-agent-cli.exe
+          mv aarch64-apple-darwin-siera/siera apple-arm-siera
+          mv x86_64-apple-darwin-siera/siera apple-x86_64-siera
+          mv linux-siera/siera linux-x86_64-siera
+          mv debian-siera/agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
+          mv windows-siera/siera.exe windows-x86_64-siera.exe
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            apple-arm-agent-cli
-            apple-x86_64-agent-cli
-            linux-x86_64-agent-cli
+            apple-arm-siera
+            apple-x86_64-siera
+            linux-x86_64-siera
             agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
-            windows-x86_64-agent-cli.exe
+            windows-x86_64-siera.exe

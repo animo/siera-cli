@@ -9,5 +9,5 @@ COPY ./Cargo.toml ./Cargo.lock ./
 RUN cargo build --release --locked
 
 # Default command, overridden in other places
-CMD ./target/release/agent-cli --version
+CMD ./target/release/siera --version
 

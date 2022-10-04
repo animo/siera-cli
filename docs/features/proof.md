@@ -1,5 +1,5 @@
 ---
-description: Present proof with the Agent CLI.
+description: Present proof with Siera.
 ---
 
 # Proof
@@ -7,7 +7,7 @@ description: Present proof with the Agent CLI.
 ### Usage
 
 ```
-agent-cli proof <SUBCOMMAND>
+siera proof <SUBCOMMAND>
 ```
 
 #### Options
@@ -27,7 +27,7 @@ agent-cli proof <SUBCOMMAND>
 Request a proof by connection id.
 
 ```
-agent-cli proof request [OPTIONS] --connection-id <CONNECTION_ID>
+siera proof request [OPTIONS] --connection-id <CONNECTION_ID>
 ```
 
 #### Available flags
@@ -45,11 +45,11 @@ Pay extra attention to the usage of `--attribute` and `--predicate`.&#x20;
 With the attribute flag, each attribute is flagged individually.
 
 ```
-agent-cli proof request -c <YOUR_CONNECTION_ID> -a attribute1 -a attribute2 -a attribute3
+siera proof request -c <YOUR_CONNECTION_ID> -a attribute1 -a attribute2 -a attribute3
 ```
 
 With the predicate flag, each predicate as a whole (the name, operator and value together) is flagged individually. The name, operator and value are comma separated and between quotes, resulting in `--predicate "name,operator,value"`.
 
 ```
-agent-cli proof request -c <YOUR_CONNECTION_ID> ... -p "date,>,20210101" -p "age,>,21"
+siera proof request -c <YOUR_CONNECTION_ID> ... -p "date,>,20210101" -p "age,>,21"
 ```

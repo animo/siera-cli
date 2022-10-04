@@ -2,12 +2,12 @@
   <br />
   <img
     alt="Siera logo"
-    src="./images/agent-cli-dark.svg#gh-dark-mode-only"
+    src="./images/siera-dark.svg#gh-dark-mode-only"
     height="250px"
   />
    <img
     alt="Siera logo"
-    src="./images/agent-cli-light.svg#gh-light-mode-only"
+    src="./images/siera-light.svg#gh-light-mode-only"
     height="250px"
   />
 </p>
@@ -31,11 +31,11 @@ Siera is the most convenient way for self-sovereign identity (SSI) developers to
 - **Automations** that you can perform against an agent
 - **Mock data** so that you can focus on the important task of building your application instead of other foobar (coming soon 🚧)
 
-If you are looking for more information about the concepts, example code and tutorials on how to use the CLI we recommend you check out our extensive [docs](https://docs.agent-cli.animo.id/).
+If you are looking for more information about the concepts, example code and tutorials on how to use the CLI we recommend you check out our extensive [docs](https://docs.siera.animo.id/).
 
 ## Installation
 
-Heres how to install the Agent CLI using the most popular package managers. For advanced installation options, binaries and troubleshooting we recommend checking out the [installation guide](https://docs.agent-cli.animo.id/guides/installation).
+Heres how to install Siera using the most popular package managers. For advanced installation options, binaries and troubleshooting we recommend checking out the [installation guide](https://docs.siera.animo.id/guides/installation).
 
 ### macOS using Brew
 
@@ -70,17 +70,17 @@ cargo install --path .
 
 ## Getting started
 
-In order to work with the Agent CLI an agent needs to be configured. With the following command you connect with our community agent and can access all the functionality.
+In order to work with Siera an agent needs to be configured. With the following command you connect with our community agent and can access all the functionality.
 
 ```sh
 siera configuration add --default
 ```
 
-This command will set up the community agent. To set up your own agent or use our multitenant agent to get your own environment, see the [set up guide](https://docs.agent-cli.animo.id/guides/configuration).
+This command will set up the community agent. To set up your own agent or use our multitenant agent to get your own environment, see the [set up guide](https://docs.siera.animo.id/guides/configuration).
 
 If you are getting started with the tool we recommend enabling informational logs by passing the `--verbose` (or `-v`) flag.
 
-To see all actions simply use the `--help` or `-h` flag or see the [feature overview](https://docs.agent-cli.animo.id/features/introduction).
+To see all actions simply use the `--help` or `-h` flag or see the [feature overview](https://docs.siera.animo.id/features/introduction).
 
 ## Roadmap
 
@@ -110,4 +110,4 @@ We intend to support multiple versions of the Aries agent. See the CLI help `sie
 ## Contributing
 
 Is there something you'd like to fix or add to the CLI? Great! We 💗 community
-contributions. [Get involved](https://docs.agent-cli.animo.id/community/contributing).
+contributions. [Get involved](https://docs.siera.animo.id/community/contributing).

@@ -1,14 +1,14 @@
 ---
-description: The Agent CLI allows you to add and choose environments through subcommands.
+description: Siera allows you to add and choose environments through subcommands.
 ---
 
 # Configuration
 
 {% hint style="info" %}
-See the guide on how to [set up the Agent CLI](../guides/configuration.md) for more information on how to add and change environments relating to your agent configuration.&#x20;
+See the guide on how to [set up Siera](../guides/configuration.md) for more information on how to add and change environments relating to your agent configuration.&#x20;
 {% endhint %}
 
-The Agent CLI supports using different environments. An environment consists of an environment name, an agent URL, an API key (optional) and a token (optional). A specific environment to use can be specified in a command using the `--environment <ENVIRONMENT>` option.&#x20;
+Siera supports using different environments. An environment consists of an environment name, an agent URL, an API key (optional) and a token (optional). A specific environment to use can be specified in a command using the `--environment <ENVIRONMENT>` option.&#x20;
 
 ```yaml
 ---
@@ -26,7 +26,7 @@ In MS Windows Powershell you need to either run your command prompt application 
 ### Usage
 
 ```
-agent-cli configuration [SUBCOMMAND]
+siera configuration [SUBCOMMAND]
 ```
 
 #### Options
@@ -66,17 +66,17 @@ aries-cli configuration add [OPTIONS]
 Add a custom environment to your configuration file.&#x20;
 
 ```
-agent-cli configuration add --environment=<YOUR_ENV_NAME> --agent-url=<YOUR_AGENT_URL> --api-key=<YOUR_API_KEY> --token=<YOUR_TOKEN>
+siera configuration add --environment=<YOUR_ENV_NAME> --agent-url=<YOUR_AGENT_URL> --api-key=<YOUR_API_KEY> --token=<YOUR_TOKEN>
 ```
 
-The Agent CLI uses the 'default' environment when no `--environment` flag is given with commands. If you want to use another environment as your default, you can override your current default environment by specifying `--environment=default` in the above command.
+Siera uses the 'default' environment when no `--environment` flag is given with commands. If you want to use another environment as your default, you can override your current default environment by specifying `--environment=default` in the above command.
 
 ### View
 
 Print your current configuration file and its path.
 
 ```
-agent-cli configuration view
+siera configuration view
 ```
 
 #### Available flags

@@ -51,7 +51,7 @@ pub enum AutomationSubcommands {
     #[clap(about = HelpStrings::CredentialDefinitionCreate)]
     CreateCredentialDefinition {
         /// Name of the schema that the credential definition will be based on
-        #[clap(long, short='n', default_value="agent-cli-schema", help = HelpStrings::AutomationCreateCredentialDefinitionName)]
+        #[clap(long, short='n', default_value="siera-schema", help = HelpStrings::AutomationCreateCredentialDefinitionName)]
         name: String,
 
         /// Attributes of the schema the credential definition will be based on

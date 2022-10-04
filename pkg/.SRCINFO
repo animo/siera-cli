@@ -1,9 +1,9 @@
-pkgbase = agent-cli
+pkgbase = siera
         pkgdesc = A CLI tool for Aries written in Rust
         pkgver = 0.0.0
         pkgrel = 1
         arch = x86_64
         license = MIT
-        provides = agent-cli
+        provides = siera
 
-pkgname = agent-cli
+pkgname = siera
