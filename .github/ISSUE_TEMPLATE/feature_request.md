@@ -4,7 +4,6 @@ about: Share your new idea or improvement
 title: ''
 labels: enhancement
 assignees: ''
-
 ---
 
 **Describe your new idea or enhancement**

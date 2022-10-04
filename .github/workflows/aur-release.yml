@@ -63,8 +63,8 @@ jobs:
           git clone ssh://aur@aur.archlinux.org/siera.git
           cd siera
           # set git username and email
-          git config user.name "animosolutions"
-          git config user.email "contact@animo.id"
+          git config user.name "Animo-bot"
+          git config user.email "development@animo.id"
           # overwrite with the new files
           cp ../PKGBUILD PKGBUILD
           cp ../.SRCINFO .SRCINFO

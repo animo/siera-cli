@@ -21,7 +21,7 @@ Steps to reproduce the behavior:
 
 A clear and concise description of what you expected to happen.
 
-**Aries CLI version (run `aries-cli --version`)**
+**Siera version (run `siera --version`)**
 
 x.x.x
 
@@ -31,7 +31,7 @@ x.x.x
 
 **Verbose logs**
 
-Run your command with the `-vvv` flag. See `aries-cli --help` for guidance.
+Run your command with the `-vvv` flag. See `siera --help` for guidance.
 
 <details>
   <summary>Logs</summary>
