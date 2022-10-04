@@ -99,11 +99,11 @@ We intend to support multiple versions of the Aries agent. See the CLI help `age
 | Multitenancy                        | ✅     | Use a personal agent environment with your personal token.                      |
 | Brew install                        | ✅     | Brew install.                                                                   |
 | Proofs                              | ✅     | Proofs.                                                                         |
-| Apt-get install                     | 🚧     | Apt-get install.                                                                |
-| Chocolaty install                   | 🚧     | Chocolaty install.                                                              |
-| Automation: offer credential custom | 🚧     | Offer a custom data credential through an automation.                           |
+| Apt-get install                     | ✅     | Apt-get install.                                                                |
+| Chocolaty install                   | ✅     | Chocolaty install.                                                              |
+| Automation: offer credential custom | ✅     | Offer a custom data credential through an automation.                           |
 | Filters                             | 🚧     | Use filters to determine what output you want returned.                         |
-| Automation: definitions custom      | 🚧     | Create a schema + credential definition with custom data through an automation. |
+| Automation: definitions custom      | ✅     | Create a schema + credential definition with custom data through an automation. |
 | Automation: proofs mock             | 🚧     | Present proof with mock data through an automation.                             |
 | Automation: proofs custom           | 🚧     | Present proof with custom data through an automation.                           |
 
