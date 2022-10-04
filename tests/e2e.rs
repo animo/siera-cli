@@ -1,11 +1,12 @@
+#[macro_use]
+mod macros;
+
+mod utils;
+
 use agent::modules::connection::Connection;
 use regex::Regex;
 use speculoos::prelude::*;
-mod helpers;
-use helpers::run_test;
-
-#[macro_use]
-mod macros;
+use utils::helpers::{run_test, REGEX_UUID};
 
 test! { smoke |cli| {
     let re = Regex::new(r"^agent-cli \d\.\d.\d").unwrap();
@@ -28,4 +29,13 @@ test! { create_connection_and_send_a_message |cli| {
     let connection: Vec<Connection> = serde_json::from_str(&connections_str).unwrap();
     let result = agent!(cli, "message --connection-id={} --message={}", connection[0].connection_id, "bar");
     assert_that(&result).is_equal_to(String::from(""))
+}}
+
+test! { create_invitation_and_receive_invitation |cli| {
+    let invitation_str = agent!(cli, "connection invite");
+    let list = invitation_str.split('\n').collect::<Vec<&str>>();
+    let url = list.get(1).unwrap();
+    let result = agent!(cli, "connection receive --url={}", *url);
+    let re = Regex::new(REGEX_UUID).unwrap();
+    assert_that(&result).matches(|v| re.is_match(v))
 }}

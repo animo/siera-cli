@@ -3,6 +3,8 @@ use std::env;
 use std::panic;
 use std::process::Command;
 
+pub const REGEX_UUID: &str = r"^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$";
+
 /// Helper function which does test set up and teardown
 pub async fn run_test<T>(test: T)
 where
