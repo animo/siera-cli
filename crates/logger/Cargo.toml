@@ -1,5 +1,7 @@
 [package]
 name = "siera-logger"
+description = "Logger for Siera."
+
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

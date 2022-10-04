@@ -1,5 +1,7 @@
 [package]
 name = "siera"
+
+description.workspace = true
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

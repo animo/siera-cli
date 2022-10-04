@@ -1,5 +1,7 @@
 [package]
 name = "siera-cloudagent-python"
+description = "Hyperledger Aries Cloudagent Python controller."
+
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

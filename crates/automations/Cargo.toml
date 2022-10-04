@@ -1,5 +1,7 @@
 [package]
 name = "siera-automations"
+description = "Automations written for an Aries Cloudagent Python agent."
+
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

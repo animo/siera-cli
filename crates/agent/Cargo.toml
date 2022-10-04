@@ -1,5 +1,7 @@
 [package]
 name = "siera-agent"
+description = "Structures and traits related to an Aries agent."
+
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

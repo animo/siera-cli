@@ -1,5 +1,7 @@
 [package]
 name = "siera-afj-rest"
+description = "Hyperledger Aries Framework JavaScript Rest controller."
+
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
