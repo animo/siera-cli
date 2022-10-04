@@ -15,5 +15,5 @@ documentation = "https://docs.siera.animo.id"
 repository = "https://github.com/animo/siera"
 categories = ["command-line-utilities"]
 license = "Apache-2.0"
-readme = "https://github.com/animo/siera/README.md"
+readme = "./README.md"
 
