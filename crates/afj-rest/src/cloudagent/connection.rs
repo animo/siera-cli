@@ -22,8 +22,21 @@ pub struct Response {
 
 #[async_trait]
 impl ConnectionModule for CloudAgentAfjRest {
-    async fn get_all(&self, _options: ConnectionGetAllOptions) -> Result<Vec<Connection>> {
-        log_debug!("Supplied options are not being used here");
+    async fn get_all(&self, options: ConnectionGetAllOptions) -> Result<Vec<Connection>> {
+        let has_defined_value = has_any_value_in_struct!(
+            options,
+            alias,
+            connection_protocol,
+            invitation_key,
+            my_did,
+            state,
+            their_did,
+            their_role
+        );
+
+        if has_defined_value {
+            log_warn!("Additional options are ignore on this endpoint.");
+        }
         let url = self.create_url(&["connections"])?;
 
         self.get(url, None).await

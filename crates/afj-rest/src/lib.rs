@@ -7,6 +7,10 @@
 #[macro_use]
 extern crate logger;
 
+#[macro_use]
+/// Macros used within this crate
+pub mod macros;
+
 /// All of the submodule functionality of an AFJ REST agent
 pub mod cloudagent;
 
