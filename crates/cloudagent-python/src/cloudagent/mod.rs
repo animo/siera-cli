@@ -6,6 +6,8 @@ mod connection;
 
 /// Module for credentials specific for an Aries cloudagent Python
 mod credential;
+/// Module for Oob for an Aries cloudagent Python
+mod oob;
 
 /// Module for credential definitions specific for an Aries cloudagent Python
 mod credential_definition;
@@ -21,3 +23,6 @@ mod schema;
 
 /// Module for multitenancy specific for an Aries cloudagent Python
 mod multitenancy;
+
+/// Module for listening to webhook for an Aries Cloudagent Python
+mod webhook;

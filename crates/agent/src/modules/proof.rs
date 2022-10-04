@@ -6,7 +6,7 @@ use serde_json::Value;
 use std::str::FromStr;
 
 /// Response from the cloudagent when a proof request is created
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct ProofRequestResponse {
     /// The state of the proof request
     pub state: String,
@@ -63,12 +63,8 @@ impl FromStr for Predicate {
             .next()
             .ok_or_else(|| Error::UnableToParseOutValue(s.to_owned()))?;
 
-        validate_operator(operator).map_err(|_| Error::InvalidOperator(operator.to_string()))?;
-        Ok(Predicate(
-            name.to_string(),
-            operator.to_string(),
-            value.to_string(),
-        ))
+        validate_operator(operator).map_err(|_| Error::InvalidOperator(operator.to_owned()))?;
+        Ok(Self(name.to_owned(), operator.to_owned(), value.to_owned()))
     }
 }
 

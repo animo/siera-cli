@@ -8,18 +8,18 @@ use std::collections::BTreeMap;
 #[async_trait]
 impl ProofModule for CloudAgentPython {
     async fn send_request(&self, options: ProofRequestOptions) -> Result<ProofRequestResponse> {
-        let url = self.create_url(vec!["present-proof", "send-request"])?;
+        let url = self.create_url(&["present-proof", "send-request"])?;
 
         let mut requested_attributes: BTreeMap<String, Value> = BTreeMap::new();
         let mut requested_predicates: BTreeMap<String, Value> = BTreeMap::new();
 
         options.attributes.iter().for_each(|a| {
-            requested_attributes.insert(a.to_owned(), json!({ "name": a, }));
+            requested_attributes.insert(a.clone(), json!({ "name": a, }));
         });
 
         options.predicates.iter().for_each(|p| {
             requested_predicates.insert(
-                p.0.to_owned(),
+                p.0.clone(),
                 json!({ "name": p.0, "p_type": p.1, "p_value": p.2 }),
             );
         });

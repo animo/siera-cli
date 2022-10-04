@@ -33,9 +33,9 @@ pub enum MultitenancySubcommands {
 /// Subcommand multitenancy parser
 pub async fn parse_multitenancy_args(
     options: &MultitenancyOptions,
-    agent: impl MultitenancyModule,
+    agent: impl MultitenancyModule + Send + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         MultitenancySubcommands::Create {} => agent.create().await.map(|response| {
@@ -44,7 +44,7 @@ pub async fn parse_multitenancy_args(
             log!("{}", pretty_stringify_obj(response));
         }),
         MultitenancySubcommands::Remove { wallet_id } => {
-            agent.remove(wallet_id.to_owned()).await?;
+            agent.remove(wallet_id.clone()).await?;
             loader.stop();
             log!("Successfully removed wallet with id: {}", wallet_id);
             Ok(())

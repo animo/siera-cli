@@ -1,11 +1,14 @@
-use crate::error::{Error, Result};
+use crate::{
+    automations::create_credential_definition::CreateCredentialDefinition,
+    error::{Error, Result},
+};
 use agent::modules::{
     connection::ConnectionModule,
     credential::{CredentialModule, CredentialOfferOptions},
-    credential_definition::{CredentialDefinitionCreateOptions, CredentialDefinitionModule},
-    schema::{SchemaCreateOptions, SchemaModule},
+    credential_definition::CredentialDefinitionModule,
+    schema::SchemaModule,
 };
-use colored::*;
+use colored::Colorize;
 use std::collections::HashMap;
 
 /// Credential offer Automation which offers an prebuilt credential to a connection
@@ -22,51 +25,52 @@ impl CredentialOfferAutomation {
     /// 2. Register the schema
     /// 3. Register the credential definition
     /// 4. Offer the credentail to the connection id
+    ///
+    /// # Errors
+    ///
+    /// - When the connection is not active
+    /// - When The schema or credential definition could not be created
+    /// - When the credential could not be send
     pub async fn execute(
         &self,
-        agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
+        agent: impl ConnectionModule
+            + CredentialModule
+            + SchemaModule
+            + CredentialDefinitionModule
+            + Send
+            + Sync,
     ) -> Result<()> {
         log_trace!("Starting automation CredentialOfferAutomation");
         log_trace!("{}", self.connection_id);
         log_trace!("{:#?}", self.attributes);
-        let attribute_keys: Vec<String> = self.attributes.keys().map(|e| e.to_owned()).collect();
-        let attribute_values: Vec<String> =
-            self.attributes.values().map(|e| e.to_owned()).collect();
+        let attribute_keys: Vec<&str> = self
+            .attributes
+            .keys()
+            .map(std::string::String::as_str)
+            .collect();
+        let attribute_values: Vec<String> = self.attributes.values().cloned().collect();
 
         // Check if it as a valid connection
         log!("{} the connection...", "Fetching".cyan());
-        let connection = ConnectionModule::get_by_id(&agent, self.connection_id.to_owned()).await?;
+        let connection = ConnectionModule::get_by_id(&agent, self.connection_id.clone()).await?;
         if connection.state != "active" && connection.state != "response" {
             return Err(Error::ConnectionNotReady.into());
         }
 
-        // Create or fetch the schema
-        log!("{} the schema...", "Registering".cyan());
-        let schema = SchemaModule::create(
-            &agent,
-            SchemaCreateOptions {
-                name: String::from("full-credential-offer-automation"),
-                attributes: attribute_keys.to_owned(),
-                version: String::from("1.0"),
-            },
-        )
-        .await?;
-
-        let options = CredentialDefinitionCreateOptions {
-            schema_id: schema.id,
-            ..CredentialDefinitionCreateOptions::default()
+        let create_credential_definition = CreateCredentialDefinition {
+            version: "1.0",
+            attributes: attribute_keys.clone(),
+            name: "full-credential-offer-automation",
         };
 
-        log!("{} the credential definition...", "Registering".cyan());
-        // Create or fetch the credential definition
-        let credential_definition = CredentialDefinitionModule::create(&agent, options).await?;
+        let credential_definition = create_credential_definition.execute(&agent).await?;
 
         log!("{} the credential...", "Offering".cyan());
         let credential_offer_response = agent
             .send_offer(CredentialOfferOptions {
-                keys: attribute_keys,
+                keys: attribute_keys.iter().map(|x| String::from(*x)).collect(),
                 values: attribute_values,
-                connection_id: self.connection_id.to_owned(),
+                connection_id: self.connection_id.clone(),
                 cred_def_id: credential_definition.credential_definition_id,
             })
             .await?;

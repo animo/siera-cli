@@ -9,8 +9,8 @@ use crate::modules::multitenancy::MultitenancyOptions;
 use crate::modules::{
     basic_message::BasicMessageOptions, configuration::ConfigurationOptions,
     connection::ConnectionOptions, credential::CredentialOptions,
-    credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions,
-    proof::ProofOptions, schema::SchemaOptions,
+    credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions, oob::OobOptions,
+    proof::ProofOptions, schema::SchemaOptions, webhook::WebhookOptions,
 };
 
 /// Main command with options, flags and subcommands
@@ -31,7 +31,7 @@ pub struct Cli {
     pub token: Option<String>,
 
     /// The agent type
-    #[clap(long, short = 'f', help = HelpStrings::ConfigurationAgent)]
+    #[clap(long, short = 'f', help = HelpStrings::Agent)]
     pub agent: Option<String>,
 
     /// Whether specific output should be copied to the clipboard
@@ -65,6 +65,12 @@ pub enum Commands {
     /// Connection subcommands
     Connection(ConnectionOptions),
 
+    /// Webhook subcommands
+    Webhook(WebhookOptions),
+
+    /// Oob subcommands
+    Oob(OobOptions),
+
     /// Feature subcommands
     Feature(FeaturesOptions),
 
@@ -80,7 +86,7 @@ pub enum Commands {
     /// Credential subcommands
     Credential(CredentialOptions),
 
-    /// Confguration subcommands
+    /// Configuration subcommands
     Configuration(ConfigurationOptions),
 
     /// Automation subcommands
@@ -89,7 +95,7 @@ pub enum Commands {
     /// Proof subcommands
     Proof(ProofOptions),
 
-    /// Multitenancy subcommnads
+    /// Multitenancy subcommands
     Multitenancy(MultitenancyOptions),
 }
 
@@ -98,6 +104,8 @@ impl From<Commands> for String {
         let s = match c {
             Commands::Automate(_) => "Automate",
             Commands::Connection(_) => "Connection",
+            Commands::Webhook(_) => "Webhook",
+            Commands::Oob(_) => "Oob",
             Commands::Feature(_) => "Feature",
             Commands::Schema(_) => "Schema",
             Commands::CredentialDefinition(_) => "CredentialDefinition",

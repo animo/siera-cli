@@ -43,9 +43,9 @@ pub enum CredentialSubcommands {
 /// Subcommand credentials parser
 pub async fn parse_credentials_args(
     commands: &CredentialSubcommands,
-    agent: impl CredentialModule,
+    agent: impl CredentialModule + Send + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
     match commands {
         CredentialSubcommands::Offer {
             connection_id,
@@ -60,14 +60,14 @@ pub async fn parse_credentials_args(
             let options = CredentialOfferOptions {
                 connection_id: connection_id.to_string(),
                 cred_def_id: cred_def_id.to_string(),
-                keys: key.iter().map(|k| k.to_string()).collect(),
-                values: value.iter().map(|v| v.to_string()).collect(),
+                keys: key.iter().map(std::string::ToString::to_string).collect(),
+                values: value.iter().map(std::string::ToString::to_string).collect(),
             };
             agent.send_offer(options).await.map(|cred| {
                 loader.stop();
                 log_debug!("{}", pretty_stringify_obj(&cred));
                 log_info!("Successefully offered a credential. Credential exchange id: ",);
-                log!("{}", cred.credential_exchange_id)
+                log!("{}", cred.credential_exchange_id);
             })
         }
     }

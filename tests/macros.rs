@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! agent {
     ($cli:expr, $($args:tt)+) => {
-        $cli.exec(&format!($($args)+).to_owned())
+        $cli.exec(&format!($($args)+).clone())
     }
 }
 

@@ -13,6 +13,9 @@ pub mod feature;
 /// Basic Message module for a generic cloudagent
 pub mod basic_message;
 
+/// Out Of Band Module for a generic cloudagent
+pub mod oob;
+
 /// Proof module for a generic cloudagent
 pub mod proof;
 
@@ -21,3 +24,6 @@ pub mod schema;
 
 /// Multitenancy module for a generic cloudagent
 pub mod multitenancy;
+
+/// webhook module for a generic cloudagent
+pub mod webhook;

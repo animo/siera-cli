@@ -8,8 +8,10 @@ use crate::modules::credential::parse_credentials_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::feature::parse_features_args;
 use crate::modules::multitenancy::parse_multitenancy_args;
+use crate::modules::oob::parse_oob_args;
 use crate::modules::proof::parse_proof_args;
 use crate::modules::schema::parse_schema_args;
+use crate::modules::webhook::parse_webhook_args;
 use crate::utils::config::{get_config_from_path, get_config_path};
 use afj_rest::agent::{CloudAgentAfjRest, CloudAgentAfjRestVersion};
 use clap::Parser;
@@ -35,19 +37,19 @@ pub async fn register() -> Result<()> {
     log_trace!("Parsed CLI options and initialized logger");
 
     // Commands where the agent is not required
-    match &cli.commands {
-        Commands::Configuration(options) => parse_configuration_args(options).await,
-        _ => {
-            let (agent_url, api_key, auth_token, agent) = transform_agent_data(
-                cli.agent,
-                cli.config,
-                cli.environment,
-                cli.agent_url,
-                cli.api_key,
-                cli.token,
-            )?;
+    if let Commands::Configuration(options) = &cli.commands {
+        parse_configuration_args(options)
+    } else {
+        let (agent_url, api_key, auth_token, agent) = transform_agent_data(
+            cli.agent,
+            cli.config,
+            cli.environment,
+            cli.agent_url,
+            cli.api_key,
+            cli.token,
+        )?;
 
-            log_debug!(
+        log_debug!(
                 "Loading agent with the following config:\n- url: {}\n- api_key: {:?}\n- agent type: {}",
                 agent_url,
                 api_key,
@@ -126,40 +128,28 @@ fn transform_agent_data(
     api_key: Option<String>,
     auth_token: Option<String>,
 ) -> Result<(String, Option<String>, Option<String>, String)> {
-    let config_path = match config {
-        Some(c) => Some(c),
-        None => {
+    let config_path = config.map_or_else(
+        || {
             let config = get_config_path();
-            match config {
-                Ok(c) => {
-                    if c.exists() {
-                        Some(c)
-                    } else {
-                        None
-                    }
-                }
-                Err(_) => None,
-            }
-        }
-    };
+            config.map_or(None, |c| if c.exists() { Some(c) } else { None })
+        },
+        Some,
+    );
 
-    let (agent_url, api_key, auth_token, agent) = match config_path {
-        Some(cp) => {
-            let configurations = get_config_from_path(&cp)?;
-            let configuration = configurations
-                .configurations
-                .get_key_value(&environment)
-                .ok_or(Error::InvalidEnvironment(environment))?;
-            let agent_url = agent_url.unwrap_or_else(|| configuration.1.endpoint.to_owned());
-            let api_key = api_key.or_else(|| configuration.1.api_key.to_owned());
-            let auth_token = auth_token.or_else(|| configuration.1.auth_token.to_owned());
-            let agent = agent.or_else(|| configuration.1.agent.to_owned());
-            (agent_url, api_key, auth_token, agent)
-        }
-        None => {
-            let agent_url = agent_url.ok_or(Error::NoAgentURLSupplied)?;
-            (agent_url, api_key, auth_token, agent)
-        }
+    let (agent_url, api_key, auth_token, agent) = if let Some(cp) = config_path {
+        let configurations = get_config_from_path(&cp)?;
+        let configuration = configurations
+            .configurations
+            .get_key_value(&environment)
+            .ok_or(Error::InvalidEnvironment(environment))?;
+        let agent_url = agent_url.unwrap_or_else(|| configuration.1.endpoint.clone());
+        let api_key = api_key.or_else(|| configuration.1.api_key.clone());
+        let auth_token = auth_token.or_else(|| configuration.1.auth_token.clone());
+        let agent = agent.or_else(|| configuration.1.agent.clone());
+        (agent_url, api_key, auth_token, agent)
+    } else {
+        let agent_url = agent_url.ok_or(Error::NoAgentURLSupplied)?;
+        (agent_url, api_key, auth_token, agent)
     };
 
     let agent = agent.or_else(|| Some(String::from("aca-py")));

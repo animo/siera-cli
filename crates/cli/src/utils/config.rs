@@ -78,7 +78,7 @@ impl Configuration {
     /// Add a new agent to the configuration or update a current environment
     pub fn add(environment: String, configuration: Environment) -> Result<()> {
         let path = get_config_path()?;
-        let mut current_configuration = get_config_from_path(&path).unwrap_or(Configuration {
+        let mut current_configuration = get_config_from_path(&path).unwrap_or(Self {
             configurations: BTreeMap::new(),
         });
         current_configuration
@@ -136,10 +136,7 @@ pub fn get_config_path() -> Result<PathBuf> {
         let home = "C:\\Program Files\\Common Files";
         Ok(Path::new(home).join("agent-cli\\config.yaml"))
     } else if cfg!(unix) {
-        let home = match std::env::var("HOME") {
-            Ok(h) => Ok(h),
-            Err(_) => Err(Error::HomeNotFound),
-        };
+        let home = std::env::var("HOME").map_or(Err(Error::HomeNotFound), Ok);
         Ok(Path::new(&home?).join(".config/agent-cli/config.yaml"))
     } else {
         Err(Error::OsUnknown.into())

@@ -53,9 +53,9 @@ pub enum CredentialDefinitionSubcommands {
 /// Subcommand Credential Definition parser
 pub async fn parse_credential_definition_args(
     options: &CredentialDefinitionOptions,
-    agent: impl CredentialDefinitionModule,
+    agent: impl CredentialDefinitionModule + Send + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         CredentialDefinitionSubcommands::Create {
@@ -78,7 +78,7 @@ pub async fn parse_credential_definition_args(
             })
         }
         CredentialDefinitionSubcommands::List { id } => match id {
-            Some(i) => agent.get_by_id(i.to_owned()).await.map(|cred_def| {
+            Some(i) => agent.get_by_id(i.clone()).await.map(|cred_def| {
                 loader.stop();
                 let loggable = json!({
                     "id": cred_def.id,

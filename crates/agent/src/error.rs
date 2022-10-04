@@ -6,6 +6,9 @@ pub enum Error {
     /// The cloudagent did not allow the request without proper authorization
     AuthorizationFailed,
 
+    /// The specified environment does not exist inside the configuration file
+    InvalidAgentUrl(String),
+
     /// The server gave a response that was not expected and therefore not deserializeable
     UnableToParseResponse,
 

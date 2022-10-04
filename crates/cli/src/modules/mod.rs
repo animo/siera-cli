@@ -7,6 +7,9 @@ pub mod basic_message;
 /// Module for configuration manipulation
 pub mod configuration;
 
+/// Module for oob
+pub mod oob;
+
 /// Module for connections
 pub mod connection;
 
@@ -27,3 +30,6 @@ pub mod schema;
 
 /// Module for multitenancy
 pub mod multitenancy;
+
+/// Module for webhook
+pub mod webhook;

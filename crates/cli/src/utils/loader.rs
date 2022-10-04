@@ -13,6 +13,7 @@ macro_rules! print_char_with_stop {
 }
 
 /// All the types of loaders
+#[derive(Clone)]
 pub enum LoaderVariant {
     /// Simple spinner loader that iterates over:
     /// / - | \
@@ -33,19 +34,19 @@ pub struct Loader {
 /// if unsure about which loader variant to call
 impl Default for LoaderVariant {
     fn default() -> Self {
-        LoaderVariant::Spinner
+        Self::Spinner
     }
 }
 
 impl Loader {
     /// Start a specific loader
-    pub fn start(loader_variant: LoaderVariant) -> Self {
+    pub fn start(loader_variant: &LoaderVariant) -> Self {
         let (sender, receiver) = std::sync::mpsc::channel::<bool>();
         match loader_variant {
-            LoaderVariant::Spinner => Loader::loader_spinner(receiver),
-            LoaderVariant::Dots => Loader::loader_dots(receiver),
+            LoaderVariant::Spinner => Self::loader_spinner(receiver),
+            LoaderVariant::Dots => Self::loader_dots(receiver),
         };
-        Loader { sender }
+        Self { sender }
     }
 
     /// Stop the loader instance

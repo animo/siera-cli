@@ -3,7 +3,7 @@ use crate::error::{self, Error};
 use crate::help_strings::HelpStrings;
 use crate::utils::config::{get_config_path, Configuration, Environment};
 use clap::{Args, Subcommand};
-use colored::*;
+use colored::Colorize;
 use std::fs;
 
 /// Configuration options and flags
@@ -60,7 +60,7 @@ pub enum ConfigurationSubcommands {
 }
 
 /// Subcommand configuration parser
-pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
+pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
     let config_path = get_config_path()?;
     match &options.commands {
         ConfigurationSubcommands::View => {
@@ -85,7 +85,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
             agent,
         } => {
             if *default {
-                let (environment, configuration) = Configuration::init(token.to_owned());
+                let (environment, configuration) = Configuration::init(token.clone());
                 Configuration::add(environment, configuration)?;
                 log_info!(
                     "Successfully added the default agent at {}.",
@@ -95,14 +95,14 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
             }
             log_debug!("Adding a new entry to the configuration file");
             let path = get_config_path()?;
-            let endpoint = agent_url.to_owned().ok_or(Error::NoAgentURLSupplied)?;
-            let environment = environment.to_owned().ok_or(Error::NoEnvironmentSupplied)?;
+            let endpoint = agent_url.clone().ok_or(Error::NoAgentURLSupplied)?;
+            let environment = environment.clone().ok_or(Error::NoEnvironmentSupplied)?;
             let env = Environment {
                 endpoint,
-                api_key: api_key.to_owned(),
-                auth_token: token.to_owned(),
+                api_key: api_key.clone(),
+                auth_token: token.clone(),
                 // TODO: this can only be aca-py or afj
-                agent: agent.to_owned(),
+                agent: agent.clone(),
             };
             log_info!(
                 "Writing {}: {} to {}",
@@ -126,7 +126,7 @@ pub async fn parse_configuration_args(options: &ConfigurationOptions) -> Result<
                 "Removing".bold().red(),
                 environment.bold()
             );
-            Configuration::remove(environment.to_owned())?;
+            Configuration::remove(environment.clone())?;
             log!(
                 "{} {} from the configuration",
                 "Removed".bold().red(),

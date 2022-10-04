@@ -42,7 +42,8 @@ impl std::fmt::Display for CloudAgentAfjRest {
 
 impl CloudAgentAfjRest {
     /// Create a new instance of an AFJ REST agent
-    pub fn new(
+    #[must_use]
+    pub const fn new(
         endpoint: String,
         version: CloudAgentAfjRestVersion,
         api_key: Option<String>,
@@ -50,14 +51,18 @@ impl CloudAgentAfjRest {
     ) -> Self {
         Self {
             endpoint,
-            version,
             api_key,
             auth_token,
+            version,
         }
     }
 
     /// Create a url based on the base url and a list of paths
-    pub fn create_url(&self, paths: Vec<&str>) -> Result<Url> {
+    ///
+    /// # Errors
+    ///
+    /// When it could not parse the url
+    pub fn create_url(&self, paths: &[&str]) -> Result<Url> {
         let mut url = Url::parse(&self.endpoint)
             .map_err(|_| Box::new(Error::UnreachableUrl) as Box<dyn std::error::Error>)?;
         url.set_path(&paths.join("/"));

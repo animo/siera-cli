@@ -12,7 +12,7 @@ use automations::automations::{
     credential_offer::CredentialOfferAutomation,
 };
 use clap::{Args, Subcommand};
-use colored::*;
+use colored::Colorize;
 use std::collections::HashMap;
 
 /// Automation options and flags
@@ -48,7 +48,7 @@ pub enum AutomationSubcommands {
     },
 
     /// Create a credential definition subcommand
-    #[clap(about = HelpStrings::AutomationCreateCredentialDefinition )]
+    #[clap(about = HelpStrings::CredentialDefinitionCreate)]
     CreateCredentialDefinition {
         /// Name of the schema that the credential definition will be based on
         #[clap(long, short='n', default_value="agent-cli-schema", help = HelpStrings::AutomationCreateCredentialDefinitionName)]
@@ -65,11 +65,18 @@ pub enum AutomationSubcommands {
 }
 
 /// Subcommand Automation parser
+/// TODO: this should not take an agent. This means we need every feature for every automation and
+/// not a single one
 pub async fn parse_automation_args(
     options: &AutomationOptions,
-    agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
+    agent: impl ConnectionModule
+        + CredentialModule
+        + SchemaModule
+        + CredentialDefinitionModule
+        + Send
+        + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         AutomationSubcommands::CredentialOffer {
@@ -78,7 +85,7 @@ pub async fn parse_automation_args(
             sent_to_self,
             no_qr,
         } => match connection_id {
-            Some(c) => credential_offer(c.to_owned(), agent).await?,
+            Some(c) => credential_offer(c.clone(), agent).await?,
             None => {
                 let connection = agent
                     .create_invitation(ConnectionCreateInvitationOptions {
@@ -147,11 +154,11 @@ pub async fn parse_automation_args(
             attributes,
         } => {
             let automation = CreateCredentialDefinition {
-                name: name.to_owned(),
-                version: version.to_owned(),
-                attributes: attributes.to_owned(),
+                name,
+                version,
+                attributes: attributes.iter().map(std::string::String::as_str).collect(),
             };
-            automation.execute(agent).await?;
+            automation.execute(&agent).await?;
         }
     };
     Ok(())
@@ -160,7 +167,12 @@ pub async fn parse_automation_args(
 /// Building and offering the credential
 async fn credential_offer(
     connection_id: String,
-    agent: impl ConnectionModule + CredentialModule + SchemaModule + CredentialDefinitionModule,
+    agent: impl ConnectionModule
+        + CredentialModule
+        + SchemaModule
+        + CredentialDefinitionModule
+        + Send
+        + Sync,
 ) -> Result<()> {
     // Mock credential
     let mut attributes: HashMap<String, String> = HashMap::new();

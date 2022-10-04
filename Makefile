@@ -6,6 +6,9 @@ format:
 lint:
 	cargo clippy
 
+lint-strict:
+	cargo clippy -- -D clippy::all -D clippy::pedantic -D clippy::nursery -D clippy::missing_docs_in_private_items -A clippy::struct_excessive_bools -A clippy::module_name_repetitions -A clippy::only_used_in_recursion
+
 build:
 	cargo build --release
 

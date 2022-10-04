@@ -95,9 +95,9 @@ pub enum ConnectionSubcommands {
 /// Subcommand connection parser
 pub async fn parse_connection_args(
     options: &ConnectionOptions,
-    agent: impl ConnectionModule,
+    agent: impl ConnectionModule + Send + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         ConnectionSubcommands::Invite {
@@ -108,7 +108,7 @@ pub async fn parse_connection_args(
             alias,
         } => {
             let options = ConnectionCreateInvitationOptions {
-                alias: alias.as_deref().map(|a| a.to_string()),
+                alias: alias.as_deref().map(std::borrow::ToOwned::to_owned),
                 auto_accept: *auto_accept,
                 multi_use: *multi_use,
                 qr: *qr,
@@ -129,7 +129,7 @@ pub async fn parse_connection_args(
             })
         }
         ConnectionSubcommands::Receive { url } => {
-            let invitation = invite_url_to_struct(url.to_owned())?;
+            let invitation = invite_url_to_struct(url)?;
             agent
                 .receive_invitation(invitation)
                 .await
@@ -149,25 +149,29 @@ pub async fn parse_connection_args(
             state,
             their_did,
         } => match id {
-            Some(i) => agent.get_by_id(i.to_owned()).await.map(|connection| {
+            Some(i) => agent.get_by_id(i.clone()).await.map(|connection| {
                 loader.stop();
                 copy!("{}", pretty_stringify_obj(&connection));
-                log!("{}", pretty_stringify_obj(connection))
+                log!("{}", pretty_stringify_obj(connection));
             }),
             None => {
                 let options = ConnectionGetAllOptions {
-                    alias: alias.as_deref().map(|a| a.to_string()),
-                    their_did: their_did.as_deref().map(|t| t.to_string()),
-                    state: state.as_deref().map(|s| s.to_string()),
-                    my_did: my_did.as_deref().map(|m| m.to_string()),
-                    invitation_key: invitation_key.as_deref().map(|i| i.to_string()),
-                    connection_protocol: connection_protocol.as_deref().map(|c| c.to_string()),
-                    their_role: their_role.as_deref().map(|t| t.to_string()),
+                    alias: alias.as_deref().map(std::string::ToString::to_string),
+                    their_did: their_did.as_deref().map(std::string::ToString::to_string),
+                    state: state.as_deref().map(std::string::ToString::to_string),
+                    my_did: my_did.as_deref().map(std::string::ToString::to_string),
+                    invitation_key: invitation_key
+                        .as_deref()
+                        .map(std::string::ToString::to_string),
+                    connection_protocol: connection_protocol
+                        .as_deref()
+                        .map(std::string::ToString::to_string),
+                    their_role: their_role.as_deref().map(std::string::ToString::to_string),
                 };
                 agent.get_all(options).await.map(|connections| {
                     loader.stop();
-                    copy!("{}", pretty_stringify_obj(&connections));
-                    log!("{}", pretty_stringify_obj(connections))
+                    copy!("{}", pretty_stringify_obj(&connections.results));
+                    log!("{}", pretty_stringify_obj(connections.results));
                 })
             }
         },
@@ -175,11 +179,12 @@ pub async fn parse_connection_args(
 }
 
 /// Create an invitation struct from an invitation url
-pub fn invite_url_to_struct(url: String) -> Result<ConnectionReceiveInvitationOptions> {
+pub fn invite_url_to_struct(url: impl AsRef<str>) -> Result<ConnectionReceiveInvitationOptions> {
     // Split the url
     let split_url = url
+        .as_ref()
         .split("c_i=")
-        .map(|u| u.to_owned())
+        .map(std::borrow::ToOwned::to_owned)
         .collect::<Vec<String>>();
 
     // Get the query parameters
@@ -187,7 +192,7 @@ pub fn invite_url_to_struct(url: String) -> Result<ConnectionReceiveInvitationOp
         .get(1)
         .ok_or(Error::InvalidAgentInvitation)?
         .split('&')
-        .map(|u| u.to_owned())
+        .map(std::borrow::ToOwned::to_owned)
         .collect::<Vec<String>>();
 
     let serialized_invitation = query_parameters
@@ -202,5 +207,5 @@ pub fn invite_url_to_struct(url: String) -> Result<ConnectionReceiveInvitationOp
     let decoded_str = str::from_utf8(&decoded)?;
 
     // Convert the string to an invitation object
-    serde_json::from_str(decoded_str).map_err(|e| e.into())
+    serde_json::from_str(decoded_str).map_err(std::convert::Into::into)
 }

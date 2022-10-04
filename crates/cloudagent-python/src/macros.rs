@@ -2,9 +2,9 @@
 /// Macro to fill a vector<(str,str)> with a structure where fields can be optional
 ///
 /// ```rust
-/// struct Foo {
-///     a: Option<'static str>
-///     b: Option<'static str>
+/// struct Foo<'a> {
+///     a: Option<'a str>
+///     b: Option<'a str>
 /// }
 ///
 /// let foo = Foo {a: 'baz', b: 'bar'}
@@ -22,7 +22,7 @@ macro_rules! fill_query {
         {
             let mut query = Vec::new();
             $(
-                $options.$field.as_ref().map(|c| query.push((stringify!($field), c.to_string())));
+                $options.$field.as_ref().map(|c| query.push((stringify!($field), c.to_owned())));
             )*
             query
         }
