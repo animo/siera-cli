@@ -27,8 +27,8 @@ test! { create_connection_and_send_a_message |cli| {
     agent!(cli, "connection invite");
     let connections_str = agent!(cli, "connection list");
     let connection: Vec<Connection> = serde_json::from_str(&connections_str).unwrap();
-    let result = agent!(cli, "message --connection-id={} --message={}", connection[0].connection_id, "bar");
-    assert_that(&result).is_equal_to(String::from(""))
+    let result = agent!(cli, "message --connection-id={} --message={}", connection[0].id, "bar");
+    assert_that(&result).is_equal_to(String::from("Successfully sent message"))
 }}
 
 test! { create_invitation_and_receive_invitation |cli| {
