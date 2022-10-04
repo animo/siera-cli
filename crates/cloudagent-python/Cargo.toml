@@ -12,8 +12,8 @@ license.workspace = true
 readme.workspace = true
 
 [dependencies]
-siera-agent = { path = "../agent" }
-siera-logger = { path = "../logger" }
+siera-agent = { path = "../agent", version = "*" }
+siera-logger = { path = "../logger", version = "*" }
 async-trait = "0.1.51"
 reqwest = { version = "0.11", features = ["json"] }
 serde = { version = "1.0.130", features = ["derive"] }

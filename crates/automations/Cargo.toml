@@ -12,8 +12,8 @@ license.workspace = true
 readme.workspace = true
 
 [dependencies]
-siera-cloudagent-python = { path = "../cloudagent-python" }
-siera-logger = { path = "../logger" }
-siera-agent = { path = "../agent" }
+siera-cloudagent-python = { path = "../cloudagent-python", version = "*" }
+siera-logger = { path = "../logger", version = "*" }
+siera-agent = { path = "../agent", version = "*" }
 colored = "2.0.0"
 async-trait = "0.1.51"
