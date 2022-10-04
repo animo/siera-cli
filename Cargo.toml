@@ -1,6 +1,6 @@
 [package]
 name = "agent-cli"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
   "Berend Sliedrecht <berend@animo.id>",
   "Moritz Schlichting <moritz@animo.id>",
