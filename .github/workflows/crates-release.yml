@@ -1,0 +1,23 @@
+name: Crates.io Release
+
+on:
+  workflow_run:
+    workflows: ["build-and-release"]
+    types:
+      - completed
+  workflow_dispatch:
+    
+jobs:
+  release-crates:
+    name: Release crates.io
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    steps:
+        - uses: actions/checkout@v2
+        - uses: actions-rs/toolchain@v1
+          with:
+              toolchain: stable
+              override: true
+        - uses: katyo/publish-crates@v1
+          with:
+              registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
