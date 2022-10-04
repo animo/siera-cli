@@ -263,7 +263,7 @@ const HELP_STRING_CONNECTIONS_INVITE_TOOLBOX: &str =
     and gives admin rights over the invitation to the toolbox";
 
 const HELP_STRING_CLI: &str = "
---- Siera ---
+----- Siera -----
 
 To begin working with the siera, run the following command:
 

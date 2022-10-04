@@ -1,8 +1,10 @@
 use crate::agent::CloudAgentAfjRest;
-use agent::error::{Error, Result};
-use agent::modules::schema::{Schema, SchemaCreateOptions, SchemaModule, SchemasGetAllResponse};
 use async_trait::async_trait;
 use serde_json::json;
+use siera_agent::error::{Error, Result};
+use siera_agent::modules::schema::{
+    Schema, SchemaCreateOptions, SchemaModule, SchemasGetAllResponse,
+};
 
 #[async_trait]
 impl SchemaModule for CloudAgentAfjRest {

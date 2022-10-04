@@ -1,13 +1,13 @@
 use crate::agent::CloudAgentPython;
 use crate::fill_query;
-use agent::error::Result;
-use agent::modules::connection::{
-    Connection, ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
-    ConnectionReceiveInvitationOptions, Invitation,
-};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use siera_agent::error::Result;
+use siera_agent::modules::connection::{
+    Connection, ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
+    ConnectionReceiveInvitationOptions, Invitation,
+};
 
 /// Response from the server when all connections are requested
 #[derive(Debug, Serialize, Deserialize)]

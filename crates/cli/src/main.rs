@@ -6,7 +6,7 @@
 
 /// Access logger macros
 #[macro_use]
-extern crate logger;
+extern crate siera_logger;
 
 use register::register;
 

@@ -2,12 +2,12 @@ use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr::print_qr_code;
-use agent::modules::connection::{
+use clap::{Args, Subcommand};
+use siera_agent::modules::connection::{
     ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
     ConnectionReceiveInvitationOptions,
 };
-use clap::{Args, Subcommand};
-use logger::{copy, pretty_stringify_obj};
+use siera_logger::{copy, pretty_stringify_obj};
 use std::str;
 
 /// Connection options and flags

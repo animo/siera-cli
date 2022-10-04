@@ -1,9 +1,9 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::modules::multitenancy::MultitenancyModule;
 use clap::{Args, Subcommand};
-use logger::pretty_stringify_obj;
+use siera_agent::modules::multitenancy::MultitenancyModule;
+use siera_logger::pretty_stringify_obj;
 
 /// Credential Definition options and flags
 #[derive(Args)]

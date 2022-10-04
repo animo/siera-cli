@@ -1,9 +1,9 @@
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::modules::schema::{SchemaCreateOptions, SchemaModule};
 use clap::{Args, Subcommand};
-use logger::pretty_stringify_obj;
+use siera_agent::modules::schema::{SchemaCreateOptions, SchemaModule};
+use siera_logger::pretty_stringify_obj;
 
 /// Schema options and flags
 #[derive(Args)]

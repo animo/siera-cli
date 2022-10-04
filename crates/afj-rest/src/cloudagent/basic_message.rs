@@ -1,8 +1,8 @@
 use crate::agent::CloudAgentAfjRest;
-use agent::error::Result;
-use agent::modules::basic_message::{BasicMessageModule, SendBasicMessageOptions};
 use async_trait::async_trait;
 use serde_json::json;
+use siera_agent::error::Result;
+use siera_agent::modules::basic_message::{BasicMessageModule, SendBasicMessageOptions};
 
 #[async_trait]
 impl BasicMessageModule for CloudAgentAfjRest {

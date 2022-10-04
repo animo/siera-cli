@@ -1,11 +1,11 @@
 use crate::agent::CloudAgentPython;
-use agent::error::Result;
-use agent::modules::oob::{
+use async_trait::async_trait;
+use serde_json::json;
+use siera_agent::error::Result;
+use siera_agent::modules::oob::{
     OobConnection, OobConnectionCreateInvitationOptions, OobConnectionCreateInvitationResponse,
     OobConnectionReceiveInvitationOptions, OobModule,
 };
-use async_trait::async_trait;
-use serde_json::json;
 
 #[async_trait]
 impl OobModule for CloudAgentPython {

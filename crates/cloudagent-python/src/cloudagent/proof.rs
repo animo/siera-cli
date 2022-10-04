@@ -1,8 +1,8 @@
 use crate::agent::CloudAgentPython;
-use agent::error::Result;
-use agent::modules::proof::{ProofModule, ProofRequestOptions, ProofRequestResponse};
 use async_trait::async_trait;
 use serde_json::{json, Value};
+use siera_agent::error::Result;
+use siera_agent::modules::proof::{ProofModule, ProofRequestOptions, ProofRequestResponse};
 use std::collections::BTreeMap;
 
 #[async_trait]

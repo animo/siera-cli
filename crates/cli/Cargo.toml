@@ -1,14 +1,20 @@
 [package]
-name = "cli"
-version = "0.0.0"
-edition = "2021"
+name = "siera"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
 
 [dependencies]
-afj-rest = { path = "../afj-rest" }
-cloudagent-python = { path = "../cloudagent-python" }
-agent = { path = "../agent" }
-automations = { path = "../automations" }
-logger = { path = "../logger" }
+siera-agent = { path = "../agent" }
+siera-automations = { path = "../automations" }
+siera-afj-rest = { path = "../afj-rest" }
+siera-cloudagent-python = { path = "../cloudagent-python" }
+siera-logger = { path = "../logger" }
 base64 = "0.13.0"
 clap = { version = "3.1.0", features = ["derive"] }
 clipboard = "0.5.0"

@@ -1,12 +1,12 @@
 use crate::agent::CloudAgentAfjRest;
-use agent::error::Result;
-use agent::modules::connection::{
-    Connection, ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
-    ConnectionReceiveInvitationOptions, Invitation,
-};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
+use siera_agent::error::Result;
+use siera_agent::modules::connection::{
+    Connection, ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
+    ConnectionReceiveInvitationOptions, Invitation,
+};
 
 /// Create invitation response
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

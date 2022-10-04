@@ -1,8 +1,8 @@
 use crate::agent::CloudAgentPython;
-use agent::modules::multitenancy::MultitenancyModule;
-use agent::{error::Result, modules::multitenancy::MultitenancyCreateResponse};
 use async_trait::async_trait;
 use serde_json::{json, Value};
+use siera_agent::modules::multitenancy::MultitenancyModule;
+use siera_agent::{error::Result, modules::multitenancy::MultitenancyCreateResponse};
 
 #[async_trait]
 impl MultitenancyModule for CloudAgentPython {

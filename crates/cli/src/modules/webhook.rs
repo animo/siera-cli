@@ -1,9 +1,9 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
-use agent::modules::webhook::WebhookModule;
 use clap::{Args, Subcommand};
 use colored::Colorize;
-use logger::pretty_stringify_obj;
+use siera_agent::modules::webhook::WebhookModule;
+use siera_logger::pretty_stringify_obj;
 
 /// Webhook options and flags
 #[derive(Args)]

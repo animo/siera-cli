@@ -1,9 +1,9 @@
 use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::modules::proof::{Predicate, ProofModule, ProofRequestOptions};
 use clap::{Args, Subcommand};
-use logger::pretty_stringify_obj;
+use siera_agent::modules::proof::{Predicate, ProofModule, ProofRequestOptions};
+use siera_logger::pretty_stringify_obj;
 
 /// Proof options and flags
 #[derive(Args)]

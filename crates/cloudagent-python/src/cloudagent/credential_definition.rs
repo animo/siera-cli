@@ -1,12 +1,12 @@
 use crate::agent::CloudAgentPython;
-use agent::error::Result;
-use agent::modules::credential_definition::{
+use async_trait::async_trait;
+use serde_json::json;
+use siera_agent::error::Result;
+use siera_agent::modules::credential_definition::{
     CredentialDefinition, CredentialDefinitionCreateOptions, CredentialDefinitionCreateResponse,
     CredentialDefinitionGetAllResponse, CredentialDefinitionGetByIdResponse,
     CredentialDefinitionModule,
 };
-use async_trait::async_trait;
-use serde_json::json;
 
 #[async_trait]
 impl CredentialDefinitionModule for CloudAgentPython {

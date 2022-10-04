@@ -2,11 +2,11 @@ use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr::print_qr_code;
-use agent::modules::oob::{
+use clap::{Args, Subcommand};
+use siera_agent::modules::oob::{
     OobConnectionCreateInvitationOptions, OobConnectionReceiveInvitationOptions, OobModule,
 };
-use clap::{Args, Subcommand};
-use logger::{copy, pretty_stringify_obj};
+use siera_logger::{copy, pretty_stringify_obj};
 use std::str;
 
 /// Oob options and flags

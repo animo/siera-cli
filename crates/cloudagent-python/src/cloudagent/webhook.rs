@@ -1,8 +1,8 @@
 use crate::agent::CloudAgentPython;
-use agent::error::{Error, Result};
-use agent::modules::webhook::WebhookModule;
 use async_trait::async_trait;
-use logger::log;
+use siera_agent::error::{Error, Result};
+use siera_agent::modules::webhook::WebhookModule;
+use siera_logger::log;
 use tungstenite::connect;
 
 #[async_trait]

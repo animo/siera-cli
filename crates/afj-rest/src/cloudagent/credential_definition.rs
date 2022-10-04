@@ -1,11 +1,11 @@
 use crate::agent::CloudAgentAfjRest;
-use agent::error::{Error, Result};
-use agent::modules::credential_definition::{
+use async_trait::async_trait;
+use serde_json::json;
+use siera_agent::error::{Error, Result};
+use siera_agent::modules::credential_definition::{
     CredentialDefinition, CredentialDefinitionCreateOptions, CredentialDefinitionCreateResponse,
     CredentialDefinitionGetAllResponse, CredentialDefinitionModule,
 };
-use async_trait::async_trait;
-use serde_json::json;
 
 #[async_trait]
 impl CredentialDefinitionModule for CloudAgentAfjRest {

@@ -1,11 +1,17 @@
 [package]
-name = "cloudagent-python"
-version = "0.0.0"
-edition = "2021"
+name = "siera-cloudagent-python"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
 
 [dependencies]
-agent = { path = "../agent" }
-logger = { path = "../logger" }
+siera-agent = { path = "../agent" }
+siera-logger = { path = "../logger" }
 async-trait = "0.1.51"
 reqwest = { version = "0.11", features = ["json"] }
 serde = { version = "1.0.130", features = ["derive"] }

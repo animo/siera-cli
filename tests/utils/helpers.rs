@@ -1,4 +1,4 @@
-use agent::modules::multitenancy::MultitenancyCreateResponse;
+use siera_agent::modules::multitenancy::MultitenancyCreateResponse;
 use std::env;
 use std::panic;
 use std::process::Command;

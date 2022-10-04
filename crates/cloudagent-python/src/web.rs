@@ -1,9 +1,9 @@
 use crate::agent::CloudAgentPython;
-use agent::error::{Error, Result};
-use logger::pretty_stringify_obj;
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
+use siera_agent::error::{Error, Result};
+use siera_logger::pretty_stringify_obj;
 use std::fmt::Debug;
 
 /// Call logic for http calls

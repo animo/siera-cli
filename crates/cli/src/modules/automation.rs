@@ -3,16 +3,16 @@ use crate::help_strings::HelpStrings;
 use crate::modules::connection::invite_url_to_struct;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr;
-use agent::modules::connection::{ConnectionCreateInvitationOptions, ConnectionModule};
-use agent::modules::credential::CredentialModule;
-use agent::modules::credential_definition::CredentialDefinitionModule;
-use agent::modules::schema::SchemaModule;
-use automations::automations::{
+use clap::{Args, Subcommand};
+use colored::Colorize;
+use siera_agent::modules::connection::{ConnectionCreateInvitationOptions, ConnectionModule};
+use siera_agent::modules::credential::CredentialModule;
+use siera_agent::modules::credential_definition::CredentialDefinitionModule;
+use siera_agent::modules::schema::SchemaModule;
+use siera_automations::automations::{
     create_credential_definition::CreateCredentialDefinition,
     credential_offer::CredentialOfferAutomation,
 };
-use clap::{Args, Subcommand};
-use colored::Colorize;
 use std::collections::HashMap;
 
 /// Automation options and flags

@@ -1,9 +1,11 @@
 use crate::agent::CloudAgentPython;
-use agent::error::Result;
-use agent::modules::schema::{Schema, SchemaCreateOptions, SchemaModule, SchemasGetAllResponse};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use siera_agent::error::Result;
+use siera_agent::modules::schema::{
+    Schema, SchemaCreateOptions, SchemaModule, SchemasGetAllResponse,
+};
 
 /// Reponse from the cloudagent that contains the wrapped schema
 #[derive(Serialize, Deserialize, Debug)]

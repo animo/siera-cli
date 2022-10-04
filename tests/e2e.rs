@@ -3,7 +3,7 @@ mod macros;
 
 mod utils;
 
-use agent::modules::connection::Connection;
+use siera_agent::modules::connection::Connection;
 use regex::Regex;
 use speculoos::prelude::*;
 use utils::helpers::{run_test, REGEX_UUID};
