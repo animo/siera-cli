@@ -278,7 +278,7 @@ Some example commands are the following:
         - fetches all the connections (jq compatible)
     $ agent-cli connection invite --qr
         - create an invitation (as a qr code)
-    $ agent-cli features
+    $ agent-cli feature
         - Fetches all the features of the cloudagent
     $ agent-cli schema create --name FOO -a BAR -a BAZ
         - Create a new schema with the name as 'FOO' and the attributes as 'BAR' and 'BAZ'
