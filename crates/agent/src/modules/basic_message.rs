@@ -1,5 +1,5 @@
-use async_trait::async_trait;
 use crate::error::Result;
+use async_trait::async_trait;
 
 /// Options that are supplied when sending a basic message to another agent
 pub struct SendBasicMessageOptions {

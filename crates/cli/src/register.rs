@@ -56,65 +56,53 @@ pub async fn register() -> Result<()> {
                 agent
             );
 
-            // TODO: Ideally we would get an Agent<A> here that we would pass into the commands
-            match agent.as_str() {
-                "aca-py" => {
-                    let version = CloudAgentPythonVersion::ZeroSevenThree;
-                    let agent = CloudAgentPython::new(agent_url, version, api_key, auth_token);
-                    // Commands that require the agent
-                    match &cli.commands {
-                        Commands::Schema(options) => parse_schema_args(options, agent).await,
-                        Commands::Feature(_) => parse_features_args(agent).await,
-                        Commands::Message(options) => {
-                            parse_basic_message_args(options, agent).await
-                        }
-                        Commands::CredentialDefinition(options) => {
-                            parse_credential_definition_args(options, agent).await
-                        }
-                        Commands::Connection(options) => {
-                            parse_connection_args(options, agent).await
-                        }
-                        Commands::Credential(options) => {
-                            parse_credentials_args(&options.commands, agent).await
-                        }
-                        Commands::Proof(options) => {
-                            parse_proof_args(&options.commands, agent).await
-                        }
-                        Commands::Multitenancy(options) => {
-                            parse_multitenancy_args(options, agent).await
-                        }
-                        Commands::Automate(options) => parse_automation_args(options, agent).await,
-                        _ => Err(Error::SubcommandNotRegisteredForAgent(
-                            cli.commands.into(),
-                            "aca-py",
-                        )
-                        .into()),
+        // TODO: Ideally we would get an Agent<A> here that we would pass into the commands
+        match agent.as_str() {
+            "aca-py" => {
+                let version = CloudAgentPythonVersion::ZeroSevenThree;
+                let agent = CloudAgentPython::new(agent_url, version, api_key, auth_token);
+                // Commands that require the agent
+                match &cli.commands {
+                    Commands::Schema(options) => parse_schema_args(options, agent).await,
+                    Commands::Feature(_) => parse_features_args(agent).await,
+                    Commands::Message(options) => parse_basic_message_args(options, agent).await,
+                    Commands::CredentialDefinition(options) => {
+                        parse_credential_definition_args(options, agent).await
                     }
-                }
-                "afj" => {
-                    let version = CloudAgentAfjRestVersion::ZeroEightZero;
-                    let agent = CloudAgentAfjRest::new(agent_url, version, api_key, auth_token);
-                    match &cli.commands {
-                        // TODO: should accept struct that has a field that implements the module
-                        Commands::Schema(options) => parse_schema_args(options, agent).await,
-                        Commands::CredentialDefinition(options) => {
-                            parse_credential_definition_args(options, agent).await
-                        }
-                        Commands::Connection(options) => {
-                            parse_connection_args(options, agent).await
-                        }
-                        Commands::Message(options) => {
-                            parse_basic_message_args(options, agent).await
-                        }
-                        _ => Err(Error::SubcommandNotRegisteredForAgent(
-                            cli.commands.into(),
-                            "afj",
-                        )
-                        .into()),
+                    Commands::Connection(options) => parse_connection_args(options, agent).await,
+                    Commands::Credential(options) => {
+                        parse_credentials_args(&options.commands, agent).await
                     }
+                    Commands::Proof(options) => parse_proof_args(&options.commands, agent).await,
+                    Commands::Multitenancy(options) => {
+                        parse_multitenancy_args(options, agent).await
+                    }
+                    Commands::Oob(options) => parse_oob_args(options, agent).await,
+                    Commands::Webhook(_) => parse_webhook_args(agent).await,
+                    Commands::Automate(options) => parse_automation_args(options, agent).await,
+                    _ => Err(
+                        Error::SubcommandNotRegisteredForAgent(cli.commands.into(), "aca-py")
+                            .into(),
+                    ),
                 }
-                _ => unreachable!(),
             }
+            "afj" => {
+                let version = CloudAgentAfjRestVersion::ZeroEightZero;
+                let agent = CloudAgentAfjRest::new(agent_url, version, api_key, auth_token);
+                match &cli.commands {
+                    // TODO: should accept struct that has a field that implements the module
+                    Commands::Schema(options) => parse_schema_args(options, agent).await,
+                    Commands::CredentialDefinition(options) => {
+                        parse_credential_definition_args(options, agent).await
+                    }
+                    Commands::Connection(options) => parse_connection_args(options, agent).await,
+                    Commands::Message(options) => parse_basic_message_args(options, agent).await,
+                    _ => Err(
+                        Error::SubcommandNotRegisteredForAgent(cli.commands.into(), "afj").into(),
+                    ),
+                }
+            }
+            _ => unreachable!(),
         }
     }
 }

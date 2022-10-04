@@ -7,7 +7,7 @@ use serde_json::json;
 #[async_trait]
 impl BasicMessageModule for CloudAgentAfjRest {
     async fn send_message(&self, options: SendBasicMessageOptions) -> Result<()> {
-        let url = self.create_url(vec!["basic-messages", &options.connection_id])?;
+        let url = self.create_url(&["basic-messages", &options.connection_id])?;
 
         let body = json!({
           "content": options.message,

@@ -170,8 +170,8 @@ pub async fn parse_connection_args(
                 };
                 agent.get_all(options).await.map(|connections| {
                     loader.stop();
-                    copy!("{}", pretty_stringify_obj(&connections.results));
-                    log!("{}", pretty_stringify_obj(connections.results));
+                    copy!("{}", pretty_stringify_obj(&connections));
+                    log!("{}", pretty_stringify_obj(connections));
                 })
             }
         },

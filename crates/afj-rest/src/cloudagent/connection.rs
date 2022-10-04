@@ -24,13 +24,13 @@ pub struct Response {
 impl ConnectionModule for CloudAgentAfjRest {
     async fn get_all(&self, _options: ConnectionGetAllOptions) -> Result<Vec<Connection>> {
         log_debug!("Supplied options are not being used here");
-        let url = self.create_url(vec!["connections"])?;
+        let url = self.create_url(&["connections"])?;
 
         self.get(url, None).await
     }
 
     async fn get_by_id(&self, id: String) -> Result<Connection> {
-        let url = self.create_url(vec!["connections", &id])?;
+        let url = self.create_url(&["connections", &id])?;
 
         self.get(url, None).await
     }
@@ -39,7 +39,7 @@ impl ConnectionModule for CloudAgentAfjRest {
         &self,
         options: ConnectionCreateInvitationOptions,
     ) -> Result<Invitation> {
-        let url = self.create_url(vec!["connections", "create-invitation"])?;
+        let url = self.create_url(&["connections", "create-invitation"])?;
 
         let body = json!({
             "autoAcceptConnections": options.auto_accept,
@@ -59,7 +59,7 @@ impl ConnectionModule for CloudAgentAfjRest {
         &self,
         invitation: ConnectionReceiveInvitationOptions,
     ) -> Result<Connection> {
-        let url = self.create_url(vec!["connections", "receive-invitation"])?;
+        let url = self.create_url(&["connections", "receive-invitation"])?;
 
         let body = json!({
             "invitation": {

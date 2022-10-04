@@ -56,7 +56,8 @@ impl Display for Error {
             Error::HttpServiceUnavailable => write!(f, "Cloudagent is currently unavailable. Are you sure the agent is online?"),
             Error::UnableToParseOutValue(val) => write!(f, "Unable to parse the predicate values from: {}. The following structure is required: (name,operator,value)", val),
             Error::InvalidOperator(op) => write!(f, "Invalid Operator ({}). \">=\", \"<=\", \"=\", \"<\" and \">\" are allowed.", op),
-            Error::CommandNotAvailable(agent) => write!(f, "Agent '{}' does not support this command", agent)
+            Error::InvalidAgentUrl(url) => write!(f, "Invalid agent url ({})", url),
+            Error::CommandNotAvailable(agent) => write!(f, "Agent '{}' does not support this command", agent),
         }
     }
 }

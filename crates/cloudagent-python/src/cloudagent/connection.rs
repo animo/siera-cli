@@ -20,7 +20,7 @@ pub struct ConnectionGetAllResponse {
 #[async_trait]
 impl ConnectionModule for CloudAgentPython {
     async fn get_all(&self, options: ConnectionGetAllOptions) -> Result<Vec<Connection>> {
-        let url = self.create_url(vec!["connections"])?;
+        let url = self.create_url(&["connections"])?;
 
         let query = fill_query!(
             options,
@@ -47,7 +47,7 @@ impl ConnectionModule for CloudAgentPython {
         &self,
         options: ConnectionCreateInvitationOptions,
     ) -> Result<Invitation> {
-        let url = self.create_url(vec!["connections", "create-invitation"])?;
+        let url = self.create_url(&["connections", "create-invitation"])?;
         let mut query: Vec<(&str, String)> = vec![];
 
         let body = if options.toolbox {
@@ -70,7 +70,8 @@ impl ConnectionModule for CloudAgentPython {
             if let Some(alias) = &options.alias {
                 query.push(("alias", alias.clone()));
             }
-        }
+            None
+        };
         self.post::<Invitation>(url, Some(query), body).await
     }
     async fn receive_invitation(

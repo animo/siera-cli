@@ -13,7 +13,7 @@ impl CredentialDefinitionModule for CloudAgentAfjRest {
         &self,
         options: CredentialDefinitionCreateOptions,
     ) -> Result<CredentialDefinitionCreateResponse> {
-        let url = self.create_url(vec!["credential-definitions"])?;
+        let url = self.create_url(&["credential-definitions"])?;
 
         let body = json!({
             "tag": options.tag,
@@ -25,7 +25,7 @@ impl CredentialDefinitionModule for CloudAgentAfjRest {
     }
 
     async fn get_by_id(&self, id: String) -> Result<CredentialDefinition> {
-        let url = self.create_url(vec!["credential-definitions", &id])?;
+        let url = self.create_url(&["credential-definitions", &id])?;
         self.get(url, None).await
     }
 
