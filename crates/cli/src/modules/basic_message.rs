@@ -9,7 +9,7 @@ use clap::Args;
 #[clap(about = HelpStrings::Message)]
 pub struct BasicMessageOptions {
     /// The connection id to which to send the connectoon to
-    #[clap(short, long, help=HelpStrings::MessageId)]
+    #[clap(short = 'i', long, help=HelpStrings::MessageId)]
     connection_id: String,
 
     /// The message that should be send to the connection id
