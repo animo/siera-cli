@@ -8,19 +8,21 @@ use serde_json::Value;
 /// Response of the `create` endpoint on the multitenancy module
 #[derive(Default, Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct MultitenancyCreateResponse {
-     /// Timestamp of when the subwallet was created
-     pub created_at: String,
-     /// The mode of the key management (managed, unmanaged)
-     pub key_management_mode: String,
+    /// Timestamp of when the subwallet was created
+    pub created_at: String,
 
-     /// More wallet information
-     pub settings: Value,
+    /// The mode of the key management (managed, unmanaged)
+    pub key_management_mode: String,
 
-     /// JWT
+    /// More wallet information
+    pub settings: Value,
+
+    /// JWT
     pub token: String,
 
-     /// Timestamp of when the last update happened to the wallet
-     pub updated_at: String,
+    /// Timestamp of when the last update happened to the wallet
+    pub updated_at: String,
+
     /// The wallet id
     pub wallet_id: String,
 }
