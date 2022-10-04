@@ -1,13 +1,13 @@
 use crate::agent::CloudAgentPython;
 use agent::error::{Error, Result};
-use agent::modules::webhooks::WebhooksModule;
+use agent::modules::webhook::WebhookModule;
 use async_trait::async_trait;
 use logger::log;
 use tungstenite::connect;
 
 #[async_trait]
-impl WebhooksModule for CloudAgentPython {
-    /// Listen to all incoming webhooks
+impl WebhookModule for CloudAgentPython {
+    /// Listen to all incoming webhook
     async fn listen(&self, on_event: fn(serde_json::Value)) -> Result<()> {
         let stripped_agent_url = match &self.endpoint {
             s if s.starts_with("http://") => &s[7..],
