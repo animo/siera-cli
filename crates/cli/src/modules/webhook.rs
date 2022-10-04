@@ -1,30 +1,30 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
-use agent::modules::webhooks::WebhooksModule;
+use agent::modules::webhook::WebhookModule;
 use clap::{Args, Subcommand};
 use colored::Colorize;
 use logger::pretty_stringify_obj;
 
-/// Webhooks options and flags
+/// Webhook options and flags
 #[derive(Args)]
 #[clap(about = HelpStrings::Schema)]
-pub struct WebhooksOptions {
-    /// All the subcommands of the Webhooks cli
+pub struct WebhookOptions {
+    /// All the subcommands of the Webhook cli
     #[clap(subcommand)]
-    pub commands: WebhooksSubcommands,
+    pub commands: WebhookSubcommands,
 }
 
-/// Webhooks subcommands
+/// Webhook subcommands
 #[derive(Subcommand, Debug)]
-#[clap(about = HelpStrings::Webhooks)]
-pub enum WebhooksSubcommands {
-    /// Listen for webhooks on provided url
-    #[clap(about = HelpStrings::Webhooks)]
+#[clap(about = HelpStrings::Webhook)]
+pub enum WebhookSubcommands {
+    /// Listen for webhook on provided url
+    #[clap(about = HelpStrings::Webhook)]
     Listen {},
 }
 
-/// Subcommand webhooks parser
-pub async fn parse_webhooks_args(agent: impl WebhooksModule + Send + Sync) -> Result<()> {
+/// Subcommand webhook parser
+pub async fn parse_webhook_args(agent: impl WebhookModule + Send + Sync) -> Result<()> {
     agent
         .listen(|event| {
             let topic = event.get("topic");

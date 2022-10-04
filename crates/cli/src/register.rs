@@ -11,7 +11,7 @@ use crate::modules::multitenancy::parse_multitenancy_args;
 use crate::modules::oob::parse_oob_args;
 use crate::modules::proof::parse_proof_args;
 use crate::modules::schema::parse_schema_args;
-use crate::modules::webhooks::parse_webhooks_args;
+use crate::modules::webhook::parse_webhook_args;
 use crate::utils::config::{get_config_from_path, get_config_path};
 use afj_rest::agent::{CloudAgentAfjRest, CloudAgentAfjRestVersion};
 use clap::Parser;
@@ -65,7 +65,7 @@ pub async fn register() -> Result<()> {
                 match &cli.commands {
                     Commands::Schema(options) => parse_schema_args(options, agent).await,
                     Commands::Feature(_) => parse_features_args(agent).await,
-                    Commands::Webhooks(_) => parse_webhooks_args(agent).await,
+                    Commands::Webhook(_) => parse_webhook_args(agent).await,
                     Commands::Message(options) => parse_basic_message_args(options, agent).await,
                     Commands::CredentialDefinition(options) => {
                         parse_credential_definition_args(options, agent).await

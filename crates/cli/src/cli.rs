@@ -10,7 +10,7 @@ use crate::modules::{
     basic_message::BasicMessageOptions, configuration::ConfigurationOptions,
     connection::ConnectionOptions, credential::CredentialOptions,
     credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions, oob::OobOptions,
-    proof::ProofOptions, schema::SchemaOptions, webhooks::WebhooksOptions,
+    proof::ProofOptions, schema::SchemaOptions, webhook::WebhookOptions,
 };
 
 /// Main command with options, flags and subcommands
@@ -65,8 +65,8 @@ pub enum Commands {
     /// Connection subcommands
     Connection(ConnectionOptions),
 
-    /// Webhooks subcommands
-    Webhooks(WebhooksOptions),
+    /// Webhook subcommands
+    Webhook(WebhookOptions),
 
     /// Oob subcommands
     Oob(OobOptions),
@@ -104,7 +104,7 @@ impl From<Commands> for String {
         let s = match c {
             Commands::Automate(_) => "Automate",
             Commands::Connection(_) => "Connection",
-            Commands::Webhooks(_) => "Webhooks",
+            Commands::Webhook(_) => "Webhook",
             Commands::Oob(_) => "Oob",
             Commands::Feature(_) => "Feature",
             Commands::Schema(_) => "Schema",
