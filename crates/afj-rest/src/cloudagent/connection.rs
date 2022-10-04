@@ -35,7 +35,7 @@ impl ConnectionModule for CloudAgentAfjRest {
         );
 
         if has_defined_value {
-            log_warn!("Additional options are ignore on this endpoint.");
+            log_warn!("Additional options are ignored on this endpoint.");
         }
         let url = self.create_url(&["connections"])?;
 
