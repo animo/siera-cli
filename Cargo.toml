@@ -1,4 +1,3 @@
-
 [workspace]
 members = ["crates/*"]
 
@@ -17,4 +16,3 @@ repository = "https://github.com/animo/siera"
 categories = ["command-line-utilities"]
 license = "Apache-2.0"
 readme = "./README.md"
-
