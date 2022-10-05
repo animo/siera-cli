@@ -1,11 +1,19 @@
 [package]
-name = "afj-rest"
-version = "0.0.0"
-edition = "2021"
+name = "siera-afj-rest"
+description = "Hyperledger Aries Framework JavaScript Rest controller."
+
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
 
 [dependencies]
-agent = { path = "../agent" }
-logger = { path = "../logger" }
+siera-agent = { path = "../agent", version = "0.*" }
+siera-logger = { path = "../logger", version = "0.*" }
 async-trait = "0.1.51"
 reqwest = { version = "0.11", features = ["json"] }
 serde = { version = "1.0.130", features = ["derive"] }

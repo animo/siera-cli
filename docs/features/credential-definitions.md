@@ -4,12 +4,12 @@ description: Retrieve or create credential definitions
 
 # Credential Definition
 
-The Agent CLI offers the following methods for credential definitions:
+Siera offers the following methods for credential definitions:
 
 ### Usage
 
 ```
-agent-cli credential-definition [OPTIONS] [SUBCOMMAND]
+siera credential-definition [OPTIONS] [SUBCOMMAND]
 ```
 
 #### Options
@@ -30,7 +30,7 @@ agent-cli credential-definition [OPTIONS] [SUBCOMMAND]
 Create a new credential definition.
 
 ```
-agent-cli credential-definition create --schema-id <SCHEMA_ID>
+siera credential-definition create --schema-id <SCHEMA_ID>
 ```
 
 #### Available flags
@@ -45,7 +45,7 @@ agent-cli credential-definition create --schema-id <SCHEMA_ID>
 Create a credential definition with a schema ID. The `-c` flag automatically copies the created credential definition to your clipboard.
 
 ```
-agent-cli -c credential-definition create -s WVqppUv9X3WyWGrbns5Uia:2:Example:1.0
+siera -c credential-definition create -s WVqppUv9X3WyWGrbns5Uia:2:Example:1.0
 ```
 
 ### List
@@ -53,7 +53,7 @@ agent-cli -c credential-definition create -s WVqppUv9X3WyWGrbns5Uia:2:Example:1.
 List all your current credential definitions
 
 ```
-agent-cli credential-definition list [OPTIONS]
+siera credential-definition list [OPTIONS]
 ```
 
 #### Available flags

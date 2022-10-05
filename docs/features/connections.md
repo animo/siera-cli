@@ -4,12 +4,12 @@ description: Retrieve connections or create invitations
 
 # Connection
 
-The Agent CLI offers various methods to create and receive invitations.
+Siera offers various methods to create and receive invitations.
 
 ### Usage
 
 ```
-agent-cli connection [OPTIONS] [SUBCOMMAND]
+siera connection [OPTIONS] [SUBCOMMAND]
 ```
 
 #### Options
@@ -31,7 +31,7 @@ agent-cli connection [OPTIONS] [SUBCOMMAND]
 Create a new connection invitation
 
 ```
-agent-cli connection invite [OPTIONS]
+siera connection invite [OPTIONS]
 ```
 
 #### Available flags
@@ -50,7 +50,7 @@ agent-cli connection invite [OPTIONS]
 Create an invitation that can be used more than once and is auto accepted. The `-c` flag automatically copies the invitation URL to your clipboard.
 
 ```
-agent-cli -c connection invite -m -a
+siera -c connection invite -m -a
 ```
 
 ### List
@@ -58,7 +58,7 @@ agent-cli -c connection invite -m -a
 List all your current connections
 
 ```
-agent-cli connection list [OPTIONS]
+siera connection list [OPTIONS]
 ```
 
 #### Available flags
@@ -73,7 +73,7 @@ agent-cli connection list [OPTIONS]
 Supply a connection ID to get the connection record.
 
 ```
-agent-cli connection list --id 851e2d1b-acee-4a71-b798-8d02a8addd09
+siera connection list --id 851e2d1b-acee-4a71-b798-8d02a8addd09
 ```
 
 ### Receive
@@ -81,7 +81,7 @@ agent-cli connection list --id 851e2d1b-acee-4a71-b798-8d02a8addd09
 Receive an invitation by URL.
 
 ```
-agent-cli connection receive --url <URL>
+siera connection receive --url <URL>
 ```
 
 #### Available flags
@@ -96,5 +96,5 @@ agent-cli connection receive --url <URL>
 Supply an invitation URL to accept. Make sure the URL is between quotes.
 
 ```
-agent-cli connection receive --url "https://didcomm.agent.community.animo.id?c_i=eyJAdHlwZSI6ICJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsICJAaWQiOiAiMjNiOGY0ZDAtNzIyNi00ZmQ0LWEyNDAtMjJkNDgxNTViODBlIiwgInJlY2lwaWVudEtleXMiOiBbIjZZVVU2dnp2b0hTV29OWlRDUGE1eFlYV3kyUGJ5VGREcnVKa0VMRXR4NW9kIl0sICJsYWJlbCI6ICJBbmltbyBDb21tdW5pdHkgQWdlbnQiLCAic2VydmljZUVuZHBvaW50IjogImh0dHBzOi8vZGlkY29tbS5hZ2VudC5jb21tdW5pdHkuYW5pbW8uaWQifQ=="
+siera connection receive --url "https://didcomm.agent.community.animo.id?c_i=eyJAdHlwZSI6ICJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsICJAaWQiOiAiMjNiOGY0ZDAtNzIyNi00ZmQ0LWEyNDAtMjJkNDgxNTViODBlIiwgInJlY2lwaWVudEtleXMiOiBbIjZZVVU2dnp2b0hTV29OWlRDUGE1eFlYV3kyUGJ5VGREcnVKa0VMRXR4NW9kIl0sICJsYWJlbCI6ICJBbmltbyBDb21tdW5pdHkgQWdlbnQiLCAic2VydmljZUVuZHBvaW50IjogImh0dHBzOi8vZGlkY29tbS5hZ2VudC5jb21tdW5pdHkuYW5pbW8uaWQifQ=="
 ```

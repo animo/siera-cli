@@ -1,4 +1,4 @@
-//! Agent interface via the cli. The command is `agent-cli` and can be followed
+//! Agent interface via the cli. The command is `siera` and can be followed
 //! by some options, flags and subcommands. This is agent agnostic as long as
 //! it implements the `agent module`.
 
@@ -6,7 +6,7 @@
 
 /// Access logger macros
 #[macro_use]
-extern crate logger;
+extern crate siera_logger;
 
 use register::register;
 

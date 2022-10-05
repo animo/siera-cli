@@ -1,10 +1,10 @@
 use crate::agent::CloudAgentPython;
-use agent::error::Result;
-use agent::modules::credential::{
-    CredentialModule, CredentialOfferOptions, CredentialOfferResponse,
-};
 use async_trait::async_trait;
 use serde_json::json;
+use siera_agent::error::Result;
+use siera_agent::modules::credential::{
+    CredentialModule, CredentialOfferOptions, CredentialOfferResponse,
+};
 
 #[async_trait]
 impl CredentialModule for CloudAgentPython {

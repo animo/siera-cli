@@ -1,5 +1,5 @@
-use agent::error::{Error, Result};
 use reqwest::Url;
+use siera_agent::error::{Error, Result};
 
 /// AFJ REST agent
 #[derive(Debug)]

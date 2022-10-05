@@ -1,7 +1,7 @@
 use crate::agent::CloudAgentPython;
-use agent::error::Result;
-use agent::modules::feature::{DiscoverFeaturesResponse, FeatureModule};
 use async_trait::async_trait;
+use siera_agent::error::Result;
+use siera_agent::modules::feature::{DiscoverFeaturesResponse, FeatureModule};
 
 #[async_trait]
 impl FeatureModule for CloudAgentPython {

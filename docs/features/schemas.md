@@ -4,12 +4,12 @@ description: Retrieve or create schemas
 
 # Schema
 
-The Agent CLI offers the following methods for schemas:
+Siera offers the following methods for schemas:
 
 ### Usage
 
 ```
-agent-cli schema [OPTIONS] [SUBCOMMAND]
+siera schema [OPTIONS] [SUBCOMMAND]
 ```
 
 #### Options
@@ -30,7 +30,7 @@ agent-cli schema [OPTIONS] [SUBCOMMAND]
 Create a new schema.
 
 ```
-agent-cli schema create [OPTIONS] --name <NAME> --attribute <ATTRIBUTE>
+siera schema create [OPTIONS] --name <NAME> --attribute <ATTRIBUTE>
 ```
 
 #### Available flags
@@ -47,5 +47,5 @@ agent-cli schema create [OPTIONS] --name <NAME> --attribute <ATTRIBUTE>
 Create a new schema with the properties `name` and `age`. The `-c` flag automatically copies the ID of the created schema to your clipboard.
 
 ```
-agent-cli -c schema create -n example -a name -a age
+siera -c schema create -n example -a name -a age
 ```

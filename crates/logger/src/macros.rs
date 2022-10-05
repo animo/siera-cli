@@ -2,11 +2,11 @@
 #[macro_export]
 macro_rules! copy {
     ($($arg:tt)+) => {
-            if ::logger::STATE.read().unwrap().should_copy {
+            if ::siera_logger::STATE.read().unwrap().should_copy {
                 let text = format!($($arg)+);
                 if !text.is_empty() {
                     log_debug!("Copied output to buffer");
-                    ::logger::copy_to_clipboard(text);
+                    ::siera_logger::copy_to_clipboard(text);
                 } else {
                     log_debug!("Nothing to copy");
                 }
@@ -18,7 +18,7 @@ macro_rules! copy {
 #[macro_export]
 macro_rules! elog {
     ($($arg:tt)*) => {
-        if ::logger::STATE.read().unwrap().level != ::logger::LogLevel::Off {
+        if ::siera_logger::STATE.read().unwrap().level != ::siera_logger::LogLevel::Off {
             eprint!($($arg)*);
         }
     };
@@ -28,7 +28,7 @@ macro_rules! elog {
 #[macro_export]
 macro_rules! log {
     ($($arg:tt)*) => {
-        if ::logger::STATE.read().unwrap().level != ::logger::LogLevel::Off {
+        if ::siera_logger::STATE.read().unwrap().level != ::siera_logger::LogLevel::Off {
             println!($($arg)*);
         }
     };
@@ -38,7 +38,7 @@ macro_rules! log {
 #[macro_export]
 macro_rules! internal_log {
     ($level:expr, $($arg:tt)+) => {
-        if ::logger::STATE.read().unwrap().level >= $level {
+        if ::siera_logger::STATE.read().unwrap().level >= $level {
             log!("[{}] {}", $level, format!($($arg)+));
         }
     };
@@ -48,7 +48,7 @@ macro_rules! internal_log {
 #[macro_export]
 macro_rules! log_info {
     ($($arg:tt)+) => {
-        internal_log!(::logger::LogLevel::Info, $($arg)+);
+        internal_log!(::siera_logger::LogLevel::Info, $($arg)+);
     };
 }
 
@@ -56,7 +56,7 @@ macro_rules! log_info {
 #[macro_export]
 macro_rules! log_debug {
     ($($arg:tt)+) => {
-        internal_log!(::logger::LogLevel::Debug, $($arg)+);
+        internal_log!(::siera_logger::LogLevel::Debug, $($arg)+);
     };
 }
 
@@ -64,7 +64,7 @@ macro_rules! log_debug {
 #[macro_export]
 macro_rules! log_trace {
     ($($arg:tt)+) => {
-        internal_log!(::logger::LogLevel::Trace, $($arg)+);
+        internal_log!(::siera_logger::LogLevel::Trace, $($arg)+);
     };
 }
 
@@ -72,7 +72,7 @@ macro_rules! log_trace {
 #[macro_export]
 macro_rules! log_warn {
     ($($arg:tt)+) => {
-        internal_log!(::logger::LogLevel::Warn, $($arg)+);
+        internal_log!(::siera_logger::LogLevel::Warn, $($arg)+);
     };
 }
 
@@ -80,6 +80,6 @@ macro_rules! log_warn {
 #[macro_export]
 macro_rules! log_error {
     ($($arg:tt)+) => {
-        internal_log!(::logger::LogLevel::Error, $($arg)+);
+        internal_log!(::siera_logger::LogLevel::Error, $($arg)+);
     };
 }

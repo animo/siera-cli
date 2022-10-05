@@ -1,8 +1,8 @@
 use crate::agent::CloudAgentAfjRest;
-use agent::error::{Error, Result};
 use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
+use siera_agent::error::{Error, Result};
 
 /// Call logic for http calls
 impl CloudAgentAfjRest {

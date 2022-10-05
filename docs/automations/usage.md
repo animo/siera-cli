@@ -5,7 +5,7 @@ This simple command will result in a credential offer for a mocked credential th
 ### Usage
 
 ```
-agent-cli automate credential-offer
+siera automate credential-offer
 ```
 
 #### Options
@@ -21,7 +21,7 @@ agent-cli automate credential-offer
 #### Example usage
 
 ```
-agent-cli automate credential-offer
+siera automate credential-offer
 ```
 
 First, you will receive a connection invitation in your wallet, after which you will receive the offered credential. The credential is named default and contains several types of attribute.&#x20;

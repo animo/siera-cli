@@ -1,11 +1,19 @@
 [package]
-name = "automations"
-version = "0.0.0"
-edition = "2021"
+name = "siera-automations"
+description = "Automations written for an Aries Cloudagent Python agent."
+
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
 
 [dependencies]
-cloudagent-python = { path = "../cloudagent-python" }
-logger = { path = "../logger" }
+siera-cloudagent-python = { path = "../cloudagent-python", version = "0.*" }
+siera-logger = { path = "../logger", version = "0.*" }
+siera-agent = { path = "../agent", version = "0.*" }
 colored = "2.0.0"
-agent = { path = "../agent" }
 async-trait = "0.1.51"

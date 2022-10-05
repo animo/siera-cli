@@ -4,17 +4,17 @@ description: An introduction to all available options and subcommands.
 
 # Overview
 
-The Agent CLI was created to assist during practical day-to-day development tasks. Its features and subcommands reflect this.
+Siera was created to assist during practical day-to-day development tasks. Its features and subcommands reflect this.
 
 ### Usage
 
 ```
-agent-cli [OPTIONS] <SUBCOMMAND>
+siera [OPTIONS] <SUBCOMMAND>
 ```
 
 ### Options
 
-The Agent CLI offers the following options.
+Siera offers the following options.
 
 | Alias | Flag                          | Description                                                                 |
 | ----- | ----------------------------- | --------------------------------------------------------------------------- |
@@ -31,12 +31,12 @@ The Agent CLI offers the following options.
 
 ### Subcommands
 
-The Agent CLI offers the following subcommands.
+Siera offers the following subcommands.
 
 | Subcommand                                         | Description                                                                                                                                                    |
 | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [automate](../automations/introduction.md)         | Automated actions that combine multiple functions                                                                                                              |
-| [configuration](environments.md)                   | Add agents to your configuration or view your current configuration. To quickly get started, run the following command: `agent-cli configuraton add --default` |
+| [configuration](environments.md)                   | Add agents to your configuration or view your current configuration. To quickly get started, run the following command: `siera configuraton add --default` |
 | [connection](connections.md)                       | Retrieve connections or create invitations                                                                                                                     |
 | [credential](credentials.md)                       | Offer or propose credentials                                                                                                                                   |
 | [credential-definition](credential-definitions.md) | Retrieve or create credential definitions                                                                                                                      |

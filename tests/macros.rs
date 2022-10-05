@@ -1,5 +1,5 @@
 #[macro_export]
-macro_rules! agent {
+macro_rules! siera {
     ($cli:expr, $($args:tt)+) => {
         $cli.exec(&format!($($args)+).clone())
     }

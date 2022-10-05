@@ -1,7 +1,7 @@
-use agent::modules::credential_definition::CredentialDefinitionCreateOptions;
-use agent::modules::credential_definition::CredentialDefinitionCreateResponse;
-use agent::modules::credential_definition::CredentialDefinitionModule;
-use agent::modules::schema::{SchemaCreateOptions, SchemaModule};
+use siera_agent::modules::credential_definition::CredentialDefinitionCreateOptions;
+use siera_agent::modules::credential_definition::CredentialDefinitionCreateResponse;
+use siera_agent::modules::credential_definition::CredentialDefinitionModule;
+use siera_agent::modules::schema::{SchemaCreateOptions, SchemaModule};
 
 use colored::Colorize;
 

@@ -2,13 +2,13 @@ use crate::{
     automations::create_credential_definition::CreateCredentialDefinition,
     error::{Error, Result},
 };
-use agent::modules::{
+use colored::Colorize;
+use siera_agent::modules::{
     connection::ConnectionModule,
     credential::{CredentialModule, CredentialOfferOptions},
     credential_definition::CredentialDefinitionModule,
     schema::SchemaModule,
 };
-use colored::Colorize;
 use std::collections::HashMap;
 
 /// Credential offer Automation which offers an prebuilt credential to a connection

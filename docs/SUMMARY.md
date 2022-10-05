@@ -1,12 +1,12 @@
 # Table of contents
 
-- [Introduction to the Agent CLI](README.md)
+- [Introduction to Siera](README.md)
 
 ## Guides
 
 - [Installation](guides/installation.md)
-- [Set up the Agent CLI](guides/configuration.md)
-- [Using the Agent CLI](guides/using-the-agent-cli.md)
+- [Set up Siera](guides/configuration.md)
+- [Using Siera](guides/using-siera.md)
 
 ## Features
 

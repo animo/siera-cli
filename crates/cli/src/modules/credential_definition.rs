@@ -1,13 +1,13 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::modules::credential_definition::{
-    CredentialDefinitionCreateOptions, CredentialDefinitionModule,
-};
 use clap::{Args, Subcommand};
 use serde_json::json;
+use siera_agent::modules::credential_definition::{
+    CredentialDefinitionCreateOptions, CredentialDefinitionModule,
+};
 
-use logger::pretty_stringify_obj;
+use siera_logger::pretty_stringify_obj;
 
 /// Credential Definition options and flags
 #[derive(Args)]

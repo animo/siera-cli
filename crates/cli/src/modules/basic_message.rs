@@ -1,8 +1,8 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::modules::basic_message::{BasicMessageModule, SendBasicMessageOptions};
 use clap::Args;
+use siera_agent::modules::basic_message::{BasicMessageModule, SendBasicMessageOptions};
 
 /// Basic Message options and flags
 #[derive(Args)]

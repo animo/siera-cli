@@ -1,9 +1,9 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use agent::modules::feature::FeatureModule;
 use clap::Args;
-use logger::pretty_stringify_obj;
+use siera_agent::modules::feature::FeatureModule;
+use siera_logger::pretty_stringify_obj;
 
 /// Automation options and flags
 #[derive(Args)]

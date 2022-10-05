@@ -1,7 +1,15 @@
 [package]
-name = "logger"
-version = "0.0.0"
-edition = "2021"
+name = "siera-logger"
+description = "Logger for Siera."
+
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
 
 [dependencies]
 clipboard = "0.5.0"

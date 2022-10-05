@@ -13,10 +13,10 @@ use crate::modules::proof::parse_proof_args;
 use crate::modules::schema::parse_schema_args;
 use crate::modules::webhook::parse_webhook_args;
 use crate::utils::config::{get_config_from_path, get_config_path};
-use afj_rest::agent::{CloudAgentAfjRest, CloudAgentAfjRestVersion};
 use clap::Parser;
-use cloudagent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
-use logger::LogLevel;
+use siera_afj_rest::agent::{CloudAgentAfjRest, CloudAgentAfjRestVersion};
+use siera_cloudagent_python::agent::{CloudAgentPython, CloudAgentPythonVersion};
+use siera_logger::LogLevel;
 use std::path::PathBuf;
 
 /// Register the subcommands on the cli
@@ -32,7 +32,7 @@ pub async fn register() -> Result<()> {
             _ => LogLevel::Warn,
         }
     };
-    logger::init(level, cli.copy);
+    siera_logger::init(level, cli.copy);
 
     log_trace!("Parsed CLI options and initialized logger");
 
