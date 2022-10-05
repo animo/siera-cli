@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: debian-siera
-          path: target/debian/agent-cli_${{ env.VERSION }}_amd64.deb
+          path: target/debian/siera_${{ env.VERSION }}_amd64.deb
   build-windows:
     name: build windows
     runs-on: windows-latest
@@ -97,7 +97,7 @@ jobs:
           mv aarch64-apple-darwin-siera/siera apple-arm-siera
           mv x86_64-apple-darwin-siera/siera apple-x86_64-siera
           mv linux-siera/siera linux-x86_64-siera
-          mv debian-siera/agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
+          mv debian-siera/siera_${{ needs.build-debian.outputs.VERSION }}_amd64.deb siera_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
           mv windows-siera/siera.exe windows-x86_64-siera.exe
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -106,5 +106,5 @@ jobs:
             apple-arm-siera
             apple-x86_64-siera
             linux-x86_64-siera
-            agent-cli_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
+            siera_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
             windows-x86_64-siera.exe
