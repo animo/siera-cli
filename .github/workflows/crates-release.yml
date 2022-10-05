@@ -18,9 +18,9 @@ jobs:
           with:
             toolchain: stable
         # We might need to wait some time between publishes
-        - run: cargo publish -p siera-logger
-        - run: cargo publish -p siera-agent
-        - run: cargo publish -p siera-afj-rest
-        - run: cargo publish -p siera-cloudagent-python
-        - run: cargo publish -p siera-automations
-        - run: cargo publish -p siera-cli
+        - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-logger
+        - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-agent
+        - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-afj-rest
+        - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-cloudagent-python
+        - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-automations
+        - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-cli
