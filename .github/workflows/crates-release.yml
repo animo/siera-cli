@@ -23,4 +23,4 @@ jobs:
         - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-afj-rest
         - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-cloudagent-python
         - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-automations
-        - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera-cli
+        - run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p siera

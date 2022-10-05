@@ -23,7 +23,6 @@ jobs:
         with:
           command: build
           args: --release --target ${{ matrix.architecture }}
-      - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
@@ -41,7 +40,6 @@ jobs:
         with:
           command: build
           args: --release
-      - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
@@ -62,7 +60,7 @@ jobs:
           args: cargo-deb cargo-get
       - run: cargo install cargo-deb cargo-get
       - uses: actions/checkout@master
-      - run: cargo deb
+      - run: cargo deb -p siera
       - id: version
         run: |
           echo "::set-output name=VERSION::$(cargo get version)"
@@ -81,7 +79,6 @@ jobs:
         with:
           command: build
           args: --release
-      - run: ls -R
       - name: Save library
         uses: actions/upload-artifact@v2
         with:
