@@ -47,6 +47,9 @@ jobs:
           path: target/release/siera
   build-debian:
     name: build debian
+    # We disable this build as we can not use `cargo deb` with workspace metadata
+    # inheritance. For now, the generic linux build must be used.
+    if: false
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{ steps.version.outputs.VERSION}}
