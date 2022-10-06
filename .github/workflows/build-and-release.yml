@@ -89,7 +89,7 @@ jobs:
           path: target/release/siera.exe
   release:
     runs-on: ubuntu-latest
-    needs: [build-macos, build-linux, build-debian, build-windows]
+    needs: [build-macos, build-linux, build-windows]
     steps:
       - name: Download built binaries
         uses: actions/download-artifact@v3
