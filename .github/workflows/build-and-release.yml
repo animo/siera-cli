@@ -97,7 +97,6 @@ jobs:
           mv aarch64-apple-darwin-siera/siera apple-arm-siera
           mv x86_64-apple-darwin-siera/siera apple-x86_64-siera
           mv linux-siera/siera linux-x86_64-siera
-          mv debian-siera/siera_${{ needs.build-debian.outputs.VERSION }}_amd64.deb siera_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
           mv windows-siera/siera.exe windows-x86_64-siera.exe
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -106,5 +105,4 @@ jobs:
             apple-arm-siera
             apple-x86_64-siera
             linux-x86_64-siera
-            siera_${{ needs.build-debian.outputs.VERSION }}_amd64.deb
             windows-x86_64-siera.exe
