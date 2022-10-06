@@ -47,7 +47,7 @@ siera configuration [SUBCOMMAND]
 Add a new, or overwrite an existing, agent to your configuration file.
 
 ```
-aries-cli configuration add [OPTIONS]
+siera configuration add [OPTIONS]
 ```
 
 #### Available flags
