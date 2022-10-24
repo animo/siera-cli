@@ -41,7 +41,7 @@ Heres how to install Siera using the most popular package managers. For advanced
 
 ```sh
 brew tap animo/siera
-brew install siera
+brew install animo/siera/siera
 ```
 
 ### Cargo install

@@ -13,7 +13,7 @@ Currently, Siera supports Brew as a package manager.
 
 ```
 brew tap animo/siera
-brew install siera
+brew install animo/siera/siera
 ```
 
 For other systems than macOS we recommend installing with Cargo, or installing through the binaries.

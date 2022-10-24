@@ -17,8 +17,8 @@ You can keep track of issues and PRs by following our [GitHub repo](https://gith
 - ✅ Tenant support through multitenant agent + personal token.
 - ✅ Brew install.
 - ✅ Proofs.
+- ✅ Chocolaty installation.
 - 🚧 Apt-get installation.
-- 🚧 Chocolaty installation.
 - 🚧 Automation: offer credential with custom data.
 - 🚧 Filters for output.
 - 🚧 Automation: schema + credential definition with custom data.
