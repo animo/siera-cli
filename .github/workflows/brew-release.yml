@@ -15,7 +15,9 @@ jobs:
     steps:
       - name: Get Ruby file
         id: get_ruby_file
-        run: curl -o siera.rb https://raw.githubusercontent.com/animo/homebrew-siera/main/Formula/siera.rb
+        run: |
+          git clone https://github.com/animo/homebrew-siera.git
+          cp ./homebrew-siera/Formula/siera.rb ./siera.rb
       - name: Gather data and rewrite ruby file
         id: gather_data_and_rewrite
         run: |
