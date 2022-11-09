@@ -4,7 +4,10 @@
     <version>0.0.0</version>
     <title>siera</title>
     <authors>Animo Solutions</authors>
-    <projectUrl>https://github.com/animo/siera</projectUrl>
+    <projectUrl>https://siera.animo.id/</projectUrl>
+    <projectSourceUrl>https://github.com/animo/siera</projectSourceUrl>
+    <packageSourceUrl>https://github.com/animo/siera/tree/main/pkg/choco</packageSourceUrl>
+    <docsUrl>https://docs.siera.animo.id</docsUrl>
     <tags>cli rust aries</tags>
     <summary>Command Line Interface tool to interact with an Aries agent </summary>
     <description>Command Line Interface tool to interact with an Aries agent </description>
