@@ -11,6 +11,7 @@ use crate::modules::multitenancy::parse_multitenancy_args;
 use crate::modules::oob::parse_oob_args;
 use crate::modules::proof::parse_proof_args;
 use crate::modules::schema::parse_schema_args;
+use crate::modules::wallet::parse_wallet_args;
 use crate::modules::webhook::parse_webhook_args;
 use crate::utils::config::{get_config_from_path, get_config_path};
 use clap::Parser;
@@ -63,23 +64,24 @@ pub async fn register() -> Result<()> {
                 let agent = CloudAgentPython::new(agent_url, version, api_key, auth_token);
                 // Commands that require the agent
                 match &cli.commands {
-                    Commands::Schema(options) => parse_schema_args(options, agent).await,
-                    Commands::Feature(_) => parse_features_args(agent).await,
-                    Commands::Message(options) => parse_basic_message_args(options, agent).await,
-                    Commands::CredentialDefinition(options) => {
-                        parse_credential_definition_args(options, agent).await
-                    }
+                    Commands::Automate(options) => parse_automation_args(options, agent).await,
                     Commands::Connection(options) => parse_connection_args(options, agent).await,
                     Commands::Credential(options) => {
                         parse_credentials_args(&options.commands, agent).await
                     }
-                    Commands::Proof(options) => parse_proof_args(&options.commands, agent).await,
+                    Commands::CredentialDefinition(options) => {
+                        parse_credential_definition_args(options, agent).await
+                    }
+                    Commands::Feature(_) => parse_features_args(agent).await,
+                    Commands::Message(options) => parse_basic_message_args(options, agent).await,
                     Commands::Multitenancy(options) => {
                         parse_multitenancy_args(options, agent).await
                     }
                     Commands::Oob(options) => parse_oob_args(options, agent).await,
+                    Commands::Proof(options) => parse_proof_args(&options.commands, agent).await,
+                    Commands::Schema(options) => parse_schema_args(options, agent).await,
+                    Commands::Wallet(options) => parse_wallet_args(options, agent).await,
                     Commands::Webhook(_) => parse_webhook_args(agent).await,
-                    Commands::Automate(options) => parse_automation_args(options, agent).await,
                     _ => Err(
                         Error::SubcommandNotRegisteredForAgent(cli.commands.into(), "aca-py")
                             .into(),

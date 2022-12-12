@@ -3,9 +3,7 @@ use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use siera_agent::error::Result;
-use siera_agent::modules::schema::{
-    Schema, SchemaCreateOptions, SchemaModule, SchemasGetAllResponse,
-};
+use siera_agent::modules::wallet::{WalletCreate, WalletCreateOptions, WalletModule};
 
 /// Response from the cloudagent that contains the wrapped schema
 #[derive(Serialize, Deserialize, Debug)]
@@ -15,7 +13,7 @@ struct Response {
 }
 
 #[async_trait]
-impl SchemaModule for CloudAgentPython {
+impl WalletModule for CloudAgentPython {
     async fn create(&self, options: SchemaCreateOptions) -> Result<Schema> {
         let url = self.create_url(&["schemas"])?;
 

@@ -25,5 +25,8 @@ pub mod schema;
 /// Multitenancy module for a generic cloudagent
 pub mod multitenancy;
 
+/// wallet module for a generic cloudagent
+pub mod wallet;
+
 /// webhook module for a generic cloudagent
 pub mod webhook;

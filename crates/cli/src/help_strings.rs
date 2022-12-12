@@ -126,6 +126,25 @@ pub enum HelpStrings {
     AutomationCreateCredentialDefinitionName,
     AutomationCreateCredentialDefinitionAttributes,
     AutomationCreateCredentialDefinitionVersion,
+
+    // Wallet
+    Wallet,
+    WalletCreate,
+    WalletCreateMethod,
+    WalletCreateOptions,
+    WalletEndpoint,
+    WalletEndpointType,
+    WalletGetEndpoint,
+    WalletGetPublic,
+    WalletList,
+    WalletListDid,
+    WalletListKeyType,
+    WalletListMethod,
+    WalletListPosture,
+    WalletListVerkey,
+    WalletRotateKeypair,
+    WalletSetEndpoint,
+    WalletSetPublic,
 }
 
 impl From<HelpStrings> for Option<&str> {
@@ -251,6 +270,24 @@ impl HelpStrings {
             Self::MultitenancyCreate => "Create a new sub agent",
             Self::MultitenancyRemove => "Remove a sub agent",
             Self::MultitenancyRemoveWalletId => "Remove the wallet by id of a sub agent",
+
+            Self::Wallet => "Interacts with a wallet",
+            Self::WalletCreate => "Create a local DID",
+            Self::WalletCreateMethod => "The did method. One of key or sov",
+            Self::WalletCreateOptions => "Key types are e.g. ed25519, bls1238g2",
+            Self::WalletEndpoint => "The endpoint url",
+            Self::WalletEndpointType => "The endpoint type",
+            Self::WalletGetEndpoint => "Get the endpoint information associated with a DID",
+            Self::WalletGetPublic => "Get the public DID of the wallet",
+            Self::WalletList => "Query for DID associated with a wallet",
+            Self::WalletListDid => "A DID to query for",
+            Self::WalletListKeyType => "Key types are e.g. ed25519, bls1238g2",
+            Self::WalletListMethod => "DID method to query for. e.g. sov to only fetch indy/sov DIDs Available values : key, sov",
+            Self::WalletListPosture => "Whether DID is current public DID, posted to ledger but current public DID, or local to the wallet. Available values : public, posted, wallet_only",
+            Self::WalletListVerkey => "The verification key of interest",
+            Self::WalletRotateKeypair => "Rotate the keypair for a DID",
+            Self::WalletSetEndpoint => "E.g. 'Endpoint'",
+            Self::WalletSetPublic => "Set the public DID of the wallet",
         }
     }
 }
