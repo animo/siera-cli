@@ -32,7 +32,7 @@ pub struct ConnectionGetAllOptions {
 }
 
 /// Create invitation response
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct Invitation {
     /// Invitation url
     #[serde(alias = "invitationUrl")]
@@ -46,7 +46,7 @@ pub struct Invitation {
 }
 
 /// A single connection structure
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Connection {
     /// The connection id used for further functionality
     #[serde(alias = "connection_id")]

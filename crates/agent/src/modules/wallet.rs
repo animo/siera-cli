@@ -4,22 +4,25 @@ use serde::{Deserialize, Serialize};
 
 /// Options that are supplied when querying a wallet for DIDs
 #[derive(Debug, Deserialize, Serialize)]
-pub struct ListWalletOptions {
+pub struct DidSpec {
     /// The DID of interest
-    pub did: String,
+    pub did: Option<String>,
 
+    // TODO: enum
     /// The key type to query for eg. ed25519, bls1238g2
-    pub key_type: String,
+    pub key_type: Option<String>,
 
+    // TODO: enum
     /// DID method to query for. e.g. sov to only fetch indy/sov DIDs Available values : key, sov
-    pub method: String,
+    pub method: Option<String>,
 
+    // TODO: enum
     /// Whether DID is current public DID, posted to ledger but current public DID, or local to the wallet
     /// Available values : public, posted, wallet_only
-    pub posture: String,
+    pub posture: Option<String>,
 
     /// The verification key of interest
-    pub verkey: String,
+    pub verkey: Option<String>,
 }
 
 /// Response from the cloudagent when requesting info about dids
@@ -27,7 +30,7 @@ pub struct ListWalletOptions {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct DidList {
     /// List of all the ids of every schema that the cloudagent has registered
-    pub results: Vec<ListWalletOptions>,
+    pub results: Vec<DidSpec>,
 }
 
 /// Response from the cloudagent when requesting info about dids
@@ -35,12 +38,14 @@ pub struct DidList {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SingleDidResultResponse {
     /// Single definition information about a DID of a wallet
-    pub result: ListWalletOptions,
+    pub result: DidSpec,
 }
 
 /// Key type in a JSON format k,v pair
 #[derive(Debug, Deserialize, Serialize)]
 pub struct KeyType {
+    // TODO: enum
+    /// The key type to query for eg. ed25519, bls1238g2
     pub key_type: String,
 }
 
@@ -81,7 +86,7 @@ pub struct SetDidEndpointOptions {
 #[async_trait]
 pub trait WalletModule {
     /// Query a wallet for DIDs
-    async fn get_wallet_dids(&self, options: ListWalletOptions) -> Result<DidList>;
+    async fn get_wallet_dids(&self, options: DidSpec) -> Result<DidList>;
 
     /// Create a local DID
     async fn create_local_did(
@@ -93,13 +98,13 @@ pub trait WalletModule {
     async fn rotate_keypair(&self, did: String) -> Result<()>;
 
     /// Fetch public did
-    async fn fetch_public_did(&self) -> Result<SingleDidResultResponse>;
+    async fn fetch_public_did(&self) -> Result<DidSpec>;
 
     /// Assign the current public DID
-    async fn assign_public(&self, did: String) -> Result<SingleDidResultResponse>;
+    async fn assign_public_did(&self, did: String) -> Result<DidSpec>;
 
     /// Query DID endpoint of wallet
-    async fn get_did_endpoint(&self, did: String) -> Result<DidEndpointResult>;
+    async fn fetch_did_endpoint(&self, did: String) -> Result<DidEndpointResult>;
 
     /// Set DID endpoint of wallet
     async fn set_did_endpoint(&self, options: SetDidEndpointOptions) -> Result<()>;

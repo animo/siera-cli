@@ -3,7 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::{Args, Subcommand};
 use siera_agent::modules::wallet::{
-    CreateLocalDidOptions, KeyType, ListWalletOptions, SetDidEndpointOptions, WalletModule,
+    CreateLocalDidOptions, DidSpec, KeyType, SetDidEndpointOptions, WalletModule,
 };
 use siera_logger::pretty_stringify_obj;
 
@@ -76,8 +76,8 @@ pub enum WalletSubcommands {
     },
 
     /// Get the DID endpoint
-    #[clap(about = HelpStrings::WalletGetEndpoint)]
-    GetDidEndpoint {
+    #[clap(about = HelpStrings::WalletFetchDidEndpoint)]
+    FetchDidEndpoint {
         /// The DID to assign
         #[clap(long, short, help=HelpStrings::WalletListDid)]
         did: String,
@@ -114,12 +114,12 @@ pub async fn parse_wallet_args(
             posture,
             verkey,
         } => {
-            let options = ListWalletOptions {
-                did: did.clone(),
-                key_type: key_type.clone(),
-                method: method.clone(),
-                posture: posture.clone(),
-                verkey: verkey.clone(),
+            let options = DidSpec {
+                did: did.clone().into(),
+                key_type: key_type.clone().into(),
+                method: method.clone().into(),
+                posture: posture.clone().into(),
+                verkey: verkey.clone().into(),
             };
             agent.get_wallet_dids(options).await.map(|response| {
                 loader.stop();
@@ -149,7 +149,7 @@ pub async fn parse_wallet_args(
             agent.rotate_keypair(did.clone()).await.map(|response| {
                 loader.stop();
                 log_info!("Successfully rotated keypair for did DID {}: ", did);
-                copy!("{}", pretty_stringify_obj(&response));
+                copy!("{}", pretty_stringify_obj(response));
                 log!("{}", pretty_stringify_obj(response));
             })
         }
@@ -160,15 +160,15 @@ pub async fn parse_wallet_args(
             log!("{}", pretty_stringify_obj(response));
         }),
         WalletSubcommands::AssignPublicDid { did } => {
-            agent.assign_public(did.clone()).await.map(|response| {
+            agent.assign_public_did(did.clone()).await.map(|response| {
                 loader.stop();
                 log_info!("Successfully assigned public DID: ");
                 copy!("{}", pretty_stringify_obj(&response));
                 log!("{}", pretty_stringify_obj(response));
             })
         }
-        WalletSubcommands::GetDidEndpoint { did } => {
-            agent.get_did_endpoint(did.clone()).await.map(|response| {
+        WalletSubcommands::FetchDidEndpoint { did } => {
+            agent.fetch_did_endpoint(did.clone()).await.map(|response| {
                 loader.stop();
                 log_info!("DID endpoint for DID {}: ", did);
                 copy!("{}", pretty_stringify_obj(&response));
@@ -189,7 +189,7 @@ pub async fn parse_wallet_args(
                 loader.stop();
                 log_info!("Set DID endpoint for DID {}: ", did);
                 log!("{}", pretty_stringify_obj(response));
-                copy!("{}", pretty_stringify_obj(&response));
+                copy!("{}", pretty_stringify_obj(response));
             })
         }
     }

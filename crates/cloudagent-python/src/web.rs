@@ -29,6 +29,27 @@ impl CloudAgentPython {
         self.send::<T>(client).await
     }
 
+    /// Builds a patch request and calls the sender
+    ///
+    /// # Errors
+    ///
+    /// When it could not fulfill a PATCH request
+    pub async fn patch<T: DeserializeOwned + Debug>(
+        &self,
+        url: Url,
+        query: Option<Vec<(&str, String)>>,
+    ) -> Result<T> {
+        let client = match &query {
+            Some(q) => Client::new().patch(url).query(&q),
+            None => Client::new().patch(url),
+        };
+
+        log_trace!("Patch request query:");
+        log_trace!("{:#?}", query);
+
+        self.send::<T>(client).await
+    }
+
     /// Builds a post request and calls the sender
     ///
     /// # Errors

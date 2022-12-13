@@ -98,7 +98,7 @@ pub enum Commands {
     /// Multitenancy subcommands
     Multitenancy(MultitenancyOptions),
 
-    //? Wallet subcommands
+    /// Wallet subcommands
     Wallet(WalletOptions),
 }
 
