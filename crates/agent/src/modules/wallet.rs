@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 /// Options that are supplied when querying a wallet for DIDs
 #[derive(Debug, Deserialize, Serialize)]
-pub struct DidSpec {
+pub struct Did {
     /// The DID of interest
     pub did: Option<String>,
 
@@ -30,15 +30,15 @@ pub struct DidSpec {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct DidList {
     /// List of all the ids of every schema that the cloudagent has registered
-    pub results: Vec<DidSpec>,
+    pub results: Vec<Did>,
 }
 
 /// Response from the cloudagent when requesting info about dids
 /// of a wallet
 #[derive(Debug, Deserialize, Serialize)]
-pub struct SingleDidResultResponse {
+pub struct DidResult {
     /// Single definition information about a DID of a wallet
-    pub result: DidSpec,
+    pub result: Did,
 }
 
 /// Key type in a JSON format k,v pair
@@ -61,7 +61,7 @@ pub struct CreateLocalDidOptions {
 
 /// Options that are supplied when querying a wallet for DIDs
 #[derive(Debug, Deserialize, Serialize)]
-pub struct DidEndpointResult {
+pub struct DidEndpoint {
     /// The DID of interest
     pub did: String,
 
@@ -86,25 +86,22 @@ pub struct SetDidEndpointOptions {
 #[async_trait]
 pub trait WalletModule {
     /// Query a wallet for DIDs
-    async fn get_wallet_dids(&self, options: DidSpec) -> Result<DidList>;
+    async fn get_wallet_dids(&self, options: Did) -> Result<Vec<Did>>;
 
     /// Create a local DID
-    async fn create_local_did(
-        &self,
-        options: CreateLocalDidOptions,
-    ) -> Result<SingleDidResultResponse>;
+    async fn create_local_did(&self, options: CreateLocalDidOptions) -> Result<Did>;
 
     /// Rotate key pair
     async fn rotate_keypair(&self, did: String) -> Result<()>;
 
     /// Fetch public did
-    async fn fetch_public_did(&self) -> Result<DidSpec>;
+    async fn fetch_public_did(&self) -> Result<Did>;
 
     /// Assign the current public DID
-    async fn assign_public_did(&self, did: String) -> Result<DidSpec>;
+    async fn assign_public_did(&self, did: String) -> Result<Did>;
 
     /// Query DID endpoint of wallet
-    async fn fetch_did_endpoint(&self, did: String) -> Result<DidEndpointResult>;
+    async fn fetch_did_endpoint(&self, did: String) -> Result<DidEndpoint>;
 
     /// Set DID endpoint of wallet
     async fn set_did_endpoint(&self, options: SetDidEndpointOptions) -> Result<()>;
