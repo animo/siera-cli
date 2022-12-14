@@ -24,23 +24,23 @@ pub enum WalletSubcommands {
     List {
         /// A DID in question
         #[clap(short, long, help=HelpStrings::WalletListDid, required = false)]
-        did: String,
+        did: Option<String>,
 
         /// The key type of the wallet
         #[clap(short, long, help=HelpStrings::WalletListKeyType, required = false)]
-        key_type: String,
+        key_type: Option<String>,
 
         /// The did method to query for
         #[clap(short, long, help=HelpStrings::WalletListMethod, required = false)]
-        method: String,
+        method: Option<String>,
 
         /// Available values : public, posted, wallet_only
         #[clap(short, long, help=HelpStrings::WalletListPosture, required = false)]
-        posture: String,
+        posture: Option<String>,
 
         /// The verification key of interest
         #[clap(short, long, help=HelpStrings::WalletListVerkey, required = false)]
-        verkey: String,
+        verkey: Option<String>,
     },
 
     /// Create a local DID
