@@ -3,7 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::{Args, Subcommand};
 use siera_agent::modules::schema::{SchemaCreateOptions, SchemaModule};
-use siera_logger::{pretty_stringify_obj, LogLevel};
+use siera_logger::pretty_stringify_obj;
 
 /// Schema options and flags
 #[derive(Args)]
@@ -48,11 +48,7 @@ pub async fn parse_schema_args(
     options: &SchemaOptions,
     agent: impl SchemaModule + Send + Sync,
 ) -> Result<()> {
-    let log_level = &::siera_logger::STATE.read().unwrap().level;
-    let loader: Option<Loader> = match log_level {
-        LogLevel::Json => None,
-        _ => Loader::start(&LoaderVariant::default()).into(),
-    };
+    let loader: Loader = Loader::start(&LoaderVariant::default());
     match &options.commands {
         SchemaSubcommands::Create {
             name,
@@ -69,31 +65,26 @@ pub async fn parse_schema_args(
             }
             agent.create(options).await.map(|schema| {
                 log_debug!("{}", pretty_stringify_obj(&schema));
-                log_json!("{}", pretty_stringify_obj(&schema));
                 log_info!("Created schema with the following attributes: ",);
                 schema
                     .attr_names
                     .into_iter()
                     .for_each(|name| log_info!("- {}", name));
                 log_info!("Schema id:");
-                log!("{}", schema.id);
+                log!("{}", pretty_stringify_obj(&schema.id));
                 copy!("{}", schema.id);
             })
         }
         SchemaSubcommands::List { id } => match id {
             Some(i) => agent.get_by_id(i.clone()).await.map(|schema| {
-                if let Some(l) = loader {
-                    l.stop()
-                }
+                loader.stop();
                 copy!("{}", pretty_stringify_obj(&schema));
                 log!("{}", pretty_stringify_obj(schema));
             }),
             None => agent.get_all().await.map(|schemas| {
-                if let Some(l) = loader {
-                    l.stop()
-                }
-                schemas.schema_ids.iter().for_each(|x| log!("{}", x));
+                loader.stop();
                 log_info!("Successfully fetched schema IDs");
+                log!("{}", pretty_stringify_obj(schemas.schema_ids))
             }),
         },
     }

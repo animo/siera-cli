@@ -28,7 +28,7 @@ macro_rules! elog {
 #[macro_export]
 macro_rules! log {
     ($($arg:tt)*) => {
-        if !vec![::siera_logger::LogLevel::Off, ::siera_logger::LogLevel::Json].contains(&::siera_logger::STATE.read().unwrap().level) {
+        if ::siera_logger::STATE.read().unwrap().level != ::siera_logger::LogLevel::Off {
             println!($($arg)*);
         }
     };
@@ -57,18 +57,6 @@ macro_rules! log_info {
 macro_rules! log_debug {
     ($($arg:tt)+) => {
         internal_log!(::siera_logger::LogLevel::Debug, $($arg)+);
-    };
-}
-
-/// Simple Json logger
-#[macro_export]
-macro_rules! log_json {
-    ($($arg:tt)+) => {
-        if ::siera_logger::LogLevel::Json ==
-            ::siera_logger::STATE.read().unwrap().level
-        {
-            println!($($arg)*);
-        }
     };
 }
 

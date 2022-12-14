@@ -19,9 +19,6 @@ pub mod macros;
 /// Log level in the cli
 #[derive(PartialEq, Eq, PartialOrd)]
 pub enum LogLevel {
-    /// Log level json and nothing else
-    Json,
-
     /// Do not log any additional data
     Off,
 
@@ -44,7 +41,6 @@ pub enum LogLevel {
 impl fmt::Display for LogLevel {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let s = match self {
-            Self::Json => "json".bold().red(),
             Self::Error => "error".bold().red(),
             Self::Warn => "warn".bold().yellow(),
             Self::Info => "info".bold().cyan(),

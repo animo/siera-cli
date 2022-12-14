@@ -3,13 +3,13 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::Args;
 use siera_agent::modules::basic_message::{BasicMessageModule, SendBasicMessageOptions};
-use siera_logger::{pretty_stringify_obj, LogLevel};
+use siera_logger::pretty_stringify_obj;
 
 /// Basic Message options and flags
 #[derive(Args)]
 #[clap(about = HelpStrings::Message)]
 pub struct BasicMessageOptions {
-    /// The connection id to which to send the connectoon to
+    /// The connection id to which to send the connection to
     #[clap(short = 'i', long, help=HelpStrings::MessageId)]
     connection_id: String,
 
@@ -23,20 +23,14 @@ pub async fn parse_basic_message_args(
     options: &BasicMessageOptions,
     agent: impl BasicMessageModule + Send + Sync,
 ) -> Result<()> {
-    let log_level = &::siera_logger::STATE.read().unwrap().level;
-    let loader: Option<Loader> = match log_level {
-        LogLevel::Json => None,
-        _ => Loader::start(&LoaderVariant::default()).into(),
-    };
+    let loader: Loader = Loader::start(&LoaderVariant::default());
     let send_options = SendBasicMessageOptions {
         connection_id: options.connection_id.clone(),
         message: options.message.clone(),
     };
     agent.send_message(send_options).await.map(|response| {
-        if let Some(l) = loader {
-            l.stop()
-        }
-        log!("Successfully sent message");
-        log_json!("{}", pretty_stringify_obj(response));
+        loader.stop();
+        log_info!("Successfully sent message");
+        log!("{}", pretty_stringify_obj(response));
     })
 }

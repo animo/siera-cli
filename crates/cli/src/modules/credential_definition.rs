@@ -7,7 +7,7 @@ use siera_agent::modules::credential_definition::{
     CredentialDefinitionCreateOptions, CredentialDefinitionModule,
 };
 
-use siera_logger::{pretty_stringify_obj, LogLevel};
+use siera_logger::pretty_stringify_obj;
 
 /// Credential Definition options and flags
 #[derive(Args)]
@@ -55,11 +55,7 @@ pub async fn parse_credential_definition_args(
     options: &CredentialDefinitionOptions,
     agent: impl CredentialDefinitionModule + Send + Sync,
 ) -> Result<()> {
-    let log_level = &::siera_logger::STATE.read().unwrap().level;
-    let loader: Option<Loader> = match log_level {
-        LogLevel::Json => None,
-        _ => Loader::start(&LoaderVariant::default()).into(),
-    };
+    let loader: Loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         CredentialDefinitionSubcommands::Create {
@@ -75,20 +71,18 @@ pub async fn parse_credential_definition_args(
                 revocation_registry_size: *revocation_registry_size,
             };
             agent.create(options).await.map(|cred_def| {
-                if let Some(l) = loader {
-                    l.stop()
-                }
-                log_json!("{}", pretty_stringify_obj(&cred_def));
+                loader.stop();
                 copy!("{}", cred_def.credential_definition_id);
                 log_info!("Created credential definition with id:");
-                log!("{}", cred_def.credential_definition_id);
+                log!(
+                    "{}",
+                    pretty_stringify_obj(cred_def.credential_definition_id)
+                );
             })
         }
         CredentialDefinitionSubcommands::List { id } => match id {
             Some(i) => agent.get_by_id(i.clone()).await.map(|cred_def| {
-                if let Some(l) = loader {
-                    l.stop()
-                }
+                loader.stop();
                 let loggable = json!({
                     "id": cred_def.id,
                     "schema_id": cred_def.schema_id,
@@ -99,19 +93,12 @@ pub async fn parse_credential_definition_args(
                 log_debug!("{}", pretty_stringify_obj(&cred_def));
                 copy!("{}", pretty_stringify_obj(&loggable));
                 log!("{}", pretty_stringify_obj(loggable));
-                log_json!("{}", pretty_stringify_obj(cred_def));
             }),
 
             None => agent.get_all().await.map(|cred_defs| {
-                if let Some(l) = loader {
-                    l.stop()
-                }
-                cred_defs
-                    .credential_definition_ids
-                    .iter()
-                    .for_each(|x| log!("{}", x));
+                loader.stop();
                 log_info!("Successfully fetched credential definition IDs",);
-                log_json!("{}", pretty_stringify_obj(cred_defs));
+                log!("{}", pretty_stringify_obj(cred_defs));
             }),
         },
     }

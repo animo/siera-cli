@@ -6,7 +6,7 @@ use clap::{Args, Subcommand};
 use siera_agent::modules::oob::{
     OobConnectionCreateInvitationOptions, OobConnectionReceiveInvitationOptions, OobModule,
 };
-use siera_logger::{copy, pretty_stringify_obj, LogLevel};
+use siera_logger::{copy, pretty_stringify_obj};
 use std::str;
 
 /// Oob options and flags
@@ -59,11 +59,7 @@ pub async fn parse_oob_args(
     options: &OobOptions,
     agent: impl OobModule + Send + Sync,
 ) -> Result<()> {
-    let log_level = &::siera_logger::STATE.read().unwrap().level;
-    let loader: Option<Loader> = match log_level {
-        LogLevel::Json => None,
-        _ => Loader::start(&LoaderVariant::default()).into(),
-    };
+    let loader: Loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         OobSubcommands::Invite {
@@ -81,9 +77,7 @@ pub async fn parse_oob_args(
                 qr: *qr,
             };
             agent.create_invitation(options).await.map(|response| {
-                if let Some(l) = loader {
-                    l.stop()
-                }
+                loader.stop();
                 log_info!("Created invite with invitation msg id:");
                 log!("{}", response.invitation_message_id);
                 if *qr {
@@ -91,8 +85,7 @@ pub async fn parse_oob_args(
                     print_qr_code(&response.invitation_url).unwrap();
                 } else {
                     log_info!("Another agent can use this URL to accept your invitation:\n");
-                    log!("{}", &response.invitation_url);
-                    log_json!("{}", pretty_stringify_obj(&response.invitation_url));
+                    log!("{}", pretty_stringify_obj(&response.invitation_url));
                 }
                 copy!("{}", response.invitation_url);
             })
@@ -104,9 +97,8 @@ pub async fn parse_oob_args(
                 .await
                 .map(|connection| {
                     log_debug!("{}", pretty_stringify_obj(&connection));
-                    log_json!("{}", pretty_stringify_obj(&connection));
                     log_info!("Fetched connection id:");
-                    log!("{}", connection.connection_id);
+                    log!("{}", pretty_stringify_obj(connection.connection_id));
                 })
         }
     }

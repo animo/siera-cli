@@ -3,7 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::{Args, Subcommand};
 use siera_agent::modules::proof::{Predicate, ProofModule, ProofRequestOptions};
-use siera_logger::{pretty_stringify_obj, LogLevel};
+use siera_logger::pretty_stringify_obj;
 
 /// Proof options and flags
 #[derive(Args)]
@@ -44,11 +44,7 @@ pub async fn parse_proof_args(
     commands: &ProofSubcommands,
     agent: impl ProofModule + Send + Sync,
 ) -> Result<()> {
-    let log_level = &::siera_logger::STATE.read().unwrap().level;
-    let loader: Option<Loader> = match log_level {
-        LogLevel::Json => None,
-        _ => Loader::start(&LoaderVariant::default()).into(),
-    };
+    let loader: Loader = Loader::start(&LoaderVariant::default());
     match commands {
         ProofSubcommands::Request {
             connection_id,
@@ -79,14 +75,11 @@ pub async fn parse_proof_args(
                 .await
                 .map(|proof| {
                     log_debug!("{}", pretty_stringify_obj(&proof));
-                    log_json!("{}", pretty_stringify_obj(&proof));
-                    log_info!("Successefully requested a proof. proof exchange id: ",);
-                    log!("{}", &proof.presentation_exchange_id);
+                    log_info!("Successfully requested a proof. proof exchange id: ",);
+                    log!("{}", pretty_stringify_obj(&proof.presentation_exchange_id));
                     copy!("{}", &proof.presentation_exchange_id);
                 })?;
-            if let Some(l) = loader {
-                l.stop()
-            }
+            loader.stop();
             Ok(())
         }
     }

@@ -7,7 +7,7 @@ use siera_agent::modules::connection::{
     ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
     ConnectionReceiveInvitationOptions,
 };
-use siera_logger::{copy, pretty_stringify_obj, LogLevel};
+use siera_logger::{copy, pretty_stringify_obj};
 use std::str;
 
 /// Connection options and flags
@@ -97,11 +97,7 @@ pub async fn parse_connection_args(
     options: &ConnectionOptions,
     agent: impl ConnectionModule + Send + Sync,
 ) -> Result<()> {
-    let log_level = &::siera_logger::STATE.read().unwrap().level;
-    let loader: Option<Loader> = match log_level {
-        LogLevel::Json => None,
-        _ => Loader::start(&LoaderVariant::default()).into(),
-    };
+    let loader: Loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         ConnectionSubcommands::Invite {
@@ -119,20 +115,17 @@ pub async fn parse_connection_args(
                 toolbox: *toolbox,
             };
             agent.create_invitation(options).await.map(|response| {
-                if let Some(l) = loader {
-                    l.stop()
-                }
+                loader.stop();
                 log_info!("Created invite with connection id:");
-                log!("{}", response.id);
+                log_info!("{}", response.id);
                 if *qr {
                     log_info!("Scan this QR code to accept the invitation:\n");
                     print_qr_code(&response.invitation_url).unwrap();
                 } else {
                     log_info!("Another agent can use this URL to accept your invitation:");
-                    log!("{}", &response.invitation_url);
+                    log!("{}", pretty_stringify_obj(&response.invitation_url));
                 }
                 copy!("{}", response.invitation_url);
-                log_json!("{}", pretty_stringify_obj(response));
             })
         }
         ConnectionSubcommands::Receive { url } => {
@@ -143,8 +136,7 @@ pub async fn parse_connection_args(
                 .map(|connection| {
                     log_debug!("{}", pretty_stringify_obj(&connection));
                     log_info!("Fetched connection id:");
-                    log_json!("{}", pretty_stringify_obj(&connection));
-                    log!("{}", connection.id);
+                    log!("{}", pretty_stringify_obj(connection.id));
                 })
         }
         ConnectionSubcommands::List {
@@ -158,11 +150,8 @@ pub async fn parse_connection_args(
             their_did,
         } => match id {
             Some(i) => agent.get_by_id(i.clone()).await.map(|connection| {
-                if let Some(l) = loader {
-                    l.stop()
-                }
+                loader.stop();
                 copy!("{}", pretty_stringify_obj(&connection));
-                log_json!("{}", pretty_stringify_obj(&connection));
                 log!("{}", pretty_stringify_obj(connection));
             }),
             None => {
@@ -180,11 +169,8 @@ pub async fn parse_connection_args(
                     their_role: their_role.as_deref().map(std::string::ToString::to_string),
                 };
                 agent.get_all(options).await.map(|connections| {
-                    if let Some(l) = loader {
-                        l.stop()
-                    }
+                    loader.stop();
                     copy!("{}", pretty_stringify_obj(&connections));
-                    log_json!("{}", pretty_stringify_obj(&connections));
                     log!("{}", pretty_stringify_obj(connections));
                 })
             }
