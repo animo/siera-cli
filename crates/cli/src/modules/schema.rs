@@ -82,15 +82,15 @@ pub async fn parse_schema_args(
         }
         SchemaSubcommands::List { id } => match id {
             Some(i) => agent.get_by_id(i.clone()).await.map(|schema| {
-                if loader.is_some() {
-                    loader.unwrap().stop();
+                if let Some(l) = loader {
+                    l.stop()
                 }
                 copy!("{}", pretty_stringify_obj(&schema));
                 log!("{}", pretty_stringify_obj(schema));
             }),
             None => agent.get_all().await.map(|schemas| {
-                if loader.is_some() {
-                    loader.unwrap().stop();
+                if let Some(l) = loader {
+                    l.stop()
                 }
                 schemas.schema_ids.iter().for_each(|x| log!("{}", x));
                 log_info!("Successfully fetched schema IDs");

@@ -84,8 +84,8 @@ pub async fn parse_proof_args(
                     log!("{}", &proof.presentation_exchange_id);
                     copy!("{}", &proof.presentation_exchange_id);
                 })?;
-            if loader.is_some() {
-                loader.unwrap().stop();
+            if let Some(l) = loader {
+                l.stop()
             }
             Ok(())
         }

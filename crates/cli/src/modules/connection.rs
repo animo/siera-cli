@@ -119,8 +119,8 @@ pub async fn parse_connection_args(
                 toolbox: *toolbox,
             };
             agent.create_invitation(options).await.map(|response| {
-                if loader.is_some() {
-                    loader.unwrap().stop();
+                if let Some(l) = loader {
+                    l.stop()
                 }
                 log_info!("Created invite with connection id:");
                 log!("{}", response.id);
@@ -158,8 +158,8 @@ pub async fn parse_connection_args(
             their_did,
         } => match id {
             Some(i) => agent.get_by_id(i.clone()).await.map(|connection| {
-                if loader.is_some() {
-                    loader.unwrap().stop();
+                if let Some(l) = loader {
+                    l.stop()
                 }
                 copy!("{}", pretty_stringify_obj(&connection));
                 log_json!("{}", pretty_stringify_obj(&connection));
@@ -180,8 +180,8 @@ pub async fn parse_connection_args(
                     their_role: their_role.as_deref().map(std::string::ToString::to_string),
                 };
                 agent.get_all(options).await.map(|connections| {
-                    if loader.is_some() {
-                        loader.unwrap().stop();
+                    if let Some(l) = loader {
+                        l.stop()
                     }
                     copy!("{}", pretty_stringify_obj(&connections));
                     log_json!("{}", pretty_stringify_obj(&connections));

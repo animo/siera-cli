@@ -68,8 +68,8 @@ pub async fn parse_credentials_args(
                 values: value.iter().map(std::string::ToString::to_string).collect(),
             };
             agent.send_offer(options).await.map(|cred| {
-                if loader.is_some() {
-                    loader.unwrap().stop();
+                if let Some(l) = loader {
+                    l.stop()
                 }
                 log_debug!("{}", pretty_stringify_obj(&cred));
                 log_json!("{}", pretty_stringify_obj(&cred));

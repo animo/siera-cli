@@ -33,8 +33,8 @@ pub async fn parse_basic_message_args(
         message: options.message.clone(),
     };
     agent.send_message(send_options).await.map(|response| {
-        if loader.is_some() {
-            loader.unwrap().stop();
+        if let Some(l) = loader {
+            l.stop()
         }
         log!("Successfully sent message");
         log_json!("{}", pretty_stringify_obj(response));

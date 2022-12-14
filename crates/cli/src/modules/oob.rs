@@ -81,8 +81,8 @@ pub async fn parse_oob_args(
                 qr: *qr,
             };
             agent.create_invitation(options).await.map(|response| {
-                if loader.is_some() {
-                    loader.unwrap().stop();
+                if let Some(l) = loader {
+                    l.stop()
                 }
                 log_info!("Created invite with invitation msg id:");
                 log!("{}", response.invitation_message_id);

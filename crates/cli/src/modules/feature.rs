@@ -18,8 +18,8 @@ pub async fn parse_features_args(agent: impl FeatureModule + Send + Sync) -> Res
         _ => Loader::start(&LoaderVariant::default()).into(),
     };
     agent.discover_features().await.map(|features| {
-        if loader.is_some() {
-            loader.unwrap().stop();
+        if let Some(l) = loader {
+            l.stop()
         }
         log_debug!("{}", pretty_stringify_obj(&features));
         log_json!("{}", pretty_stringify_obj(&features));

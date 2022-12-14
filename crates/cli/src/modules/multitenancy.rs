@@ -43,8 +43,8 @@ pub async fn parse_multitenancy_args(
 
     match &options.commands {
         MultitenancySubcommands::Create {} => agent.create().await.map(|response| {
-            if loader.is_some() {
-                loader.unwrap().stop();
+            if let Some(l) = loader {
+                l.stop()
             }
             copy!("{}", response.wallet_id);
             log!("{}", pretty_stringify_obj(&response));
@@ -52,8 +52,8 @@ pub async fn parse_multitenancy_args(
         }),
         MultitenancySubcommands::Remove { wallet_id } => {
             agent.remove(wallet_id.clone()).await?;
-            if loader.is_some() {
-                loader.unwrap().stop();
+            if let Some(l) = loader {
+                l.stop()
             }
             log!("Successfully removed wallet with id: {}", wallet_id);
             log_json!("{}", "{}");

@@ -75,8 +75,8 @@ pub async fn parse_credential_definition_args(
                 revocation_registry_size: *revocation_registry_size,
             };
             agent.create(options).await.map(|cred_def| {
-                if loader.is_some() {
-                    loader.unwrap().stop();
+                if let Some(l) = loader {
+                    l.stop()
                 }
                 log_json!("{}", pretty_stringify_obj(&cred_def));
                 copy!("{}", cred_def.credential_definition_id);
@@ -86,8 +86,8 @@ pub async fn parse_credential_definition_args(
         }
         CredentialDefinitionSubcommands::List { id } => match id {
             Some(i) => agent.get_by_id(i.clone()).await.map(|cred_def| {
-                if loader.is_some() {
-                    loader.unwrap().stop();
+                if let Some(l) = loader {
+                    l.stop()
                 }
                 let loggable = json!({
                     "id": cred_def.id,
@@ -103,8 +103,8 @@ pub async fn parse_credential_definition_args(
             }),
 
             None => agent.get_all().await.map(|cred_defs| {
-                if loader.is_some() {
-                    loader.unwrap().stop();
+                if let Some(l) = loader {
+                    l.stop()
                 }
                 cred_defs
                     .credential_definition_ids
