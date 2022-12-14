@@ -3,7 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::{Args, Subcommand};
 use siera_agent::modules::schema::{SchemaCreateOptions, SchemaModule};
-use siera_logger::pretty_stringify_obj;
+use siera_logger::{pretty_stringify_obj, LogLevel};
 
 /// Schema options and flags
 #[derive(Args)]
@@ -48,7 +48,11 @@ pub async fn parse_schema_args(
     options: &SchemaOptions,
     agent: impl SchemaModule + Send + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(&LoaderVariant::default());
+    let log_level = &::siera_logger::STATE.read().unwrap().level;
+    let loader: Option<Loader> = match log_level {
+        LogLevel::Json => None,
+        _ => Loader::start(&LoaderVariant::default()).into(),
+    };
     match &options.commands {
         SchemaSubcommands::Create {
             name,
@@ -65,6 +69,7 @@ pub async fn parse_schema_args(
             }
             agent.create(options).await.map(|schema| {
                 log_debug!("{}", pretty_stringify_obj(&schema));
+                log_json!("{}", pretty_stringify_obj(&schema));
                 log_info!("Created schema with the following attributes: ",);
                 schema
                     .attr_names
@@ -77,12 +82,16 @@ pub async fn parse_schema_args(
         }
         SchemaSubcommands::List { id } => match id {
             Some(i) => agent.get_by_id(i.clone()).await.map(|schema| {
-                loader.stop();
+                if loader.is_some() {
+                    loader.unwrap().stop();
+                }
                 copy!("{}", pretty_stringify_obj(&schema));
                 log!("{}", pretty_stringify_obj(schema));
             }),
             None => agent.get_all().await.map(|schemas| {
-                loader.stop();
+                if loader.is_some() {
+                    loader.unwrap().stop();
+                }
                 schemas.schema_ids.iter().for_each(|x| log!("{}", x));
                 log_info!("Successfully fetched schema IDs");
             }),

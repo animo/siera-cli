@@ -3,7 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::{Args, Subcommand};
 use siera_agent::modules::multitenancy::MultitenancyModule;
-use siera_logger::pretty_stringify_obj;
+use siera_logger::{pretty_stringify_obj, LogLevel};
 
 /// Credential Definition options and flags
 #[derive(Args)]
@@ -35,18 +35,28 @@ pub async fn parse_multitenancy_args(
     options: &MultitenancyOptions,
     agent: impl MultitenancyModule + Send + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(&LoaderVariant::default());
+    let log_level = &::siera_logger::STATE.read().unwrap().level;
+    let loader: Option<Loader> = match log_level {
+        LogLevel::Json => None,
+        _ => Loader::start(&LoaderVariant::default()).into(),
+    };
 
     match &options.commands {
         MultitenancySubcommands::Create {} => agent.create().await.map(|response| {
-            loader.stop();
+            if loader.is_some() {
+                loader.unwrap().stop();
+            }
             copy!("{}", response.wallet_id);
-            log!("{}", pretty_stringify_obj(response));
+            log!("{}", pretty_stringify_obj(&response));
+            log_json!("{}", pretty_stringify_obj(response));
         }),
         MultitenancySubcommands::Remove { wallet_id } => {
             agent.remove(wallet_id.clone()).await?;
-            loader.stop();
+            if loader.is_some() {
+                loader.unwrap().stop();
+            }
             log!("Successfully removed wallet with id: {}", wallet_id);
+            log_json!("{}", "{}");
             Ok(())
         }
     }

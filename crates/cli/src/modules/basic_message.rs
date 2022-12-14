@@ -3,6 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::Args;
 use siera_agent::modules::basic_message::{BasicMessageModule, SendBasicMessageOptions};
+use siera_logger::{pretty_stringify_obj, LogLevel};
 
 /// Basic Message options and flags
 #[derive(Args)]
@@ -22,13 +23,20 @@ pub async fn parse_basic_message_args(
     options: &BasicMessageOptions,
     agent: impl BasicMessageModule + Send + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(&LoaderVariant::default());
+    let log_level = &::siera_logger::STATE.read().unwrap().level;
+    let loader: Option<Loader> = match log_level {
+        LogLevel::Json => None,
+        _ => Loader::start(&LoaderVariant::default()).into(),
+    };
     let send_options = SendBasicMessageOptions {
         connection_id: options.connection_id.clone(),
         message: options.message.clone(),
     };
-    agent.send_message(send_options).await.map(|_| {
-        loader.stop();
-        log!("Successfully sent message")
+    agent.send_message(send_options).await.map(|response| {
+        if loader.is_some() {
+            loader.unwrap().stop();
+        }
+        log!("Successfully sent message");
+        log_json!("{}", pretty_stringify_obj(response));
     })
 }

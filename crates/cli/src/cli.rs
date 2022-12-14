@@ -39,8 +39,12 @@ pub struct Cli {
     pub copy: bool,
 
     /// Whether the output should be quiet
-    #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "verbose")]
+    #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "verbose", conflicts_with = "json")]
     pub quiet: bool,
+
+    /// Whether the output should be json
+    #[clap(long, short = 'j', help = HelpStrings::Quiet, conflicts_with = "verbose", conflicts_with = "quiet")]
+    pub json: bool,
 
     /// Which config path to use instead of the default one
     #[clap(long, short = 'o', help = HelpStrings::Config)]

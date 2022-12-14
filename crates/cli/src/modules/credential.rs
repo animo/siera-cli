@@ -3,7 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::{Args, Subcommand};
 use siera_agent::modules::credential::{CredentialModule, CredentialOfferOptions};
-use siera_logger::pretty_stringify_obj;
+use siera_logger::{pretty_stringify_obj, LogLevel};
 
 /// Credential options and flags
 #[derive(Args)]
@@ -45,7 +45,11 @@ pub async fn parse_credentials_args(
     commands: &CredentialSubcommands,
     agent: impl CredentialModule + Send + Sync,
 ) -> Result<()> {
-    let loader = Loader::start(&LoaderVariant::default());
+    let log_level = &::siera_logger::STATE.read().unwrap().level;
+    let loader: Option<Loader> = match log_level {
+        LogLevel::Json => None,
+        _ => Loader::start(&LoaderVariant::default()).into(),
+    };
     match commands {
         CredentialSubcommands::Offer {
             connection_id,
@@ -64,8 +68,11 @@ pub async fn parse_credentials_args(
                 values: value.iter().map(std::string::ToString::to_string).collect(),
             };
             agent.send_offer(options).await.map(|cred| {
-                loader.stop();
+                if loader.is_some() {
+                    loader.unwrap().stop();
+                }
                 log_debug!("{}", pretty_stringify_obj(&cred));
+                log_json!("{}", pretty_stringify_obj(&cred));
                 log_info!("Successefully offered a credential. Credential exchange id: ",);
                 log!("{}", cred.credential_exchange_id);
             })

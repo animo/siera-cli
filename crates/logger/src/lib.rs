@@ -16,9 +16,12 @@ extern crate lazy_static;
 #[macro_use]
 pub mod macros;
 
-/// Loglevel in the cli
+/// Log level in the cli
 #[derive(PartialEq, Eq, PartialOrd)]
 pub enum LogLevel {
+    /// Log level json and nothing else
+    Json,
+
     /// Do not log any additional data
     Off,
 
@@ -41,6 +44,7 @@ pub enum LogLevel {
 impl fmt::Display for LogLevel {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let s = match self {
+            Self::Json => "json".bold().red(),
             Self::Error => "error".bold().red(),
             Self::Warn => "warn".bold().yellow(),
             Self::Info => "info".bold().cyan(),
@@ -60,7 +64,7 @@ pub struct LoggerState {
     /// Whether the output that is being logged should also be copied
     pub should_copy: bool,
 
-    /// The loglevel at the cli
+    /// The log level at the cli
     pub level: LogLevel,
 }
 
@@ -117,7 +121,7 @@ pub fn pretty_stringify_obj(obj: impl Serialize) -> String {
 ///
 /// # Panics
 ///
-/// When the clipoard provider could not be found
+/// When the clipboard provider could not be found
 pub fn copy_to_clipboard(string: impl AsRef<str>) {
     let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
     ctx.set_contents(string.as_ref().to_owned()).unwrap();
