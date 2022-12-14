@@ -43,9 +43,7 @@ impl WalletModule for CloudAgentPython {
             "options": options.options
         });
 
-        let did_result: Did = self.post(url, None, Some(body)).await?;
-
-        Ok(did_result)
+        self.post(url, None, Some(body)).await
     }
 
     async fn rotate_keypair(&self, did: String) -> Result<()> {
@@ -57,27 +55,19 @@ impl WalletModule for CloudAgentPython {
     async fn fetch_public_did(&self) -> Result<Did> {
         let url = self.create_url(&["wallet", "did", "public"])?;
 
-        let public_did: Did = self.get(url, None).await?;
-
-        Ok(public_did)
+        self.get(url, None).await
     }
 
     async fn assign_public_did(&self, did: String) -> Result<Did> {
         let url = self.create_url(&["wallet", "did", "public"])?;
 
-        let public_did_assign_result: Did = self
-            .post(url, Some(Vec::from([("did", did)])), None)
-            .await?;
-
-        Ok(public_did_assign_result)
+        self.post(url, Some(Vec::from([("did", did)])), None).await
     }
 
     async fn fetch_did_endpoint(&self, did: String) -> Result<DidEndpoint> {
         let url = self.create_url(&["wallet", "fetch-did-endpoint"])?;
 
-        let did_endpoint: DidEndpoint = self.get(url, Some(Vec::from([("did", did)]))).await?;
-
-        Ok(did_endpoint)
+        self.get(url, Some(Vec::from([("did", did)]))).await
     }
 
     async fn set_did_endpoint(&self, options: SetDidEndpointOptions) -> Result<()> {
