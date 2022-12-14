@@ -115,11 +115,11 @@ pub async fn parse_wallet_args(
             verkey,
         } => {
             let options = Did {
-                did: did.clone().into(),
-                key_type: key_type.clone().into(),
-                method: method.clone().into(),
-                posture: posture.clone().into(),
-                verkey: verkey.clone().into(),
+                did: did.clone(),
+                key_type: key_type.clone(),
+                method: method.clone(),
+                posture: posture.clone(),
+                verkey: verkey.clone(),
             };
             agent.get_wallet_dids(options).await.map(|response| {
                 loader.stop();
