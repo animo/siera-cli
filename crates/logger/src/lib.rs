@@ -3,6 +3,7 @@
 
 #![deny(clippy::missing_docs_in_private_items)]
 
+pub extern crate serde_json;
 use clipboard::{ClipboardContext, ClipboardProvider};
 use colored::Colorize;
 use serde::Serialize;
@@ -60,6 +61,9 @@ pub struct LoggerState {
     /// Whether the output that is being logged should also be copied
     pub should_copy: bool,
 
+    /// Whether the logger should log json (only)
+    pub should_json: bool,
+
     /// The log level at the cli
     pub level: LogLevel,
 }
@@ -67,10 +71,16 @@ pub struct LoggerState {
 impl LoggerState {
     /// Initialize the logger state
     #[must_use]
-    pub const fn new(init: bool, should_copy: bool, log_level: LogLevel) -> Self {
+    pub const fn new(
+        init: bool,
+        should_copy: bool,
+        should_json: bool,
+        log_level: LogLevel,
+    ) -> Self {
         Self {
             init,
             should_copy,
+            should_json,
             level: log_level,
         }
     }
@@ -78,7 +88,7 @@ impl LoggerState {
 
 lazy_static! {
 /// Initialization of the state with default
-    pub static ref STATE: RwLock<LoggerState> = RwLock::new(LoggerState::new(false, false, LogLevel::Off));
+    pub static ref STATE: RwLock<LoggerState> = RwLock::new(LoggerState::new(false, false, false, LogLevel::Off));
 }
 
 /// Initialize the logger
@@ -86,7 +96,7 @@ lazy_static! {
 /// # Panics
 ///
 /// When the logger is already initialized
-pub fn init(level: LogLevel, should_copy: bool) {
+pub fn init(level: LogLevel, should_copy: bool, should_json: bool) {
     assert!(
         !STATE.read().unwrap().init,
         "Logger should only be initialized once!"
@@ -95,6 +105,7 @@ pub fn init(level: LogLevel, should_copy: bool) {
     let mut state = STATE.write().unwrap();
     state.init = true;
     state.level = level;
+    state.should_json = should_json;
     state.should_copy = should_copy;
 }
 

@@ -9,7 +9,7 @@ pub struct Did {
     pub did: Option<String>,
 
     // TODO: enum
-    /// The key type to query for eg. ed25519, bls1238g2
+    /// The key type to query for eg. ed25519, bls12381g2
     pub key_type: Option<String>,
 
     // TODO: enum
@@ -25,27 +25,11 @@ pub struct Did {
     pub verkey: Option<String>,
 }
 
-/// Response from the cloudagent when requesting info about dids
-/// of a wallet
-#[derive(Debug, Deserialize, Serialize)]
-pub struct DidList {
-    /// List of all the ids of every schema that the cloudagent has registered
-    pub results: Vec<Did>,
-}
-
-/// Response from the cloudagent when requesting info about dids
-/// of a wallet
-#[derive(Debug, Deserialize, Serialize)]
-pub struct DidResult {
-    /// Single definition information about a DID of a wallet
-    pub result: Did,
-}
-
 /// Key type in a JSON format k,v pair
 #[derive(Debug, Deserialize, Serialize)]
 pub struct KeyType {
     // TODO: enum
-    /// The key type to query for eg. ed25519, bls1238g2
+    /// The key type to query for eg. ed25519, bls12381g2
     pub key_type: String,
 }
 
@@ -55,7 +39,7 @@ pub struct CreateLocalDidOptions {
     /// DID method to query for. e.g. sov to only fetch indy/sov DIDs Available values : key, sov
     pub method: String,
 
-    /// The key type to query for eg. ed25519, bls1238g2
+    /// The key type to query for eg. ed25519, bls12381g2
     pub options: KeyType,
 }
 
@@ -66,7 +50,7 @@ pub struct DidEndpoint {
     pub did: String,
 
     /// The endpoint url
-    pub endpoint: String,
+    pub endpoint: Option<String>,
 }
 
 /// Options that are supplied when querying a wallet for DIDs

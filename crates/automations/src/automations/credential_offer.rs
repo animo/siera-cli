@@ -9,7 +9,6 @@ use siera_agent::modules::{
     credential_definition::CredentialDefinitionModule,
     schema::SchemaModule,
 };
-use siera_logger::pretty_stringify_obj;
 use std::collections::HashMap;
 
 /// Credential offer Automation which offers an prebuilt credential to a connection
@@ -52,7 +51,7 @@ impl CredentialOfferAutomation {
         let attribute_values: Vec<String> = self.attributes.values().cloned().collect();
 
         // Check if it as a valid connection
-        log_info!("{} the connection...", "Fetching".cyan());
+        log!("{} the connection...", "Fetching".cyan());
         let connection = ConnectionModule::get_by_id(&agent, self.connection_id.clone()).await?;
         if connection.state != "active" && connection.state != "response" {
             return Err(Error::ConnectionNotReady.into());
@@ -66,7 +65,7 @@ impl CredentialOfferAutomation {
 
         let credential_definition = create_credential_definition.execute(&agent).await?;
 
-        log_info!("{} the credential...", "Offering".cyan());
+        log!("{} the credential...", "Offering".cyan());
         let credential_offer_response = agent
             .send_offer(CredentialOfferOptions {
                 keys: attribute_keys.iter().map(|x| String::from(*x)).collect(),
@@ -78,7 +77,7 @@ impl CredentialOfferAutomation {
 
         log_trace!("Automation completed and offered a credential");
         log_trace!("{:#?}", credential_offer_response);
-        log!("{}", pretty_stringify_obj(credential_offer_response));
+        log_json!(credential_offer_response);
         Ok(())
     }
 }

@@ -42,6 +42,10 @@ pub struct Cli {
     #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "verbose", conflicts_with = "json")]
     pub quiet: bool,
 
+    /// Whether the output should be quiet
+    #[clap(long, short = 'j', help = HelpStrings::Quiet, conflicts_with = "verbose", conflicts_with = "quiet")]
+    pub json: bool,
+
     /// Which config path to use instead of the default one
     #[clap(long, short = 'o', help = HelpStrings::Config)]
     pub config: Option<PathBuf>,
@@ -51,7 +55,7 @@ pub struct Cli {
     pub environment: String,
 
     /// Whether more verbose output should be printed
-    #[clap(long, short='v', help = HelpStrings::Verbose, parse(from_occurrences), conflicts_with = "quiet")]
+    #[clap(long, short='v', help = HelpStrings::Verbose, parse(from_occurrences), conflicts_with = "quiet", conflicts_with = "json")]
     pub verbose: usize,
 
     /// The main cli subcommands

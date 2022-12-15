@@ -27,15 +27,15 @@ pub enum WalletSubcommands {
         did: Option<String>,
 
         /// The key type of the wallet
-        #[clap(short, long, help=HelpStrings::WalletListKeyType, required = false)]
+        #[clap(short, long, help=HelpStrings::WalletListKeyType, required = false, possible_values=&["ed25519", "bls12381g2"])]
         key_type: Option<String>,
 
-        /// The did method to query for
-        #[clap(short, long, help=HelpStrings::WalletListMethod, required = false)]
+        /// The did method to query for either 'key' or 'sov'
+        #[clap(short, long, help=HelpStrings::WalletListMethod, required = false, possible_values=&["key", "sov"])]
         method: Option<String>,
 
         /// Available values : public, posted, wallet_only
-        #[clap(short, long, help=HelpStrings::WalletListPosture, required = false)]
+        #[clap(short, long, help=HelpStrings::WalletListPosture, required = false, possible_values=&["posted", "public", "wallet_only"])]
         posture: Option<String>,
 
         /// The verification key of interest
@@ -46,12 +46,12 @@ pub enum WalletSubcommands {
     /// Create a local DID
     #[clap(about = HelpStrings::WalletCreate)]
     CreateLocalDid {
-        /// The method to be used did or sov
-        #[clap(long, short, help=HelpStrings::WalletCreateMethod, required = true)]
+        /// The method to be used key or sov
+        #[clap(long, short, help=HelpStrings::WalletCreateMethod, required = true,  possible_values=&["key", "sov"])]
         method: String,
 
-        /// The method to be used did or sov
-        #[clap(long, short, help=HelpStrings::WalletListKeyType, required = true)]
+        /// The key_type to be used ed25519 or bls12381g2
+        #[clap(long, short, help=HelpStrings::WalletListKeyType, required = true,  possible_values=&["ed25519", "bls12381g2"])]
         key_type: String,
     },
 
@@ -128,6 +128,7 @@ pub async fn parse_wallet_args(
                     .iter()
                     .for_each(|x| log!("{}", pretty_stringify_obj(x)));
                 copy!("{}", pretty_stringify_obj(&response));
+                log_json!(&response)
             })
         }
         WalletSubcommands::CreateLocalDid { method, key_type } => {
@@ -141,22 +142,24 @@ pub async fn parse_wallet_args(
                 loader.stop();
                 log_info!("Successfully created local DID: ",);
                 copy!("{}", pretty_stringify_obj(&response));
-                log!("{}", pretty_stringify_obj(response));
+                log!("{}", pretty_stringify_obj(&response));
+                log_json!(response)
             })
         }
         WalletSubcommands::RotateKeyPair { did } => {
             agent.rotate_keypair(did.clone()).await.map(|response| {
                 loader.stop();
                 log_info!("Successfully rotated keypair for did DID {}: ", did);
-                copy!("{}", pretty_stringify_obj(response));
                 log!("{}", pretty_stringify_obj(response));
+                log_json!(response)
             })
         }
         WalletSubcommands::FetchPublicDid {} => agent.fetch_public_did().await.map(|response| {
             loader.stop();
             log_info!("Wallet public DID: ");
-            copy!("{}", pretty_stringify_obj(&response));
-            log!("{}", pretty_stringify_obj(&response));
+            copy!("{}", pretty_stringify_obj(&response.did));
+            log!("{}", pretty_stringify_obj(&response.did));
+            log_json!(response)
         }),
         WalletSubcommands::AssignPublicDid { did } => {
             agent.assign_public_did(did.clone()).await.map(|response| {
@@ -164,6 +167,7 @@ pub async fn parse_wallet_args(
                 log_info!("Successfully assigned public DID: ");
                 copy!("{}", pretty_stringify_obj(&response));
                 log!("{}", pretty_stringify_obj(&response));
+                log_json!({"public_did": response.did });
             })
         }
         WalletSubcommands::FetchDidEndpoint { did } => {
@@ -172,6 +176,7 @@ pub async fn parse_wallet_args(
                 log_info!("DID endpoint for DID {}: ", did);
                 copy!("{}", pretty_stringify_obj(&response));
                 log!("{}", pretty_stringify_obj(&response));
+                log_json!(response)
             })
         }
         WalletSubcommands::SetDidEndpoint {
@@ -188,7 +193,6 @@ pub async fn parse_wallet_args(
                 loader.stop();
                 log_info!("Set DID endpoint for DID {}: ", did);
                 log!("{}", pretty_stringify_obj(response));
-                copy!("{}", pretty_stringify_obj(response));
             })
         }
     }

@@ -71,7 +71,8 @@ pub async fn parse_schema_args(
                     .into_iter()
                     .for_each(|name| log_info!("- {}", name));
                 log_info!("Schema id:");
-                log!("{}", pretty_stringify_obj(&schema.id));
+                log!("{}", &schema.id);
+                log_json!({ "schema_id": &schema.id });
                 copy!("{}", schema.id);
             })
         }
@@ -83,8 +84,9 @@ pub async fn parse_schema_args(
             }),
             None => agent.get_all().await.map(|schemas| {
                 loader.stop();
+                schemas.schema_ids.iter().for_each(|x| log!("{}", x));
                 log_info!("Successfully fetched schema IDs");
-                log!("{}", pretty_stringify_obj(schemas.schema_ids))
+                log_json!({ "schema_ids": schemas.schema_ids })
             }),
         },
     }

@@ -16,6 +16,9 @@ pub async fn parse_features_args(agent: impl FeatureModule + Send + Sync) -> Res
     agent.discover_features().await.map(|features| {
         loader.stop();
         log_debug!("{}", pretty_stringify_obj(&features));
-        log!("{}", pretty_stringify_obj(&features.disclose.protocols));
+        features.disclose.protocols.iter().for_each(|p| {
+            log!("{}", p.pid);
+        });
+        log_json!({ "features": features.disclose.protocols });
     })
 }

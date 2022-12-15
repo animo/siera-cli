@@ -33,7 +33,8 @@ pub async fn register() -> Result<()> {
             _ => LogLevel::Warn,
         }
     };
-    siera_logger::init(level, cli.copy);
+
+    siera_logger::init(level, cli.copy, cli.json);
 
     log_trace!("Parsed CLI options and initialized logger");
 

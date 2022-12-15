@@ -5,10 +5,24 @@ use serde::{Deserialize, Serialize};
 use serde_json::json;
 use siera_agent::error::Result;
 use siera_agent::modules::wallet::{
-    CreateLocalDidOptions, Did, DidEndpoint, DidList, DidResult, SetDidEndpointOptions,
-    WalletModule,
+    CreateLocalDidOptions, Did, DidEndpoint, SetDidEndpointOptions, WalletModule,
 };
 
+/// Response from the cloudagent when requesting info about dids
+/// of a wallet
+#[derive(Debug, Deserialize, Serialize)]
+pub struct DidList {
+    /// List of all the ids of every schema that the cloudagent has registered
+    pub results: Vec<Did>,
+}
+
+/// Response from the cloudagent when requesting info about dids
+/// of a wallet
+#[derive(Debug, Deserialize, Serialize)]
+pub struct DidResult {
+    /// Single definition information about a DID of a wallet
+    pub result: Did,
+}
 /// Response from the cloudagent that contains the wrapped schema
 #[derive(Serialize, Deserialize, Debug)]
 struct Response {
@@ -45,9 +59,7 @@ impl WalletModule for CloudAgentPython {
     async fn rotate_keypair(&self, did: String) -> Result<()> {
         let url = self.create_url(&["wallet", "did", "local", "rotate-keypair"])?;
 
-        let _rotated_keypair: DidResult = self.patch(url, Some(Vec::from([("did", did)]))).await?;
-
-        Ok(())
+        self.patch(url, Some(Vec::from([("did", did)]))).await
     }
 
     async fn fetch_public_did(&self) -> Result<Did> {
@@ -69,11 +81,9 @@ impl WalletModule for CloudAgentPython {
     }
 
     async fn fetch_did_endpoint(&self, did: String) -> Result<DidEndpoint> {
-        let url = self.create_url(&["wallet", "fetch-did-endpoint"])?;
+        let url = self.create_url(&["wallet", "get-did-endpoint"])?;
 
-        let did_endpoint: DidEndpoint = self.get(url, Some(Vec::from([("did", did)]))).await?;
-
-        Ok(did_endpoint)
+        self.get(url, Some(Vec::from([("did", did)]))).await
     }
 
     async fn set_did_endpoint(&self, options: SetDidEndpointOptions) -> Result<()> {
