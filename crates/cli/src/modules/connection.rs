@@ -117,13 +117,14 @@ pub async fn parse_connection_args(
             agent.create_invitation(options).await.map(|response| {
                 loader.stop();
                 log_info!("Created invite with connection id:");
-                log_info!("{}", response.id);
+                log!("{}", response.id);
                 if *qr {
                     log_info!("Scan this QR code to accept the invitation:\n");
                     print_qr_code(&response.invitation_url).unwrap();
                 } else {
                     log_info!("Another agent can use this URL to accept your invitation:");
-                    log!("{}", pretty_stringify_obj(&response.invitation_url));
+                    log!("{}", &response.invitation_url);
+                    log_json!({ "invitation_url": &response.invitation_url });
                 }
                 copy!("{}", response.invitation_url);
             })
@@ -136,7 +137,8 @@ pub async fn parse_connection_args(
                 .map(|connection| {
                     log_debug!("{}", pretty_stringify_obj(&connection));
                     log_info!("Fetched connection id:");
-                    log!("{}", pretty_stringify_obj(connection.id));
+                    log!("{}", connection.id);
+                    log_json!({ "connection_id": connection.id });
                 })
         }
         ConnectionSubcommands::List {
@@ -152,7 +154,8 @@ pub async fn parse_connection_args(
             Some(i) => agent.get_by_id(i.clone()).await.map(|connection| {
                 loader.stop();
                 copy!("{}", pretty_stringify_obj(&connection));
-                log!("{}", pretty_stringify_obj(connection));
+                log!("{}", pretty_stringify_obj(&connection));
+                log_json!({ "connection": connection })
             }),
             None => {
                 let options = ConnectionGetAllOptions {
@@ -171,7 +174,8 @@ pub async fn parse_connection_args(
                 agent.get_all(options).await.map(|connections| {
                     loader.stop();
                     copy!("{}", pretty_stringify_obj(&connections));
-                    log!("{}", pretty_stringify_obj(connections));
+                    log!("{}", pretty_stringify_obj(&connections));
+                    log_json!({ "connections": connections })
                 })
             }
         },

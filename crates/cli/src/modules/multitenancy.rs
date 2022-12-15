@@ -40,13 +40,15 @@ pub async fn parse_multitenancy_args(
     match &options.commands {
         MultitenancySubcommands::Create {} => agent.create().await.map(|response| {
             loader.stop();
-            log!("{}", pretty_stringify_obj(response));
+            copy!("{}", response.wallet_id);
+            log!("{}", pretty_stringify_obj(&response));
+            log_json!(response);
         }),
         MultitenancySubcommands::Remove { wallet_id } => {
             agent.remove(wallet_id.clone()).await?;
             loader.stop();
-            log_info!("Successfully removed wallet with id: {}", wallet_id);
-            log!("{}", pretty_stringify_obj(wallet_id));
+            log!("Successfully removed wallet with id: {}", &wallet_id);
+            log_json!({ "wallet_id": wallet_id });
             Ok(())
         }
     }

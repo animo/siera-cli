@@ -28,10 +28,20 @@ macro_rules! elog {
 #[macro_export]
 macro_rules! log {
     ($($arg:tt)*) => {
-        if ::siera_logger::STATE.read().unwrap().level != ::siera_logger::LogLevel::Off {
+        if ::siera_logger::STATE.read().unwrap().level != ::siera_logger::LogLevel::Off && !::siera_logger::STATE.read().unwrap().should_json {
             println!($($arg)*);
         }
     };
+}
+
+/// Simple JSON logger
+#[macro_export]
+macro_rules! log_json {
+    ($($json:tt)+) => {
+        if ::siera_logger::STATE.read().unwrap().should_json {
+            println!("{}", ::siera_logger::pretty_stringify_obj(::siera_logger::serde_json::json!($($json)+)));
+        }
+    }
 }
 
 /// Generic logger. Should not be used outside of this file

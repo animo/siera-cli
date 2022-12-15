@@ -85,7 +85,8 @@ pub async fn parse_oob_args(
                     print_qr_code(&response.invitation_url).unwrap();
                 } else {
                     log_info!("Another agent can use this URL to accept your invitation:\n");
-                    log!("{}", pretty_stringify_obj(&response.invitation_url));
+                    log!("{}", &response.invitation_url);
+                    log_json!({ "invitation_url": response.invitation_url })
                 }
                 copy!("{}", response.invitation_url);
             })
@@ -98,7 +99,8 @@ pub async fn parse_oob_args(
                 .map(|connection| {
                     log_debug!("{}", pretty_stringify_obj(&connection));
                     log_info!("Fetched connection id:");
-                    log!("{}", pretty_stringify_obj(connection.connection_id));
+                    log!("{}", &connection.connection_id);
+                    log_json!({ "connection_id": connection.connection_id})
                 })
         }
     }

@@ -4,7 +4,6 @@ use siera_agent::modules::credential_definition::CredentialDefinitionModule;
 use siera_agent::modules::schema::{SchemaCreateOptions, SchemaModule};
 
 use colored::Colorize;
-use siera_logger::pretty_stringify_obj;
 
 use crate::error::Result;
 
@@ -52,20 +51,19 @@ impl<'a> CreateCredentialDefinition<'a> {
             ..CredentialDefinitionCreateOptions::default()
         };
 
-        log_info!("{} the credential definition...", "Registering".cyan());
+        log!("{} the credential definition...", "Registering".cyan());
         // Create or fetch the credential definition
         let credential_definition = CredentialDefinitionModule::create(agent, options).await?;
 
-        log_info!(
+        log!(
             "{} credential definition with id {}",
             "Created".green(),
             String::from(&credential_definition.credential_definition_id).green()
         );
-        log!(
-            "{}",
-            pretty_stringify_obj(&credential_definition.credential_definition_id)
+        copy!("{}", &credential_definition.credential_definition_id);
+        log_json!(
+            {"credential_definition_id": &credential_definition.credential_definition_id}
         );
-        copy!("{}", credential_definition.credential_definition_id);
         Ok(credential_definition)
     }
 }

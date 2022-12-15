@@ -4,9 +4,6 @@ use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use siera_agent::error::Result;
-use siera_agent::modules::wallet::{
-    CreateLocalDidOptions, Did, DidEndpoint, SetDidEndpointOptions, WalletModule,
-};
 
 /// Response from the cloudagent when requesting info about dids
 /// of a wallet
@@ -22,12 +19,6 @@ pub struct DidList {
 pub struct DidResult {
     /// Single definition information about a DID of a wallet
     pub result: Did,
-}
-/// Response from the cloudagent that contains the wrapped schema
-#[derive(Serialize, Deserialize, Debug)]
-struct Response {
-    /// Wallet wrapper
-    result: Did,
 }
 
 #[async_trait]

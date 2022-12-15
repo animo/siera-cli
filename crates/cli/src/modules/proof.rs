@@ -76,7 +76,8 @@ pub async fn parse_proof_args(
                 .map(|proof| {
                     log_debug!("{}", pretty_stringify_obj(&proof));
                     log_info!("Successfully requested a proof. proof exchange id: ",);
-                    log!("{}", pretty_stringify_obj(&proof.presentation_exchange_id));
+                    log!("{}", &proof.presentation_exchange_id);
+                    log_json!({ "presentation_exchange_id": &proof.presentation_exchange_id });
                     copy!("{}", &proof.presentation_exchange_id);
                 })?;
             loader.stop();
