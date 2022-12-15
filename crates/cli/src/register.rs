@@ -23,7 +23,7 @@ use std::path::PathBuf;
 /// Register the subcommands on the cli
 pub async fn register() -> Result<()> {
     let cli = Cli::parse();
-    let level = if cli.quiet || cli.json {
+    let level = if cli.quiet {
         LogLevel::Off
     } else {
         match cli.verbose {
