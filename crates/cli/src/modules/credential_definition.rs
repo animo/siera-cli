@@ -55,7 +55,7 @@ pub async fn parse_credential_definition_args(
     options: &CredentialDefinitionOptions,
     agent: impl CredentialDefinitionModule + Send + Sync,
 ) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         CredentialDefinitionSubcommands::Create {

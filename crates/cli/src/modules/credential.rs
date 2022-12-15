@@ -45,7 +45,7 @@ pub async fn parse_credentials_args(
     commands: &CredentialSubcommands,
     agent: impl CredentialModule + Send + Sync,
 ) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
     match commands {
         CredentialSubcommands::Offer {
             connection_id,

@@ -23,7 +23,7 @@ pub async fn parse_basic_message_args(
     options: &BasicMessageOptions,
     agent: impl BasicMessageModule + Send + Sync,
 ) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
     let send_options = SendBasicMessageOptions {
         connection_id: options.connection_id.clone(),
         message: options.message.clone(),

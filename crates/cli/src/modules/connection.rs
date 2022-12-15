@@ -97,7 +97,7 @@ pub async fn parse_connection_args(
     options: &ConnectionOptions,
     agent: impl ConnectionModule + Send + Sync,
 ) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         ConnectionSubcommands::Invite {

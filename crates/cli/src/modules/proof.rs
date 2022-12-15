@@ -39,12 +39,12 @@ pub enum ProofSubcommands {
     },
 }
 
-/// Subcoammnd Proof parser
+/// Subcommand Proof parser
 pub async fn parse_proof_args(
     commands: &ProofSubcommands,
     agent: impl ProofModule + Send + Sync,
 ) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
     match commands {
         ProofSubcommands::Request {
             connection_id,

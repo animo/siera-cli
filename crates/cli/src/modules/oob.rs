@@ -59,7 +59,7 @@ pub async fn parse_oob_args(
     options: &OobOptions,
     agent: impl OobModule + Send + Sync,
 ) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         OobSubcommands::Invite {

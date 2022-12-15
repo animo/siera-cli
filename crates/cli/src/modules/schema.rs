@@ -48,7 +48,7 @@ pub async fn parse_schema_args(
     options: &SchemaOptions,
     agent: impl SchemaModule + Send + Sync,
 ) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
     match &options.commands {
         SchemaSubcommands::Create {
             name,

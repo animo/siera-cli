@@ -12,7 +12,7 @@ pub struct FeaturesOptions {}
 
 /// Subcommand Feature parser
 pub async fn parse_features_args(agent: impl FeatureModule + Send + Sync) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
     agent.discover_features().await.map(|features| {
         loader.stop();
         log_debug!("{}", pretty_stringify_obj(&features));

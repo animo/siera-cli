@@ -105,7 +105,7 @@ pub async fn parse_wallet_args(
     options: &WalletOptions,
     agent: impl WalletModule + Send + Sync,
 ) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
     match &options.commands {
         WalletSubcommands::List {
             did,

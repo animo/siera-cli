@@ -35,7 +35,7 @@ pub async fn parse_multitenancy_args(
     options: &MultitenancyOptions,
     agent: impl MultitenancyModule + Send + Sync,
 ) -> Result<()> {
-    let loader: Loader = Loader::start(&LoaderVariant::default());
+    let loader = Loader::start(&LoaderVariant::default());
 
     match &options.commands {
         MultitenancySubcommands::Create {} => agent.create().await.map(|response| {
