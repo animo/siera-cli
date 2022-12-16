@@ -66,62 +66,66 @@ pub struct Cli {
 /// All the subcommands
 #[derive(Subcommand)]
 pub enum Commands {
+    /// Automation subcommands
+    Automate(AutomationOptions),
+
     /// Connection subcommands
     Connection(ConnectionOptions),
-
-    /// Webhook subcommands
-    Webhook(WebhookOptions),
-
-    /// Oob subcommands
-    Oob(OobOptions),
-
-    /// Feature subcommands
-    Feature(FeaturesOptions),
-
-    /// Schema subcommands
-    Schema(SchemaOptions),
-
-    /// Credential definition subcommands
-    CredentialDefinition(CredentialDefinitionOptions),
-
-    /// BasicMessage subcommands
-    Message(BasicMessageOptions),
-
-    /// Credential subcommands
-    Credential(CredentialOptions),
 
     /// Configuration subcommands
     Configuration(ConfigurationOptions),
 
-    /// Automation subcommands
-    Automate(AutomationOptions),
+    /// Credential subcommands
+    Credential(CredentialOptions),
 
-    /// Proof subcommands
-    Proof(ProofOptions),
+    /// Credential definition subcommands
+    CredentialDefinition(CredentialDefinitionOptions),
+
+    /// Feature subcommands
+    Feature(FeaturesOptions),
+
+    /// JSON-LD subcommands
+    /// TODO: JsonLd(JsonLdOptions)
+
+    /// BasicMessage subcommands
+    Message(BasicMessageOptions),
 
     /// Multitenancy subcommands
     Multitenancy(MultitenancyOptions),
 
+    /// Oob subcommands
+    Oob(OobOptions),
+
+    /// Proof subcommands
+    Proof(ProofOptions),
+
+    /// Schema subcommands
+    Schema(SchemaOptions),
+
     /// Wallet subcommands
     Wallet(WalletOptions),
+
+    /// Webhook subcommands
+    Webhook(WebhookOptions),
 }
 
 impl From<Commands> for String {
     fn from(c: Commands) -> Self {
         let s = match c {
             Commands::Automate(_) => "Automate",
-            Commands::Connection(_) => "Connection",
-            Commands::Webhook(_) => "Webhook",
-            Commands::Oob(_) => "Oob",
-            Commands::Feature(_) => "Feature",
-            Commands::Schema(_) => "Schema",
-            Commands::CredentialDefinition(_) => "CredentialDefinition",
-            Commands::Message(_) => "Message",
-            Commands::Credential(_) => "Credential",
             Commands::Configuration(_) => "Configuration",
-            Commands::Proof(_) => "Proof",
+            Commands::Connection(_) => "Connection",
+            Commands::Credential(_) => "Credential",
+            Commands::CredentialDefinition(_) => "CredentialDefinition",
+            Commands::Feature(_) => "Feature",
+            // Commands::JsonLd(_) => "JsonLd",
+            Commands::Message(_) => "Message",
             Commands::Multitenancy(_) => "Multitenancy",
+            Commands::Oob(_) => "Oob",
+            Commands::Proof(_) => "Proof",
+            Commands::Schema(_) => "Schema",
             Commands::Wallet(_) => "Wallet",
+            Commands::Webhook(_) => "Webhook",
         };
 
         Self::from(s)

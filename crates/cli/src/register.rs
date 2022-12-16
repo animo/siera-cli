@@ -93,13 +93,13 @@ pub async fn register() -> Result<()> {
                 let version = CloudAgentAfjRestVersion::ZeroEightZero;
                 let agent = CloudAgentAfjRest::new(agent_url, version, api_key, auth_token);
                 match &cli.commands {
-                    // TODO: should accept struct that has a field that implements the module
-                    Commands::Schema(options) => parse_schema_args(options, agent).await,
+                    Commands::Connection(options) => parse_connection_args(options, agent).await,
                     Commands::CredentialDefinition(options) => {
                         parse_credential_definition_args(options, agent).await
                     }
-                    Commands::Connection(options) => parse_connection_args(options, agent).await,
                     Commands::Message(options) => parse_basic_message_args(options, agent).await,
+                    // TODO: should accept struct that has a field that implements the module
+                    Commands::Schema(options) => parse_schema_args(options, agent).await,
                     _ => Err(
                         Error::SubcommandNotRegisteredForAgent(cli.commands.into(), "afj").into(),
                     ),
