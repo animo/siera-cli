@@ -10,7 +10,7 @@ use crate::modules::{
     basic_message::BasicMessageOptions, configuration::ConfigurationOptions,
     connection::ConnectionOptions, credential::CredentialOptions,
     credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions, oob::OobOptions,
-    proof::ProofOptions, schema::SchemaOptions, webhook::WebhookOptions,
+    proof::ProofOptions, schema::SchemaOptions, wallet::WalletOptions, webhook::WebhookOptions,
 };
 
 /// Main command with options, flags and subcommands
@@ -97,6 +97,9 @@ pub enum Commands {
 
     /// Multitenancy subcommands
     Multitenancy(MultitenancyOptions),
+
+    /// Wallet subcommands
+    Wallet(WalletOptions),
 }
 
 impl From<Commands> for String {
@@ -114,6 +117,7 @@ impl From<Commands> for String {
             Commands::Configuration(_) => "Configuration",
             Commands::Proof(_) => "Proof",
             Commands::Multitenancy(_) => "Multitenancy",
+            Commands::Wallet(_) => "Wallet",
         };
 
         Self::from(s)

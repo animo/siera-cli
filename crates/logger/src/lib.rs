@@ -117,7 +117,7 @@ pub fn pretty_stringify_obj(obj: impl Serialize) -> String {
 ///
 /// # Panics
 ///
-/// When the clipoard provider could not be found
+/// When the clipboard provider could not be found
 pub fn copy_to_clipboard(string: impl AsRef<str>) {
     let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
     ctx.set_contents(string.as_ref().to_owned()).unwrap();

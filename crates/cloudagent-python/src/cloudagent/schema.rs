@@ -7,7 +7,7 @@ use siera_agent::modules::schema::{
     Schema, SchemaCreateOptions, SchemaModule, SchemasGetAllResponse,
 };
 
-/// Reponse from the cloudagent that contains the wrapped schema
+/// Response from the cloudagent that contains the wrapped schema
 #[derive(Serialize, Deserialize, Debug)]
 struct Response {
     /// Schema wrapper

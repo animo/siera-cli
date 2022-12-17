@@ -24,5 +24,8 @@ mod schema;
 /// Module for multitenancy specific for an Aries cloudagent Python
 mod multitenancy;
 
+/// Module for wallet specific for an Aries Cloudagent Python
+mod wallet;
+
 /// Module for listening to webhook for an Aries Cloudagent Python
 mod webhook;

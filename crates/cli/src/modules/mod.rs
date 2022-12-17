@@ -31,5 +31,8 @@ pub mod schema;
 /// Module for multitenancy
 pub mod multitenancy;
 
+/// Module for wallet
+pub mod wallet;
+
 /// Module for webhook
 pub mod webhook;

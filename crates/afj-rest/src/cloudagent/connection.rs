@@ -9,7 +9,7 @@ use siera_agent::modules::connection::{
 };
 
 /// Create invitation response
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Response {
     /// Invitation url
