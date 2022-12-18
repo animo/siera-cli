@@ -1,10 +1,11 @@
 use crate::agent::CloudAgentPython;
-use crate::fill_query;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
-use serde_json::json;
-use siera_agent::error::Result;
-use siera_agent::json_ld::JsonLdModule;
+use serde_json::{json, Value};
+use siera_agent::{
+    error::Result,
+    modules::json_ld::{JsonLdModule, JsonLdSignOptions, JsonLdVerifyOptions},
+};
 
 /// The result of the verification
 #[derive(Debug, Deserialize, Serialize)]
@@ -13,7 +14,7 @@ pub struct VerifyResult {
     pub valid: bool,
 
     /// The error if there si one
-    pub error: Optional<String>,
+    pub error: Option<String>,
 }
 
 /// The result of the signing
@@ -23,7 +24,7 @@ pub struct SignResult {
     pub doc: Value,
 
     /// The error if there si one
-    pub error: Optional<String>,
+    pub error: Option<String>,
 }
 
 #[async_trait]

@@ -7,6 +7,7 @@ use crate::modules::connection::parse_connection_args;
 use crate::modules::credential::parse_credentials_args;
 use crate::modules::credential_definition::parse_credential_definition_args;
 use crate::modules::feature::parse_features_args;
+use crate::modules::json_ld::parse_json_ld_args;
 use crate::modules::multitenancy::parse_multitenancy_args;
 use crate::modules::oob::parse_oob_args;
 use crate::modules::proof::parse_proof_args;
@@ -73,6 +74,7 @@ pub async fn register() -> Result<()> {
                     Commands::CredentialDefinition(options) => {
                         parse_credential_definition_args(options, agent).await
                     }
+                    Commands::JsonLd(options) => parse_json_ld_args(options, agent).await,
                     Commands::Feature(_) => parse_features_args(agent).await,
                     Commands::Message(options) => parse_basic_message_args(options, agent).await,
                     Commands::Multitenancy(options) => {

@@ -19,6 +19,9 @@ pub mod credential;
 /// Module for credential definitions
 pub mod credential_definition;
 
+/// Module for JsonLd
+pub mod json_ld;
+
 /// Module for features
 pub mod feature;
 

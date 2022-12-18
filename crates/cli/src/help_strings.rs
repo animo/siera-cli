@@ -85,6 +85,13 @@ pub enum HelpStrings {
     // Features
     Features,
 
+    // JSON-LD
+    JsonLd,
+    JsonLdSign,
+    JsonLdVerkey,
+    JsonLdDoc,
+    JsonLdVerify,
+
     // Message
     Message,
     MessageId,
@@ -237,6 +244,11 @@ impl HelpStrings {
             Self::CredentialsProposeId => "Not implemented yet: connection ID to send proposal to",
 
             Self::Features => "List all available features",
+            Self::JsonLd => "Sign or verify a JSON-LD document",
+            Self::JsonLdSign => "Sign a JSON-LD document",
+            Self::JsonLdVerkey => "The verification key used to sign or verify the signature of a JSON-LD document",
+            Self::JsonLdDoc => "The JSON-LD document",
+            Self::JsonLdVerify => "Verify a JSON-LD document",
 
             Self::Message => "Send a secure message to an existing connection",
             Self::MessageId => "Connection ID to send the message to",

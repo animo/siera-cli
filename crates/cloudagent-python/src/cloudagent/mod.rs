@@ -15,6 +15,9 @@ mod credential_definition;
 /// Module for features definitions specific for an Aries cloudagent Python
 mod feature;
 
+/// Module for JSON-LD
+mod json_ld;
+
 /// Module for proofs definitions specific for an Aries cloudagent Python
 mod proof;
 

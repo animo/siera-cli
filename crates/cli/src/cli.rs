@@ -9,8 +9,9 @@ use crate::modules::multitenancy::MultitenancyOptions;
 use crate::modules::{
     basic_message::BasicMessageOptions, configuration::ConfigurationOptions,
     connection::ConnectionOptions, credential::CredentialOptions,
-    credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions, oob::OobOptions,
-    proof::ProofOptions, schema::SchemaOptions, wallet::WalletOptions, webhook::WebhookOptions,
+    credential_definition::CredentialDefinitionOptions, feature::FeaturesOptions,
+    json_ld::JsonLdOptions, oob::OobOptions, proof::ProofOptions, schema::SchemaOptions,
+    wallet::WalletOptions, webhook::WebhookOptions,
 };
 
 /// Main command with options, flags and subcommands
@@ -85,7 +86,7 @@ pub enum Commands {
     Feature(FeaturesOptions),
 
     /// JSON-LD subcommands
-    /// TODO: JsonLd(JsonLdOptions)
+    JsonLd(JsonLdOptions),
 
     /// BasicMessage subcommands
     Message(BasicMessageOptions),
@@ -118,7 +119,7 @@ impl From<Commands> for String {
             Commands::Credential(_) => "Credential",
             Commands::CredentialDefinition(_) => "CredentialDefinition",
             Commands::Feature(_) => "Feature",
-            // Commands::JsonLd(_) => "JsonLd",
+            Commands::JsonLd(_) => "JsonLd",
             Commands::Message(_) => "Message",
             Commands::Multitenancy(_) => "Multitenancy",
             Commands::Oob(_) => "Oob",

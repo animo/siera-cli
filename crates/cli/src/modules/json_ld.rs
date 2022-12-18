@@ -1,20 +1,17 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
-use clap::Args;
+use clap::{Args, Subcommand};
 use siera_agent::modules::json_ld::{JsonLdModule, JsonLdSignOptions, JsonLdVerifyOptions};
+use siera_logger::pretty_stringify_obj;
 
 /// JSON-LD options and flags
 #[derive(Args)]
-#[clap(about = HelpStrings::Message)]
+#[clap(about = HelpStrings::JsonLd)]
 pub struct JsonLdOptions {
-    /// The verkey used for signing
-    #[clap(short, long, help=HelpStrings::MessageMessage)]
-    verkey: String,
-
-    /// The JSON-LD doc to be signed or verified
-    #[clap(short, long, help=HelpStrings::MessageId)]
-    doc: Value,
+    /// All the subcommands of the json_ld cli
+    #[clap(subcommand)]
+    pub commands: JsonLdSubcommands,
 }
 
 #[derive(Subcommand, Debug)]
@@ -53,9 +50,9 @@ pub async fn parse_json_ld_args(
     let loader = Loader::start(&LoaderVariant::default());
     match &options.commands {
         JsonLdSubcommands::Sign { verkey, doc } => {
-            let options = JsonLdOptions {
+            let options = JsonLdSignOptions {
                 verkey: verkey.clone(),
-                doc: doc.copy(),
+                doc: doc.clone(),
             };
             agent.sign(options).await.map(|response| {
                 loader.stop();
@@ -68,9 +65,9 @@ pub async fn parse_json_ld_args(
             })
         }
         JsonLdSubcommands::Verify { verkey, doc } => {
-            let options = JsonLdOptions {
+            let options = JsonLdVerifyOptions {
                 verkey: verkey.clone(),
-                doc: doc.copy(),
+                doc: doc.clone(),
             };
             agent.verify(options).await.map(|response| {
                 loader.stop();

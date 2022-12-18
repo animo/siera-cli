@@ -7,6 +7,9 @@ pub mod credential;
 /// Credential definition module for a generic cloudagent
 pub mod credential_definition;
 
+/// JSON-LD module a generic cloudagent
+pub mod json_ld;
+
 /// Feature module for a generic cloudagent
 pub mod feature;
 
