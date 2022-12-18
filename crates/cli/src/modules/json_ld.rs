@@ -14,9 +14,10 @@ pub struct JsonLdOptions {
     pub commands: JsonLdSubcommands,
 }
 
+/// JSON-LD options and flags
 #[derive(Subcommand, Debug)]
 pub enum JsonLdSubcommands {
-    // Sign a JSON-LD doc
+    /// Sign a JSON-LD doc
     #[clap(about = HelpStrings::JsonLdSign)]
     Sign {
         /// The key type of the wallet
@@ -28,7 +29,7 @@ pub enum JsonLdSubcommands {
         #[clap(short, long, help=HelpStrings::JsonLdDoc, required = true)]
         doc: String,
     },
-    // Verify a JSON-LD doc
+    /// Verify a JSON-LD doc
     #[clap(about = HelpStrings::JsonLdVerify)]
     Verify {
         /// The key type of the wallet
@@ -73,9 +74,9 @@ pub async fn parse_json_ld_args(
                 loader.stop();
                 log_info!(
                     "Successfully verified Document {}: ",
-                    pretty_stringify_obj(&response)
+                    pretty_stringify_obj(response)
                 );
-                log!("{}", pretty_stringify_obj(&response));
+                log!("{}", pretty_stringify_obj(response));
                 log_json!(response)
             })
         }

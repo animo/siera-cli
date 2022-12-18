@@ -96,12 +96,11 @@ pub enum Commands {
 
     /// Oob subcommands
     Oob(OobOptions),
+    /// Schema subcommands
+    Schema(SchemaOptions),
 
     /// Proof subcommands
     Proof(ProofOptions),
-
-    /// Schema subcommands
-    Schema(SchemaOptions),
 
     /// Wallet subcommands
     Wallet(WalletOptions),

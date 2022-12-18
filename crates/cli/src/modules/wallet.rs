@@ -3,7 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::{Args, Subcommand};
 use siera_agent::modules::wallet::{
-    CreateLocalDidOptions, Did, KeyType, SetDidEndpointOptions, WalletModule,
+    CreateLocalDidOptions, Did, DidList, KeyType, SetDidEndpointOptions, WalletModule,
 };
 use siera_logger::pretty_stringify_obj;
 
@@ -26,12 +26,12 @@ pub enum WalletSubcommands {
         #[clap(short, long, help=HelpStrings::WalletListDid, required = false)]
         did: Option<String>,
 
-        /// The key type of the wallet
+        /// The key type of the wallet e.g. ed25519, bls12381g2
         #[clap(short, long, help=HelpStrings::WalletListKeyType, required = false, possible_values=&["ed25519", "bls12381g2"])]
         key_type: Option<String>,
 
-        /// The did method to query for either 'key' or 'sov'
-        #[clap(short, long, help=HelpStrings::WalletListMethod, required = false, possible_values=&["key", "sov"])]
+        /// The did method to query for
+        #[clap(short, long, help=HelpStrings::WalletListMethod, required = false, possible_values=&["did", "sov"])]
         method: Option<String>,
 
         /// Available values : public, posted, wallet_only
@@ -46,12 +46,12 @@ pub enum WalletSubcommands {
     /// Create a local DID
     #[clap(about = HelpStrings::WalletCreate)]
     CreateLocalDid {
-        /// The method to be used key or sov
-        #[clap(long, short, help=HelpStrings::WalletCreateMethod, required = true,  possible_values=&["key", "sov"])]
+        /// The method to be used did or sov
+        #[clap(long, short, help=HelpStrings::WalletCreateMethod, required = true, default_value="did", possible_values=&["did", "sov"])]
         method: String,
 
-        /// The key_type to be used ed25519 or bls12381g2
-        #[clap(long, short, help=HelpStrings::WalletListKeyType, required = true,  possible_values=&["ed25519", "bls12381g2"])]
+        /// The key type e.g. ed25519 or bls12381g2
+        #[clap(long, short, help=HelpStrings::WalletListKeyType, required = true, default_value="ed25519", possible_values=&["ed25519", "bls12381g2"])]
         key_type: String,
     },
 
@@ -121,15 +121,15 @@ pub async fn parse_wallet_args(
                 posture: posture.clone(),
                 verkey: verkey.clone(),
             };
-            agent.get_wallet_dids(options).await.map(|response| {
-                loader.stop();
-                log_info!("Found the following DID information for your query: ",);
-                response
-                    .iter()
-                    .for_each(|x| log!("{}", pretty_stringify_obj(x)));
-                copy!("{}", pretty_stringify_obj(&response));
-                log_json!(&response)
-            })
+            agent
+                .get_wallet_dids(options)
+                .await
+                .map(|response: DidList| {
+                    loader.stop();
+                    log_info!("Found the following DID information for your query: ",);
+                    log!("{}", pretty_stringify_obj(&response));
+                    copy!("{}", pretty_stringify_obj(&response));
+                })
         }
         WalletSubcommands::CreateLocalDid { method, key_type } => {
             let options = CreateLocalDidOptions {
@@ -140,34 +140,31 @@ pub async fn parse_wallet_args(
             };
             agent.create_local_did(options).await.map(|response| {
                 loader.stop();
-                log_info!("Successfully created local DID: ",);
+                log_info!("Successfully created local DID: {:?}", response.did);
                 copy!("{}", pretty_stringify_obj(&response));
-                log!("{}", pretty_stringify_obj(&response));
-                log_json!(response)
+                log!("{}", pretty_stringify_obj(response));
             })
         }
         WalletSubcommands::RotateKeyPair { did } => {
             agent.rotate_keypair(did.clone()).await.map(|response| {
                 loader.stop();
                 log_info!("Successfully rotated keypair for did DID {}: ", did);
+                copy!("{}", pretty_stringify_obj(response));
                 log!("{}", pretty_stringify_obj(response));
-                log_json!(response)
             })
         }
         WalletSubcommands::FetchPublicDid {} => agent.fetch_public_did().await.map(|response| {
             loader.stop();
             log_info!("Wallet public DID: ");
-            copy!("{}", pretty_stringify_obj(&response.did));
-            log!("{}", pretty_stringify_obj(&response.did));
-            log_json!(response)
+            copy!("{}", pretty_stringify_obj(&response));
+            log!("{}", pretty_stringify_obj(response));
         }),
         WalletSubcommands::AssignPublicDid { did } => {
             agent.assign_public_did(did.clone()).await.map(|response| {
                 loader.stop();
                 log_info!("Successfully assigned public DID: ");
                 copy!("{}", pretty_stringify_obj(&response));
-                log!("{}", pretty_stringify_obj(&response));
-                log_json!({"public_did": response.did });
+                log!("{}", pretty_stringify_obj(response));
             })
         }
         WalletSubcommands::FetchDidEndpoint { did } => {
@@ -175,8 +172,7 @@ pub async fn parse_wallet_args(
                 loader.stop();
                 log_info!("DID endpoint for DID {}: ", did);
                 copy!("{}", pretty_stringify_obj(&response));
-                log!("{}", pretty_stringify_obj(&response));
-                log_json!(response)
+                log!("{}", pretty_stringify_obj(response));
             })
         }
         WalletSubcommands::SetDidEndpoint {
@@ -193,6 +189,7 @@ pub async fn parse_wallet_args(
                 loader.stop();
                 log_info!("Set DID endpoint for DID {}: ", did);
                 log!("{}", pretty_stringify_obj(response));
+                copy!("{}", pretty_stringify_obj(response));
             })
         }
     }

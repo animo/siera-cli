@@ -244,6 +244,7 @@ impl HelpStrings {
             Self::CredentialsProposeId => "Not implemented yet: connection ID to send proposal to",
 
             Self::Features => "List all available features",
+
             Self::JsonLd => "Sign or verify a JSON-LD document",
             Self::JsonLdSign => "Sign a JSON-LD document",
             Self::JsonLdVerkey => "The verification key used to sign or verify the signature of a JSON-LD document",
@@ -288,17 +289,17 @@ impl HelpStrings {
             Self::WalletCreateMethod => "The did method. One of 'key' or 'sov'",
             Self::WalletCreateOptions => "Key types are e.g. ed25519, bls12381g2",
             Self::WalletEndpoint => "The endpoint url",
-            Self::WalletEndpointType => "The endpoint type",
+            Self::WalletEndpointType => "The endpoint type. E.g. 'Endpoint'",
             Self::WalletFetchDidEndpoint => "Get the endpoint information associated with a DID",
             Self::WalletGetPublic => "Get the public DID of the wallet",
             Self::WalletList => "Query for DID associated with a wallet",
             Self::WalletListDid => "A DID to query for",
             Self::WalletListKeyType => "Key types are e.g. ed25519, bls12381g2",
             Self::WalletListMethod => "DID method to query for. e.g. sov to only fetch indy/sov DIDs Available values : key, sov",
-            Self::WalletListPosture => "Whether DID is current public DID, posted to ledger but current public DID, or local to the wallet. Available values : public, posted, wallet_only",
+            Self::WalletListPosture => "The DID posture specifying whether the DID is the current public DID, posted to ledger but current public DID, or local to the wallet. Available values : public, posted, wallet_only",
             Self::WalletListVerkey => "The verification key of interest",
             Self::WalletRotateKeypair => "Rotate the keypair for a DID",
-            Self::WalletSetEndpoint => "E.g. 'Endpoint'",
+            Self::WalletSetEndpoint => "Set the endpoint information for a DID",
             Self::WalletSetPublic => "Set the public DID of the wallet",
         }
     }

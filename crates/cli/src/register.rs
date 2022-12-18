@@ -74,8 +74,8 @@ pub async fn register() -> Result<()> {
                     Commands::CredentialDefinition(options) => {
                         parse_credential_definition_args(options, agent).await
                     }
-                    Commands::JsonLd(options) => parse_json_ld_args(options, agent).await,
                     Commands::Feature(_) => parse_features_args(agent).await,
+                    Commands::JsonLd(options) => parse_json_ld_args(options, agent).await,
                     Commands::Message(options) => parse_basic_message_args(options, agent).await,
                     Commands::Multitenancy(options) => {
                         parse_multitenancy_args(options, agent).await

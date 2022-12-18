@@ -1,4 +1,4 @@
-/// Module for basic messages sspecific for an Aries cloudagent Python
+/// Module for basic messages specific for an Aries cloudagent Python
 mod basic_message;
 
 /// Module for connections specific for an Aries cloudagent Python

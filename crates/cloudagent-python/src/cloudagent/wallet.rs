@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::json;
 use siera_agent::error::Result;
 use siera_agent::modules::wallet::{
-    CreateLocalDidOptions, Did, DidEndpoint, SetDidEndpointOptions, WalletModule,
+    CreateLocalDidOptions, Did, DidEndpoint, DidList, SetDidEndpointOptions, WalletModule,
 };
 
 /// Response from the cloudagent that contains the wrapped Did result
@@ -20,12 +20,12 @@ struct Response {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct DidListResults {
     /// The aca-py structure returning results
-    results: Vec<Did>,
+    results: DidList,
 }
 
 #[async_trait]
 impl WalletModule for CloudAgentPython {
-    async fn get_wallet_dids(&self, options: Did) -> Result<Vec<Did>> {
+    async fn get_wallet_dids(&self, options: Did) -> Result<DidList> {
         let url = self.create_url(&["wallet", "did"])?;
 
         let query = fill_query!(options, did, key_type, method, posture, verkey);

@@ -17,13 +17,26 @@ pub struct Did {
     pub method: Option<String>,
 
     // TODO: enum
-    /// Whether DID is current public DID, posted to ledger but current public DID, or local to the wallet
+    /// The DID posture specifying whether the DID is
+    /// the current public DID,
+    /// posted to ledger but current public DID,
+    /// or local to the wallet
     /// Available values : public, posted, wallet_only
     pub posture: Option<String>,
 
     /// The verification key of interest
     pub verkey: Option<String>,
 }
+
+/// Response from the cloudagent when requesting info about dids
+/// of a wallet
+#[derive(Debug, Deserialize, Serialize)]
+pub struct DidList(Vec<Did>);
+
+/// Response from the cloudagent when requesting info about dids
+/// of a wallet
+#[derive(Debug, Deserialize, Serialize)]
+pub struct DidResult(Did);
 
 /// Key type in a JSON format k,v pair
 #[derive(Debug, Deserialize, Serialize)]
@@ -50,7 +63,7 @@ pub struct DidEndpoint {
     pub did: String,
 
     /// The endpoint url
-    pub endpoint: Option<String>,
+    pub endpoint: String,
 }
 
 /// Options that are supplied when querying a wallet for DIDs
@@ -70,7 +83,7 @@ pub struct SetDidEndpointOptions {
 #[async_trait]
 pub trait WalletModule {
     /// Query a wallet for DIDs
-    async fn get_wallet_dids(&self, options: Did) -> Result<Vec<Did>>;
+    async fn get_wallet_dids(&self, options: Did) -> Result<DidList>;
 
     /// Create a local DID
     async fn create_local_did(&self, options: CreateLocalDidOptions) -> Result<Did>;
