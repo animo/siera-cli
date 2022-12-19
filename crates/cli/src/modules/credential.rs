@@ -66,7 +66,10 @@ pub async fn parse_credentials_args(
             agent.send_offer(options).await.map(|cred| {
                 loader.stop();
                 log_debug!("{}", pretty_stringify_obj(&cred));
-                log_info!("Successfully offered a credential. Credential exchange id: ",);
+                log_info!(
+                    "Successfully offered a credential. Credential exchange id: {}",
+                    &cred.credential_exchange_id
+                );
                 copy!("{}", cred.credential_exchange_id);
                 log_json!({ "credential_exchange_id": cred.credential_exchange_id });
             })

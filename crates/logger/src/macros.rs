@@ -28,7 +28,7 @@ macro_rules! elog {
 #[macro_export]
 macro_rules! log {
     ($($arg:tt)*) => {
-        if ::siera_logger::STATE.read().unwrap().level != ::siera_logger::LogLevel::Off && !::siera_logger::STATE.read().unwrap().should_json {
+        if ::siera_logger::STATE.read().unwrap().level != ::siera_logger::LogLevel::Off && !::siera_logger::STATE.read().unwrap().should_output_json {
             println!($($arg)*);
         }
     };
@@ -38,7 +38,7 @@ macro_rules! log {
 #[macro_export]
 macro_rules! log_json {
     ($($json:tt)+) => {
-        if ::siera_logger::STATE.read().unwrap().should_json {
+        if ::siera_logger::STATE.read().unwrap().should_output_json && ::siera_logger::STATE.read().unwrap().level != ::siera_logger::LogLevel::Off  {
             println!("{}", ::siera_logger::pretty_stringify_obj(::siera_logger::serde_json::json!($($json)+)));
         }
     }

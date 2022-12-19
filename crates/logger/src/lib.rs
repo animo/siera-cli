@@ -62,7 +62,7 @@ pub struct LoggerState {
     pub should_copy: bool,
 
     /// Whether the logger should log json (only)
-    pub should_json: bool,
+    pub should_output_json: bool,
 
     /// The log level at the cli
     pub level: LogLevel,
@@ -74,13 +74,13 @@ impl LoggerState {
     pub const fn new(
         init: bool,
         should_copy: bool,
-        should_json: bool,
+        should_output_json: bool,
         log_level: LogLevel,
     ) -> Self {
         Self {
             init,
             should_copy,
-            should_json,
+            should_output_json,
             level: log_level,
         }
     }
@@ -96,7 +96,7 @@ lazy_static! {
 /// # Panics
 ///
 /// When the logger is already initialized
-pub fn init(level: LogLevel, should_copy: bool, should_json: bool) {
+pub fn init(level: LogLevel, should_copy: bool, should_output_json: bool) {
     assert!(
         !STATE.read().unwrap().init,
         "Logger should only be initialized once!"
@@ -105,7 +105,7 @@ pub fn init(level: LogLevel, should_copy: bool, should_json: bool) {
     let mut state = STATE.write().unwrap();
     state.init = true;
     state.level = level;
-    state.should_json = should_json;
+    state.should_output_json = should_output_json;
     state.should_copy = should_copy;
 }
 

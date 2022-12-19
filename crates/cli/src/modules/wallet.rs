@@ -50,7 +50,7 @@ pub enum WalletSubcommands {
         #[clap(long, short, help=HelpStrings::WalletCreateMethod, required = true,  possible_values=&["key", "sov"])]
         method: String,
 
-        /// The key_type to be used ed25519 or bls12381g2
+        /// The key type to query for eg. ed25519, bls12381g2
         #[clap(long, short, help=HelpStrings::WalletListKeyType, required = true,  possible_values=&["ed25519", "bls12381g2"])]
         key_type: String,
     },
@@ -141,7 +141,7 @@ pub async fn parse_wallet_args(
             };
             agent.create_local_did(options).await.map(|response| {
                 loader.stop();
-                log_info!("Successfully created local DID: ",);
+                log_info!("Successfully created local DID: {:?}", response.did);
                 copy!("{}", pretty_stringify_obj(&response));
                 log!("{}", pretty_stringify_obj(&response));
                 log_json!(response)
