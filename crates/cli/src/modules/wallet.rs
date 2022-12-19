@@ -3,7 +3,7 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::{Args, Subcommand};
 use siera_agent::modules::wallet::{
-    CreateLocalDidOptions, Did, KeyType, SetDidEndpointOptions, WalletModule,
+    CreateLocalDidOptions, Did, DidList, KeyType, SetDidEndpointOptions, WalletModule,
 };
 use siera_logger::pretty_stringify_obj;
 
@@ -121,15 +121,16 @@ pub async fn parse_wallet_args(
                 posture: posture.clone(),
                 verkey: verkey.clone(),
             };
-            agent.get_wallet_dids(options).await.map(|response| {
-                loader.stop();
-                log_info!("Found the following DID information for your query: ",);
-                response
-                    .iter()
-                    .for_each(|x| log!("{}", pretty_stringify_obj(x)));
-                copy!("{}", pretty_stringify_obj(&response));
-                log_json!(&response)
-            })
+            agent
+                .get_wallet_dids(options)
+                .await
+                .map(|response: DidList| {
+                    loader.stop();
+                    log_info!("Found the following DID information for your query: ",);
+                    log!("{}", pretty_stringify_obj(&response));
+                    log_json!(&response);
+                    copy!("{}", pretty_stringify_obj(&response));
+                })
         }
         WalletSubcommands::CreateLocalDid { method, key_type } => {
             let options = CreateLocalDidOptions {
