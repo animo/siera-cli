@@ -32,8 +32,9 @@ impl JsonLdModule for CloudAgentPython {
     async fn sign(&self, options: JsonLdSignOptions) -> Result<Value> {
         let url = self.create_url(&["jsonld", "sign"])?;
 
+        let _doc: Value = serde_json::from_str(&options.doc)?;
         let body = json!({
-            "doc": options.doc,
+            "doc": _doc,
             "verkey": options.verkey
         });
 
@@ -47,8 +48,9 @@ impl JsonLdModule for CloudAgentPython {
     async fn verify(&self, options: JsonLdVerifyOptions) -> Result<bool> {
         let url = self.create_url(&["jsonld", "verify"])?;
 
+        let _doc: Value = serde_json::from_str(&options.doc)?;
         let body = json!({
-            "doc": options.doc,
+            "doc": _doc,
             "verkey": options.verkey
         });
 

@@ -21,7 +21,7 @@ pub enum JsonLdSubcommands {
     #[clap(about = HelpStrings::JsonLdSign)]
     Sign {
         /// The key type of the wallet
-        #[clap(short, long, help=HelpStrings::JsonLdVerkey, required = true)]
+        #[clap(short = 'k', long, help=HelpStrings::JsonLdVerkey, required = true)]
         verkey: String,
 
         /// The doc to be signed
@@ -33,7 +33,7 @@ pub enum JsonLdSubcommands {
     #[clap(about = HelpStrings::JsonLdVerify)]
     Verify {
         /// The key type of the wallet
-        #[clap(short, long, help=HelpStrings::JsonLdVerkey, required = true)]
+        #[clap(short = 'k', long, help=HelpStrings::JsonLdVerkey, required = true)]
         verkey: String,
 
         /// The doc to be verified
