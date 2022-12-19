@@ -63,7 +63,7 @@ pub struct DidEndpoint {
     pub did: String,
 
     /// The endpoint url
-    pub endpoint: String,
+    pub endpoint: Option<String>,
 }
 
 /// Options that are supplied when querying a wallet for DIDs
