@@ -12,6 +12,9 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev -y
+
       - uses: actions/checkout@v3
 
       - name: Install Rust
@@ -28,3 +31,8 @@ jobs:
         with:
           files: lcov.info
           fail_ci_if_error: true
+          layout: "reach, diff, flags, files"
+          behavior: default
+          require_changes: false
+          require_base: no
+          require_head: yes
