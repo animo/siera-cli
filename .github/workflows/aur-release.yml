@@ -3,7 +3,7 @@ name: AUR Release
 on:
   workflow_run:
     workflows: ["build-and-release"]
-    types: 
+    types:
       - completed
   workflow_dispatch:
 
@@ -16,12 +16,12 @@ jobs:
       - name: Get PKGBUILD and .SRCINFO
         id: get_pkgbuild
         run: |
-          curl -o PKGBUILD https://raw.githubusercontent.com/animo/siera/main/pkg/PKGBUILD
-          curl -o .SRCINFO https://raw.githubusercontent.com/animo/siera/main/pkg/.SRCINFO
+          curl -o PKGBUILD https://raw.githubusercontent.com/animo/siera-cli/main/pkg/PKGBUILD
+          curl -o .SRCINFO https://raw.githubusercontent.com/animo/siera-cli/main/pkg/.SRCINFO
       - name: Gather data and rewrite PKGBUILD file
         id: gather_data_and_rewrite
         run: |
-          VERSION=$(curl --silent https://api.github.com/repos/animo/siera/releases | jq '.[0]' |  jq -r .tag_name)
+          VERSION=$(curl --silent https://api.github.com/repos/animo/siera-cli/releases | jq '.[0]' |  jq -r .tag_name)
           # strip the v prefix
           VERSION=${VERSION:1}
           # replace package version in PKGBUILD
@@ -34,7 +34,7 @@ jobs:
           AUR_KEY: ${{secrets.AUR_KEY}}
         run: |
           # get the version
-          VERSION=$(curl --silent https://api.github.com/repos/animo/siera/releases | jq '.[0]' |  jq -r .tag_name)
+          VERSION=$(curl --silent https://api.github.com/repos/animo/siera-cli/releases | jq '.[0]' |  jq -r .tag_name)
           # create all ssh files/folders
           mkdir ~/.ssh
           touch ~/.ssh/aur
