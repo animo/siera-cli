@@ -27,15 +27,15 @@ pub async fn register() -> Result<()> {
         LogLevel::Off
     } else {
         match cli.verbose {
-            1 => LogLevel::Info,
             2 => LogLevel::Debug,
             3.. => LogLevel::Trace,
-            _ => LogLevel::Warn,
+            _ => LogLevel::Info,
         }
     };
-    siera_logger::init(level, cli.copy);
 
-    log_trace!("Parsed CLI options and initialized logger");
+    siera_logger::init(level, cli.copy, cli.output_json);
+
+    trace!({ "message": "Parsed CLI options and initialized logger" });
 
     // Commands where the agent is not required
     if let Commands::Configuration(options) = &cli.commands {
@@ -50,12 +50,12 @@ pub async fn register() -> Result<()> {
             cli.token,
         )?;
 
-        log_debug!(
-                "Loading agent with the following config:\n- url: {}\n- api_key: {:?}\n- agent type: {}",
-                agent_url,
-                api_key,
-                agent
-            );
+        debug!({
+            "message": "Loading agent with the following config",
+            "url": agent_url,
+            "api_key": api_key,
+            "agent": agent_url
+        });
 
         // TODO: Ideally we would get an Agent<A> here that we would pass into the commands
         match agent.as_str() {

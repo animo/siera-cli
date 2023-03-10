@@ -38,6 +38,10 @@ pub struct Cli {
     #[clap(long, short, help = HelpStrings::Copy)]
     pub copy: bool,
 
+    /// Whether specific output should be copied to the clipboard
+    #[clap(long = "json", short = 'j', help = HelpStrings::OutputJson)]
+    pub output_json: bool,
+
     /// Whether the output should be quiet
     #[clap(long, short, help = HelpStrings::Quiet, conflicts_with = "verbose")]
     pub quiet: bool,

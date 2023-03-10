@@ -1,11 +1,8 @@
+use crate::error::Result;
 use siera_agent::modules::credential_definition::CredentialDefinitionCreateOptions;
 use siera_agent::modules::credential_definition::CredentialDefinitionCreateResponse;
 use siera_agent::modules::credential_definition::CredentialDefinitionModule;
 use siera_agent::modules::schema::{SchemaCreateOptions, SchemaModule};
-
-use colored::Colorize;
-
-use crate::error::Result;
 
 /// Automation for creating a credential definition
 pub struct CreateCredentialDefinition<'a> {
@@ -51,16 +48,12 @@ impl<'a> CreateCredentialDefinition<'a> {
             ..CredentialDefinitionCreateOptions::default()
         };
 
-        log!("{} the credential definition...", "Registering".cyan());
+        info!({"message": "Registering the credential definition"});
         // Create or fetch the credential definition
         let credential_definition = CredentialDefinitionModule::create(agent, options).await?;
-
-        log!(
-            "{} credential definition with id {}",
-            "Created".green(),
-            String::from(&credential_definition.credential_definition_id).green()
-        );
-        copy!("{}", credential_definition.credential_definition_id);
+        let id = credential_definition.credential_definition_id.clone();
+        info!({ "message": "Created credential definition", "credential_definition_id": &id});
+        copy!("{}", &id);
         Ok(credential_definition)
     }
 }

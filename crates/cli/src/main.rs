@@ -32,7 +32,7 @@ async fn main() {
     match register().await {
         Ok(_) => (),
         Err(e) => {
-            log_error!("{}", e);
+            error!({"error": e.to_string()});
             std::process::exit(1);
         }
     }

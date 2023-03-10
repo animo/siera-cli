@@ -126,8 +126,8 @@ pub async fn parse_wallet_args(
                 .await
                 .map(|response: DidList| {
                     loader.stop();
-                    log_info!("Found the following DID information for your query: ",);
-                    log!("{}", pretty_stringify_obj(&response));
+                    info!({ "message": "Found the following DID information"});
+                    info!({ "response": response });
                     copy!("{}", pretty_stringify_obj(&response));
                 })
         }
@@ -140,39 +140,39 @@ pub async fn parse_wallet_args(
             };
             agent.create_local_did(options).await.map(|response| {
                 loader.stop();
-                log_info!("Successfully created local DID: {:?}", response.did);
+                info!({ "message": format!("Successfully created local DID: {:?}", response.did) });
+                info!({ "response": response });
                 copy!("{}", pretty_stringify_obj(&response));
-                log!("{}", pretty_stringify_obj(response));
             })
         }
         WalletSubcommands::RotateKeyPair { did } => {
             agent.rotate_keypair(did.clone()).await.map(|response| {
                 loader.stop();
-                log_info!("Successfully rotated keypair for did DID {}: ", did);
+                info!({ "message": format!("Successfully rotated keypair for DID: {did}") });
+                info!({ "response": response });
                 copy!("{}", pretty_stringify_obj(response));
-                log!("{}", pretty_stringify_obj(response));
             })
         }
         WalletSubcommands::FetchPublicDid {} => agent.fetch_public_did().await.map(|response| {
             loader.stop();
-            log_info!("Wallet public DID: ");
+            info!({ "message": "Wallet public DID" });
+            info!({ "response": response });
             copy!("{}", pretty_stringify_obj(&response));
-            log!("{}", pretty_stringify_obj(response));
         }),
         WalletSubcommands::AssignPublicDid { did } => {
             agent.assign_public_did(did.clone()).await.map(|response| {
                 loader.stop();
-                log_info!("Successfully assigned public DID: ");
+                info!({ "message": "Successfully assigned public DID" });
+                info!({ "response": response });
                 copy!("{}", pretty_stringify_obj(&response));
-                log!("{}", pretty_stringify_obj(response));
             })
         }
         WalletSubcommands::FetchDidEndpoint { did } => {
             agent.fetch_did_endpoint(did.clone()).await.map(|response| {
                 loader.stop();
-                log_info!("DID endpoint for DID {}: ", did);
+                info!({ "message": format!("DID endpoint for DID: {did}") });
+                info!({ "response": response });
                 copy!("{}", pretty_stringify_obj(&response));
-                log!("{}", pretty_stringify_obj(response));
             })
         }
         WalletSubcommands::SetDidEndpoint {
@@ -187,8 +187,8 @@ pub async fn parse_wallet_args(
             };
             agent.set_did_endpoint(options).await.map(|response| {
                 loader.stop();
-                log_info!("Set DID endpoint for DID {}: ", did);
-                log!("{}", pretty_stringify_obj(response));
+                info!({ "message": format!("Set DID endpoint for DID: {did}") });
+                info!({ "response": response });
                 copy!("{}", pretty_stringify_obj(response));
             })
         }

@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use siera_agent::modules::multitenancy::MultitenancyCreateResponse;
 use std::env;
 use std::panic;
@@ -11,9 +12,9 @@ pub async fn run_test<T>(test: T)
 where
     T: FnOnce(&TestAgentCli) + panic::UnwindSafe,
 {
-    let (mut agent_cli, wallet_id) = setup().await;
-    let result = panic::catch_unwind(|| test(&agent_cli));
-    teardown(&mut agent_cli, wallet_id);
+    let (mut siera_cli, wallet_id) = setup().await;
+    let result = panic::catch_unwind(|| test(&siera_cli));
+    teardown(&mut siera_cli, wallet_id);
     assert!(result.is_ok(), "Test execution failed")
 }
 
@@ -21,17 +22,23 @@ fn get_agent_url() -> String {
     env::var("AGENT_URL").unwrap_or_else(|_| String::from("http://localhost:8010"))
 }
 
-async fn setup() -> (TestAgentCli, String) {
-    let mut agent_cli = TestAgentCli::new(None);
-    let response_str = agent_cli.exec("multitenancy create");
-    let wallet_response: MultitenancyCreateResponse = serde_json::from_str(&response_str).unwrap();
-    agent_cli.scope_to_wallet(wallet_response.token);
-    (agent_cli, wallet_response.wallet_id)
+#[derive(Serialize, Deserialize)]
+struct MultiTenancyCreateResponseWrapper {
+    response: MultitenancyCreateResponse,
 }
 
-fn teardown(agent_cli: &mut TestAgentCli, wallet_id: String) {
-    agent_cli.unscope_from_wallet();
-    agent_cli.exec(&format!("multitenancy remove --wallet-id={wallet_id}"));
+async fn setup() -> (TestAgentCli, String) {
+    let mut siera_cli = TestAgentCli::new(None);
+    let response_str = siera_cli.exec("multitenancy create");
+    let wallet_response: MultiTenancyCreateResponseWrapper =
+        serde_json::from_str(&response_str).unwrap();
+    siera_cli.scope_to_wallet(wallet_response.response.token);
+    (siera_cli, wallet_response.response.wallet_id)
+}
+
+fn teardown(siera_cli: &mut TestAgentCli, wallet_id: String) {
+    siera_cli.unscope_from_wallet();
+    siera_cli.exec(&format!("multitenancy remove --wallet-id={wallet_id}"));
 }
 
 /// A test utility that wraps common args we want to pass to every command
@@ -64,7 +71,7 @@ impl TestAgentCli {
         }
         agent_args.push_str(command);
         let result = Command::new("cargo")
-            .args(["run", "--package=siera", "--quiet", "--"])
+            .args(["run", "--package=siera", "--quiet", "--", "-j"])
             .args(agent_args.split(' ').collect::<Vec<&str>>())
             .output();
         let output = result

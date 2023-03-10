@@ -73,8 +73,8 @@ pub async fn parse_credential_definition_args(
             agent.create(options).await.map(|cred_def| {
                 loader.stop();
                 copy!("{}", cred_def.credential_definition_id);
-                log_info!("Created credential definition with id:");
-                log!("{}", cred_def.credential_definition_id);
+                info!({ "message": "Created credential definition" });
+                info!({ "credential_definition_id": cred_def.credential_definition_id });
             })
         }
         CredentialDefinitionSubcommands::List { id } => match id {
@@ -87,9 +87,9 @@ pub async fn parse_credential_definition_args(
                     "tag": cred_def.tag,
                     "ver": cred_def.ver,
                 });
-                log_debug!("{}", pretty_stringify_obj(cred_def));
+                debug!({ "credential_definition": cred_def });
                 copy!("{}", pretty_stringify_obj(&loggable));
-                log!("{}", pretty_stringify_obj(loggable));
+                info!({ "credential_definition": loggable });
             }),
 
             None => agent.get_all().await.map(|cred_defs| {
@@ -97,8 +97,10 @@ pub async fn parse_credential_definition_args(
                 cred_defs
                     .credential_definition_ids
                     .iter()
-                    .for_each(|x| log!("{}", x));
-                log_info!("Successfully fetched credential definition IDs",);
+                    .for_each(|credential_definition_id| {
+                        info!({ "credential_definition_id": credential_definition_id });
+                    });
+                info!({ "message": "Successfully fetched credential definition IDs"});
             }),
         },
     }

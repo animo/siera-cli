@@ -64,27 +64,29 @@ pub async fn parse_schema_args(
                 return Err(Error::RequiredAttributes.into());
             }
             agent.create(options).await.map(|schema| {
-                log_debug!("{}", pretty_stringify_obj(&schema));
-                log_info!("Created schema with the following attributes: ",);
+                debug!({ "schema": schema });
+                info!({"message": "Created schema"});
                 schema
                     .attr_names
                     .into_iter()
-                    .for_each(|name| log_info!("- {}", name));
-                log_info!("Schema id:");
-                log!("{}", schema.id);
+                    .for_each(|name| info!({ "schema_name": name }));
+                info!({ "schema_id": schema.id});
                 copy!("{}", schema.id);
             })
         }
         SchemaSubcommands::List { id } => match id {
             Some(i) => agent.get_by_id(i.clone()).await.map(|schema| {
                 loader.stop();
+                info!({ "schema": schema });
                 copy!("{}", pretty_stringify_obj(&schema));
-                log!("{}", pretty_stringify_obj(schema));
             }),
             None => agent.get_all().await.map(|schemas| {
                 loader.stop();
-                schemas.schema_ids.iter().for_each(|x| log!("{}", x));
-                log_info!("Successfully fetched schema IDs");
+                schemas
+                    .schema_ids
+                    .iter()
+                    .for_each(|schema_id| info!({ "schema_id": schema_id }));
+                info!({ "message": "Successfully fetched schema IDs" });
             }),
         },
     }

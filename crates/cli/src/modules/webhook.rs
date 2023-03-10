@@ -3,7 +3,6 @@ use crate::help_strings::HelpStrings;
 use clap::{Args, Subcommand};
 use colored::Colorize;
 use siera_agent::modules::webhook::WebhookModule;
-use siera_logger::pretty_stringify_obj;
 
 /// Webhook options and flags
 #[derive(Args)]
@@ -38,8 +37,7 @@ pub async fn parse_webhook_args(agent: impl WebhookModule + Send + Sync) -> Resu
                     )
                 },
             );
-            log!("{}", incoming_webhook_message);
-            log!("{}", pretty_stringify_obj(event));
+            info!({ "webhook_message": incoming_webhook_message, "event": event});
         })
         .await
 }

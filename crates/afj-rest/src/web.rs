@@ -21,8 +21,7 @@ impl CloudAgentAfjRest {
             None => Client::new().get(url),
         };
 
-        log_trace!("Get request query:");
-        log_trace!("{:#?}", query);
+        trace!({ "message": "Get request query", "query": query });
 
         self.send::<T>(client).await
     }
@@ -45,10 +44,7 @@ impl CloudAgentAfjRest {
             None => client,
         };
 
-        log_trace!("Post request body:");
-        log_trace!("{:#?}", body);
-        log_trace!("Post request query:");
-        log_trace!("{:#?}", query);
+        trace!({ "message": "Post request body", "body": body, "query": query });
 
         self.send::<T>(client).await
     }
@@ -59,16 +55,15 @@ impl CloudAgentAfjRest {
     ///
     /// When it could not fulfill the given request
     pub async fn send<T: DeserializeOwned>(&self, client: RequestBuilder) -> Result<T> {
-        log_trace!("About to send request:");
-        log_trace!("{:#?}", client);
+        trace!({ "message": "About to send request" });
+
         match client.send().await {
             Ok(res) => {
                 let status_code = res.status().as_u16();
-                log_trace!("Got {} response:", status_code);
-                log_trace!("{:#?}", res);
+                debug!({ "status_code": status_code });
                 match status_code {
                     200..=299 => res.json().await.map_err(|e| {
-                        log_warn!("{}", e);
+                        warn!({"error": e.to_string() });
                         Error::UnableToParseResponse.into()
                     }),
                     // Issue credential message when attributes are not correct
@@ -84,7 +79,7 @@ impl CloudAgentAfjRest {
                 }
             }
             Err(e) => {
-                log_warn!("Request failed {}", e);
+                warn!({ "message": "request failed", "error": e.to_string()});
                 Err(Error::UnreachableUrl.into())
             }
         }

@@ -29,6 +29,6 @@ pub async fn parse_basic_message_args(
     };
     agent.send_message(send_options).await.map(|_| {
         loader.stop();
-        log!("Successfully sent message");
+        info!({ "message": "Successfully sent message"});
     })
 }
