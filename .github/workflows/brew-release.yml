@@ -3,7 +3,7 @@ name: Brew Release
 on:
   workflow_run:
     workflows: ["build-and-release"]
-    types: 
+    types:
       - completed
   workflow_dispatch:
 
@@ -21,8 +21,8 @@ jobs:
       - name: Gather data and rewrite ruby file
         id: gather_data_and_rewrite
         run: |
-          VERSION=$(curl -L --silent https://api.github.com/repos/animo/siera/releases | jq '.[-1]' |  jq -r .tag_name)
-          URLS=$(curl -L --silent https://api.github.com/repos/animo/siera/releases | jq -r '.[] .assets[].browser_download_url' | grep "apple") # two lines with 1 download url each
+          VERSION=$(curl -L --silent https://api.github.com/repos/animo/siera-cli/releases | jq '.[-1]' |  jq -r .tag_name)
+          URLS=$(curl -L --silent https://api.github.com/repos/animo/siera-cli/releases | jq -r '.[] .assets[].browser_download_url' | grep "apple") # two lines with 1 download url each
           URL_ARM=$(echo $URLS | grep -m1 "arm" | awk '{ print $1 }')
           URL_X86=$(echo $URLS | grep -m1 "x86" | awk '{ print $2 }')  
           SHA_ARM=$(curl -L --silent $URL_ARM | shasum -a 256  | awk '{ print $1 }')
@@ -40,9 +40,9 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}
         with:
-          source_file: './siera.rb'
-          destination_repo: 'animo/homebrew-siera'
-          destination_folder: 'Formula'
-          user_email: 'development@animo.id'
-          user_name: 'Animo-bot'
-          commit_message: 'A new version of Siera has been released to homebrew'
+          source_file: "./siera.rb"
+          destination_repo: "animo/homebrew-siera"
+          destination_folder: "Formula"
+          user_email: "development@animo.id"
+          user_name: "Animo-bot"
+          commit_message: "A new version of Siera has been released to homebrew"

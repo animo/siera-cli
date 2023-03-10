@@ -3,7 +3,7 @@ name: Choco Release
 on:
   workflow_run:
     workflows: ["build-and-release"]
-    types: 
+    types:
       - completed
   workflow_dispatch:
 
@@ -17,7 +17,7 @@ jobs:
       - name: get version
         shell: bash
         run: |
-          echo "VERSION=$(curl --silent https://api.github.com/repos/animo/siera/releases | jq '.[0]' |  jq -r .tag_name)" >> $GITHUB_ENV
+          echo "VERSION=$(curl --silent https://api.github.com/repos/animo/siera-cli/releases | jq '.[0]' |  jq -r .tag_name)" >> $GITHUB_ENV
       - name: update nuspec
         shell: bash
         run: |
@@ -29,7 +29,7 @@ jobs:
           cd pkg/choco
           cp ../../LICENSE tools/LICENSE.txt
           cd tools
-          curl -L https://github.com/animo/siera/releases/download/${{ env.VERSION }}/windows-x86_64-siera.exe -o windows-x86_64-siera.exe
+          curl -L https://github.com/animo/siera-cli/releases/download/${{ env.VERSION }}/windows-x86_64-siera.exe -o windows-x86_64-siera.exe
           SHA_256=$(sha256sum windows-x86_64-siera.exe | awk '{ print $1 }')
           sed -i -e "3s|.*|\"$SHA_256\"|" VERIFICATION.txt
       - name: update choco folder

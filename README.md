@@ -47,14 +47,14 @@ brew install siera
 ### Cargo install
 
 ```sh
-cargo install --git https://github.com/animo/siera
+cargo install --git https://github.com/animo/siera-cli
 ```
 
 ### Manual build from source
 
 ```sh
-git clone https://github.com/animo/siera
-cd siera
+git clone https://github.com/animo/siera-cli
+cd siera-cli
 
 # Run ONE of the following commands to build:
 make build
@@ -76,7 +76,7 @@ In order to work with Siera an agent needs to be configured. With the following 
 siera configuration add --default
 ```
 
-This command will set up the community agent. To set up your own agent or use our multitenant agent to get your own environment, see the [set up guide](https://docs.siera.animo.id/guides/configuration).
+This command will set up the community agent. To set up your own agent or use our multi-tenant agent to get your own environment, see the [set up guide](https://docs.siera.animo.id/guides/configuration).
 
 If you are getting started with the tool we recommend enabling informational logs by passing the `--verbose` (or `-v`) flag.
 
