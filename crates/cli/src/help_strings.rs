@@ -2,7 +2,6 @@
 use std::convert::From;
 
 /// Help documentation for CLI commands.
-
 pub enum HelpStrings {
     // Top level
     Cli,
@@ -153,6 +152,7 @@ impl From<HelpStrings> for Option<&str> {
     }
 }
 
+#[allow(clippy::too_many_lines)]
 impl HelpStrings {
     const fn as_str(&self) -> &'static str {
         match self {
@@ -274,14 +274,13 @@ impl HelpStrings {
             Self::Wallet => "Interacts with a wallet",
             Self::WalletCreate => "Create a local DID",
             Self::WalletCreateMethod => "The did method. One of 'key' or 'sov'",
-            Self::WalletCreateOptions => "Key types are e.g. ed25519, bls12381g2",
+            Self::WalletCreateOptions | Self::WalletListKeyType => "Key types are e.g. ed25519, bls12381g2",
             Self::WalletEndpoint => "The endpoint url",
             Self::WalletEndpointType => "The endpoint type. E.g. 'Endpoint'",
             Self::WalletFetchDidEndpoint => "Get the endpoint information associated with a DID",
             Self::WalletGetPublic => "Get the public DID of the wallet",
             Self::WalletList => "Query for DID associated with a wallet",
             Self::WalletListDid => "A DID to query for",
-            Self::WalletListKeyType => "Key types are e.g. ed25519, bls12381g2",
             Self::WalletListMethod => "DID method to query for. e.g. sov to only fetch indy/sov DIDs Available values : key, sov",
             Self::WalletListPosture => "The DID posture specifying whether the DID is the current public DID, posted to ledger but current public DID, or local to the wallet. Available values : public, posted, wallet_only",
             Self::WalletListVerkey => "The verification key of interest",

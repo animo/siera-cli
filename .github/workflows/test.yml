@@ -1,0 +1,32 @@
+name: Test
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Cache cargo resources
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: deps
+          cache-on-failure: true
+
+      - name: Tests
+        run: cargo test --workspace --exclude=e2e-tests

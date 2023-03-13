@@ -1,0 +1,15 @@
+# -D: deny anything that goes wrong within this lint
+# -W: warn the user what went wrong, but allow to build
+# -A: allow the user to do "incorrect" behaviour
+[build]
+rustflags = ["-D", "clippy::all",
+             "-D", "clippy::pedantic",
+             "-D", "clippy::correctness",
+             "-D", "clippy::suspicious",
+             "-D", "clippy::style",
+             "-D", "clippy::complexity",
+             "-D", "clippy::perf",
+             "-D", "clippy::missing_docs_in_private_items",
+             "-A", "clippy::only_used_in_recursion",
+             "-A", "clippy::struct_excessive_bools",
+             "-A", "clippy::module_name_repetitions"]

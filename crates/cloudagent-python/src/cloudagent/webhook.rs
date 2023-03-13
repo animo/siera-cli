@@ -15,8 +15,8 @@ impl WebhookModule for CloudAgentPython {
             s => return Err(Error::InvalidAgentUrl(s.clone()).into()),
         };
 
-        let listen_url = format!("wss://{}/ws", stripped_agent_url);
-        log!("Listening on {}", listen_url);
+        let listen_url = format!("wss://{stripped_agent_url}/ws");
+        log!("Listening on {listen_url}");
 
         let (mut socket, _response) = connect(listen_url)?;
 

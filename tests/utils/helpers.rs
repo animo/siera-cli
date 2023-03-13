@@ -3,7 +3,8 @@ use std::env;
 use std::panic;
 use std::process::Command;
 
-pub const REGEX_UUID: &str = r"^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$";
+pub const REGEX_UUID: &str =
+    r"^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$";
 
 /// Helper function which does test set up and teardown
 pub async fn run_test<T>(test: T)
@@ -30,7 +31,7 @@ async fn setup() -> (TestAgentCli, String) {
 
 fn teardown(agent_cli: &mut TestAgentCli, wallet_id: String) {
     agent_cli.unscope_from_wallet();
-    agent_cli.exec(&format!("multitenancy remove --wallet-id={}", &wallet_id));
+    agent_cli.exec(&format!("multitenancy remove --wallet-id={wallet_id}"));
 }
 
 /// A test utility that wraps common args we want to pass to every command
@@ -56,23 +57,23 @@ impl TestAgentCli {
 
     pub fn exec(&self, command: &str) -> String {
         let agent_url = get_agent_url();
-        let mut agent_args = format!("--agent-url={} ", &agent_url);
+        let mut agent_args = format!("--agent-url={agent_url} ");
         match &self.wallet_token {
-            Some(token) => agent_args.push_str(&format!("--token={} ", token)),
+            Some(token) => agent_args.push_str(&format!("--token={token} ")),
             None => (),
         }
         agent_args.push_str(command);
         let result = Command::new("cargo")
-            .args(["run", "--quiet", "--"])
+            .args(["run", "--package=siera", "--quiet", "--"])
             .args(agent_args.split(' ').collect::<Vec<&str>>())
             .output();
         let output = result
-            .map_err(|e| format!("Command failed \"{:?}\" with \"{}\"", &agent_args, e))
+            .map_err(|e| format!("Command failed '{agent_args:?}' with '{e}'"))
             .unwrap();
         if !output.status.success() {
             println!();
             println!("=============================");
-            println!("Command failed: {:?}", &agent_args);
+            println!("Command failed: {agent_args:?}");
             println!("[STDERR]: {}", String::from_utf8_lossy(&output.stderr));
             println!("[STDOUT]: {}", String::from_utf8_lossy(&output.stdout));
             println!("=============================");

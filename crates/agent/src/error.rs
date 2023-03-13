@@ -50,14 +50,14 @@ impl Display for Error {
             Error::AuthorizationFailed => write!(f, "Failed to authorize. Api-key or authorization token is either wrong or missing."),
             Error::UnableToParseResponse => write!(f, "Unable to parse the response from the server. Is the cloudagent the correct version?"),
             Error::UrlDoesNotExist => write!(f, "Path does not exist on agent URL. This can happen when querying by id and the id is not valid or when attempting to use a feature that is not supported on the cloudagent."),
-            Error::UnknownResponseStatusCode(msg) => write!(f, "Received unknown status code from the server. Agent URL is likely incorrect. If the agent URL is correct, please report this error at https://github.com/animo/siera/issues/new \nAdditional info: {}", msg),
-            Error::InternalServerError(status, msg) => write!(f, "Internal Server Error (status code: {})! Message: {}", status, msg),
+            Error::UnknownResponseStatusCode(msg) => write!(f, "Received unknown status code from the server. Agent URL is likely incorrect. If the agent URL is correct, please report this error at https://github.com/animo/siera/issues/new \nAdditional info: {msg}"),
+            Error::InternalServerError(status, msg) => write!(f, "Internal Server Error (status code: {status})! Message: {msg}"),
             Error::UnreachableUrl => write!(f, "Provided url is unreachable. Is the provided agent URL valid?"),
             Error::HttpServiceUnavailable => write!(f, "Cloudagent is currently unavailable. Are you sure the agent is online?"),
-            Error::UnableToParseOutValue(val) => write!(f, "Unable to parse the predicate values from: {}. The following structure is required: (name,operator,value)", val),
-            Error::InvalidOperator(op) => write!(f, "Invalid Operator ({}). \">=\", \"<=\", \"=\", \"<\" and \">\" are allowed.", op),
-            Error::InvalidAgentUrl(url) => write!(f, "Invalid agent url ({})", url),
-            Error::CommandNotAvailable(agent) => write!(f, "Agent '{}' does not support this command", agent),
+            Error::UnableToParseOutValue(val) => write!(f, "Unable to parse the predicate values from: {val}. The following structure is required: (name,operator,value)"),
+            Error::InvalidOperator(op) => write!(f, "Invalid Operator ({op}). \">=\", \"<=\", \"=\", \"<\" and \">\" are allowed."),
+            Error::InvalidAgentUrl(url) => write!(f, "Invalid agent url ({url})"),
+            Error::CommandNotAvailable(agent) => write!(f, "Agent '{agent}' does not support this command"),
         }
     }
 }

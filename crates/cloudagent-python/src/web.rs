@@ -86,7 +86,7 @@ impl CloudAgentPython {
         };
 
         let client = match &self.auth_token {
-            Some(t) => client.header("Authorization", format!("Bearer {}", t)),
+            Some(token) => client.header("Authorization", format!("Bearer {token}")),
             None => client,
         };
 

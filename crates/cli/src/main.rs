@@ -2,8 +2,6 @@
 //! by some options, flags and subcommands. This is agent agnostic as long as
 //! it implements the `agent module`.
 
-#![deny(clippy::missing_docs_in_private_items)]
-
 /// Access logger macros
 #[macro_use]
 extern crate siera_logger;

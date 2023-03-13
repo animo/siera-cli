@@ -24,7 +24,7 @@ pub struct Response {
 impl ConnectionModule for CloudAgentAfjRest {
     async fn get_all(&self, options: ConnectionGetAllOptions) -> Result<Vec<Connection>> {
         let has_defined_value = has_any_value_in_struct!(
-            options,
+            options;
             alias,
             connection_protocol,
             invitation_key,

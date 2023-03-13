@@ -82,10 +82,11 @@ pub async fn register() -> Result<()> {
                     Commands::Schema(options) => parse_schema_args(options, agent).await,
                     Commands::Wallet(options) => parse_wallet_args(options, agent).await,
                     Commands::Webhook(_) => parse_webhook_args(agent).await,
-                    _ => Err(
-                        Error::SubcommandNotRegisteredForAgent(cli.commands.into(), "aca-py")
-                            .into(),
-                    ),
+                    Commands::Configuration(_) => Err(Error::SubcommandNotRegisteredForAgent(
+                        cli.commands.into(),
+                        "aca-py",
+                    )
+                    .into()),
                 }
             }
             "afj" => {
