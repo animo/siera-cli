@@ -23,7 +23,7 @@
     
 </p>
 
-Are you looking for a graphical application? Try out or new [Siera Desktop](https://siera.animo.id/desktop)
+Looking for more UI and less CLI? Try out the new [Siera Desktop](https://siera.animo.id/desktop) application.
 
 Siera is the most convenient way for self-sovereign identity (SSI) developers to interact with SSI agents.
 
