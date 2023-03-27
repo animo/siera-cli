@@ -12,7 +12,7 @@
   />
 </p>
 
-<h1 align="center" ><b>Siera</b></h1>
+<h1 align="center" ><b>Siera CLI</b></h1>
 
 <h3 align="center">Powered by Hyperledger Aries and &nbsp; <img src="./images/animo-logo-dark-background.png#gh-dark-mode-only" height="12px"><img src="./images/animo-logo-light-background.png#gh-light-mode-only" height="12px"></h3><br>
 
@@ -23,7 +23,7 @@
     
 </p>
 
-<!-- Add badges? -->
+Are you looking for a graphical application? Try out or new [Siera Desktop](https://siera.animo.id/desktop)
 
 Siera is the most convenient way for self-sovereign identity (SSI) developers to interact with SSI agents.
 
