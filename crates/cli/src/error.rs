@@ -67,7 +67,7 @@ impl Display for Error {
         match self {
             Self::CannotReadConfigurationFile => write!(f, "Cannot not read configuration file. Try initializing first using: `siera configuration add --default`."),
             Self::InvalidConfigurationPath => write!(f, "Invalid configuration path."),
-            Self::InvalidEnvironment(env) => write!(f, "The environment {} does not exist.", env),
+            Self::InvalidEnvironment(env) => write!(f, "The environment {env} does not exist."),
             Self::NoAgentURLSupplied => write!(f, "No agent URL supplied. Supply an agent URL either via `--agent-url` or see `siera configuration --help` to learn about setting up an environment."),
             Self::NoEnvironmentSupplied => write!(f, "No Environment supplied. Supply the environment either via `--environment` or see `siera configuration --help` to learn about setting up an environment."),
             Self::UnequalAmountKeyValue => write!(f, "Supplies keys and values are not equal in size."),
@@ -78,9 +78,9 @@ impl Display for Error {
             Self::InvalidAgentInvitation => write!(f, "The supplied agent url is incorrect. Make sure it contains the `c_i` query parameter and that the invitation part is correctly base64 encoded."),
             Self::InactiveConnection => write!(f, "The connection was not activated within the specified time. Please try again with a higher --timeout."),
             Self::EmptyConfiguration => write!(f, "Unable to delete from an empty configuration"),
-            Self::PredicateValueNonNumber(name, val) => write!(f, "Predicate value {}, for name {}, is not of type number.", val, name),
-            Self::InvalidAgent(agent) => write!(f, "Invalid agent '{}' supplied. Choose one of the following: 'aca-py' or 'afj'. (aca-py is default)", agent),
-            Self::SubcommandNotRegisteredForAgent(subcommand, agent) => write!(f, "Subcommand '{}' is not registered for {}.", subcommand, agent)
+            Self::PredicateValueNonNumber(name, val) => write!(f, "Predicate value {val}, for name {name}, is not of type number."),
+            Self::InvalidAgent(agent) => write!(f, "Invalid agent '{agent}' supplied. Choose one of the following: 'aca-py' or 'afj'. (aca-py is default)"),
+            Self::SubcommandNotRegisteredForAgent(subcommand, agent) => write!(f, "Subcommand '{subcommand}' is not registered for {agent}.")
         }
     }
 }

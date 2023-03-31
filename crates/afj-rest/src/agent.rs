@@ -30,13 +30,13 @@ impl std::fmt::Display for CloudAgentAfjRestVersion {
         let v = match self {
             CloudAgentAfjRestVersion::ZeroEightZero => "0.8.0",
         };
-        write!(f, "{}", v)
+        write!(f, "{v}")
     }
 }
 
 impl std::fmt::Display for CloudAgentAfjRest {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "AFJ {}", self.version)
+        write!(f, "AFJ {0}", self.version)
     }
 }
 

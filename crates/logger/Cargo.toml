@@ -12,7 +12,8 @@ license.workspace = true
 readme.workspace = true
 
 [dependencies]
-clipboard = "0.5.0"
+cli-clipboard = "0.4.0"
+xcb = "1.2.0"
 serde = { version = "1.0.130", features = ["derive"] }
 lazy_static = "1.4.0"
 serde_json = "1.0.68"

@@ -128,7 +128,7 @@ pub async fn parse_automation_args(
                 log_debug!("Looping {} times", timeout);
                 for i in 1..=*timeout {
                     let connection =
-                        ConnectionModule::get_by_id(&agent, connection.id.to_owned()).await?;
+                        ConnectionModule::get_by_id(&agent, connection.id.clone()).await?;
                     if connection.state != "active" && connection.state != "response" {
                         log_trace!(
                             "Connection state is not active, waiting 1 second then trying again..."

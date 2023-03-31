@@ -23,6 +23,6 @@ impl SchemaModule for CloudAgentAfjRest {
     }
 
     async fn get_all(&self) -> Result<SchemasGetAllResponse> {
-        Err(Error::CommandNotAvailable(format!("{}", self)).into())
+        Err(Error::CommandNotAvailable(format!("{self}")).into())
     }
 }

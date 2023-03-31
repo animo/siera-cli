@@ -1,0 +1,17 @@
+[package]
+name = "e2e-tests"
+
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[dev-dependencies]
+regex = "1.7.1"
+serde_json = "1.0.94"
+siera-agent = { path = "../crates/agent", version = "0.*" }
+speculoos = "0.11.0"
+tokio = { version = "1.26.0", features = ["macros", "rt"] }
+
+[[test]]
+name = "end-to-end-tests"
+path = "e2e.rs"

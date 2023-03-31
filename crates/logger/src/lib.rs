@@ -1,9 +1,7 @@
 //! Logger for this crate
 //! Only cli bindings for now
 
-#![deny(clippy::missing_docs_in_private_items)]
-
-use clipboard::{ClipboardContext, ClipboardProvider};
+use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use colored::Colorize;
 use serde::Serialize;
 use std::fmt;
@@ -48,7 +46,7 @@ impl fmt::Display for LogLevel {
             Self::Trace => "trace".bold().purple(),
             Self::Off => "off".green(),
         };
-        write!(f, "{}", s)
+        write!(f, "{s}")
     }
 }
 

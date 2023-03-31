@@ -8,15 +8,18 @@ on:
 jobs:
   e2e_test:
     runs-on: ubuntu-latest
+    name: E2E Test
     steps:
       - run: sudo apt-get update
       - run: sudo apt-get install libxcb-shape0-dev libxcb-xfixes0-dev
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Install stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: Cache cargo resources
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: deps
+          cache-on-failure: true
       - name: Start acapy
         run: docker-compose -f ./docker/docker-compose.acapy.min.yml up -d
-      - name: Build siera
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-      - name: E2E tests
-        run: make e2e-test
+      - run: cargo test e2e_tests

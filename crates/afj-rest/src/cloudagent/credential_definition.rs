@@ -30,6 +30,6 @@ impl CredentialDefinitionModule for CloudAgentAfjRest {
     }
 
     async fn get_all(&self) -> Result<CredentialDefinitionGetAllResponse> {
-        Err(Error::CommandNotAvailable(format!("{}", self)).into())
+        Err(Error::CommandNotAvailable(format!("{self}")).into())
     }
 }
