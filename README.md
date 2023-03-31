@@ -25,6 +25,8 @@
 
 Looking for more UI and less CLI? Try out the new [Siera Desktop](https://siera.animo.id/desktop) application.
 
+[![codecov](https://codecov.io/gh/animo/siera-cli/branch/main/graph/badge.svg?token=RMWG6Y4J8Y)](https://codecov.io/gh/animo/siera-cli)
+
 Siera is the most convenient way for self-sovereign identity (SSI) developers to interact with SSI agents.
 
 - **Environments** to easily manage configuration for multiple projects and agents
