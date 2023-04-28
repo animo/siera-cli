@@ -2,6 +2,7 @@ use crate::{
     automations::create_credential_definition::CreateCredentialDefinition,
     error::{Error, Result},
 };
+use rand::RngCore;
 use siera_agent::modules::{
     connection::ConnectionModule,
     credential::{CredentialModule, CredentialOfferOptions},
@@ -61,8 +62,12 @@ impl CredentialOfferAutomation {
             return Err(Error::ConnectionNotReady.into());
         }
 
+        let mut rng = rand::thread_rng();
+        let version_major = rng.next_u32();
+        let version_minor = rng.next_u32();
+        let version = format!("{version_major}.{version_minor}");
         let create_credential_definition = CreateCredentialDefinition {
-            version: "1.0",
+            version: &version,
             attributes: attribute_keys.clone(),
             name: "full-credential-offer-automation",
         };
