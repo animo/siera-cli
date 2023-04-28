@@ -2,7 +2,6 @@ use crate::agent::CloudAgentPython;
 use async_trait::async_trait;
 use siera_agent::error::{Error, Result};
 use siera_agent::modules::webhook::WebhookModule;
-use siera_logger::log;
 use tungstenite::connect;
 
 #[async_trait]
@@ -16,7 +15,7 @@ impl WebhookModule for CloudAgentPython {
         };
 
         let listen_url = format!("wss://{stripped_agent_url}/ws");
-        log!("Listening on {listen_url}");
+        info!({ "message": format!("Listening on {listen_url}") });
 
         let (mut socket, _response) = connect(listen_url)?;
 

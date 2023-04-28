@@ -2,13 +2,13 @@
 #[macro_export]
 macro_rules! copy {
     ($($arg:tt)+) => {
-            if ::siera_logger::STATE.read().unwrap().should_copy {
+            if ::siera_logger::STATE.read().unwrap().should_copy_relevant {
                 let text = format!($($arg)+);
                 if !text.is_empty() {
-                    log_debug!("Copied output to buffer");
+                    debug!({"message": "Copied output to buffer"});
                     ::siera_logger::copy_to_clipboard(text);
                 } else {
-                    log_debug!("Nothing to copy");
+                    debug!({"message": "Nothing to copy"});
                 }
         }
     };
@@ -24,37 +24,50 @@ macro_rules! elog {
     };
 }
 
-/// Simple wrapper around println!
-#[macro_export]
-macro_rules! log {
-    ($($arg:tt)*) => {
-        if ::siera_logger::STATE.read().unwrap().level != ::siera_logger::LogLevel::Off {
-            println!($($arg)*);
-        }
-    };
-}
-
 /// Generic logger. Should not be used outside of this file
 #[macro_export]
 macro_rules! internal_log {
     ($level:expr, $($arg:tt)+) => {
         if ::siera_logger::STATE.read().unwrap().level >= $level {
-            log!("[{}] {}", $level, format!($($arg)+));
+            let value: $crate::serde_json::Value = $crate::serde_json::json!($($arg)+);
+            if ::siera_logger::STATE.read().unwrap().should_output_json {
+                let value = match value {
+                    $crate::serde_json::Value::Object(o) => {
+                        let mut o = o.clone();
+                        o.insert("level".to_string(), $crate::serde_json::Value::String($level.to_string_without_color()));
+                        $crate::serde_json::Value::Object(o)
+                    },
+                    v => v,
+                };
+                println!("{}", $crate::serde_json::to_string_pretty(&value).unwrap());
+            } else {
+                match value {
+                    $crate::serde_json::Value::Object(o) => {
+                        let values = o.values();
+                        for value in values {
+                            if let Some(value) = value.as_str() {
+                                println!("[{}] {}", $level.to_string_with_color(), value);
+                            }
+                        }
+                    },
+                    _ => (),
+                };
+            }
         }
     };
 }
 
 /// Simple info logger
 #[macro_export]
-macro_rules! log_info {
+macro_rules! info {
     ($($arg:tt)+) => {
-        internal_log!(::siera_logger::LogLevel::Info, $($arg)+);
-    };
+        internal_log!(::siera_logger::LogLevel::Info, $($arg)+)
+    }
 }
 
 /// Simple debug logger
 #[macro_export]
-macro_rules! log_debug {
+macro_rules! debug {
     ($($arg:tt)+) => {
         internal_log!(::siera_logger::LogLevel::Debug, $($arg)+);
     };
@@ -62,7 +75,7 @@ macro_rules! log_debug {
 
 /// Simple trace logger
 #[macro_export]
-macro_rules! log_trace {
+macro_rules! trace {
     ($($arg:tt)+) => {
         internal_log!(::siera_logger::LogLevel::Trace, $($arg)+);
     };
@@ -70,7 +83,7 @@ macro_rules! log_trace {
 
 /// Simple warning logger
 #[macro_export]
-macro_rules! log_warn {
+macro_rules! warn {
     ($($arg:tt)+) => {
         internal_log!(::siera_logger::LogLevel::Warn, $($arg)+);
     };
@@ -78,7 +91,7 @@ macro_rules! log_warn {
 
 /// Simple error logger
 #[macro_export]
-macro_rules! log_error {
+macro_rules! error {
     ($($arg:tt)+) => {
         internal_log!(::siera_logger::LogLevel::Error, $($arg)+);
     };

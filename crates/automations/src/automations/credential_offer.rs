@@ -2,7 +2,6 @@ use crate::{
     automations::create_credential_definition::CreateCredentialDefinition,
     error::{Error, Result},
 };
-use colored::Colorize;
 use siera_agent::modules::{
     connection::ConnectionModule,
     credential::{CredentialModule, CredentialOfferOptions},
@@ -40,9 +39,11 @@ impl CredentialOfferAutomation {
             + Send
             + Sync,
     ) -> Result<()> {
-        log_trace!("Starting automation CredentialOfferAutomation");
-        log_trace!("{}", self.connection_id);
-        log_trace!("{:#?}", self.attributes);
+        info!({ "message": "Starting automation CredentialOfferAutomation" });
+        trace!({
+           "connection_id": self.connection_id,
+            "attributes": self.attributes
+        });
         let attribute_keys: Vec<&str> = self
             .attributes
             .keys()
@@ -51,7 +52,10 @@ impl CredentialOfferAutomation {
         let attribute_values: Vec<String> = self.attributes.values().cloned().collect();
 
         // Check if it as a valid connection
-        log!("{} the connection...", "Fetching".cyan());
+        info! ({
+            "message": "Fetching the connection..."
+        });
+
         let connection = ConnectionModule::get_by_id(&agent, self.connection_id.clone()).await?;
         if connection.state != "active" && connection.state != "response" {
             return Err(Error::ConnectionNotReady.into());
@@ -65,7 +69,10 @@ impl CredentialOfferAutomation {
 
         let credential_definition = create_credential_definition.execute(&agent).await?;
 
-        log!("{} the credential...", "Offering".cyan());
+        info!({
+           "message": "Offering the credential..."
+        });
+
         let credential_offer_response = agent
             .send_offer(CredentialOfferOptions {
                 keys: attribute_keys.iter().map(|x| String::from(*x)).collect(),
@@ -75,8 +82,12 @@ impl CredentialOfferAutomation {
             })
             .await?;
 
-        log_trace!("Automation completed and offered a credential");
-        log_trace!("{:#?}", credential_offer_response);
+        trace!({
+            "message": "Automation completed and offered a credential"
+        });
+
+        trace!({ "credential_offer_response": credential_offer_response });
+
         Ok(())
     }
 }

@@ -6,7 +6,7 @@ use clap::{Args, Subcommand};
 use siera_agent::modules::oob::{
     OobConnectionCreateInvitationOptions, OobConnectionReceiveInvitationOptions, OobModule,
 };
-use siera_logger::{copy, pretty_stringify_obj};
+use siera_logger::copy;
 use std::str;
 
 /// Oob options and flags
@@ -78,14 +78,14 @@ pub async fn parse_oob_args(
             };
             agent.create_invitation(options).await.map(|response| {
                 loader.stop();
-                log_info!("Created invite with invitation msg id:");
-                log!("{}", response.invitation_message_id);
+                info!({ "message": "Created invitation" });
+                info!({ "message_id": response.invitation_message_id });
                 if *qr {
-                    log_info!("Scan this QR code to accept the invitation:\n");
+                    info!({ "message": "Scan this QR code to accept the invitation"});
                     print_qr_code(&response.invitation_url).unwrap();
                 } else {
-                    log_info!("Another agent can use this URL to accept your invitation:\n");
-                    log!("{}", &response.invitation_url);
+                    info!({ "message": "Another agent can use this URL to accept your invitation" });
+                    info!({ "invitation_url": &response.invitation_url });
                 }
                 copy!("{}", response.invitation_url);
             })
@@ -96,9 +96,9 @@ pub async fn parse_oob_args(
                 .receive_invitation(invitation)
                 .await
                 .map(|connection| {
-                    log_debug!("{}", pretty_stringify_obj(&connection));
-                    log_info!("Fetched connection id:");
-                    log!("{}", connection.connection_id);
+                    debug!({ "connection": connection });
+                    info!({ "message": "Fetched connection id" });
+                    info!({ "connection_id": connection.connection_id });
                 })
         }
     }

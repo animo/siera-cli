@@ -99,43 +99,46 @@ pub async fn parse_automation_args(
                     agent.receive_invitation(invitation_object).await?;
                 } else {
                     if !no_qr {
-                        log!("{} the QR code to accept the invitation", "Scan".bold(),);
+                        info!({ "message": "Scan the QR code to accept the invitation"});
                         qr::print_qr_code(&connection.invitation_url)?;
                     }
-                    log!();
-                    log!();
-                    log!("================");
-                    log!("{}", "Credential offer".bold());
-                    log!("================");
-                    log!();
+                    println!();
+                    println!();
+                    info!({ "message": "Credential offer" });
+                    println!();
 
-                    log!(
-                        "{} invitation with connection id {}.",
-                        "Created".green(),
-                        connection.id.bold()
-                    );
-                    log!();
-                    log!("Use this URL:\n\n{}", connection.invitation_url);
-                    log!();
-                    log!();
-                    log!(
-                        "{} for the invitation to be accepted. Timeout is {} seconds...",
-                        "Waiting".cyan(),
-                        timeout
-                    );
+                    info!({
+                        "message":
+                            format!(
+                                "{} invitation with connection id {}.",
+                                "Created".green(),
+                                connection.id.bold()
+                            )
+                    });
+                    println!();
+                    info!({"message": "Use this URL", "invitation_url": connection.invitation_url });
+                    println!();
+                    println!();
+                    info!({
+                        "message":
+                            format!(
+                                "{} for the invitation to be accepted. Timeout is {timeout} seconds...",
+                                "Waiting".cyan(),
+                            )
+                    });
                     copy!("{}", connection.invitation_url);
                 }
-                log_debug!("Looping {} times", timeout);
+                debug!({ "message": format!("Looping {timeout} times") });
                 for i in 1..=*timeout {
                     let connection =
                         ConnectionModule::get_by_id(&agent, connection.id.clone()).await?;
                     if connection.state != "active" && connection.state != "response" {
-                        log_trace!(
+                        trace!({ "message":
                             "Connection state is not active, waiting 1 second then trying again..."
-                        );
+                        });
                         std::thread::sleep(std::time::Duration::from_millis(1000));
                     } else {
-                        log!("Invitation {}!", "accepted".green());
+                        info!({ "message": format!("Invitation {}!", "accepted".green()) });
                         credential_offer(connection.id, agent).await?;
                         break;
                     }
@@ -143,8 +146,8 @@ pub async fn parse_automation_args(
                         return Err(Error::InactiveConnection.into());
                     }
                 }
-                log_info!("Successfully executed automation");
-                log!("It might take a few seconds for the credential to arrive",);
+                info!({ "message": "Successfully executed automation"});
+                info!({ "message": "It might take a few seconds for the credential to arrive"});
                 loader.stop();
             }
         },
@@ -187,7 +190,7 @@ async fn credential_offer(
     );
     attributes.insert(String::from("Security Code"), String::from("063"));
     attributes.insert(String::from("Valid Until"), String::from("20251212"));
-    log_debug!("Mock credential:\n{:#?}", attributes);
+    debug!({ "message": "Mock credential", "attributes": attributes });
 
     let automation = CredentialOfferAutomation {
         connection_id,

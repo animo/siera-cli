@@ -3,7 +3,6 @@ use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use clap::{Args, Subcommand};
 use siera_agent::modules::credential::{CredentialModule, CredentialOfferOptions};
-use siera_logger::pretty_stringify_obj;
 
 /// Credential options and flags
 #[derive(Args)]
@@ -63,11 +62,11 @@ pub async fn parse_credentials_args(
                 keys: key.iter().map(std::string::ToString::to_string).collect(),
                 values: value.iter().map(std::string::ToString::to_string).collect(),
             };
-            agent.send_offer(options).await.map(|cred| {
+            agent.send_offer(options).await.map(|credential| {
                 loader.stop();
-                log_debug!("{}", pretty_stringify_obj(&cred));
-                log_info!("Successefully offered a credential. Credential exchange id: ",);
-                log!("{}", cred.credential_exchange_id);
+                debug!({ "credential": credential });
+                info!({ "message": "Successefully offered a credential" });
+                info!({ "credential_exchange_id": credential.credential_exchange_id });
             })
         }
     }

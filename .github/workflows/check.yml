@@ -3,6 +3,9 @@ name: Check
 permissions:
   contents: read
 
+env:
+  RUST_VERSION: "1.65.0"
+
 on:
   pull_request:
   push:
@@ -39,6 +42,7 @@ jobs:
       - name: Install stable
         uses: dtolnay/rust-toolchain@stable
         with:
+          toolchain: ${{ env.RUST_VERSION }}
           components: clippy
 
       - name: Cache cargo resources
@@ -59,6 +63,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Install stable
         uses: dtolnay/rust-toolchain@stable
+        with: 
+          toolchain: ${{ env.RUST_VERSION }}
 
       - name: Cache cargo resources
         uses: Swatinem/rust-cache@v2
@@ -78,6 +84,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Install stable
         uses: dtolnay/rust-toolchain@stable
+        with: 
+          toolchain: ${{ env.RUST_VERSION }}
 
       - name: Cache cargo resources
         uses: Swatinem/rust-cache@v2

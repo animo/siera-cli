@@ -64,16 +64,19 @@ pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
     let config_path = get_config_path()?;
     match &options.commands {
         ConfigurationSubcommands::View => {
-            log_debug!(
-                "Loaded configuration from {}",
-                config_path.display().to_string().bold()
-            );
-            let output = fs::read_to_string(&config_path).map_err(|err| {
-                log_debug!("Failed to read config file: {}", err);
+            debug!({
+                "message":
+                    format!(
+                        "Loaded configuration from {}",
+                        config_path.to_string_lossy()
+                    )
+            });
+            let output = fs::read_to_string(&config_path).map_err(|error| {
+                debug!({ "message": "Failed to read config file", "error": error.to_string() });
                 Box::<dyn std::error::Error>::from(error::Error::CannotReadConfigurationFile)
             })?;
-            log!("Configuration path: {}", config_path.display());
-            log!("{}", output);
+            info!({ "coniguration_path": config_path });
+            info!({ "output": output });
             Ok(())
         }
         ConfigurationSubcommands::Add {
@@ -87,13 +90,13 @@ pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
             if *default {
                 let (environment, configuration) = Configuration::init(token.clone());
                 Configuration::add(environment, configuration)?;
-                log_info!(
-                    "Successfully added the default agent at {}.",
-                    config_path.display()
-                );
+                info!({
+                    "message": "Successfully added the default agent",
+                    "configuration_path": config_path
+                });
                 return Ok(());
             }
-            log_debug!("Adding a new entry to the configuration file");
+            debug!({ "message": "Adding a new entry to the configuration file"});
             let path = get_config_path()?;
             let endpoint = agent_url.clone().ok_or(Error::NoAgentURLSupplied)?;
             let environment = environment.clone().ok_or(Error::NoEnvironmentSupplied)?;
@@ -104,34 +107,46 @@ pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
                 // TODO: this can only be aca-py or afj
                 agent: agent.clone(),
             };
-            log_info!(
-                "Writing {}: {} to {}",
-                environment.bold(),
-                env,
-                path.display()
-            );
+            info!({
+                "message":
+                    format!(
+                        "Writing {}: {} to {}",
+                        environment.bold(),
+                        env,
+                        path.display()
+                    )
+            });
             Configuration::add(environment.clone(), env)?;
-            log_info!(
-                "Successfully Added agent {} at {}.",
-                environment,
-                config_path.display()
-            );
+            info!({
+                "message":
+                    format!(
+                        "Successfully Added agent {} at {}.",
+                        environment,
+                        config_path.display()
+                    )
+            });
 
-            log_debug!("Written a new entry to the configuration",);
+            debug!({ "message": "Written a new entry to the configuration"});
             Ok(())
         }
         ConfigurationSubcommands::Remove { environment } => {
-            log_debug!(
-                "{} environment {} from the configuration",
-                "Removing".bold().red(),
-                environment.bold()
-            );
+            debug!({
+                "message":
+                    format!(
+                        "{} environment {} from the configuration",
+                        "Removing".bold().red(),
+                        environment.bold()
+                    )
+            });
             Configuration::remove(environment.clone())?;
-            log!(
-                "{} {} from the configuration",
-                "Removed".bold().red(),
-                environment.bold()
-            );
+            info!({
+                "message":
+                    format!(
+                        "{} {} from the configuration",
+                        "Removed".bold().red(),
+                        environment.bold()
+                    )
+            });
             Ok(())
         }
     }

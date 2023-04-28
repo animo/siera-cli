@@ -3,7 +3,6 @@ use reqwest::{Client, RequestBuilder, Url};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 use siera_agent::error::{Error, Result};
-use siera_logger::pretty_stringify_obj;
 use std::fmt::Debug;
 
 /// Call logic for http calls
@@ -23,8 +22,7 @@ impl CloudAgentPython {
             None => Client::new().get(url),
         };
 
-        log_trace!("Get request query:");
-        log_trace!("{:#?}", query);
+        trace!({ "message": "Get request query", "query": query });
 
         self.send::<T>(client).await
     }
@@ -44,8 +42,7 @@ impl CloudAgentPython {
             None => Client::new().patch(url),
         };
 
-        log_trace!("Patch request query:");
-        log_trace!("{:#?}", query);
+        trace!({ "message": "Patch request query", "query": query});
 
         self.send::<T>(client).await
     }
@@ -68,8 +65,7 @@ impl CloudAgentPython {
             None => client,
         };
 
-        log_trace!("Post request body: {:#?}", body);
-        log_trace!("Post request query: {:#?}", query);
+        trace!({ "message": "Post request body", "body": body, "query": query });
 
         self.send::<T>(client).await
     }
@@ -90,43 +86,41 @@ impl CloudAgentPython {
             None => client,
         };
 
-        log_trace!("About to send request:");
-        log_trace!("{:#?}", client);
+        trace!({ "message": "About to send request" });
         match client.send().await {
-            Ok(res) => {
-                let status_code = res.status().as_u16();
-                log_debug!("Got response code {}", status_code);
-                log_trace!("{:#?}", res);
+            Ok(response) => {
+                let status_code = response.status().as_u16();
+                debug!({ "status_code": status_code });
                 match status_code {
                     200..=299 => {
-                        let parsed: Value = res.json().await?;
-                        log_debug!("Response: {}", pretty_stringify_obj(&parsed));
+                        let parsed: Value = response.json().await?;
+                        debug!({ "response": parsed });
                         let parsed = if parsed.is_null() {
                             serde_json::json!(())
                         } else {
                             parsed
                         };
                         serde_json::from_value(parsed).map_err(|e| {
-                            log_warn!("{}", e);
+                            warn!({"error": e.to_string() });
                             Error::UnableToParseResponse.into()
                         })
                     }
                     // Issue credential message when attributes are not correct
-                    400 => Err(res.text().await?.into()),
+                    400 => Err(response.text().await?.into()),
                     401 => Err(Error::AuthorizationFailed.into()),
                     404 => Err(Error::UrlDoesNotExist.into()),
-                    422 => Err(res.text().await?.into()),
+                    422 => Err(response.text().await?.into()),
                     503 => Err(Error::HttpServiceUnavailable.into()),
                     500..=599 => Err(Error::InternalServerError(
-                        res.status().as_u16(),
-                        res.text().await?,
+                        response.status().as_u16(),
+                        response.text().await?,
                     )
                     .into()),
-                    _ => Err(Error::UnknownResponseStatusCode(res.text().await?).into()),
+                    _ => Err(Error::UnknownResponseStatusCode(response.text().await?).into()),
                 }
             }
             Err(e) => {
-                log_warn!("Request failed {}", e);
+                warn!({ "message": "request failed", "error": e.to_string() });
                 Err(Error::UnreachableUrl.into())
             }
         }
