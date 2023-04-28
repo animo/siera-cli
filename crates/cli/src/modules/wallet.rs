@@ -1,6 +1,7 @@
 use crate::error::Result;
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
+use clap::builder::PossibleValuesParser;
 use clap::{Args, Subcommand};
 use siera_agent::modules::wallet::{
     CreateLocalDidOptions, Did, DidList, KeyType, SetDidEndpointOptions, WalletModule,
@@ -27,15 +28,15 @@ pub enum WalletSubcommands {
         did: Option<String>,
 
         /// The key type of the wallet e.g. ed25519, bls12381g2
-        #[clap(short, long, help=HelpStrings::WalletListKeyType, required = false, possible_values=&["ed25519", "bls12381g2"])]
+        #[clap(short, long, help=HelpStrings::WalletListKeyType, required = false, value_parser=PossibleValuesParser::new(["ed25519", "bls12381g2"]))]
         key_type: Option<String>,
 
         /// The did method to query for
-        #[clap(short, long, help=HelpStrings::WalletListMethod, required = false, possible_values=&["did", "sov"])]
+        #[clap(short, long, help=HelpStrings::WalletListMethod, required = false, value_parser=PossibleValuesParser::new(["did", "sov"]))]
         method: Option<String>,
 
         /// Available values : public, posted, wallet_only
-        #[clap(short, long, help=HelpStrings::WalletListPosture, required = false, possible_values=&["posted", "public", "wallet_only"])]
+        #[clap(short, long, help=HelpStrings::WalletListPosture, required = false, value_parser=PossibleValuesParser::new(["posted", "public", "wallet_only"])) ]
         posture: Option<String>,
 
         /// The verification key of interest
@@ -47,11 +48,12 @@ pub enum WalletSubcommands {
     #[clap(about = HelpStrings::WalletCreate)]
     CreateLocalDid {
         /// The method to be used did or sov
-        #[clap(long, short, help=HelpStrings::WalletCreateMethod, required = true, default_value="did", possible_values=&["did", "sov"])]
+        #[clap(long, short, help=HelpStrings::WalletCreateMethod, required = true, default_value="did", value_parser=PossibleValuesParser::new(["did", "sov"]))]
+
         method: String,
 
         /// The key type e.g. ed25519 or bls12381g2
-        #[clap(long, short, help=HelpStrings::WalletListKeyType, required = true, default_value="ed25519", possible_values=&["ed25519", "bls12381g2"])]
+        #[clap(long, short, help=HelpStrings::WalletListKeyType, required = true, default_value="ed25519",value_parser=PossibleValuesParser::new(["ed25519", "bls12381g2"]))] 
         key_type: String,
     },
 
