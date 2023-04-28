@@ -107,7 +107,7 @@ pub async fn parse_automation_args(
                     info!({ "message": "Credential offer" });
                     println!();
 
-                    info!({
+                    log!({
                         "message":
                             format!(
                                 "{} invitation with connection id {}.",
@@ -116,7 +116,7 @@ pub async fn parse_automation_args(
                             )
                     });
                     println!();
-                    info!({"message": "Use this URL", "invitation_url": connection.invitation_url });
+                    log!({"message": "Use this URL", "invitation_url": connection.invitation_url });
                     println!();
                     println!();
                     info!({

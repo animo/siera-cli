@@ -66,7 +66,7 @@ pub async fn parse_credentials_args(
                 loader.stop();
                 debug!({ "credential": credential });
                 info!({ "message": "Successefully offered a credential" });
-                info!({ "credential_exchange_id": credential.credential_exchange_id });
+                log!({ "credential_exchange_id": credential.credential_exchange_id });
             })
         }
     }

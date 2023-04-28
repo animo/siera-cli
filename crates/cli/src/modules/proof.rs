@@ -57,7 +57,7 @@ pub async fn parse_proof_args(
                     (
                         p.0.clone(),
                         p.1.clone(),
-                        p.2.parse::<i32>()
+                        p.2.parse()
                             .map_err(|_| Error::PredicateValueNonNumber(p.0.clone(), p.2.clone()))
                             .unwrap(),
                     )
@@ -74,7 +74,8 @@ pub async fn parse_proof_args(
                 .await
                 .map(|proof| {
                     debug!({ "proof": proof });
-                    info!({ "message": "Successefully requested a proof", "presentation_exchange_id": &proof.presentation_exchange_id});
+                    info!({ "message": "Successefully requested a proof"});
+                    log!({ "presentation_exchange_id": &proof.presentation_exchange_id });
                     copy!("{}", &proof.presentation_exchange_id);
                 })?;
             loader.stop();

@@ -2,7 +2,7 @@
 //! Only cli bindings for now
 
 use cli_clipboard::{ClipboardContext, ClipboardProvider};
-use colored::Colorize;
+use colored::{ColoredString, Colorize};
 use serde::Serialize;
 use std::sync::RwLock;
 
@@ -27,6 +27,9 @@ pub enum LogLevel {
     /// Log warnings and above
     Warn,
 
+    /// zero state
+    None,
+
     /// Log info and above
     #[default]
     Info,
@@ -49,6 +52,7 @@ impl LogLevel {
             Self::Debug => "debug".bold().blue(),
             Self::Trace => "trace".bold().purple(),
             Self::Off => "off".green(),
+            Self::None => ColoredString::default(),
         };
         s.to_string()
     }
@@ -63,6 +67,7 @@ impl LogLevel {
             Self::Debug => "debug",
             Self::Trace => "trace",
             Self::Off => "off",
+            Self::None => "",
         };
         s.to_string()
     }

@@ -15,7 +15,7 @@ pub async fn parse_features_args(agent: impl FeatureModule + Send + Sync) -> Res
     agent.discover_features().await.map(|features| {
         loader.stop();
         debug!({ "features": features });
-        info!({
+        log!({
             "protocols": features.disclose.protocols
         });
     })

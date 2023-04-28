@@ -35,7 +35,6 @@ mod e2e_tests {
     use super::utils::helpers::{run_test, REGEX_UUID};
     use regex::Regex;
     use speculoos::prelude::*;
-    use tokio::io::AsyncReadExt;
 
     test! { smoke |cli| {
         let re = Regex::new(r"^siera \d\.\d.\d").unwrap();

@@ -27,9 +27,10 @@ pub async fn register() -> Result<()> {
         LogLevel::Off
     } else {
         match cli.verbose {
+            1 => LogLevel::Info,
             2 => LogLevel::Debug,
             3.. => LogLevel::Trace,
-            _ => LogLevel::Info,
+            _ => LogLevel::default(),
         }
     };
 
