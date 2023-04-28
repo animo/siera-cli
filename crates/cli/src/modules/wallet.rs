@@ -49,11 +49,10 @@ pub enum WalletSubcommands {
     CreateLocalDid {
         /// The method to be used did or sov
         #[clap(long, short, help=HelpStrings::WalletCreateMethod, required = true, default_value="did", value_parser=PossibleValuesParser::new(["did", "sov"]))]
-
         method: String,
 
         /// The key type e.g. ed25519 or bls12381g2
-        #[clap(long, short, help=HelpStrings::WalletListKeyType, required = true, default_value="ed25519",value_parser=PossibleValuesParser::new(["ed25519", "bls12381g2"]))] 
+        #[clap(long, short, help=HelpStrings::WalletListKeyType, required = true, default_value="ed25519",value_parser=PossibleValuesParser::new(["ed25519", "bls12381g2"]))]
         key_type: String,
     },
 

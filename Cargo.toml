@@ -4,11 +4,7 @@ members = ["crates/*", "tests"]
 [workspace.package]
 version = "0.1.0"
 edition = "2021"
-authors = [
-  "Berend Sliedrecht <berend@animo.id>",
-  "Moritz Schlichting <moritz@animo.id>",
-  "Jean-Louis Leysens <jean-louis@animo.id>",
-]
+authors = ["Animo Solutions <contact@animo.id>"]
 description = "Siera is a toolkit that allows you to interact with a Hyperledger Aries Cloud agent."
 homepage = "https://siera.animo.id"
 documentation = "https://docs.siera.animo.id"
