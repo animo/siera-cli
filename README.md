@@ -23,9 +23,14 @@
     
 </p>
 
-Looking for more UI and less CLI? Try out the new [Siera Desktop](https://siera.animo.id/desktop) application.
+<p align="center">
+    <a href="https://crates.io/crates/siera"><img src="https://img.shields.io/crates/v/siera.svg" alt="crates.io"></a>
+    <a href="https://github.com/animo/siera-cli/actions/workflows/check.yml"><img src="https://github.com/animo/siera-cli/actions/workflows/check.yml/badge.svg" alt="Check"></a>
+    <a href="https://github.com/animo/siera-cli/actions/workflows/test.yml"><img src="https://github.com/animo/siera-cli/actions/workflows/test.yml/badge.svg" alt="Test"></a>
+    <a href="https://github.com/animo/siera-cli/actions/workflows/e2e-test.yml"><img src="https://github.com/animo/siera-cli/actions/workflows/e2e-test.yml/badge.svg" alt="E2E tests"></a>
+</p>
 
-[![codecov](https://codecov.io/gh/animo/siera-cli/branch/main/graph/badge.svg?token=RMWG6Y4J8Y)](https://codecov.io/gh/animo/siera-cli)
+Looking for more UI and less CLI? Try out the new [Siera Desktop](https://siera.animo.id/desktop) application.
 
 Siera is the most convenient way for self-sovereign identity (SSI) developers to interact with SSI agents.
 
