@@ -3,12 +3,6 @@ coverage:
   range: 85..100
   round: down
   precision: 1
-  status:
-    # ref: https://docs.codecov.com/docs/commit-status
-    project:
-      default:
-        # Avoid false negatives
-        threshold: 1%
 
 # Test files aren't important for coverage
 ignore:
