@@ -46,7 +46,7 @@ pub struct ProofRequestResponse {
 /// The first string is the name of the key/value pair
 /// The second string is the operator that is used `>=`, `<=`, `=`, `>` or `>`
 /// The third string is the the value that should be evaluated with
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Predicate(pub String, pub String, pub String);
 
 impl FromStr for Predicate {

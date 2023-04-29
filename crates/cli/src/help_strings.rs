@@ -1,4 +1,5 @@
 #![allow(clippy::missing_docs_in_private_items)]
+use clap::builder::{IntoResettable, Resettable, StyledStr};
 use std::convert::From;
 
 /// Help documentation for CLI commands.
@@ -150,6 +151,12 @@ pub enum HelpStrings {
 impl From<HelpStrings> for Option<&str> {
     fn from(help_string: HelpStrings) -> Option<&'static str> {
         Some(help_string.as_str())
+    }
+}
+
+impl IntoResettable<StyledStr> for HelpStrings {
+    fn into_resettable(self) -> clap::builder::Resettable<StyledStr> {
+        Resettable::Value(StyledStr::from(self.as_str()))
     }
 }
 

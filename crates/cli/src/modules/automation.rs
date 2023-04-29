@@ -55,7 +55,7 @@ pub enum AutomationSubcommands {
         name: String,
 
         /// Attributes of the schema the credential definition will be based on
-        #[clap(long, short='a', multiple_occurrences(true), help = HelpStrings::AutomationCreateCredentialDefinitionAttributes)]
+        #[clap(long, short='a', help = HelpStrings::AutomationCreateCredentialDefinitionAttributes)]
         attributes: Vec<String>,
 
         /// Version of the schema the credential definition will be based on

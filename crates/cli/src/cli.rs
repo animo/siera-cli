@@ -55,8 +55,8 @@ pub struct Cli {
     pub environment: String,
 
     /// Whether more verbose output should be printed
-    #[clap(long, short='v', help = HelpStrings::Verbose, parse(from_occurrences), conflicts_with = "quiet")]
-    pub verbose: usize,
+    #[clap(long, short='v', help = HelpStrings::Verbose, action = clap::ArgAction::Count, conflicts_with = "quiet")]
+    pub verbose: u8,
 
     /// The main cli subcommands
     #[clap(subcommand)]
