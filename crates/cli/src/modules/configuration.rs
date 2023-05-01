@@ -76,7 +76,7 @@ pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
                 Box::<dyn std::error::Error>::from(error::Error::CannotReadConfigurationFile)
             })?;
             info!({ "coniguration_path": config_path });
-            info!({ "output": output });
+            log!({ "output": output });
             Ok(())
         }
         ConfigurationSubcommands::Add {
@@ -90,7 +90,7 @@ pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
             if *default {
                 let (environment, configuration) = Configuration::init(token.clone());
                 Configuration::add(environment, configuration)?;
-                info!({
+                log!({
                     "message": "Successfully added the default agent",
                     "configuration_path": config_path
                 });
@@ -107,7 +107,7 @@ pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
                 // TODO: this can only be aca-py or afj
                 agent: agent.clone(),
             };
-            info!({
+            log!({
                 "message":
                     format!(
                         "Writing {}: {} to {}",
@@ -117,7 +117,7 @@ pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
                     )
             });
             Configuration::add(environment.clone(), env)?;
-            info!({
+            log!({
                 "message":
                     format!(
                         "Successfully Added agent {} at {}.",
@@ -130,7 +130,7 @@ pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
             Ok(())
         }
         ConfigurationSubcommands::Remove { environment } => {
-            debug!({
+            log!({
                 "message":
                     format!(
                         "{} environment {} from the configuration",
@@ -139,7 +139,7 @@ pub fn parse_configuration_args(options: &ConfigurationOptions) -> Result<()> {
                     )
             });
             Configuration::remove(environment.clone())?;
-            info!({
+            log!({
                 "message":
                     format!(
                         "{} {} from the configuration",

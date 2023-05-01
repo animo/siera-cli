@@ -39,7 +39,7 @@ pub async fn parse_multitenancy_args(
     match &options.commands {
         MultitenancySubcommands::Create {} => agent.create().await.map(|response| {
             loader.stop();
-            info!({ "response": response });
+            log!({ "response": response });
             copy!("{}", response.wallet_id);
         }),
         MultitenancySubcommands::Remove { wallet_id } => {

@@ -40,7 +40,7 @@ impl CredentialOfferAutomation {
             + Send
             + Sync,
     ) -> Result<()> {
-        info!({ "message": "Starting automation CredentialOfferAutomation" });
+        info!({ "message": "Starting automation" });
         trace!({
            "connection_id": self.connection_id,
             "attributes": self.attributes
@@ -74,9 +74,7 @@ impl CredentialOfferAutomation {
 
         let credential_definition = create_credential_definition.execute(&agent).await?;
 
-        info!({
-           "message": "Offering the credential..."
-        });
+        info!({ "message": "Offering the credential..." });
 
         let credential_offer_response = agent
             .send_offer(CredentialOfferOptions {

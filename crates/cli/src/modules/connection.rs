@@ -117,14 +117,13 @@ pub async fn parse_connection_args(
             agent.create_invitation(options).await.map(|response| {
                 loader.stop();
                 info!({ "message": "Created invititation"});
-                info!({ "connection_id": response.id});
+                log!({ "connection_id": response.id});
                 if *qr {
                     info!({"message": "Scan this QR code to accept the invitation"});
                     print_qr_code(&response.invitation_url).unwrap();
-                } else {
-                    info!({ "message": "Another agent can use this URL to accept your invitation"});
-                    info!({ "invitation_url": &response.invitation_url});
                 }
+                info!({ "message": "Another agent can use this URL to accept your invitation"});
+                log!({ "invitation_url": &response.invitation_url});
                 copy!("{}", response.invitation_url);
             })
         }
@@ -136,7 +135,7 @@ pub async fn parse_connection_args(
                 .map(|connection| {
                     debug!({ "connection": connection });
                     info!({"message": "Fetched connection id"});
-                    info!({ "connection_id": connection.id });
+                    log!({ "connection_id": connection.id });
                 })
         }
         ConnectionSubcommands::List {
@@ -152,7 +151,7 @@ pub async fn parse_connection_args(
             Some(i) => agent.get_by_id(i.clone()).await.map(|connection| {
                 loader.stop();
                 copy!("{}", pretty_stringify_obj(&connection));
-                info!({ "connection": connection });
+                log!({ "connection": connection });
             }),
             None => {
                 let options = ConnectionGetAllOptions {
@@ -171,7 +170,7 @@ pub async fn parse_connection_args(
                 agent.get_all(options).await.map(|connections| {
                     loader.stop();
                     copy!("{}", pretty_stringify_obj(&connections));
-                    info!({ "connections": connections });
+                    log!({ "connections": connections });
                 })
             }
         },

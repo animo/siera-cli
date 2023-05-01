@@ -70,14 +70,14 @@ pub async fn parse_schema_args(
                     .attr_names
                     .into_iter()
                     .for_each(|name| info!({ "schema_name": name }));
-                info!({ "schema_id": schema.id});
+                log!({ "schema_id": schema.id});
                 copy!("{}", schema.id);
             })
         }
         SchemaSubcommands::List { id } => match id {
             Some(i) => agent.get_by_id(i.clone()).await.map(|schema| {
                 loader.stop();
-                info!({ "schema": schema });
+                log!({ "schema": schema });
                 copy!("{}", pretty_stringify_obj(&schema));
             }),
             None => agent.get_all().await.map(|schemas| {
@@ -85,7 +85,7 @@ pub async fn parse_schema_args(
                 schemas
                     .schema_ids
                     .iter()
-                    .for_each(|schema_id| info!({ "schema_id": schema_id }));
+                    .for_each(|schema_id| log!({ "schema_id": schema_id }));
                 info!({ "message": "Successfully fetched schema IDs" });
             }),
         },

@@ -34,7 +34,9 @@ macro_rules! internal_log {
                 let value = match value {
                     $crate::serde_json::Value::Object(o) => {
                         let mut o = o.clone();
-                        o.insert("level".to_string(), $crate::serde_json::Value::String($level.to_string_without_color()));
+                        if $level != ::siera_logger::LogLevel::None {
+                            o.insert("level".to_string(), $crate::serde_json::Value::String($level.to_string_without_color()));
+                        }
                         $crate::serde_json::Value::Object(o)
                     },
                     v => v,
@@ -45,9 +47,32 @@ macro_rules! internal_log {
                     $crate::serde_json::Value::Object(o) => {
                         let values = o.values();
                         for value in values {
-                            if let Some(value) = value.as_str() {
-                                println!("[{}] {}", $level.to_string_with_color(), value);
-                            }
+                            let s = match value {
+                                $crate::serde_json::Value::Object(o) => {
+                                    if let Some(value) = $crate::serde_json::to_string_pretty(value).ok() {
+                                        if $level == ::siera_logger::LogLevel::None {
+                                            value.to_owned()
+                                        } else {
+                                            format!("[{}] {}", $level.to_string_with_color(), value)
+                                        }
+
+                                    } else {
+                                      String::default()
+                                    }
+                                },
+                                _ => {
+                                    if let Some(value) = value.as_str() {
+                                        if $level == ::siera_logger::LogLevel::None {
+                                            value.to_owned()
+                                        } else {
+                                            format!("[{}] {}", $level.to_string_with_color(), value)
+                                        }
+                                    } else {
+                                      String::default()
+                                    }
+                                }
+                            };
+                            println!("{s}");
                         }
                     },
                     _ => (),
@@ -59,9 +84,17 @@ macro_rules! internal_log {
 
 /// Simple info logger
 #[macro_export]
+macro_rules! log {
+    ($($arg:tt)+) => {
+        internal_log!(::siera_logger::LogLevel::None, $($arg)+);
+    }
+}
+
+/// Simple info logger
+#[macro_export]
 macro_rules! info {
     ($($arg:tt)+) => {
-        internal_log!(::siera_logger::LogLevel::Info, $($arg)+)
+        internal_log!(::siera_logger::LogLevel::Info, $($arg)+);
     }
 }
 

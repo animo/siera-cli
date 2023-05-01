@@ -37,7 +37,7 @@ pub async fn parse_webhook_args(agent: impl WebhookModule + Send + Sync) -> Resu
                     )
                 },
             );
-            info!({ "webhook_message": incoming_webhook_message, "event": event});
+            log!({ "webhook_message": incoming_webhook_message, "event": event});
         })
         .await
 }

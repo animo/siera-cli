@@ -128,7 +128,7 @@ pub async fn parse_wallet_args(
                 .map(|response: DidList| {
                     loader.stop();
                     info!({ "message": "Found the following DID information"});
-                    info!({ "response": response });
+                    log!({ "response": response });
                     copy!("{}", pretty_stringify_obj(&response));
                 })
         }
@@ -142,7 +142,7 @@ pub async fn parse_wallet_args(
             agent.create_local_did(options).await.map(|response| {
                 loader.stop();
                 info!({ "message": format!("Successfully created local DID: {:?}", response.did) });
-                info!({ "response": response });
+                log!({ "response": response });
                 copy!("{}", pretty_stringify_obj(&response));
             })
         }
@@ -150,21 +150,21 @@ pub async fn parse_wallet_args(
             agent.rotate_keypair(did.clone()).await.map(|response| {
                 loader.stop();
                 info!({ "message": format!("Successfully rotated keypair for DID: {did}") });
-                info!({ "response": response });
+                log!({ "response": response });
                 copy!("{}", pretty_stringify_obj(response));
             })
         }
         WalletSubcommands::FetchPublicDid {} => agent.fetch_public_did().await.map(|response| {
             loader.stop();
             info!({ "message": "Wallet public DID" });
-            info!({ "response": response });
+            log!({ "response": response });
             copy!("{}", pretty_stringify_obj(&response));
         }),
         WalletSubcommands::AssignPublicDid { did } => {
             agent.assign_public_did(did.clone()).await.map(|response| {
                 loader.stop();
                 info!({ "message": "Successfully assigned public DID" });
-                info!({ "response": response });
+                log!({ "response": response });
                 copy!("{}", pretty_stringify_obj(&response));
             })
         }
@@ -172,7 +172,7 @@ pub async fn parse_wallet_args(
             agent.fetch_did_endpoint(did.clone()).await.map(|response| {
                 loader.stop();
                 info!({ "message": format!("DID endpoint for DID: {did}") });
-                info!({ "response": response });
+                log!({ "response": response });
                 copy!("{}", pretty_stringify_obj(&response));
             })
         }
@@ -189,7 +189,7 @@ pub async fn parse_wallet_args(
             agent.set_did_endpoint(options).await.map(|response| {
                 loader.stop();
                 info!({ "message": format!("Set DID endpoint for DID: {did}") });
-                info!({ "response": response });
+                log!({ "response": response });
                 copy!("{}", pretty_stringify_obj(response));
             })
         }
