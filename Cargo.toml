@@ -2,7 +2,7 @@
 members = ["crates/*", "tests"]
 
 [workspace.package]
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["Animo Solutions <contact@animo.id>"]
 description = "Siera is a toolkit that allows you to interact with a Hyperledger Aries Cloud agent."
