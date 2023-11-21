@@ -23,7 +23,7 @@ impl WebhookModule for CloudAgentPython {
 
         // Loop forever, parse message to stdout
         loop {
-            let message = socket.read_message()?;
+            let message = socket.read()?;
             let parsed: serde_json::Value = serde_json::from_str(&message.to_string())?;
             on_event(parsed);
         }
