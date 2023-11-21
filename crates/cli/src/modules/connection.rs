@@ -2,6 +2,7 @@ use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr::print_qr_code;
+use base64::{engine::general_purpose, Engine as _};
 use clap::{Args, Subcommand};
 use siera_agent::modules::connection::{
     ConnectionCreateInvitationOptions, ConnectionGetAllOptions, ConnectionModule,
@@ -116,8 +117,8 @@ pub async fn parse_connection_args(
             };
             agent.create_invitation(options).await.map(|response| {
                 loader.stop();
-                info!({ "message": "Created invititation"});
-                log!({ "connection_id": response.id});
+                info!({ "message": "Created invititation" });
+                log!({ "connection_id": response.id });
                 if *qr {
                     info!({"message": "Scan this QR code to accept the invitation"});
                     print_qr_code(&response.invitation_url).unwrap();
@@ -199,8 +200,9 @@ pub fn invite_url_to_struct(url: impl AsRef<str>) -> Result<ConnectionReceiveInv
         .ok_or(Error::InvalidAgentInvitation)?;
 
     // Base64 decode the invitation to a Vec<u8>
-    let decoded =
-        base64::decode(serialized_invitation).map_err(|_| Error::InvalidAgentInvitation)?;
+    let decoded = general_purpose::STANDARD
+        .decode(serialized_invitation)
+        .map_err(|_| Error::InvalidAgentInvitation)?;
 
     // Convert the vec to a valid string
     let decoded_str = str::from_utf8(&decoded)?;
