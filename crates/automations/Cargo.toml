@@ -15,6 +15,6 @@ readme.workspace = true
 siera-cloudagent-python = { path = "../cloudagent-python", version = "0.*" }
 siera-logger = { path = "../logger", version = "0.*" }
 siera-agent = { path = "../agent", version = "0.*" }
-colored = "2.0.0"
-async-trait = "0.1.51"
+colored = "2.0.4"
+async-trait = "0.1.74"
 rand = "0.8.5"

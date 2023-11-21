@@ -48,8 +48,8 @@ macro_rules! internal_log {
                         let values = o.values();
                         for value in values {
                             let s = match value {
-                                $crate::serde_json::Value::Object(o) => {
-                                    if let Some(value) = $crate::serde_json::to_string_pretty(value).ok() {
+                                $crate::serde_json::Value::Object(_) | $crate::serde_json::Value::Array(_) => {
+                                    if let Ok(value) = $crate::serde_json::to_string_pretty(value) {
                                         if $level == ::siera_logger::LogLevel::None {
                                             value.to_owned()
                                         } else {

@@ -2,6 +2,7 @@ use crate::error::{Error, Result};
 use crate::help_strings::HelpStrings;
 use crate::utils::loader::{Loader, LoaderVariant};
 use crate::utils::qr::print_qr_code;
+use base64::{engine::general_purpose, Engine as _};
 use clap::{Args, Subcommand};
 use siera_agent::modules::oob::{
     OobConnectionCreateInvitationOptions, OobConnectionReceiveInvitationOptions, OobModule,
@@ -126,8 +127,9 @@ pub fn invite_url_to_struct(url: impl AsRef<str>) -> Result<OobConnectionReceive
         .ok_or(Error::InvalidAgentInvitation)?;
 
     // Base64 decode the invitation to a Vec<u8>
-    let decoded =
-        base64::decode(serialized_invitation).map_err(|_| Error::InvalidAgentInvitation)?;
+    let decoded = general_purpose::STANDARD
+        .decode(serialized_invitation)
+        .map_err(|_| Error::InvalidAgentInvitation)?;
 
     // Convert the vec to a valid string
     let decoded_str = str::from_utf8(&decoded)?;
