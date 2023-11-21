@@ -11,4 +11,5 @@ jobs:
       - name: run-ghrs
         uses: jgehrcke/github-repo-stats@RELEASE
         with:
+          databranch: metrics
           ghtoken: ${{ secrets.ghrs_github_api_token }}
