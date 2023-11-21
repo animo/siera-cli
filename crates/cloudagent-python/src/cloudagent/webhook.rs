@@ -8,13 +8,15 @@ use tungstenite::connect;
 impl WebhookModule for CloudAgentPython {
     /// Listen to all incoming webhook
     async fn listen(&self, on_event: fn(serde_json::Value)) -> Result<()> {
-        let stripped_agent_url = match &self.endpoint {
-            s if s.starts_with("http://") => &s[7..],
-            s if s.starts_with("https://") => &s[8..],
+        let (uses_tls, stripped_agent_url) = match &self.endpoint {
+            s if s.starts_with("http://") => (false, &s[7..]),
+            s if s.starts_with("https://") => (true, &s[8..]),
             s => return Err(Error::InvalidAgentUrl(s.clone()).into()),
         };
 
-        let listen_url = format!("wss://{stripped_agent_url}/ws");
+        let scheme = if uses_tls { "wss" } else { "ws" };
+
+        let listen_url = format!("{scheme}://{stripped_agent_url}/ws");
         info!({ "message": format!("Listening on {listen_url}") });
 
         let (mut socket, _response) = connect(listen_url)?;
