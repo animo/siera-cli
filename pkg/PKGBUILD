@@ -1,17 +1,37 @@
-# Mainainer: Animo Solutions contact@animo.id
+# Maintainer: Animo Solutions contact@animo.id
+# Contributor: iamawacko <iamawacko@protonmail.com>
 pkgname="siera"
-pkgver="0.0.0"
+pkgver=0.2.0
 pkgrel="1"
 pkgdesc="A CLI tool for Hyperledger Aries written in Rust"
-arch=(x86_64)
+arch=(any)
 license=('MIT')
-depends=()
+source=("https://github.com/animo/siera-cli/archive/refs/tags/v$pkgver.tar.gz")
+depends=('cargo')
 provides=('siera')
-md5sums=()
+sha256sums=('d4315c22d10219771d40be80c463d66eaa6bbc00e165d7302ac1fb96a38b5847')
+
+prepare() {
+	cd "siera-cli-$pkgver"
+	case $CARCH in
+		"pentium4")
+			cargo fetch --locked --target "i686-unknown-linux-gnu"
+			;;
+		*)
+			cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+			;;
+	esac
+}
+
+build() {
+	cd "siera-cli-$pkgver"
+	export RUSTUP_TOOLCHAIN=stable
+	export CARGO_TARGET_DIR=target
+	cargo build --frozen --release
+}
 
 package() {
-  sudo mkdir -p /usr/share/licenses/${pkgname}
-  sudo curl -L -o /usr/share/licenses/${pkgname}/LICENSE https://raw.githubusercontent.com/animo/siera/main/LICENSE
-  sudo curl -L -o /usr/bin/${pkgname} https://github.com/animo/${pkgname}/releases/download/v${pkgver}/linux-x86_64-siera
-  sudo chmod +x /usr/bin/${pkgname}
+	cd "siera-cli-$pkgver"
+	install -Dm755 "target/release/$pkgname" -t "$pkgdir/usr/bin"
+    	install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
