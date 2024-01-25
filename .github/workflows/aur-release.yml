@@ -11,13 +11,19 @@ jobs:
   release-aur:
     name: release aur
     runs-on: ubuntu-latest
+    container: 
+    image: archlinux/archlinux:base-devel
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
+      - name: Update and install packages
+        run: |
+          sudo pacman -Syu --noconfirm --noprogressbar
+          sudo pacman -S --noconfirm --noprogressbar curl
+
       - name: Get PKGBUILD and .SRCINFO
         id: get_pkgbuild
         run: |
           curl -o PKGBUILD https://raw.githubusercontent.com/animo/siera-cli/main/pkg/PKGBUILD
-          curl -o .SRCINFO https://raw.githubusercontent.com/animo/siera-cli/main/pkg/.SRCINFO
       - name: Gather data and rewrite PKGBUILD file
         id: gather_data_and_rewrite
         run: |
@@ -26,8 +32,10 @@ jobs:
           VERSION=${VERSION:1}
           # replace package version in PKGBUILD
           sed -i '3s|.*|pkgver\='"$VERSION"'|' PKGBUILD
-          # replace package version in .SRCINFO
-          sed -i '3s|.*|        pkgver = '$VERSION'|' .SRCINFO
+          # update package sums
+          updpkgsums
+          # generate .SRCINFO
+          makepkg --printsrcinfo > .SRCINFO
       - name: commit to AUR
         id: commit_aur
         env:

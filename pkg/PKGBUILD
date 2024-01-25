@@ -1,15 +1,15 @@
 # Maintainer: Animo Solutions contact@animo.id
 # Contributor: iamawacko <iamawacko@protonmail.com>
 pkgname="siera"
-pkgver=0.2.0
-pkgrel="1"
+pkgver=0.0.0
+pkgrel="2"
 pkgdesc="A CLI tool for Hyperledger Aries written in Rust"
 arch=(any)
 license=('MIT')
 source=("https://github.com/animo/siera-cli/archive/refs/tags/v$pkgver.tar.gz")
 depends=('cargo')
 provides=('siera')
-sha256sums=('d4315c22d10219771d40be80c463d66eaa6bbc00e165d7302ac1fb96a38b5847')
+sha256sums=()
 
 prepare() {
 	cd "siera-cli-$pkgver"
